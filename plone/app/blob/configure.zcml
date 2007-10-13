@@ -6,6 +6,12 @@
 
   <five:registerPackage package="." initialize=".initialize" />
 
+  <include package=".adapters" />
+
+  <five:implements
+      class="ZPublisher.HTTPRequest.FileUpload"
+      interface=".interfaces.IFileUpload" />
+
   <genericsetup:registerProfile
       name="default"
       title="plone.app.blob"

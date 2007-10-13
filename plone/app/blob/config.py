@@ -1,5 +1,5 @@
 
-packageName = "plone.app.blob"
+packageName = 'plone.app.blob'
 packageGlobals = globals()
 
 permissions = {
