@@ -1,8 +1,18 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="plone.app.blob">
 
-    <five:registerPackage package="." initialize=".initialize" />
+  <five:registerPackage package="." initialize=".initialize" />
+
+  <genericsetup:registerProfile
+      name="default"
+      title="plone.app.blob"
+      directory="profile"
+      description="Content types to integrate ZODB 3.8 Blob support"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
 
 </configure>
+
