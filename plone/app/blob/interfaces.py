@@ -33,3 +33,8 @@ class IBlobbable(Interface):
 class IFileUpload(Interface):
     """ marker interface for ZPublisher.HTTPRequest.FileUpload class """
 
+
+class IATBlobFile(Interface):
+    """ marker interface for subtype mimicking the `ATFile` type """
+
+

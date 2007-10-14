@@ -20,5 +20,14 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
+  <class class=".content.ATBlob">
+    <implements interface=".interfaces.IATBlobFile" />
+  </class>
+
+  <adapter
+      name="plone.app.blob.subtypes.file"
+      for="plone.app.blob.interfaces.IATBlob"
+      factory=".subtypes.file.SchemaExtender" />
+
 </configure>
 

@@ -1,39 +1,27 @@
 from zope.interface import implements
 
-from Products.Archetypes import atapi
-from Products.validation import V_REQUIRED
-
-from Products.ATContentTypes.content import base
 from AccessControl import ClassSecurityInfo
+from Products.Archetypes.atapi import Schema
+from Products.Archetypes.atapi import AnnotationStorage
+from Products.Archetypes.atapi import ATFieldProperty
+from Products.Archetypes.atapi import registerType
 from Products.CMFCore.permissions import View
+from Products.ATContentTypes.content.base import ATCTContent
 from Products.ATContentTypes.content.schemata import ATContentTypeSchema
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
-from Products.CMFPlone import PloneMessageFactory as _
 
 from plone.app.blob.interfaces import IATBlob
 from plone.app.blob.config import packageName
-from plone.app.blob.field import BlobField, BlobMarshaller
+from plone.app.blob.field import BlobMarshaller
 
 
-ATBlobSchema = ATContentTypeSchema.copy() + atapi.Schema((
-    BlobField('blob',
-        required = True,
-        primary = True,
-        searchable = True,
-        languageIndependent = True,
-        validators = (('isNonEmptyFile', V_REQUIRED),
-                      ('checkFileMaxSize', V_REQUIRED)),
-        widget = atapi.FileWidget(label = _(u'label_file', default=u'File'),
-                            description=_(u''),
-                            show_content_type = False,)),
-    ), marshall = BlobMarshaller())
-
-ATBlobSchema['title'].storage = atapi.AnnotationStorage()
+ATBlobSchema = ATContentTypeSchema.copy() + Schema(marshall = BlobMarshaller())
+ATBlobSchema['title'].storage = AnnotationStorage()
 
 finalizeATCTSchema(ATBlobSchema, folderish=False, moveDiscussion=False)
 
 
-class ATBlob(base.ATCTContent):
+class ATBlob(ATCTContent):
     """ a chunk of binary data """
     implements(IATBlob)
 
@@ -41,8 +29,8 @@ class ATBlob(base.ATCTContent):
     _at_rename_after_creation = True
     schema = ATBlobSchema
 
-    title = atapi.ATFieldProperty('title')
-    summary = atapi.ATFieldProperty('description')
+    title = ATFieldProperty('title')
+    summary = ATFieldProperty('description')
 
     security  = ClassSecurityInfo()
 
@@ -53,5 +41,5 @@ class ATBlob(base.ATCTContent):
         return field.index_html(self, REQUEST, RESPONSE)
 
 
-atapi.registerType(ATBlob, packageName)
+registerType(ATBlob, packageName)
 
