@@ -2,5 +2,6 @@
     i18n_domain="plone.app.blob">
 
   <adapter factory=".fileupload.BlobbableFileUpload" />
+  <adapter factory=".atfile.BlobbableATFile" />
 
 </configure>
