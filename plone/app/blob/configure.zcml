@@ -8,9 +8,9 @@
 
   <include package=".adapters" />
 
-  <five:implements
-      class="ZPublisher.HTTPRequest.FileUpload"
-      interface=".interfaces.IFileUpload" />
+  <class class="ZPublisher.HTTPRequest.FileUpload">
+    <implements interface=".interfaces.IFileUpload" />
+  </class>
 
   <genericsetup:registerProfile
       name="default"
