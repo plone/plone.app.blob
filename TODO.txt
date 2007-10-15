@@ -1,0 +1,15 @@
+TODOs:
+- complete migration for ATFile content (i.e. fields_map handling etc)
+- add extended field, sub-type for image handling
+- add migration for ATImages
+- write tests for migration
+- write more tests in general
+- eggify contentmigration
+- update setup.py with description and dependencies & release as egg
+- create a buildout based on the zope 2.10 release tarball
+- discuss, write a UI for migration file and image content
+- figure out what the extra marshaller is for
+
+TODOs from the original ATBlobField (to check):
+- maybe complete BaseUnit interface of ATBlob
+- maybe complete FileField interface of BlobField
