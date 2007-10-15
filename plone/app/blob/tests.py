@@ -1,54 +1,30 @@
-import unittest
-
-from zope.testing import doctestunit
-from zope.component import testing
-from Testing import ZopeTestCase as ztc
-
+from unittest import TestSuite
+from Testing.ZopeTestCase import installPackage, ZopeDocFileSuite
 from Products.Five import zcml
 from Products.Five import fiveconfigure
-from Products.PloneTestCase import PloneTestCase as ptc
-from Products.PloneTestCase.layer import PloneSite
-ptc.setupPloneSite()
+from Products.PloneTestCase import PloneTestCase
+from Products.PloneTestCase.layer import onsetup
 
-import plone.app.blob
 
-class TestCase(ptc.PloneTestCase):
-    class layer(PloneSite):
-        @classmethod
-        def setUp(cls):
-            fiveconfigure.debug_mode = True
-            zcml.load_config('configure.zcml',
-                             plone.app.blob)
-            fiveconfigure.debug_mode = False
+@onsetup
+def setupPackage():
+    """ set up the package and its dependencies """
+    fiveconfigure.debug_mode = True
+    import plone.app.blob
+    zcml.load_config('configure.zcml', plone.app.blob)
+    fiveconfigure.debug_mode = False
+    installPackage('plone.app.blob')
 
-        @classmethod
-        def tearDown(cls):
-            pass
-    
+setupPackage()
+PloneTestCase.setupPloneSite(products=(
+    'plone.app.blob',
+))
+
 
 def test_suite():
-    return unittest.TestSuite([
+    return TestSuite((
+        ZopeDocFileSuite(
+           'README.txt', package='plone.app.blob',
+           test_class=PloneTestCase.FunctionalTestCase),
+    ))
 
-        # Unit tests
-        #doctestunit.DocFileSuite(
-        #    'README.txt', package='plone.app.blob',
-        #    setUp=testing.setUp, tearDown=testing.tearDown),
-
-        #doctestunit.DocTestSuite(
-        #    module='plone.app.blob.mymodule',
-        #    setUp=testing.setUp, tearDown=testing.tearDown),
-
-
-        # Integration tests that use PloneTestCase
-        #ztc.ZopeDocFileSuite(
-        #    'README.txt', package='plone.app.blob',
-        #    test_class=TestCase),
-
-        #ztc.FunctionalDocFileSuite(
-        #    'browser.txt', package='plone.app.blob',
-        #    test_class=TestCase),
-        
-        ])
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')
