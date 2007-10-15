@@ -37,6 +37,16 @@ instantiable:
 
   >>> folder.invokeFactory('Blob', id='blob', title='a Blob')
   'blob'
-  >>> folder.blob
+  >>> blob = folder.blob
+  >>> blob
   <ATBlob at /plone/Members/test_user_1_/blob>
+
+The new instance should have been marked with the default sub-type and
+therefore also contain the extended schema:
+
+  >>> from plone.app.blob.interfaces import IATBlobFile
+  >>> IATBlobFile.providedBy(blob)
+  True
+  >>> blob.getField('blob')
+  <Field blob(blob:rw)>
 
