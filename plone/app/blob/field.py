@@ -77,7 +77,7 @@ InitializeClass(BlobWrapper)
 
 
 class BlobField(ObjectField):
-    """File field implementation based on ZODB Blobs"""
+    """ file field implementation based on zodb blobs """
 
     _properties = ObjectField._properties.copy()
     _properties.update({
