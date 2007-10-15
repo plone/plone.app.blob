@@ -24,7 +24,8 @@ class BlobMarshaller(PrimaryFieldMarshaller):
          mutator(file, **kwargs)
 
 
-class ATBlob(Implicit, Persistent):
+class BlobWrapper(Implicit, Persistent):
+    """ persistent wrapper for a zodb blob, also holding some metadata """
 
     security  = ClassSecurityInfo()
 
@@ -72,7 +73,7 @@ class ATBlob(Implicit, Persistent):
         """ return filename for this blob """
         return self.filename
 
-InitializeClass(ATBlob)
+InitializeClass(BlobWrapper)
 
 
 class BlobField(ObjectField):
@@ -100,7 +101,7 @@ class BlobField(ObjectField):
             return
         # create a new blob instead of modifying the old one to
         # achieve copy-on-write semantics.
-        blob = ATBlob()
+        blob = BlobWrapper()
         blobbable = IBlobbable(value)
         blobbable.feed(blob.getBlob())
         blob.setContentType(blobbable.mimetype())
