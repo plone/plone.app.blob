@@ -7,6 +7,9 @@ from plone.app.blob.config import packageName, permissions
 def initialize(context):
     """ initializer called when used as a zope2 product """
 
+    # setup non-anonymous file uploads
+    import monkey
+
     # initialize portal content
     import content
     content = content   # make pyflakes happy...
