@@ -26,7 +26,13 @@ setup(name='plone.app.blob',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          # -*- Extra requirements: -*-
+          'ZODB3 >=3.8.0b2,<3.8.999',
+          'zope.interface >=3.3,<3.3.999',
+          'zope.testing >=3.0,<3.3.999',
+          'ZConfig >=2.4a2,<2.4.999',
+          'zdaemon >=1.4a2,<1.4.999',
+          'zope.proxy >=3.4,<3.4.999',
+          'zodbcode >=3.4,<3.4.999',
       ],
       entry_points="""
       # -*- Entry points: -*-
