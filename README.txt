@@ -1,7 +1,9 @@
-plone.app.blob Package Readme
-=========================
+ZODB 3.8 blob support for Plone
+===============================
 
 Overview
 --------
 
-ZODB 3.8 Blob support for Plone 3.x
+This package aims to be an add-on to Plone 3.0 to integrate ZODB 3.8's blob
+support.
+
