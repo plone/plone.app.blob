@@ -4,9 +4,7 @@ TODOs:
 - add migration for ATImages
 - write tests for migration
 - write more tests in general
-- eggify contentmigration
-- update setup.py with description and dependencies & release as egg
-- create a buildout based on the zope 2.10 release tarball
+- update README & release as egg
 - discuss, write a UI for migration file and image content
 - figure out what the extra marshaller is for
 
