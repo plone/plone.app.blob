@@ -9,10 +9,11 @@ def initialize(context):
 
     # setup non-anonymous file uploads
     import monkey
+    monkey.__name__     # make pyflakes happy...
 
     # initialize portal content
     import content
-    content = content   # make pyflakes happy...
+    content.__name__    # make pyflakes happy...
 
     content_types, constructors, ftis = atapi.process_types(
         atapi.listTypes(packageName), packageName)
