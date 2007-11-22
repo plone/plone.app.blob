@@ -16,7 +16,7 @@
   <genericsetup:registerProfile
       name="default"
       title="plone.app.blob"
-      directory="profile"
+      directory="profiles/default"
       description="Content types to integrate ZODB 3.8 Blob support"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
