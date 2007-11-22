@@ -21,6 +21,15 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
+  <genericsetup:registerProfile
+      name="testing"
+      title="plone.app.blob testing profile"
+      directory="profiles/testing"
+      description="Extension profile to replace standard content types for testing"
+      for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
   <class class=".content.ATBlob">
     <implements interface=".interfaces.IATBlobFile" />
   </class>
