@@ -73,6 +73,15 @@ class BlobWrapper(Implicit, Persistent):
         """ return filename for this blob """
         return self.filename
 
+    # compatibility methods
+
+    def __str__(self):
+        """ return data as a string;  this is highly inefficient as it
+            loads the complete blob content into memory, but the method
+            is unfortunately still used here and there... """
+        return self.blob.open().read()
+
+
 InitializeClass(BlobWrapper)
 
 

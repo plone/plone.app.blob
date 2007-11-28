@@ -40,6 +40,15 @@ class ATBlob(ATCTContent):
         field = self.getPrimaryField()
         return field.index_html(self, REQUEST, RESPONSE)
 
+    # compatibility methods
+
+    def __str__(self):
+        """ return data as a string;  this is highly inefficient as it
+            loads the complete blob content into memory, but the method
+            is unfortunately still used here and there... """
+        acc = self.getPrimaryField().getAccessor(self)
+        return str(acc())
+
 
 registerType(ATBlob, packageName)
 
