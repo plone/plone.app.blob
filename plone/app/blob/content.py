@@ -49,6 +49,12 @@ class ATBlob(ATCTContent):
         acc = self.getPrimaryField().getAccessor(self)
         return str(acc())
 
+    def getFile(self):
+        """ archetypes.schemaextender (wisely) doesn't mess with classes,
+            so we have to provide our own accessor """
+        acc = self.getField('file').getAccessor(self)
+        return acc()
+
 
 registerType(ATBlob, packageName)
 
