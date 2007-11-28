@@ -56,6 +56,7 @@ class ATBlob(ATCTContent):
             is unfortunately still used here and there... """
         return str(self.getBlobWrapper())
 
+    security.declareProtected(View, 'getFile')
     def getFile(self):
         """ archetypes.schemaextender (wisely) doesn't mess with classes,
             so we have to provide our own accessor """
