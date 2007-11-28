@@ -47,6 +47,6 @@ therefore also contain the extended schema:
   >>> from plone.app.blob.interfaces import IATBlobFile
   >>> IATBlobFile.providedBy(blob)
   True
-  >>> blob.getField('blob')
-  <Field blob(blob:rw)>
+  >>> blob.getField('file')
+  <Field file(blob:rw)>
 

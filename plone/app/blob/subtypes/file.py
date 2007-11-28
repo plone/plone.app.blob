@@ -19,7 +19,7 @@ class SchemaExtender(object):
 
     def getFields(self):
         return [
-            ExtensionBlobField('blob',
+            ExtensionBlobField('file',
                 required = True,
                 primary = True,
                 searchable = True,
