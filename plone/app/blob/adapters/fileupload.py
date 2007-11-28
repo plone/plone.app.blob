@@ -36,7 +36,7 @@ class BlobbableFileUpload(object):
     def mimetype(self):
         """ see interface ... """
         filename = self.filename()
-        body = iter(self.context)
+        body = self.context
         mtr = getUtility(IMimetypesRegistryTool)
         if mtr is not None:
             d, f, mimetype = mtr(body.read(1 << 14), mimetype=None, filename=filename)
