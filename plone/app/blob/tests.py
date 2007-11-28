@@ -1,3 +1,5 @@
+from plone.app.blob import db   # needs to be imported first to set up ZODB
+
 from unittest import TestSuite, makeSuite
 from Testing.ZopeTestCase import installPackage, ZopeDocFileSuite
 from Products.Five import zcml
