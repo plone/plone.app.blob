@@ -5,7 +5,7 @@ from Products.Archetypes.atapi import Schema
 from Products.Archetypes.atapi import AnnotationStorage
 from Products.Archetypes.atapi import ATFieldProperty
 from Products.Archetypes.atapi import registerType
-from Products.CMFCore.permissions import View
+from Products.CMFCore.permissions import View, ModifyPortalContent
 from Products.ATContentTypes.content.base import ATCTContent
 from Products.ATContentTypes.content.schemata import ATContentTypeSchema
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
@@ -61,6 +61,11 @@ class ATBlob(ATCTContent):
         """ archetypes.schemaextender (wisely) doesn't mess with classes,
             so we have to provide our own accessor """
         return self.getBlobWrapper()
+
+    security.declareProtected(ModifyPortalContent, 'setFile')
+    def setFormat(self, value):
+        """ ... """
+        self.getBlobWrapper().setContentType(value)
 
 
 registerType(ATBlob, packageName)
