@@ -111,10 +111,16 @@ class BlobField(ObjectField):
         # create a new blob instead of modifying the old one to
         # achieve copy-on-write semantics.
         blob = BlobWrapper()
-        blobbable = IBlobbable(value)
-        blobbable.feed(blob.getBlob())
-        blob.setContentType(blobbable.mimetype())
-        blob.setFilename(blobbable.filename())
+        if isinstance(value, basestring):
+            # special handling is needed for strings, since they cannot
+            # be adapted afaik
+            blob.setContentType('text/plain')
+            blob.getBlob().open('w').write(value)
+        else:
+            blobbable = IBlobbable(value)
+            blobbable.feed(blob.getBlob())
+            blob.setContentType(blobbable.mimetype())
+            blob.setFilename(blobbable.filename())
         super(BlobField, self).set(instance, blob, **kwargs)
 
     security.declareProtected(View, 'download')
