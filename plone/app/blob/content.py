@@ -40,13 +40,13 @@ class ATBlob(ATCTContent):
         field = self.getPrimaryField()
         return field.index_html(self, REQUEST, RESPONSE)
 
-    # helper methods
+    # helper & explicit accessor and mutator methods
 
     security.declarePrivate('getBlobWrapper')
     def getBlobWrapper(self):
         """ return wrapper class containing the actual blob """
         accessor = self.getField('file').getAccessor(self)
-        return accessor()
+        return accessor() or ''
 
     # compatibility methods
 
@@ -54,15 +54,15 @@ class ATBlob(ATCTContent):
         """ return data as a string;  this is highly inefficient as it
             loads the complete blob content into memory, but the method
             is unfortunately still used here and there... """
-        return str(self.getBlobWrapper() or '')
+        return str(self.getBlobWrapper())
 
     security.declareProtected(View, 'getFile')
     def getFile(self):
         """ archetypes.schemaextender (wisely) doesn't mess with classes,
             so we have to provide our own accessor """
-        return self.getBlobWrapper() or ''
+        return self.getBlobWrapper()
 
-    security.declareProtected(ModifyPortalContent, 'setFile')
+    security.declareProtected(ModifyPortalContent, 'setFormat')
     def setFormat(self, value):
         """ ... """
         self.getBlobWrapper().setContentType(value)
