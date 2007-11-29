@@ -54,13 +54,13 @@ class ATBlob(ATCTContent):
         """ return data as a string;  this is highly inefficient as it
             loads the complete blob content into memory, but the method
             is unfortunately still used here and there... """
-        return str(self.getBlobWrapper())
+        return str(self.getBlobWrapper() or '')
 
     security.declareProtected(View, 'getFile')
     def getFile(self):
         """ archetypes.schemaextender (wisely) doesn't mess with classes,
             so we have to provide our own accessor """
-        return self.getBlobWrapper()
+        return self.getBlobWrapper() or ''
 
     security.declareProtected(ModifyPortalContent, 'setFile')
     def setFormat(self, value):
