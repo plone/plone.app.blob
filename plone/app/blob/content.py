@@ -48,7 +48,13 @@ class ATBlob(ATCTContent):
         accessor = self.getField('file').getAccessor(self)
         return accessor() or ''
 
-    # compatibility methods
+    security.declareProtected(View, 'getFile')
+    def getFile(self):
+        """ archetypes.schemaextender (wisely) doesn't mess with classes,
+            so we have to provide our own accessor """
+        return self.getBlobWrapper()
+
+    # compatibility methods when used as ATFile replacement
 
     def __str__(self):
         """ return data as a string;  this is highly inefficient as it
@@ -56,15 +62,9 @@ class ATBlob(ATCTContent):
             is unfortunately still used here and there... """
         return str(self.getBlobWrapper())
 
-    security.declareProtected(View, 'getFile')
-    def getFile(self):
-        """ archetypes.schemaextender (wisely) doesn't mess with classes,
-            so we have to provide our own accessor """
-        return self.getBlobWrapper()
-
     security.declareProtected(ModifyPortalContent, 'setFormat')
     def setFormat(self, value):
-        """ ... """
+        """ convenience method to set the mime-type """
         self.getBlobWrapper().setContentType(value)
 
 
