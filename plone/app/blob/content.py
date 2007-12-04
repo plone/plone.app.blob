@@ -7,7 +7,7 @@ from Products.Archetypes.atapi import AnnotationStorage
 from Products.Archetypes.atapi import ATFieldProperty
 from Products.Archetypes.atapi import registerType
 from Products.CMFCore.permissions import View, ModifyPortalContent
-from Products.ATContentTypes.content.base import ATCTContent
+from Products.ATContentTypes.content.base import ATCTFileContent
 from Products.ATContentTypes.content.schemata import ATContentTypeSchema
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 
@@ -22,7 +22,7 @@ ATBlobSchema['title'].storage = AnnotationStorage()
 finalizeATCTSchema(ATBlobSchema, folderish=False, moveDiscussion=False)
 
 
-class ATBlob(ATCTContent):
+class ATBlob(ATCTFileContent):
     """ a chunk of binary data """
     implements(IATBlob)
 
