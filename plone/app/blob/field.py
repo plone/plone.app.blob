@@ -142,14 +142,8 @@ class BlobField(ObjectField):
                 filename=filename)
             RESPONSE.setHeader("Content-disposition", header_value)
         blob = self.get(instance, raw=True)     # TODO: why 'raw'?
-        if isinstance(blob, BlobWrapper):
-            size = blob.get_size()
-            value = blob.getIterator()
-        else:
-            size = 0
-            value = ''
-        RESPONSE.setHeader("Content-Length", size)
-        return value
+        RESPONSE.setHeader("Content-Length", blob.get_size())
+        return blob.getIterator()
 
     security.declarePublic('get_size')
     def get_size(self, instance):
