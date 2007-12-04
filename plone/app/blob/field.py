@@ -54,6 +54,8 @@ class BlobWrapper(Implicit, Persistent):
         f.close()
         return result
 
+    __len__ = get_size
+
     security.declarePrivate('setContentType')
     def setContentType(self, value):
         """ set mimetype for this blob """
