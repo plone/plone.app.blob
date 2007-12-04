@@ -55,6 +55,12 @@ class ATBlob(ATCTContent):
             so we have to provide our own accessor """
         return self.getBlobWrapper()
 
+    security.declareProtected(ModifyPortalContent, 'setFile')
+    def setFile(self, value, **kwargs):
+        """ set the file contents and possibly also the id """
+        mutator = self.getField('file').getMutator(self)
+        mutator(value, **kwargs)
+
     # compatibility methods when used as ATFile replacement
 
     security.declareProtected(View, 'get_data')
