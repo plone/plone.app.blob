@@ -20,7 +20,7 @@ class BlobbableStringIO(object):
 
     def filename(self):
         """ see interface ... """
-        return None
+        return getattr(self.context, 'filename', None)
 
     def mimetype(self):
         """ see interface ... """
