@@ -32,6 +32,8 @@
 
   <class class=".content.ATBlob">
     <implements interface=".interfaces.IATBlobFile" />
+    <implements interface="Products.ATContentTypes.interface.file.IATFile" />
+    <implements interface="Products.ATContentTypes.interface.file.IFileContent" />"
   </class>
 
   <adapter
