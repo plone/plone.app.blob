@@ -1,6 +1,7 @@
 from zope.interface import implements
 
 from AccessControl import ClassSecurityInfo
+from ComputedAttribute import ComputedAttribute
 from Products.Archetypes.atapi import Schema
 from Products.Archetypes.atapi import AnnotationStorage
 from Products.Archetypes.atapi import ATFieldProperty
@@ -56,11 +57,20 @@ class ATBlob(ATCTContent):
 
     # compatibility methods when used as ATFile replacement
 
-    def __str__(self):
+    security.declareProtected(View, 'get_data')
+    def get_data(self):
         """ return data as a string;  this is highly inefficient as it
             loads the complete blob content into memory, but the method
             is unfortunately still used here and there... """
         return str(self.getBlobWrapper())
+
+    data = ComputedAttribute(get_data, 1)
+
+    def __str__(self):
+        """ return data as a string;  this is highly inefficient as it
+            loads the complete blob content into memory, but the method
+            is unfortunately still used here and there... """
+        return self.get_data()
 
     security.declareProtected(ModifyPortalContent, 'setFormat')
     def setFormat(self, value):
