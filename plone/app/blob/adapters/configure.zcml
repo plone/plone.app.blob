@@ -3,5 +3,6 @@
 
   <adapter factory=".fileupload.BlobbableFileUpload" />
   <adapter factory=".atfile.BlobbableATFile" />
+  <adapter factory=".stringio.BlobbableStringIO" />
 
 </configure>
