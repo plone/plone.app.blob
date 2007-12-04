@@ -106,8 +106,6 @@ class BlobField(ObjectField):
         if value == "DELETE_FILE":
             super(BlobField, self).unset(instance, **kwargs)
             return
-        if value is None:
-            return
         # create a new blob instead of modifying the old one to
         # achieve copy-on-write semantics.
         blob = BlobWrapper()
@@ -116,7 +114,7 @@ class BlobField(ObjectField):
             # be adapted afaik
             blob.setContentType('text/plain')
             blob.getBlob().open('w').write(value)
-        else:
+        elif value is not None:
             blobbable = IBlobbable(value)
             blobbable.feed(blob.getBlob())
             blob.setContentType(blobbable.mimetype())

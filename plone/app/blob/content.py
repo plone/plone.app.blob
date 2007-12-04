@@ -46,7 +46,7 @@ class ATBlob(ATCTContent):
     def getBlobWrapper(self):
         """ return wrapper class containing the actual blob """
         accessor = self.getField('file').getAccessor(self)
-        return accessor() or ''
+        return accessor()
 
     security.declareProtected(View, 'getFile')
     def getFile(self):
