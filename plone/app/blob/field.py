@@ -59,6 +59,7 @@ class BlobWrapper(Implicit, Persistent):
     security.declarePrivate('setContentType')
     def setContentType(self, value):
         """ set mimetype for this blob """
+        value = str(value).split(';')[0].strip()    # might be like: text/plain; charset='utf-8'
         self.content_type = value
 
     security.declarePublic('getContentType')
@@ -69,6 +70,9 @@ class BlobWrapper(Implicit, Persistent):
     security.declarePrivate('setFilename')
     def setFilename(self, value):
         """ set filename for this blob """
+        value = value[max(value.rfind('/'),
+                          value.rfind('\\'),
+                          value.rfind(':')) + 1:]
         self.filename = value
 
     security.declarePrivate('getFilename')
