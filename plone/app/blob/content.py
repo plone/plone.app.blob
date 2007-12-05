@@ -81,6 +81,11 @@ class ATBlob(ATCTFileContent):
             is unfortunately still used here and there... """
         return self.get_data()
 
+    security.declareProtected(ModifyPortalContent, 'setFilename')
+    def setFilename(self, value, key=None):
+        """ convenience method to set the file name on the field """
+        self.getBlobWrapper().setFilename(value)
+
     security.declareProtected(ModifyPortalContent, 'setFormat')
     def setFormat(self, value):
         """ convenience method to set the mime-type """
