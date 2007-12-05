@@ -1,5 +1,6 @@
 from zope.interface import implements
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.Archetypes.atapi import AnnotationStorage
 from Products.Archetypes.atapi import FileWidget
 from Products.validation import V_REQUIRED
 from archetypes.schemaextender.interfaces import ISchemaExtender
@@ -24,7 +25,10 @@ class SchemaExtender(object):
                 primary = True,
                 searchable = True,
                 default = '',
+                accessor = 'getFile',
+                mutator = 'setFile',
                 languageIndependent = True,
+                storage = AnnotationStorage(migrate=True),
                 validators = (('isNonEmptyFile', V_REQUIRED),
                               ('checkFileMaxSize', V_REQUIRED)),
                 widget = FileWidget(label = _(u'label_file', default=u'File'),
