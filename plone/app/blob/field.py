@@ -1,5 +1,6 @@
 from Acquisition import Implicit
 from AccessControl import ClassSecurityInfo
+from ComputedAttribute import ComputedAttribute
 from Globals import InitializeClass
 from ZPublisher.Iterators import filestream_iterator
 from ZODB.blob import Blob
@@ -87,6 +88,8 @@ class BlobWrapper(Implicit, Persistent):
             loads the complete blob content into memory, but the method
             is unfortunately still used here and there... """
         return self.blob.open().read()
+
+    data = ComputedAttribute(__str__, 0)
 
 
 InitializeClass(BlobWrapper)
