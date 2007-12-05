@@ -42,7 +42,7 @@ class ATBlob(ATCTFileContent):
     def index_html(self, REQUEST, RESPONSE):
         """ download the file inline """
         field = self.getPrimaryField()
-        return field.index_html(self, REQUEST, RESPONSE)
+        return field.download(self, REQUEST, RESPONSE)
 
     # helper & explicit accessor and mutator methods
 
