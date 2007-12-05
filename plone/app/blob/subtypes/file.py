@@ -23,6 +23,7 @@ class SchemaExtender(object):
                 required = True,
                 primary = True,
                 searchable = True,
+                default = '',
                 languageIndependent = True,
                 validators = (('isNonEmptyFile', V_REQUIRED),
                               ('checkFileMaxSize', V_REQUIRED)),
