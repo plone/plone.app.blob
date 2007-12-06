@@ -50,3 +50,22 @@ therefore also contain the extended schema:
   >>> blob.getField('file')
   <Field file(blob:rw)>
 
+Since no data has been written to it, the blob file should still be empty:
+
+  >>> blob.getFile().getBlob()
+  <ZODB.blob.Blob object at ...>
+  >>> blob.getFile().getBlob().open().read()
+  ''
+
+Feeding it with some image data should result in a correctly set mime-type:
+  
+  >>> from StringIO import StringIO
+  >>> from base64 import decodestring
+  >>> gif = 'R0lGODlhAQABAPAAAPj8+AAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='
+  >>> gif = StringIO(decodestring(gif))
+  >>> blob.setFile(gif)
+  >>> print blob.getFilename()
+  None
+  >>> blob.getContentType()
+  'image/gif'
+

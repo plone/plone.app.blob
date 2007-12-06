@@ -4,6 +4,7 @@ from zope.component import adapts
 from StringIO import StringIO
 
 from plone.app.blob.interfaces import IBlobbable
+from plone.app.blob.utils import guessMimetype
 
 
 class BlobbableStringIO(object):
@@ -24,5 +25,5 @@ class BlobbableStringIO(object):
 
     def mimetype(self):
         """ see interface ... """
-        return 'text/plain'
+        return guessMimetype(self.context, self.filename())
 
