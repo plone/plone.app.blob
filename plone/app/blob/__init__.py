@@ -1,6 +1,3 @@
-from Products.Archetypes import atapi
-from Products.CMFCore import utils
-
 from plone.app.blob.config import packageName, permissions
 
 
@@ -14,6 +11,9 @@ def initialize(context):
     # initialize portal content
     import content
     content.__name__    # make pyflakes happy...
+
+    from Products.Archetypes import atapi
+    from Products.CMFCore import utils
 
     content_types, constructors, ftis = atapi.process_types(
         atapi.listTypes(packageName), packageName)
