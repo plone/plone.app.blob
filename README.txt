@@ -123,23 +123,27 @@ Troubleshooting
 The following are some known issues, that will hopefully go away soon enough.
 In the meantime here are the recommended workarounds:
 
-"Invalid plugin id" Exception
-  Symptom
-    When trying to create a "Plone Site" you're getting an error like::
 
-      Error Type: KeyError
-      Error Value: 'Invalid plugin id: credentials_basic_auth'
+Getting distribution for 'Products.PluggableAuthService>=1.5.2'
+  Symptom
+    When running buildout you're getting an error like::
+  
+      Getting distribution for 'Products.PluggableAuthService>=1.5.2'.
+      error: /var/folders/b0/b0C9MkEYEUyR1+20GCJohk+++TI/-Tmp-/easy_install-0ncZ-t/Products.PluggableAuthService-1.5.2/Products/PluggableAuthService/version.txt: No such file or directory
+      An error occured when trying to install Products.PluggableAuthService 1.5.2.Look above this message for any errors thatwere output by easy_install.
   Problem
-    Your version of ``Products.PluggableAuthService`` is too old — you need
-    1.5.2 or newer (please see http://www.zope.org/Collectors/PAS/59 for more
-    information about this).
+    The `tarball`_ for version 1.5.2 of `Products.PluggableAuthService`_ is
+    currently `missing some files`_ and therefore cannot be used.
   Solution
     Please use the `provided buildout`_, add the `1.5 branch`_ as a develop
-    egg to your buildout or wait a couple of days until Plone 3.0.4 has been
-    released, which should also fix the problem.
+    egg to your buildout or wait until a complete tarball has been uploaded.
 
+  .. _`tarball`: http://pypi.python.org/packages/source/P/Products.PluggableAuthService/Products.PluggableAuthService-1.5.2.tar.gz#md5=e51a3ea2dc9fdd3ca612d48a6b2aa9bf
+  .. _`Products.PluggableAuthService`: http://cheeseshop.python.org/pypi/Products.PluggableAuthService/
+  .. _`missing some files`: https://bugs.launchpad.net/zope-pas/+bug/161287/comments/6
   .. _`provided buildout`: http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.0
   .. _`1.5 branch`: http://svn.zope.org/Products.PluggableAuthService/branches/1.5/
+
 
 Getting distribution for 'archetypes.schemaextender>1.0a1'
   Symptom
