@@ -4,9 +4,9 @@
 
   <browser:page
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="blob-migration"
+      template="migration.pt"
       class=".migration.MigrationView"
-      name="migrate-files-to-blobs"
-      attribute="migrateFiles"
-      permission="cmf.ModifyPortalContent" />
+      permission="cmf.ManagePortal" /> 
 
 </configure>
