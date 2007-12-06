@@ -40,7 +40,7 @@ setup(name = 'plone.app.blob',
           'zdaemon >=1.4a2,<1.4.999',
           'zope.proxy >=3.4,<3.4.999',
           'zodbcode >=3.4,<3.4.999',
-          'archetypes.schemaextender >=1.0a1',
+          'archetypes.schemaextender >1.0a1',
       ],
 )
 
