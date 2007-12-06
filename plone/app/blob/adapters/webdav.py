@@ -16,8 +16,10 @@ class BlobbableWebDavUpload(object):
 
     def feed(self, blob):
         """ see interface ... """
-        self.context.file.seek(0)   # reset the input
+        pos = self.context.file.tell()
+        self.context.file.seek(0)
         blob.open('w').writelines(self.context.file)
+        self.context.file.seek(pos)
 
     def filename(self):
         """ see interface ... """
