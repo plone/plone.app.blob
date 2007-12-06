@@ -2,13 +2,10 @@ from os.path import isfile
 
 from zope.interface import implements
 from zope.component import adapts
-from zope.component import getUtility
-from zope.contenttype import guess_content_type
-
-from Products.MimetypesRegistry.interfaces import IMimetypesRegistryTool
 
 from plone.app.blob.interfaces import IBlobbable
 from plone.app.blob.interfaces import IFileUpload
+from plone.app.blob.utils import guessMimetype
 
 
 class BlobbableFileUpload(object):
@@ -35,12 +32,5 @@ class BlobbableFileUpload(object):
 
     def mimetype(self):
         """ see interface ... """
-        filename = self.filename()
-        body = self.context
-        mtr = getUtility(IMimetypesRegistryTool)
-        if mtr is not None:
-            d, f, mimetype = mtr(body.read(1 << 14), mimetype=None, filename=filename)
-        else:
-            mimetype, enc = guess_content_type(filename, body, mimetype=None)
-        return str(mimetype)
+        return guessMimetype(self.context, self.filename())
 

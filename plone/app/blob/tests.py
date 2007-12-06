@@ -7,6 +7,11 @@ from Products.Five import fiveconfigure
 from Products.PloneTestCase import PloneTestCase
 from Products.PloneTestCase.layer import onsetup
 
+from plone.app.blob.utils import guessMimetype
+
+from StringIO import StringIO
+from base64 import decodestring
+
 
 @onsetup
 def setupPackage():
@@ -50,6 +55,14 @@ class BlobTestCase(PloneTestCase.PloneTestCase):
         req.processInputs()
         f = req.form.get('file')
         self.assert_(f.name)
+
+    def testMimetypeGuessing(self):
+        gif = 'R0lGODlhAQABAPAAAPj8+AAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='
+        gif = StringIO(decodestring(gif))
+        self.assertEqual(guessMimetype(gif), 'image/gif')
+        self.assertEqual(guessMimetype(gif, 'image.jpg'), 'image/jpeg')
+        self.assertEqual(guessMimetype(StringIO(), 'image.jpg'), 'image/jpeg')
+        self.assertEqual(guessMimetype(StringIO('foo')), 'text/plain')
 
 
 def test_suite():
