@@ -9,6 +9,6 @@ class MigrationView(BrowserView):
     def migrateFiles(self):
         out = StringIO()
         print >> out, "starting ATFile migrations..."
-        migrateATFiles(self, out)
+        print >> out, migrateATFiles(self)
         return out.getvalue()
 

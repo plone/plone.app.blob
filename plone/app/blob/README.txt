@@ -71,4 +71,38 @@ and a now non-empty blob file:
   'image/gif'
   >>> len(blob.getFile().getBlob().open().read())
   43
+  >>> self.assertEqual(str(blob), gif.getvalue())
+
+Migration from existing file content, i.e. `ATFile` instances, is also
+provided:
+
+  >>> gif.filename = 'foo.gif'
+  >>> folder.invokeFactory('File', id='foo', title='a file', file=gif)
+  'foo'
+  >>> folder.foo
+  <ATFile at /plone/Members/test_user_1_/foo>
+  >>> folder.foo.Title()
+  'a file'
+  >>> folder.foo.getFilename()
+  'foo.gif'
+  >>> folder.foo.getContentType()
+  'image/gif'
+
+  >>> from plone.app.blob.migrations import migrateATFiles
+  >>> migrateATFiles(portal)
+  'Migrating /plone/Members/test_user_1_/foo (File -> Blob)\n'
+
+  >>> folder.foo
+  <ATBlob at /plone/Members/test_user_1_/foo>
+  >>> folder.foo.Title()
+  'a file'
+  >>> folder.foo.getFilename()
+  'foo.gif'
+  >>> folder.foo.getContentType()
+  'image/gif'
+  >>> folder.foo.getFile().getBlob()
+  <ZODB.blob.Blob object at ...>
+  >>> self.assertEqual(str(folder.foo), gif.getvalue())
+  >>> folder.foo.getFile().getBlob().open().read()
+  'GIF89a...'
 

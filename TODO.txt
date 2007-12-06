@@ -1,6 +1,5 @@
 TODOs:
 - complete migration for ATFile content (i.e. fields_map handling etc)
-- write tests for migration
 - update README & release as egg
 
 - add extended field, sub-type for image handling

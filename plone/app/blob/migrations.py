@@ -9,12 +9,11 @@ from Products.CMFCore.utils import getToolByName
 from transaction import savepoint
 
 
-def migrateATFiles(self, out):
+def migrateATFiles(self):
     """ migrate ATFile instances """
 
     if not haveContentMigrations:
-        print >> out, "WARNING: Please install contentmigrations to be able to migrate ATFiles"
-        return
+        return 'WARNING: Please install contentmigrations to be able to migrate ATFiles.'
 
     class ATFileToBlobMigrator(ATItemMigrator):
         src_portal_type = 'File'
@@ -29,10 +28,11 @@ def migrateATFiles(self, out):
         }
 
         def migrate_data(self):
-            self.new.getField('blob').getMutator(self.new)(self.old)
+            self.new.getField('file').getMutator(self.new)(self.old)
 
     portal = getToolByName(self, 'portal_url').getPortalObject()
     walker = CustomQueryWalker(portal, ATFileToBlobMigrator, query = {})
     savepoint(optimistic=True)
     walker.go()
+    return walker.getOutput()
 
