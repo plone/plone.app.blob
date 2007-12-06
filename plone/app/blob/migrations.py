@@ -3,6 +3,7 @@ try:
     from Products.contentmigration.walker import CustomQueryWalker
     haveContentMigrations = True
 except ImportError:
+    ATItemMigrator = object
     haveContentMigrations = False
 
 from Products.CMFCore.utils import getToolByName
