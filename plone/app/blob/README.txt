@@ -74,10 +74,12 @@ and a now non-empty blob file:
   >>> self.assertEqual(str(blob), gif.getvalue())
 
 Migration from existing file content, i.e. `ATFile` instances, is also
-provided:
+provided.  The payload data as well as all other fields should be properly
+migrated:
 
   >>> gif.filename = 'foo.gif'
-  >>> folder.invokeFactory('File', id='foo', title='a file', file=gif)
+  >>> folder.invokeFactory('File', id='foo', title='a file', file=gif,
+  ...     subject=('foo', 'bar'), contributors=('me'))
   'foo'
   >>> folder.foo
   <ATFile at /plone/Members/test_user_1_/foo>
@@ -87,6 +89,10 @@ provided:
   'foo.gif'
   >>> folder.foo.getContentType()
   'image/gif'
+  >>> folder.foo.Subject()
+  ('foo', 'bar')
+  >>> folder.foo.Contributors()
+  ('me',)
 
   >>> from plone.app.blob.migrations import migrateATFiles
   >>> migrateATFiles(portal)
@@ -100,6 +106,10 @@ provided:
   'foo.gif'
   >>> folder.foo.getContentType()
   'image/gif'
+  >>> folder.foo.Subject()
+  ('foo', 'bar')
+  >>> folder.foo.Contributors()
+  ('me',)
   >>> folder.foo.getFile().getBlob()
   <ZODB.blob.Blob object at ...>
   >>> self.assertEqual(str(folder.foo), gif.getvalue())

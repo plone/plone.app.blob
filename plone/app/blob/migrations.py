@@ -21,10 +21,9 @@ def migrateATFiles(self):
         dst_portal_type = 'Blob'
         dst_meta_type = 'ATBlob'
 
-        only_fields_map = True      # TODO: this should respect all fields except 'file'
+        # migrate all fields except 'file', which needs special handling...
         fields_map = {
-            'title': 'title',
-            'description': 'description',
+            'file': None,
         }
 
         def migrate_data(self):
