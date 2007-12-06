@@ -21,9 +21,8 @@ class BlobMarshaller(PrimaryFieldMarshaller):
 
      def demarshall(self, instance, data, **kwargs):
          p = instance.getPrimaryField()
-         file = kwargs.get('blob')
          mutator = p.getMutator(instance)
-         mutator(file, **kwargs)
+         mutator(data, **kwargs)
 
 
 class BlobWrapper(Implicit, Persistent):
