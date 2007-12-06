@@ -41,7 +41,6 @@ setup(name = 'plone.app.blob',
           'zope.proxy >=3.4,<3.4.999',
           'zodbcode >=3.4,<3.4.999',
           'archetypes.schemaextender >1.0a1',
-          'Products.PluggableAuthService >=1.5.2',
       ],
 )
 
