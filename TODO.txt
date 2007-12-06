@@ -1,12 +1,9 @@
 TODOs:
 - complete migration for ATFile content (i.e. fields_map handling etc)
+- write tests for migration
+- update README & release as egg
+
 - add extended field, sub-type for image handling
 - add migration for ATImages
-- write tests for migration
 - write more tests in general
-- update README & release as egg
 - discuss, write a UI for migration file and image content
-
-TODOs from the original ATBlobField (to check):
-- maybe complete BaseUnit interface of ATBlob
-- maybe complete FileField interface of BlobField
