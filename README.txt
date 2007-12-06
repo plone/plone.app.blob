@@ -61,6 +61,7 @@ this::
   zope2-location = ${zope2:location}
   blob-storage = var/blobstorage
   user = admin:admin
+  products = ${plone:products}
   eggs =
       ${buildout:eggs}
       ${plone:eggs}
