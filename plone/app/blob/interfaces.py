@@ -38,3 +38,6 @@ class IATBlobFile(Interface):
     """ marker interface for subtype mimicking the `ATFile` type """
 
 
+class IWebDavUpload(Interface):
+    """ marker interface for webdav upload helper class """
+

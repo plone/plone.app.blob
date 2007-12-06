@@ -1,3 +1,5 @@
+from zope.interface import implements
+
 from Acquisition import Implicit
 from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
@@ -14,7 +16,19 @@ from Products.Archetypes.Registry import registerField
 from Products.Archetypes.utils import contentDispositionHeader
 
 from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
-from plone.app.blob.interfaces import IBlobbable
+from plone.app.blob.interfaces import IBlobbable, IWebDavUpload
+
+
+class WebDavUpload(object):
+    """ helper class when handling webdav uploads;  the class is needed
+        to be able to provide an adapter for this way of creating a blob """
+    implements(IWebDavUpload)
+
+    def __init__(self, file, filename=None, mimetype=None, **kwargs):
+         self.file = file
+         self.filename = filename
+         self.mimetype = mimetype
+         self.kwargs = kwargs
 
 
 class BlobMarshaller(PrimaryFieldMarshaller):
@@ -22,7 +36,7 @@ class BlobMarshaller(PrimaryFieldMarshaller):
      def demarshall(self, instance, data, **kwargs):
          p = instance.getPrimaryField()
          mutator = p.getMutator(instance)
-         mutator(data, **kwargs)
+         mutator(WebDavUpload(**kwargs))
 
 
 class BlobWrapper(Implicit, Persistent):

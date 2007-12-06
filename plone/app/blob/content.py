@@ -17,10 +17,11 @@ from plone.app.blob.config import packageName
 from plone.app.blob.field import BlobMarshaller
 
 
-ATBlobSchema = ATContentTypeSchema.copy() + Schema(marshall = BlobMarshaller())
+ATBlobSchema = ATContentTypeSchema.copy()
 ATBlobSchema['title'].storage = AnnotationStorage()
 
 finalizeATCTSchema(ATBlobSchema, folderish=False, moveDiscussion=False)
+ATBlobSchema.registerLayer('marshall', BlobMarshaller())
 
 
 class ATBlob(ATCTFileContent):

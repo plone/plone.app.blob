@@ -6,7 +6,6 @@ TODOs:
 - write more tests in general
 - update README & release as egg
 - discuss, write a UI for migration file and image content
-- figure out what the extra marshaller is for
 
 TODOs from the original ATBlobField (to check):
 - maybe complete BaseUnit interface of ATBlob
