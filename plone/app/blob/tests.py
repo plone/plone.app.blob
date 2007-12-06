@@ -2,6 +2,7 @@ from plone.app.blob import db   # needs to be imported first to set up ZODB
 
 from unittest import TestSuite, makeSuite
 from Testing.ZopeTestCase import installPackage, ZopeDocFileSuite
+from ZPublisher.HTTPRequest import HTTPRequest
 from Products.Five import zcml
 from Products.Five import fiveconfigure
 from Products.PloneTestCase import PloneTestCase
@@ -49,8 +50,6 @@ class BlobTestCase(PloneTestCase.PloneTestCase):
 
     def testFileName(self):
         """ checks fileupload object supports the filename """
-        from StringIO import StringIO
-        from ZPublisher.HTTPRequest import HTTPRequest
         req = HTTPRequest(StringIO(largefile_data), test_environment.copy(), None)
         req.processInputs()
         f = req.form.get('file')
