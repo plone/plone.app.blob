@@ -57,7 +57,8 @@ Since no data has been written to it, the blob file should still be empty:
   >>> blob.getFile().getBlob().open().read()
   ''
 
-Feeding it with some image data should result in a correctly set mime-type:
+Feeding it with some image data should result in a correctly set mime-type
+and a now non-empty blob file:
   
   >>> from StringIO import StringIO
   >>> from base64 import decodestring
@@ -68,4 +69,6 @@ Feeding it with some image data should result in a correctly set mime-type:
   None
   >>> blob.getContentType()
   'image/gif'
+  >>> len(blob.getFile().getBlob().open().read())
+  43
 

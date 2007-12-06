@@ -17,7 +17,10 @@ class BlobbableStringIO(object):
 
     def feed(self, blob):
         """ see interface ... """
-        self.context.getvalue()
+        pos = self.context.tell()
+        self.context.seek(0)
+        blob.open('w').writelines(self.context)
+        self.context.seek(pos)
 
     def filename(self):
         """ see interface ... """
