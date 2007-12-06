@@ -115,3 +115,46 @@ migration interface provided at http://localhost:8080/plone/@@blob-migration,
 where "plone" should be replaced with the id of your "Plone Site" object.  The
 page will show you the number of available `ATFile` instances and lets you
 convert them to the provided blob content type by clicking a button.
+
+
+Troubleshooting
+---------------
+
+The following are some known issues, that will hopefully go away soon enough.
+In the meantime here are the recommended workarounds:
+
+"Invalid plugin id" Exception
+  Symptom
+    When trying to create a "Plone Site" you're getting an error like::
+
+      Error Type: KeyError
+      Error Value: 'Invalid plugin id: credentials_basic_auth'
+  Problem
+    Your version of ``Products.PluggableAuthService`` is too old — you need
+    1.5.2 or newer (please see http://www.zope.org/Collectors/PAS/59 for more
+    information about this).
+  Solution
+    Please use the `provided buildout`_, add the `1.5 branch`_ as a develop
+    egg to your buildout or wait a couple of days until Plone 3.0.4 has been
+    released, which should also fix the problem.
+
+  .. _`provided buildout`: http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.0
+  .. _`1.5 branch`: http://svn.zope.org/Products.PluggableAuthService/branches/1.5/
+
+Getting distribution for 'archetypes.schemaextender>1.0a1'
+  Symptom
+    When running buildout you're getting an error like::
+
+      While:
+        Installing instance.
+        Getting distribution for 'archetypes.schemaextender>1.0a1'.
+      Error: Couldn't find a distribution for 'archetypes.schemaextender>1.0a1'.
+  Problem
+    "plone.app.blob" requires some recent changes in
+    "archetypes.schemaextender", which haven't been properly released yet.
+  Solution
+    Please use the `provided buildout`_, add ``archetypes.schemaextender``'s
+    `trunk`_ as a development egg to your buildout or wait for the next
+    release, very likely to be 1.0b1.
+
+    .. _`trunk`: http://svn.plone.org/svn/archetypes/archetypes.schemaextender/trunk/
