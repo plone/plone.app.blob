@@ -84,9 +84,10 @@ class BlobWrapper(Implicit, Persistent):
     security.declarePrivate('setFilename')
     def setFilename(self, value):
         """ set filename for this blob """
-        value = value[max(value.rfind('/'),
-                          value.rfind('\\'),
-                          value.rfind(':')) + 1:]
+        if isinstance(value, basestring):
+            value = value[max(value.rfind('/'),
+                              value.rfind('\\'),
+                              value.rfind(':')) + 1:]
         self.filename = value
 
     security.declarePrivate('getFilename')
