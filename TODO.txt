@@ -5,5 +5,4 @@ TODOs:
 
 - add extended field, sub-type for image handling
 - add migration for ATImages
-- write more tests in general
 - discuss, write a UI for migration file and image content
