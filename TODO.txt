@@ -1,5 +1,3 @@
 TODOs:
-- update README & release as egg
-
 - add extended field, sub-type for image handling
 - add migration for ATImages
