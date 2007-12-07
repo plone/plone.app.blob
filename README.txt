@@ -187,8 +187,30 @@ enough.  In the meantime here are the recommended workarounds:
     `trunk`_ as a `development egg`_ to your buildout or wait for the next
     release, very likely to be 1.0b1.
 
-    .. _`trunk`: http://svn.plone.org/svn/archetypes/archetypes.schemaextender/trunk/
+  .. _`trunk`: http://svn.plone.org/svn/archetypes/archetypes.schemaextender/trunk/
 
+
+**"unknown type name: 'blobstorage'"**
+
+  Symptom
+    When running buildout you're getting an error like::
+
+      Error: unknown type name: 'blobstorage'
+      (line 36 in file:///.../parts/instance/etc/zope.conf)
+  Problem
+    Your version of the `plone.recipe.zope2instance`_ recipe is too old
+    |---| you need to have at least version `1.0`_.
+  Solution
+    Make sure you're running buildout with neither "``-N``" nor "``-o``" and
+    you also don't have::
+
+      newest = false
+
+    in your ``~/.buildout/default.cfg``.  Alternatively, running buildout
+    with option "``-n``" should update the recipe to the latest version.
+
+  .. _`plone.recipe.zope2instance`: http://pypi.python.org/pypi/plone.recipe.zope2instance/    
+  .. _`1.0`: http://pypi.python.org/pypi/plone.recipe.zope2instance/1.0
 
 Feedback
 --------
