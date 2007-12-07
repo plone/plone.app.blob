@@ -5,6 +5,7 @@ bugs:
 
 todos:
 - "replacement" gs profiles, i.e. "file" drop-in
+- answer remaining questions in the faq section
 - add extended field, sub-type for image handling
 - add migration for ATImages
 
