@@ -96,7 +96,7 @@ For your convenience a working buildout configuration, including
 
 More detailed instructions on how to set things up (including a working zeo
 configuration) as well as some background information on blobs |---| or in
-other words the story of an "early adaptor" |---| can be found in `Ken
+other words the story of an "early adopter" |---| can be found in `Ken
 Manheimer's wiki`__.  This is a highly useful resource and recommended read
 for people trying to give blobs a spin.
 
