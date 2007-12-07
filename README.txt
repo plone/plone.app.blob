@@ -218,11 +218,14 @@ Feedback
 Any kind of feedback like bug reports, suggestions, feature requests and most
 preferably success stories is most welcome and much appreciated. Especially,
 it would be interesting to hear about success or problems with migration of
-existing content and installations on platforms other than OSX. Feel free to
-post comments to the above mentioned `plone enhancement ticket`_ or contact me
-directly on `#plone`_, through the `plone developer mailing list`_ or via
-`email`_.
+existing content and installations on platforms other than OSX.
 
+So please feel free to post comments to the above mentioned `plone enhancement
+ticket`_, file tickets in the `plone issue tracker`_ (assigning them to me ;))
+or contact me on `#plone`_, through the `plone developer mailing list`_ or
+directly via `email`_.
+
+  .. _`plone issue tracker`: http://dev.plone.org/plone/
   .. _`#plone`: irc://irc.eu.freenode.net/plone
   .. _`plone developer mailing list`: mailto:plone-developers@lists.sourceforge.net
   .. _`email`: mailto:az_at_zitc_dot_de
