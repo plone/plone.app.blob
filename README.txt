@@ -41,8 +41,9 @@ Installation
 ------------
 
 The easiest way to get ZODB blob support in Plone 3 using this package is to
-work with installations based on `zc.buildout`_.  Other types of installation
-should also be possible, but might turn out to be somewhat tricky |---| please see the `FAQ`_ section below.
+work with installations based on `zc.buildout`_.  Other types of installations
+should also be possible, but might turn out to be somewhat tricky |---| please
+see the `FAQ`_ section below.
 
 To get started you will simply need to add the package to your "eggs" and
 "zcml" sections, run buildout, restart your Plone instance and install the
