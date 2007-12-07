@@ -172,13 +172,14 @@ enough.  In the meantime here are the recommended workarounds:
     1.5.2 or newer (please see http://www.zope.org/Collectors/PAS/59 for more
     information about this).
   Solution
-    Please use the `provided buildout`_, add the `1.5 branch`_ as a
-    `development egg`_ to your buildout or wait a couple of days until Plone
-    3.0.4 has been released, which should also fix the problem.
+    Please use the `provided buildout`_, add the `1.5 branch`_ as an
+    `svn:external`_ to the ``products/`` directory of your buildout or wait
+    a couple of days until Plone 3.0.4 has been released, which should also
+    fix the problem.
 
   .. _`provided buildout`: http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.0
   .. _`1.5 branch`: http://svn.zope.org/Products.PluggableAuthService/branches/1.5/
-  .. _`development egg`: http://plone.org/documentation/tutorial/buildout/understanding-buildout.cfg
+  .. _`svn:external`: http://svnbook.red-bean.com/en/1.0/ch07s03.html
 
 
 **"unknown type name: 'blobstorage'"**
