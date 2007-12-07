@@ -1,3 +1,9 @@
-TODOs:
+bugs:
+- default view should be /view
+- size is 0 in folder_listing
+- review_state after migration
+
+todos:
 - add extended field, sub-type for image handling
 - add migration for ATImages
+
