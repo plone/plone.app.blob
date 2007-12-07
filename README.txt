@@ -289,11 +289,10 @@ it would be interesting to hear about success or problems with migration of
 existing content and installations on platforms other than OSX.
 
 So please feel free to post comments to the above mentioned `plone enhancement
-ticket`_, file tickets in the `plone issue tracker`_ (assigning them to me ;))
-or contact me on `#plone`_, through the `plone developer mailing list`_ or
-directly via `email`_.
+ticket`_, file tickets in the `issue tracker`_ or contact me on `#plone`_,
+through the `plone developer mailing list`_ or directly via `email`_.
 
-  .. _`plone issue tracker`: http://dev.plone.org/plone/
+  .. _`issue tracker`: http://plone.org/products/plone.app.blob/issues
   .. _`#plone`: irc://irc.eu.freenode.net/plone
   .. _`plone developer mailing list`: mailto:plone-developers@lists.sourceforge.net
   .. _`email`: mailto:az_at_zitc_dot_de
