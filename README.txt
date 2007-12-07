@@ -69,7 +69,7 @@ this::
   zcml = plone.app.blob
 
 You can also use this ``buildout.cfg`` to create a fresh Plone installation by
-storing it — preferably in an empty directory, downloading `bootstrap.py
+storing it -- preferably in an empty directory, downloading `bootstrap.py
 <http://svn.zope.org/*checkout*/zc.buildout/trunk/bootstrap/bootstrap.py>`_
 into the same directory and issueing the following commands::
 
@@ -104,7 +104,7 @@ Migrating existing content
 In-place content migration is provided for existing ``ATFile`` content. The
 `Products.contentmigration`_ package is required for this to work. To install
 this package you will again need to add its name to the "eggs" and "zcml"
-section of your ``buildout.cfg`` — please see the already mentioned `sample
+section of your ``buildout.cfg`` -- please see the already mentioned `sample
 buildout.cfg`_ for details.
 
   .. _`Products.contentmigration`: http://pypi.python.org/pypi/Products.contentmigration/
@@ -130,7 +130,7 @@ In the meantime here are the recommended workarounds:
       Error Type: KeyError
       Error Value: 'Invalid plugin id: credentials_basic_auth'
   Problem
-    Your version of ``Products.PluggableAuthService`` is too old — you need
+    Your version of ``Products.PluggableAuthService`` is too old -- you need
     1.5.2 or newer (please see http://www.zope.org/Collectors/PAS/59 for more
     information about this).
   Solution
