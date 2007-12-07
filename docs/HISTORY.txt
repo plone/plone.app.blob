@@ -2,7 +2,10 @@ Changelog for plone.app.blob
 
     (name of developer listed in brackets)
 
-plone.app.blob - 0.1 Unreleased
+plone.app.blob - 1.0a1 Released December 7, 2007
+
+    - Initial version
+      [witsch]
 
     - Initial package structure.
       [zopeskel]
