@@ -94,11 +94,20 @@ For your convenience a working buildout configuration, including
 
   .. __: http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.0
 
-More detailed instructions on how to use buildout can be found in the
-`accompanying README.txt`__ as well as in the excellent `buildout tutorial`_
-on `plone.org`_.
+More detailed instructions on how to set things up (including a working zeo
+configuration) as well as some background information on blobs |---| or in
+other words the story of an "early adaptor" |---| can be found in `Ken
+Manheimer's wiki`__.  This is a highly useful resource and recommended read
+for people trying to give blobs a spin.
+
+  .. __: http://myriadicity.net/Sundry/PloneBlobs
+
+In addition, more information on how to use buildout is available in the
+`accompanying README.txt`__ as well as in `Martin's`_ excellent `buildout
+tutorial`_ on `plone.org`_.
 
   .. __: http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.0/README.txt
+  .. _`Martin's`: http://martinaspeli.net/
   .. _`buildout tutorial`: http://plone.org/documentation/tutorial/buildout
   .. _`plone.org`: http://plone.org/
 
