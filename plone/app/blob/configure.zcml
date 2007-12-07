@@ -6,6 +6,8 @@
 
   <five:registerPackage package="." initialize=".initialize" />
 
+  <include package="archetypes.schemaextender" />
+
   <include package=".adapters" />
   <include package=".browser" />
 
