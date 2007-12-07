@@ -4,6 +4,7 @@ bugs:
 - review_state after migration
 
 todos:
+- "replacement" gs profiles, i.e. "file" drop-in
 - add extended field, sub-type for image handling
 - add migration for ATImages
 

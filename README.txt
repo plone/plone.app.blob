@@ -29,15 +29,25 @@ status can be found in the corresponding `plone enhancement ticket`_.
   .. |---| unicode:: U+2014  .. em dash
 
 
+Requirements
+------------
+
+Plone 3.0 or newer.  The package has been developed and testet on Plone 3.0.3,
+but should also work with earlier versions of the 3.0 series.  However, as
+those are only bug-fix releases it might be a good idea to upgrade anyway.
+
+
 Installation
 ------------
 
 The easiest way to get ZODB blob support in Plone 3 using this package is to
-work with installations based on `zc.buildout`_.  To get started you will
-simply need to add the package to your "eggs" and "zcml" sections, run
-buildout, restart your Plone instance and install the "plone.app.blob" package
-using the quick-installer or via the "Add-on Products" section in "Site
-Setup".
+work with installations based on `zc.buildout`_.  Other types of installation
+should also be possible, but might turn out to be somewhat tricky |---| please see the `FAQ`_ section below.
+
+To get started you will simply need to add the package to your "eggs" and
+"zcml" sections, run buildout, restart your Plone instance and install the
+"plone.app.blob" package using the quick-installer or via the "Add-on
+Products" section in "Site Setup".
 
   .. _`zc.buildout`: http://pypi.python.org/pypi/zc.buildout/
 
@@ -211,6 +221,36 @@ enough.  In the meantime here are the recommended workarounds:
 
   .. _`plone.recipe.zope2instance`: http://pypi.python.org/pypi/plone.recipe.zope2instance/    
   .. _`1.0`: http://pypi.python.org/pypi/plone.recipe.zope2instance/1.0
+
+
+FAQ
+---
+
+Is it possible to use "plone.app.blob" in installations not based on `zc.buildout`_?
+
+  Yes, but that would require some additional steps, since it depends on ZODB 
+  3.8, but Plone currently ships with Zope 2.10, which still comes with
+  ZODB 3.7.  So, to make things work you could either install the `required
+  versions`__ of all additionally needed packages into your ``lib/python/`` 
+  directory or use the respective eggs and make sure they get preferred over      
+  their older versions on ``import``, for example by setting up 
+  ``PYTHONPATH``.
+
+  .. __: http://dev.plone.org/plone/browser/plone.app.blob/trunk/setup.py#L35
+
+  Alternatively it should also be possible to install the package using 
+  `easy_install`_, which would automatically install its dependencies 
+  including ZODB 3.8, too.  Again you would need to set up your ``PYTHONPATH``
+  to make sure the desired versions are used.  However, installing the package 
+  like this is likely to have side effects on other Zope/Plone instances on
+  your system, so you probably want to use `virtualenv`_ here at least.
+
+  .. _`easy_install`: http://peak.telecommunity.com/DevCenter/EasyInstall
+  .. _`virtualenv`: http://pypi.python.org/pypi/virtualenv
+
+  Overall, to get started without too much pain, a buildout-based
+  installation is recommended |---| for example the `provided buildout`_.
+
 
 Feedback
 --------
