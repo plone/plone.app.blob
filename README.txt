@@ -181,26 +181,6 @@ enough.  In the meantime here are the recommended workarounds:
   .. _`development egg`: http://plone.org/documentation/tutorial/buildout/understanding-buildout.cfg
 
 
-**Getting distribution for 'archetypes.schemaextender>1.0a1'**
-
-  Symptom
-    When running buildout you're getting an error like::
-
-      While:
-        Installing instance.
-        Getting distribution for 'archetypes.schemaextender>1.0a1'.
-      Error: Couldn't find a distribution for 'archetypes.schemaextender>1.0a1'.
-  Problem
-    "plone.app.blob" requires some recent changes in
-    "archetypes.schemaextender", which haven't been properly released yet.
-  Solution
-    Please use the `provided buildout`_, add ``archetypes.schemaextender``'s
-    `trunk`_ as a `development egg`_ to your buildout or wait for the next
-    release, very likely to be 1.0b1.
-
-  .. _`trunk`: http://svn.plone.org/svn/archetypes/archetypes.schemaextender/trunk/
-
-
 **"unknown type name: 'blobstorage'"**
 
   Symptom
