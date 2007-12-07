@@ -252,6 +252,22 @@ Is it possible to use "plone.app.blob" in installations not based on `zc.buildou
   Overall, to get started without too much pain, a buildout-based
   installation is recommended |---| for example the `provided buildout`_.
 
+Will this be available for Plone 2.5.x?
+
+  Yes, support for the 2.5 series is planned and next on the agenda.
+
+What about image support, i.e. a drop-in for ``ATImage`` content?
+
+  While just replacing the primary field in ``ATImage``'s schemata should
+  probably already work quite well, proper image support is planned for a
+  later release.  "proper" here means using a sub-typing approach as
+  `presented by Rocky Burt`__ in Naples, which will have several advantages
+  including a cleaner and better structured code, but will also take a little 
+  longer to implement.
+
+  __: http://www.serverzen.com/training/subtyping-unleashed
+
+
 
 Feedback
 --------
