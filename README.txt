@@ -32,9 +32,12 @@ status can be found in the corresponding `plone enhancement ticket`_.
 Requirements
 ------------
 
-Plone 3.0 or newer.  The package has been developed and testet on Plone 3.0.3,
-but should also work with earlier versions of the 3.0 series.  However, as
-those are only bug-fix releases it might be a good idea to upgrade anyway.
+Plone 3.0 or newer is required. The package has been tested with all versions
+from 3.0 up to and including 3.0.4. However, as all versions before 3.0.4
+require a workaround described in the `Troubleshooting`_ section below, it is
+recommended to use `Plone 3.0.4`_.
+
+  .. _`Plone 3.0.4`: http://plone.org/products/plone/releases/3.0.4
 
 
 Installation
@@ -179,7 +182,6 @@ enough.  In the meantime here are the recommended workarounds:
   .. _`provided buildout`: http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.0
   .. _`1.5 branch`: http://svn.zope.org/Products.PluggableAuthService/branches/1.5/
   .. _`svn:external`: http://svnbook.red-bean.com/en/1.0/ch07s03.html
-  .. _`Plone 3.0.4`: http://plone.org/products/plone/releases/3.0.4
 
 
 **"unknown type name: 'blobstorage'"**
