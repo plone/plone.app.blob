@@ -63,6 +63,22 @@ class BlobTestCase(PloneTestCase.PloneTestCase):
         self.assertEqual(guessMimetype(StringIO(), 'image.jpg'), 'image/jpeg')
         self.assertEqual(guessMimetype(StringIO('foo')), 'text/plain')
 
+    def testStringValue(self):
+        value = decodestring('R0lGODlhAQABAPAAAPj8+AAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
+        self.folder.invokeFactory('Blob', 'blob')
+        blob = self.folder['blob']
+        blob.update(title="I'm blob",
+                    file=value)
+        self.assertEqual(blob.getContentType(), 'image/gif')
+        self.assertEqual(str(blob.getFile()), value)
+        blob.update(title="I'm blob",
+                    file='plain text')
+        self.assertEqual(blob.getContentType(), 'text/plain')
+        self.assertEqual(str(blob.getFile()), 'plain text')
+        blob.update(title="I'm blob",
+                    file='')
+        self.assertEqual(blob.getContentType(), 'text/plain')
+        self.assertEqual(str(blob.getFile()), '')
 
 def test_suite():
     return TestSuite((

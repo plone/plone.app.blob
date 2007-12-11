@@ -1,5 +1,5 @@
 from zope.interface import implements
-
+from StringIO import StringIO
 from Acquisition import Implicit
 from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
@@ -134,11 +134,9 @@ class BlobField(ObjectField):
         # achieve copy-on-write semantics.
         blob = BlobWrapper()
         if isinstance(value, basestring):
-            # special handling is needed for strings, since they cannot
-            # be adapted afaik
-            blob.setContentType('text/plain')
-            blob.getBlob().open('w').write(value)
-        elif value is not None:
+            # make StringIO from string, because StringIO may be adapted to Blobabble
+            value = StringIO(value)
+        if value is not None:
             blobbable = IBlobbable(value)
             blobbable.feed(blob.getBlob())
             blob.setContentType(blobbable.mimetype())
