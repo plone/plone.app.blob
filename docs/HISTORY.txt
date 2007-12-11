@@ -2,9 +2,13 @@ Changelog for plone.app.blob
 
     (name of developer listed in brackets)
 
-    - if string is passed as BlobField value, it is wrapped to StringIO class to be able to make
-      value Blobabble (guess content type etc). String value is not always considered as text/plain anymore.
+    - String value are now wrapped using StringIO to make them adaptable, so
+      that their mime-type can be guessed as well.
       [naro]
+
+    - Added alternative GenericSetup profile to allow to replace ATFile
+      as the "File" content type 
+      [witsch]
 
 plone.app.blob - 1.0a1 Released December 7, 2007
 
