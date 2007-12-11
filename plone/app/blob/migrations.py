@@ -24,6 +24,9 @@ class ATFileToBlobMigrator(ATItemMigrator):
     def migrate_data(self):
         self.new.getField('file').getMutator(self.new)(self.old)
 
+    def last_migrate_reindex(self):
+        self.new.reindexObject()
+
 
 def getATFilesMigrationWalker(self):
     """ set up walker for migrating ATFile instances """
