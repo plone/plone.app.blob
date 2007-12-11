@@ -1,10 +1,8 @@
 bugs:
 - default view should be /view
-- size is 0 in folder_listing
-- review_state after migration
+- size is 0 in folder_listing and mime-type based icon is missing
 
 todos:
-- "replacement" gs profiles, i.e. "file" drop-in
 - answer remaining questions in the faq section
 - add extended field, sub-type for image handling
 - add migration for ATImages

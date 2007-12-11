@@ -50,6 +50,13 @@ therefore also contain the extended schema:
   >>> blob.getField('file')
   <Field file(blob:rw)>
 
+Mimicking the existing "File" content type, i.e. `ATFile`, it shouldn't have
+an associated workflow:
+
+  >>> workflow_tool = getToolByName(portal, 'portal_workflow')
+  >>> workflow_tool.getWorkflowsFor(blob)
+  []
+
 Since no data has been written to it, the blob file should still be empty:
 
   >>> blob.getFile().getBlob()
