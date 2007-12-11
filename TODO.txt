@@ -4,6 +4,5 @@ bugs:
 
 todos:
 - answer remaining questions in the faq section
-- add extended field, sub-type for image handling
-- add migration for ATImages
+- image support:  sub-type, scaling, migration etc
 
