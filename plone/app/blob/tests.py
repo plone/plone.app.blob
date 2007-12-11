@@ -24,8 +24,8 @@ def setupPackage():
     installPackage('plone.app.blob')
 
 setupPackage()
-PloneTestCase.setupPloneSite(products=(
-    'plone.app.blob',
+PloneTestCase.setupPloneSite(extension_profiles=(
+    'plone.app.blob:default',
 ))
 
 

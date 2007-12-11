@@ -24,10 +24,18 @@
       />
 
   <genericsetup:registerProfile
-      name="testing"
-      title="plone.app.blob testing profile"
-      directory="profiles/testing"
-      description="Extension profile to replace standard content types for testing"
+      name="atfile-replacement"
+      title="plone.app.blob: ATFile replacement"
+      directory="profiles/atfile-replacement"
+      description="Extension profile to replace the standard 'File' content type with a compatible, blob-based one"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:registerProfile
+      name="atfile-testing"
+      title="plone.app.blob: ATFile replacement testing"
+      directory="profiles/atfile-replacement"
+      description="Extension profile to replace the standard 'File' content type for testing"
       for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
