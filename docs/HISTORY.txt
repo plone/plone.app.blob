@@ -2,6 +2,9 @@ Changelog for plone.app.blob
 
     (name of developer listed in brackets)
 
+    - Various minor bug fixes regarding migration, content icons etc
+      [witsch]
+
     - String value are now wrapped using StringIO to make them adaptable, so
       that their mime-type can be guessed as well.
       [naro]
