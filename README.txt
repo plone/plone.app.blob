@@ -250,6 +250,21 @@ What about image support, i.e. a drop-in for ``ATImage`` content?
 
   .. __: http://www.serverzen.com/training/subtyping-unleashed
 
+Strange messages like ``Exception exceptions.OSError: (2, 'No such file or
+directory', '.../tmpZvxjZB') in <bound method _TemporaryFileWrapper.__del__ of
+<closed file '<fdopen>', mode 'w+b' at 0x7317650>> ignored`` get written to
+the logs whenever a file is uploaded. Is that an error or something to worry
+about?
+
+  No, that's fine, it's just a small annoyance, that should be fixed
+  eventually. In case you care, the problem is that the zope publisher creates
+  a temporary file for each upload it receives.  Once the upload has finished
+  that temporary file is passed to the blob machinery, which moves it into
+  its blob storage.  However, at the end of the request the wrapper class for
+  temporary files tries to remove the file as well, since well, it's supposed
+  to be temporary.  At that time the file is already gone though, and the
+  above warning is issued.
+
 
 .. TODO: answer the following...
 .. [4:59pm] <jonstahl> Given the overall clutter and confusion in the
