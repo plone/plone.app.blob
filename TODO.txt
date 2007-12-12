@@ -1,6 +1,5 @@
 bugs:
 - default view should be /view
-- missing mime-type based icon in folder_listing
 
 todos:
 - answer remaining questions in the faq section

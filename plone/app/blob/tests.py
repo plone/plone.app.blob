@@ -49,6 +49,7 @@ test %s
 class BlobTestCase(PloneTestCase.PloneTestCase):
 
     gif = 'R0lGODlhAQABAPAAAPj8+AAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='
+    pdf = '%PDF-1.4 fake pdf...'
 
     def testFileName(self):
         """ checks fileupload object supports the filename """
@@ -77,6 +78,16 @@ class BlobTestCase(PloneTestCase.PloneTestCase):
         blob.update(title="I'm blob", file='')
         self.assertEqual(blob.getContentType(), 'text/plain')
         self.assertEqual(str(blob.getFile()), '')
+
+    def testIcon(self):
+        self.folder.invokeFactory('Blob', 'blob', title='foo')
+        blob = self.folder.blob
+        blob.update(file=decodestring(self.gif))
+        self.assertEqual(blob.getIcon(), 'plone/image.png')
+        blob.update(file=self.pdf)
+        self.assertEqual(blob.getIcon(), 'plone/pdf.png')
+        blob.update(file='some text...')
+        self.assertEqual(blob.getIcon(), 'plone/txt.png')
 
 
 def test_suite():

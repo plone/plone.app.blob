@@ -2,15 +2,16 @@ from zope.interface import implements
 
 from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
-from Products.Archetypes.atapi import Schema
 from Products.Archetypes.atapi import AnnotationStorage
 from Products.Archetypes.atapi import ATFieldProperty
 from Products.Archetypes.atapi import registerType
 from Products.CMFCore.permissions import View, ModifyPortalContent
+from Products.CMFCore.utils import getToolByName
 from Products.ATContentTypes.interfaces import IATFile
 from Products.ATContentTypes.content.base import ATCTFileContent
 from Products.ATContentTypes.content.schemata import ATContentTypeSchema
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
+from Products.MimetypesRegistry.common import MimeTypeException
 
 from plone.app.blob.interfaces import IATBlob
 from plone.app.blob.config import packageName
@@ -91,6 +92,25 @@ class ATBlob(ATCTFileContent):
     def setFormat(self, value):
         """ convenience method to set the mime-type """
         self.getBlobWrapper().setContentType(value)
+
+    security.declarePublic('getIcon')
+    def getIcon(self, relative_to_portal=False):
+        """ calculate an icon based on mime-type """
+        contenttype = self.getBlobWrapper().getContentType()
+        mtr = getToolByName(self, 'mimetypes_registry', None)
+        try:
+            mimetypeitem = mtr.lookup(contenttype)
+        except MimeTypeException, msg:
+            mimetypeitem = None
+        if mimetypeitem is None:
+            return super(ATBlob, self).getIcon(relative_to_portal)
+        icon = mimetypeitem[0].icon_path
+        if not relative_to_portal:
+            utool = getToolByName( self, 'portal_url' )
+            icon = utool(relative=1) + '/' + icon
+            while icon[:1] == '/':
+                icon = icon[1:]
+        return icon
 
 
 registerType(ATBlob, packageName)
