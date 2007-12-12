@@ -2,6 +2,11 @@ Changelog for plone.app.blob
 
     (name of developer listed in brackets)
 
+plone.app.blob - 1.0a3 Unreleased
+
+
+plone.app.blob - 1.0a2 Released December 12, 2007
+
     - Various minor bug fixes regarding migration, content icons etc
       [witsch]
 
