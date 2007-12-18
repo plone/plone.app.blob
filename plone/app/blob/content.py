@@ -3,7 +3,6 @@ from zope.interface import implements
 from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
 from Products.Archetypes.atapi import AnnotationStorage
-from Products.Archetypes.atapi import ATFieldProperty
 from Products.Archetypes.atapi import registerType
 from Products.CMFCore.permissions import View, ModifyPortalContent
 from Products.CMFCore.utils import getToolByName
@@ -34,9 +33,6 @@ class ATBlob(ATCTFileContent):
     portal_type = 'Blob'
     _at_rename_after_creation = True
     schema = ATBlobSchema
-
-    title = ATFieldProperty('title')
-    summary = ATFieldProperty('description')
 
     security  = ClassSecurityInfo()
 
