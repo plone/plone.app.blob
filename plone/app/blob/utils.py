@@ -1,7 +1,7 @@
 from zope.component import getUtility
 from zope.app.content_types import guess_content_type
 
-from Products.MimetypesRegistry.interfaces import IMimetypesRegistryTool
+from plone.app.blob.interfaces import IMimetypesRegistryTool
 
 
 def guessMimetype(data, filename=None):

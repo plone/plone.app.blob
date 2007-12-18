@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<componentregistry>
+ <adapters/>
+ <utilities>
+  <utility
+     interface="plone.app.blob.interfaces.IMimetypesRegistryTool"
+     object="/mimetypes_registry"/>
+ </utilities>
+</componentregistry>
