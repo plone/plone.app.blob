@@ -36,7 +36,6 @@
       title="plone.app.blob: ATFile replacement testing"
       directory="profiles/atfile-replacement"
       description="Extension profile to replace the standard 'File' content type for testing"
-      for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
