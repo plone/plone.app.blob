@@ -1,5 +1,5 @@
 from zope.component import getUtility
-from zope.contenttype import guess_content_type
+from zope.app.content_types import guess_content_type
 
 from Products.MimetypesRegistry.interfaces import IMimetypesRegistryTool
 
