@@ -10,12 +10,12 @@ from persistent import Persistent
 from transaction import savepoint
 
 from Products.CMFCore.permissions import View
+from Products.CMFCore.utils import getToolByName
 from Products.Archetypes.atapi import ObjectField, FileWidget
 from Products.Archetypes.atapi import PrimaryFieldMarshaller
 from Products.Archetypes.Registry import registerField
 from Products.Archetypes.utils import contentDispositionHeader
 
-from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
 from plone.app.blob.interfaces import IBlobbable, IWebDavUpload
 
 
@@ -154,7 +154,9 @@ class BlobField(ObjectField):
             request = instance.REQUEST
             if not isinstance(filename, unicode):
                 filename = unicode(filename, instance.getCharset())
-            filename = IUserPreferredFileNameNormalizer(request).normalize(filename)
+            plone_utils = getToolByName(instance, 'plone_utils', None)
+            if plone_utils is not None:
+                filename = plone_utils.normalizeString(filename, relaxed=True)
             if filename and not filename == instance.getId():
                 # a file name was given, so the instance needs to be renamed...
                 # a subtransaction is applied, since without it renaming
@@ -176,8 +178,10 @@ class BlobField(ObjectField):
             RESPONSE = REQUEST.RESPONSE
         filename = self.getFilename(instance)
         if filename is not None:
-            filename = IUserPreferredFileNameNormalizer(REQUEST).normalize(
-                unicode(filename, instance.getCharset()))
+            filename = unicode(filename, instance.getCharset())
+            plone_utils = getToolByName(instance, 'plone_utils', None)
+            if plone_utils is not None:
+                filename = plone_utils.normalizeString(filename, relaxed=True)
             header_value = contentDispositionHeader(
                 disposition=disposition,
                 filename=filename)
