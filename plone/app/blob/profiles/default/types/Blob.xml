@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <object name="Blob"
    meta_type="Factory-based Type Information with dynamic views"
-   i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title" i18n:translate="">Blob</property>
- <property name="description"
-      i18n:translate="">An binary blob of data, much like a file.</property>
+   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <property name="title">Blob</property>
+ <property
+    name="description">A binary blob of data, much like a file.</property>
  <property name="content_icon">file_icon.gif</property>
  <property name="content_meta_type">ATBlob</property>
  <property name="product">plone.app.blob</property>
@@ -20,34 +20,47 @@
  </property>
  <alias from="(Default)" to="index_html"/>
  <alias from="edit" to="atct_edit"/>
- <alias from="sharing" to="@@sharing"/>
+ <alias from="index.html" to="(dynamic view)"/>
+ <alias from="properties" to="base_metadata"/>
+ <alias from="sharing" to="folder_localrole_form"/>
  <alias from="view" to="(selected layout)"/>
  <action title="View" action_id="view" category="object" condition_expr=""
-    url_expr="string:${object_url}/view" visible="True"
-    i18n:attributes="title">
+    url_expr="string:${object_url}/view" visible="True">
   <permission value="View"/>
  </action>
- <action title="Edit" action_id="edit" category="object" condition_expr="not:object/@@plone_lock_info/is_locked_for_current_user|python:True"
-    url_expr="string:${object_url}/edit" visible="True"
-    i18n:attributes="title">
+ <action title="Edit" action_id="edit" category="object" condition_expr=""
+    url_expr="string:${object_url}/edit" visible="True">
+  <permission value="Modify portal content"/>
+ </action>
+ <action title="Properties" action_id="metadata" category="object"
+    condition_expr="" url_expr="string:${object_url}/properties"
+    visible="True">
   <permission value="Modify portal content"/>
  </action>
  <action title="References" action_id="references" category="object"
     condition_expr="object/archetype_tool/has_graphviz"
-    url_expr="string:${object_url}/reference_graph" visible="True"
-    i18n:attributes="title">
+    url_expr="string:${object_url}/reference_graph" visible="True">
   <permission value="Modify portal content"/>
   <permission value="Review portal content"/>
  </action>
  <action title="Download" action_id="download" category="object"
     condition_expr="member" url_expr="string:${object_url}/download"
-    visible="False" i18n:attributes="title">
+    visible="False">
   <permission value="View"/>
  </action>
  <action title="External Edit" action_id="external_edit" category="object"
     condition_expr="object/externalEditorEnabled"
-    url_expr="string:${object_url}/external_edit" visible="False"
-    i18n:attributes="title">
+    url_expr="string:${object_url}/external_edit" visible="False">
   <permission value="Modify portal content"/>
+ </action>
+ <action title="Sharing" action_id="local_roles" category="object"
+    condition_expr="" url_expr="string:${object_url}/sharing" visible="True">
+  <permission value="Manage properties"/>
+ </action>
+ <action title="State" action_id="content_status_history"
+    category="object_tabs"
+    condition_expr="python:object and portal.portal_workflow.getTransitionsFor(object, object.getParentNode())"
+    url_expr="string:$object_url/content_status_history" visible="False">
+  <permission value="View"/>
  </action>
 </object>
