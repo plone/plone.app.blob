@@ -144,7 +144,7 @@ class BlobField(ObjectField):
         super(BlobField, self).set(instance, blob, **kwargs)
         self.fixAutoId(instance)
 
-    security.declarePrivate('setFile')
+    security.declarePrivate('fixAutoId')
     def fixAutoId(self, instance):
         """ if an explicit id was given and the instance still has the
             auto-generated one it should be renamed;  also see
