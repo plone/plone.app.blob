@@ -2,22 +2,39 @@ from zope.interface import implements
 
 from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
-from Products.Archetypes.atapi import AnnotationStorage
-from Products.Archetypes.atapi import registerType
+from Products.Archetypes.atapi import Schema, AnnotationStorage
+from Products.Archetypes.atapi import registerType, FileWidget
 from Products.CMFCore.permissions import View, ModifyPortalContent
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.ATContentTypes.interfaces import IATFile
 from Products.ATContentTypes.content.base import ATCTFileContent
 from Products.ATContentTypes.content.schemata import ATContentTypeSchema
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from Products.MimetypesRegistry.common import MimeTypeException
+from Products.validation import V_REQUIRED
 
 from plone.app.blob.interfaces import IATBlob
 from plone.app.blob.config import packageName
-from plone.app.blob.field import BlobMarshaller
+from plone.app.blob.field import BlobField, BlobMarshaller
 
 
-ATBlobSchema = ATContentTypeSchema.copy()
+ATBlobSchema = ATContentTypeSchema.copy() + Schema((
+    BlobField('file',
+        required = True,
+        primary = True,
+        searchable = True,
+        default = '',
+        accessor = 'getFile',
+        mutator = 'setFile',
+        languageIndependent = True,
+        storage = AnnotationStorage(migrate=True),
+        validators = (('isNonEmptyFile', V_REQUIRED),
+                      ('checkFileMaxSize', V_REQUIRED)),
+        widget = FileWidget(label = _(u'label_file', default=u'File'),
+                            description=_(u''),
+                            show_content_type = False,)),
+))
 ATBlobSchema['title'].storage = AnnotationStorage()
 
 finalizeATCTSchema(ATBlobSchema, folderish=False, moveDiscussion=False)

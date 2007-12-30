@@ -6,8 +6,6 @@
 
   <five:registerPackage package="." initialize=".initialize" />
 
-  <include package="archetypes.schemaextender" />
-
   <include package=".adapters" />
   <include package=".browser" />
 
@@ -44,11 +42,6 @@
     <implements interface="Products.ATContentTypes.interface.file.IATFile" />
     <implements interface="Products.ATContentTypes.interface.file.IFileContent" />"
   </class>
-
-  <adapter
-      name="plone.app.blob.subtypes.file"
-      for="plone.app.blob.interfaces.IATBlob"
-      factory=".subtypes.file.SchemaExtender" />
 
 </configure>
 
