@@ -123,6 +123,18 @@ class BlobField(ObjectField):
 
     security  = ClassSecurityInfo()
 
+    security.declarePrivate('get')
+    def get(self, instance, **kwargs):
+        storage = self.getStorage(instance)
+        try:
+            kwargs['field'] = self
+            return storage.get(self.getName(), instance, **kwargs)
+        except AttributeError:
+            # happens if new Atts are added and not yet stored in the instance
+            default = self.getDefault(instance)
+            self.set(instance, default, _initializing_=True, **kwargs)
+            return storage.get(self.getName(), instance, **kwargs)
+
     security.declarePrivate('set')
     def set(self, instance, value, **kwargs):
         """ use input value to populate the blob and set the associated
