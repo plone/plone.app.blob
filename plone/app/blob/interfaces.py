@@ -41,7 +41,3 @@ class IATBlobFile(Interface):
 class IWebDavUpload(Interface):
     """ marker interface for webdav upload helper class """
 
-
-class IMimetypesRegistryTool(Interface):
-    """ marker interface missing in plone 2.5 """
-
