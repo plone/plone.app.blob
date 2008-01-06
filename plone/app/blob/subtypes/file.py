@@ -23,7 +23,6 @@ class SchemaExtender(object):
             ExtensionBlobField('file',
                 required = True,
                 primary = True,
-                searchable = True,
                 default = '',
                 accessor = 'getFile',
                 mutator = 'setFile',
