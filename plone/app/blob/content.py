@@ -64,8 +64,7 @@ class ATBlob(ATCTFileContent):
     security.declarePrivate('getBlobWrapper')
     def getBlobWrapper(self):
         """ return wrapper class containing the actual blob """
-        accessor = self.getField('file').getAccessor(self)
-        return accessor()
+        return self.getField('file').get(self)
 
     security.declareProtected(View, 'getFile')
     def getFile(self, **kwargs):
@@ -76,8 +75,7 @@ class ATBlob(ATCTFileContent):
     security.declareProtected(ModifyPortalContent, 'setFile')
     def setFile(self, value, **kwargs):
         """ set the file contents and possibly also the id """
-        mutator = self.getField('file').getMutator(self)
-        mutator(value, **kwargs)
+        mutator = self.getField('file').set(self, value, **kwargs)
 
     # compatibility methods when used as ATFile replacement
 
