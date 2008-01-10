@@ -8,7 +8,7 @@ from Products.Five import fiveconfigure
 from Products.PloneTestCase import PloneTestCase
 from Products.PloneTestCase.layer import onsetup
 
-from plone.app.blob.utils import guessMimetype
+from plone.app.blob.utils import guessMimetype as guessMimetypeHelper
 
 from StringIO import StringIO
 from base64 import decodestring
@@ -67,7 +67,7 @@ class BlobTestCase(PloneTestCase.PloneTestCase):
 
     def testMimetypeGuessing(self):
         def guessMimetype(data, filename=None):
-            guessMimetype(data, filename, context=self.portal)
+            return guessMimetypeHelper(data, filename, context=self.portal)
         gif = StringIO(decodestring(self.gif))
         self.assertEqual(guessMimetype(gif), 'image/gif')
         self.assertEqual(guessMimetype(gif, 'image.jpg'), 'image/jpeg')
