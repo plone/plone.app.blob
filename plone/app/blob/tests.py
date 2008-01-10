@@ -66,6 +66,8 @@ class BlobTestCase(PloneTestCase.PloneTestCase):
         self.assert_(f.name)
 
     def testMimetypeGuessing(self):
+        def guessMimetype(data, filename):
+            guessMimetype(data, filename, context=self.portal)
         gif = StringIO(decodestring(self.gif))
         self.assertEqual(guessMimetype(gif), 'image/gif')
         self.assertEqual(guessMimetype(gif, 'image.jpg'), 'image/jpeg')

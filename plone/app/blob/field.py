@@ -150,6 +150,7 @@ class BlobField(ObjectField):
             value = StringIO(value)
         if value is not None:
             blobbable = IBlobbable(value)
+            blobbable.aq = instance     # provide acquisition context, yuck!
             blobbable.feed(blob.getBlob())
             blob.setContentType(blobbable.mimetype())
             blob.setFilename(blobbable.filename())

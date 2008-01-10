@@ -14,6 +14,7 @@ class BlobbableStringIO(object):
 
     def __init__(self, context):
         self.context = context
+        self.aq = None
 
     def feed(self, blob):
         """ see interface ... """
@@ -28,5 +29,5 @@ class BlobbableStringIO(object):
 
     def mimetype(self):
         """ see interface ... """
-        return guessMimetype(self.context, self.filename())
+        return guessMimetype(self.context, self.filename(), context=self.aq)
 
