@@ -50,12 +50,12 @@ therefore also contain the extended schema:
   >>> blob.getField('file')
   <Field file(blob:rw)>
 
-Mimicking the existing "File" content type, i.e. `ATFile`, it shouldn't have
-an associated workflow:
+Mimicking the existing "File" content type, i.e. `ATFile`, it should have
+an associated workflow (as opposed to Plone 3.0, where is has none):
 
   >>> workflow_tool = getToolByName(portal, 'portal_workflow')
-  >>> workflow_tool.getWorkflowsFor(blob)
-  []
+  >>> [ wf.getId() for wf in  workflow_tool.getWorkflowsFor(blob) ]
+  ['plone_workflow']
 
 Since no data has been written to it, the blob file should still be empty:
 
