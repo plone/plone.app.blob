@@ -1,7 +1,7 @@
 from plone.app.blob import db   # needs to be imported first to set up ZODB
 
 from unittest import TestSuite, makeSuite
-from Testing.ZopeTestCase import installPackage, ZopeDocFileSuite
+from Testing.ZopeTestCase import ZopeDocFileSuite
 from ZPublisher.HTTPRequest import HTTPRequest
 from Products.Five import zcml
 from Products.Five import fiveconfigure
@@ -21,7 +21,14 @@ def setupPackage():
     import plone.app.blob
     zcml.load_config('configure.zcml', plone.app.blob)
     fiveconfigure.debug_mode = False
-    installPackage('plone.app.blob')
+
+    # make sure the monkey patches from `pythonproducts` are appied; they get
+    # loaded with an `installProduct('Five')`, but zcml layer's `setUp()`
+    # calls `five.safe_load_site()`, which in turn calls `cleanUp()` from
+    # `zope.testing.cleanup`, effectively removing the patches again *before*
+    # the tests are run; so we need to explicitly apply them again... %)
+    from Products.Five import pythonproducts
+    pythonproducts.applyPatches()
 
 setupPackage()
 PloneTestCase.setupPloneSite(extension_profiles=(
