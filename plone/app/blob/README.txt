@@ -128,6 +128,5 @@ or wrong data from showing up in some views, i.e. folder listing:
 
   >>> catalog = getToolByName(portal, 'portal_catalog')
   >>> brain = catalog(id = 'foo')[0]
-  >>> self.assertEqual(folder.foo.UID(), brain.UID)
   >>> self.assertEqual(folder.foo.getObjSize(), brain.getObjSize)
 
