@@ -1,4 +1,4 @@
-import os.path
+from os.path import getsize
 from zope.interface import implements
 from StringIO import StringIO
 from Acquisition import Implicit
@@ -66,7 +66,7 @@ class BlobWrapper(Implicit, Persistent):
         current_filename = self.blob._current_filename()
         if current_filename is None:
             return 0
-        return os.path.getsize(current_filename)
+        return getsize(current_filename)
 
     __len__ = get_size
 
