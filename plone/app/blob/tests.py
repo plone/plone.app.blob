@@ -1,5 +1,6 @@
 from plone.app.blob import db   # needs to be imported first to set up ZODB
 
+import os.path
 from unittest import TestSuite, makeSuite
 from Testing.ZopeTestCase import installPackage, ZopeDocFileSuite
 from ZPublisher.HTTPRequest import HTTPRequest
@@ -36,15 +37,25 @@ test_environment = {
     'SERVER_PORT': '80',
 }
 
-largefile_data = '''
+largefile_data = ('test' * 2048)
+
+upload_request = '''
 --12345
-Content-Disposition: form-data; name="file"; filename="file"
+Content-Disposition: form-data; name="file"; filename="%s"
 Content-Type: application/octet-stream
+Content-Length: %d
 
-test %s
+%s
 
-''' % ('test' * 1000)
+'''
 
+def makeFileUpload(data, filename):
+    request_data = upload_request % (filename, len(data), data)
+    req = HTTPRequest(StringIO(request_data), 
+                      test_environment.copy(), 
+                      None)
+    req.processInputs()
+    return req.form.get('file')
 
 class BlobTestCase(PloneTestCase.PloneTestCase):
 
@@ -53,10 +64,8 @@ class BlobTestCase(PloneTestCase.PloneTestCase):
 
     def testFileName(self):
         """ checks fileupload object supports the filename """
-        req = HTTPRequest(StringIO(largefile_data), test_environment.copy(), None)
-        req.processInputs()
-        f = req.form.get('file')
-        self.assert_(f.name)
+        f = makeFileUpload(largefile_data, 'test.txt')
+        self.assert_(os.path.isfile(f.name))
 
     def testMimetypeGuessing(self):
         gif = StringIO(decodestring(self.gif))
@@ -82,9 +91,15 @@ class BlobTestCase(PloneTestCase.PloneTestCase):
     def testSize(self):
         self.folder.invokeFactory('Blob', 'blob')
         blob = self.folder['blob']
-        value = decodestring(self.gif)
-        blob.update(title="I'm blob", file=value)
-        self.assertEqual(blob.get_size(), len(value))
+        # test with a small file
+        gif = decodestring(self.gif)
+        f = makeFileUpload(gif, 'test.gif')
+        blob.update(file=f)
+        self.assertEqual(blob.get_size(), len(gif))
+        # and a large one
+        f = makeFileUpload(largefile_data, 'test.txt')
+        blob.update(file=f)
+        self.assertEqual(blob.get_size(), len(largefile_data))
 
     def testIcon(self):
         self.folder.invokeFactory('Blob', 'blob', title='foo')
