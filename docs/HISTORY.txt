@@ -4,6 +4,9 @@ Changelog for plone.app.blob
 
 plone.app.blob - 1.0a3 Unreleased
 
+    - Change file size calculation so as not to need to reopen the file, which
+      broke on windows
+      [rochael]
 
 plone.app.blob - 1.0a2 Released December 12, 2007
 
