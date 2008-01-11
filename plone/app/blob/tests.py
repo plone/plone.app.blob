@@ -79,6 +79,13 @@ class BlobTestCase(PloneTestCase.PloneTestCase):
         self.assertEqual(blob.getContentType(), 'text/plain')
         self.assertEqual(str(blob.getFile()), '')
 
+    def testSize(self):
+        self.folder.invokeFactory('Blob', 'blob')
+        blob = self.folder['blob']
+        value = decodestring(self.gif)
+        blob.update(title="I'm blob", file=value)
+        self.assertEqual(blob.get_size(), len(value))
+
     def testIcon(self):
         self.folder.invokeFactory('Blob', 'blob', title='foo')
         blob = self.folder.blob

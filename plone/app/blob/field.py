@@ -1,3 +1,4 @@
+import os.path
 from zope.interface import implements
 from StringIO import StringIO
 from Acquisition import Implicit
@@ -62,11 +63,10 @@ class BlobWrapper(Implicit, Persistent):
     security.declareProtected(View, 'get_size')
     def get_size(self):
         """ return the size of the blob """
-        f = self.blob.open('r') # XXX will barf if it's already open for "w"
-        f.seek(0, 2)
-        result = f.tell()
-        f.close()
-        return result
+        current_filename = self.blob._current_filename()
+        if current_filename is None:
+            return 0
+        return os.path.getsize(current_filename)
 
     __len__ = get_size
 
