@@ -207,6 +207,40 @@ enough.  In the meantime here are the recommended workarounds:
   .. _`1.0`: http://pypi.python.org/pypi/plone.recipe.zope2instance/1.0
 
 
+**missing distribution for required "zdaemon" and "ZConfig" eggs**
+
+  Symptom
+    When running buildout you're getting errors like::
+
+      Getting distribution for 'zdaemon>=1.4a2,<1.4.999'.
+      While:
+        Installing instance.
+        Getting distribution for 'zdaemon>=1.4a2,<1.4.999'.
+      Error: Couldn't find a distribution for 'zdaemon>=1.4a2,<1.4.999'.
+
+    or::
+
+      Getting distribution for 'ZConfig>=2.4a2,<2.4.999'.
+      While:
+        Installing instance.
+        Getting distribution for 'ZConfig>=2.4a2,<2.4.999'.
+      Error: Couldn't find a distribution for 'ZConfig>=2.4a2,<2.4.999'.
+  Problem
+    ``zdaemon`` and ``ZConfig`` eggs have only been released to the
+    `Cheeseshop`_ starting from more recent versions, i.e. 2.0 and 2.5
+    respectively.  Older distributions in egg format are only available
+    from http://download.zope.org/distribution
+  Solution
+    Add the above link to the ``find-links`` setting of the ``[buildout]``
+    section in your ``buildout.cfg``, like::
+
+      find-links =
+          http://download.zope.org/distribution/
+          ...
+
+  .. _`Cheeseshop`: http://pypi.python.org/pypi
+
+
 FAQ
 ---
 
