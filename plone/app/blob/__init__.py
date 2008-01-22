@@ -1,4 +1,5 @@
 from plone.app.blob.config import packageName, permissions
+from plone.app.blob import migration25
 
 
 def initialize(context):

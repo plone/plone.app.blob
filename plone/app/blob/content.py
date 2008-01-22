@@ -46,8 +46,10 @@ class ATBlob(ATCTFileContent):
 
     __implements__ = ATCTFileContent.__implements__, IATFile
 
+    meta_type = 'ATBlob'
     portal_type = 'Blob'
     _at_rename_after_creation = True
+    _atct_newTypeFor = {'portal_type' : 'CMF File', 'meta_type' : 'Portal File'}
     schema = ATBlobSchema
 
     security  = ClassSecurityInfo()
