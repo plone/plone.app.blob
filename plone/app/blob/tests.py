@@ -51,8 +51,8 @@ Content-Length: %d
 
 def makeFileUpload(data, filename):
     request_data = upload_request % (filename, len(data), data)
-    req = HTTPRequest(StringIO(request_data), 
-                      test_environment.copy(), 
+    req = HTTPRequest(StringIO(request_data),
+                      test_environment.copy(),
                       None)
     req.processInputs()
     return req.form.get('file')
@@ -100,6 +100,18 @@ class BlobTestCase(PloneTestCase.PloneTestCase):
         f = makeFileUpload(largefile_data, 'test.txt')
         blob.update(file=f)
         self.assertEqual(blob.get_size(), len(largefile_data))
+
+    def testOpenAfterConsume(self):
+        """it's an expected use case to be able to open a blob for reading
+        immediately after populating it by consuming"""
+        self.folder.invokeFactory('Blob', 'blob')
+        blob = self.folder['blob']
+        f = makeFileUpload(largefile_data, 'test.txt')
+        blob.update(file=f)
+        b = blob.getFile().getBlob().open('r')
+        self.assertEqual(b.read(10), largefile_data[:10])
+        b.close()
+
 
     def testIcon(self):
         self.folder.invokeFactory('Blob', 'blob', title='foo')
