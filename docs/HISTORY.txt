@@ -5,8 +5,12 @@ Changelog for plone.app.blob
 plone.app.blob - 1.0a3 Unreleased
 
     - Change file size calculation so as not to need to reopen the file, which
-      broke on windows
+      broke on Windows
       [rochael]
+
+    - On Windows, force the file to be copied to the blob instead of
+      attempting to call blob.consumeFile(), since Windows doesn't allow
+      open files to be renamed.
 
 plone.app.blob - 1.0a2 Released December 12, 2007
 
@@ -18,7 +22,7 @@ plone.app.blob - 1.0a2 Released December 12, 2007
       [naro]
 
     - Added alternative GenericSetup profile to allow to replace ATFile
-      as the "File" content type 
+      as the "File" content type
       [witsch]
 
 plone.app.blob - 1.0a1 Released December 7, 2007

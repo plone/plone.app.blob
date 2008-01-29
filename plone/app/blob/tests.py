@@ -74,6 +74,18 @@ class BlobTestCase(PloneTestCase.PloneTestCase):
         self.assertEqual(guessMimetype(StringIO(), 'image.jpg'), 'image/jpeg')
         self.assertEqual(guessMimetype(StringIO('foo')), 'text/plain')
 
+    def testFileUploadPatch(self):
+        f = makeFileUpload(largefile_data, 'test.txt')
+        name = f.name
+        # the filesystem file of a large file should exist
+        self.failUnless(os.path.isfile(name), name)
+        # even after it's been closed
+        f.close()
+        self.failUnless(os.path.isfile(name), name)
+        # but should go away when deleted
+        del f
+        self.failIf(os.path.isfile(name), name)
+
     def testStringValue(self):
         self.folder.invokeFactory('Blob', 'blob')
         blob = self.folder['blob']
@@ -111,7 +123,8 @@ class BlobTestCase(PloneTestCase.PloneTestCase):
         b = blob.getFile().getBlob().open('r')
         self.assertEqual(b.read(10), largefile_data[:10])
         b.close()
-
+        import transaction
+        transaction.savepoint()
 
     def testIcon(self):
         self.folder.invokeFactory('Blob', 'blob', title='foo')

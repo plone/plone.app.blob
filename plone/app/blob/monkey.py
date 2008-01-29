@@ -3,15 +3,35 @@
 # file uploads are not anonymous, but instead provide a file name that
 # can later be used with the blob class' `consumeFile` method...
 
+import os as _os
+
 from ZPublisher import HTTPRequest
-from tempfile import NamedTemporaryFile
+from tempfile import mkstemp, _TemporaryFileWrapper as TFWBase, _bin_openflags
 from cgi import FieldStorage
 
+class _TemporaryFileWrapper(TFWBase):
+    """Variant of tempfile._TemporaryFileWrapper that doesn't rely on the
+    automatic windows behaviour of deleting closed files, and doesn't
+    complain if the file has been moved from under its feet"""
+
+    unlink = staticmethod(_os.unlink)
+    isfile = staticmethod(_os.path.isfile)
+    def close(self):
+        if not self.close_called:
+            self.close_called = True
+            self.file.close()
+
+    def __del__(self):
+        self.close()
+        if self.isfile(self.name):
+            self.unlink(self.name)
 
 class NamedFieldStorage(FieldStorage):
 
     def make_file(self, binary=None):
-        return NamedTemporaryFile("w+b")
+        fd, name = mkstemp()
+        f = _os.fdopen(fd, "w+b", -1)
+        return _TemporaryFileWrapper(f, name)
 
 
 original_init = HTTPRequest.FileUpload.__init__

@@ -1,3 +1,4 @@
+import os, tempfile, shutil
 from os.path import isfile
 
 from zope.interface import implements
@@ -19,12 +20,14 @@ class BlobbableFileUpload(object):
     def feed(self, blob):
         """ see interface ... """
         filename = getattr(self.context, 'name', None)
-        if filename is not None:
+        if os.name != 'nt' and filename is not None:
             assert isfile(filename), 'invalid file for blob: %s' % filename
             blob.consumeFile(filename)
         else:   # the cgi module only creates a tempfile for 1000+ bytes
             self.context.seek(0)    # just to be sure we copy everything...
-            blob.open('w').write(self.context.read())
+            blobfile = blob.open('w')
+            shutil.copyfileobj(self.context, blobfile)
+            blobfile.close()
 
     def filename(self):
         """ see interface ... """
