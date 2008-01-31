@@ -86,6 +86,66 @@ this::
       plone.app.blob
   zcml = plone.app.blob
 
+Note about ZEO |---| don't forget to add eggs section to the [zeo] part of your 
+recipe too, otherwise ZEO will not know about ZODB 3.8+ until this version will
+be included in the supported Zope release and you will get errors like
+``ZRPCError: bad handshake 'Z303'``. A sample ZEO buildout configuration could 
+look like this::
+
+  [buildout]
+  parts = plone zope2 zeo client1 client2
+  find-links =
+    http://dist.plone.org
+    http://download.zope.org/ppix/ 
+    http://download.zope.org/distribution/
+    http://effbot.org/downloads
+  eggs = elementtree
+
+  [plone]
+  recipe = plone.recipe.plone
+
+  [zope2]
+  recipe = plone.recipe.zope2install
+  url = ${plone:zope2-url}
+
+  [zeo]
+  recipe = plone.recipe.zope2zeoserver
+  zope2-location = ${zope2:location}
+  zeo-address = 127.0.0.1:8100
+  zeo-var = ${buildout:directory}/var
+  blob-storage = ${zeo:zeo-var}/blobstorage 
+  eggs = 
+    plone.app.blob
+
+  [client1]
+  recipe = plone.recipe.zope2instance
+  zope2-location = ${zope2:location}
+  zeo-address = ${zeo:zeo-address}
+  blob-storage = ${zeo:blob-storage}
+  zeo-client = on
+  shared-blob = on
+  user = admin:admin
+  products = ${plone:products}
+  eggs =
+    ${buildout:eggs}
+    ${plone:eggs}
+    plone.app.blob
+  zcml = 
+    plone.app.blob
+
+  [client2]
+  recipe = plone.recipe.zope2instance
+  http-address = 8081
+  zope2-location = ${zope2:location}
+  zeo-client = ${client1:zeo-client}
+  zeo-address = ${zeo:zeo-address}
+  blob-storage = ${zeo:blob-storage}
+  shared-blob = ${client1:shared-blob}
+  user = ${client1:user}
+  eggs = ${client1:eggs}
+  zcml = ${client1:zcml}
+  products = ${client1:products}
+
 You can also use this buildout configuration to create a fresh Plone
 installation. To do so you would store it as ``buildout.cfg`` |---| preferably
 in an empty directory, download `bootstrap.py
@@ -112,7 +172,9 @@ More detailed instructions on how to set things up (including a working zeo
 configuration) as well as some background information on blobs |---| or in
 other words the story of an "early adopter" |---| can be found in `Ken
 Manheimer's wiki`__.  This is a highly useful resource and recommended read
-for people trying to give blobs a spin.
+for people trying to give blobs a spin. Please note, most of changes to recipes
+described in these instructions are already included in particular recipes, so 
+you don't need to follow them.
 
   .. __: http://myriadicity.net/Sundry/PloneBlobs
 
