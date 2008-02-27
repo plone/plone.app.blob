@@ -1,4 +1,3 @@
-from shutil import copyfileobj
 from os.path import isfile
 
 from zope.interface import implements
@@ -27,9 +26,7 @@ class BlobbableFileUpload(object):
             blob.consumeFile(filename)
         else:   # the cgi module only creates a tempfile for 1000+ bytes
             self.context.seek(0)    # just to be sure we copy everything...
-            blobfile = blob.open('w')
-            copyfileobj(self.context, blobfile)
-            blobfile.close()
+            blob.open('w').write(self.context.read())
 
     def filename(self):
         """ see interface ... """
