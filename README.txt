@@ -86,11 +86,29 @@ this::
       plone.app.blob
   zcml = plone.app.blob
 
-Note about ZEO |---| don't forget to add eggs section to the [zeo] part of your 
-recipe too, otherwise ZEO will not know about ZODB 3.8+ until this version will
-be included in the supported Zope release and you will get errors like
-``ZRPCError: bad handshake 'Z303'``. A sample ZEO buildout configuration could 
-look like this::
+You can also use this buildout configuration to create a fresh Plone
+installation. To do so you would store it as ``buildout.cfg`` |---| preferably
+in an empty directory, download `bootstrap.py
+<http://svn.zope.org/*checkout*/zc.buildout/trunk/bootstrap/bootstrap.py>`_
+into the same directory and issue the following commands::
+
+  $ python bootstrap.py
+  $ ./bin/buildout
+  $ ./bin/instance fg
+
+After that you create a "Plone Site" via the `ZMI`_ as usual and either
+select the "plone.app.blob" extension profile at creation time or again
+install the "plone.app.blob" package using one of the above mentioned methods.
+
+  .. _`ZMI`: http://localhost:8080/manage
+
+For your convenience a working buildout configuration, including
+``bootstrap.py`` and ``buildout.cfg``, is provided as a subversion checkout at
+`http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.0`__.
+
+  .. __: http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.0
+
+A sample ZEO buildout configuration could look like this::
 
   [buildout]
   parts = plone zope2 zeo client1 client2
@@ -114,8 +132,7 @@ look like this::
   zeo-address = 127.0.0.1:8100
   zeo-var = ${buildout:directory}/var
   blob-storage = ${zeo:zeo-var}/blobstorage 
-  eggs = 
-    plone.app.blob
+  eggs = plone.app.blob
 
   [client1]
   recipe = plone.recipe.zope2instance
@@ -130,51 +147,27 @@ look like this::
     ${buildout:eggs}
     ${plone:eggs}
     plone.app.blob
-  zcml = 
-    plone.app.blob
+  zcml = plone.app.blob
 
   [client2]
   recipe = plone.recipe.zope2instance
   http-address = 8081
-  zope2-location = ${zope2:location}
+  zope2-location = ${client1:zope2-location}
   zeo-client = ${client1:zeo-client}
-  zeo-address = ${zeo:zeo-address}
-  blob-storage = ${zeo:blob-storage}
+  zeo-address = ${client1:zeo-address}
+  blob-storage = ${client1:blob-storage}
   shared-blob = ${client1:shared-blob}
   user = ${client1:user}
+  products = ${client1:products}
   eggs = ${client1:eggs}
   zcml = ${client1:zcml}
-  products = ${client1:products}
 
-You can also use this buildout configuration to create a fresh Plone
-installation. To do so you would store it as ``buildout.cfg`` |---| preferably
-in an empty directory, download `bootstrap.py
-<http://svn.zope.org/*checkout*/zc.buildout/trunk/bootstrap/bootstrap.py>`_
-into the same directory and issue the following commands::
-
-  $ python bootstrap.py
-  $ ./bin/buildout
-  $ ./bin/instance fg
-
-After that you create a "Plone Site" via the `ZMI`_ as usual and either
-select the "plone.app.blob" extension profile at creation time or again
-install the "plone.app.blob" package using one of the above mentioned methods.
-
-  .. _`ZMI`: http://localhost:8080/manage
-
-For your convenience a working buildout configuration, including
-``bootstrap.py`` and ``buildout.cfg``, is provided as a subversion checkout at
-`http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.0`__.
-
-  .. __: http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.0
-
-More detailed instructions on how to set things up (including a working zeo
-configuration) as well as some background information on blobs |---| or in
-other words the story of an "early adopter" |---| can be found in `Ken
-Manheimer's wiki`__.  This is a highly useful resource and recommended read
-for people trying to give blobs a spin. Please note, most of changes to recipes
-described in these instructions are already included in particular recipes, so 
-you don't need to follow them.
+More detailed instructions on how to set things up as well as some background
+information on blobs |---| or in other words the story of an "early adopter"
+|---| can be found in `Ken Manheimer's wiki`__.  This is a highly useful
+resource and recommended read for people trying to give blobs a spin.  Please
+note however, that most of the recipe changes described in these instructions
+have already been incorporated in the particular recipes by now.
 
   .. __: http://myriadicity.net/Sundry/PloneBlobs
 
@@ -301,6 +294,27 @@ enough.  In the meantime here are the recommended workarounds:
           ...
 
   .. _`Cheeseshop`: http://pypi.python.org/pypi
+
+
+**"ZRPCError: bad handshake 'Z303'"**
+
+  Symptom
+    With a ZEO setup you are getting errors like::
+
+      ZRPCError: bad handshake 'Z303'
+  Problem
+    You probably haven't added ``plone.app.blob`` to the ``eggs`` setting in
+    your ``[zeo]`` buildout part.  Without it the ZEO server will not use
+    the required version 3.8 of ZODB and hence not support blobs.
+  Solution
+    Add the string ``plone.app.blob`` to the ``eggs`` setting in the ``[zeo]``
+    section (i.e. the one using the ``plone.recipe.zope2zeoserver`` recipe)
+    in your ``buildout.cfg``, like::
+
+      [zeo]
+      ...
+      eggs = plone.app.blob
+      ...
 
 
 FAQ
