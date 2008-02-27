@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '1.0a3'
+version = '1.0b1'
 readme = open("README.txt").read()
 
 setup(name = 'plone.app.blob',
@@ -8,11 +8,9 @@ setup(name = 'plone.app.blob',
       description = 'ZODB 3.8 blob support for Plone 3.x',
       long_description = readme[readme.find('Overview'):],
       classifiers = [
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
         'Framework :: Plone',
-        'Framework :: Zope2',
-        'Framework :: Zope3',
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',
         'Intended Audience :: Other Audience',
