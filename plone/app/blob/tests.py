@@ -1,4 +1,5 @@
 from plone.app.blob import db   # needs to be imported first to set up ZODB
+db  # make pyflakes happy...
 
 import os.path
 from unittest import TestSuite, makeSuite

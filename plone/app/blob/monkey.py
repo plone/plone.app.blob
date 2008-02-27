@@ -4,8 +4,7 @@
 # can later be used with the blob class' `consumeFile` method...
 
 from ZPublisher import HTTPRequest
-from tempfile import mkstemp, _bin_openflags
-from tempfile import _TemporaryFileWrapper as TFW
+from tempfile import mkstemp, _TemporaryFileWrapper as TFW
 from cgi import FieldStorage
 from os.path import isfile
 from os import unlink, fdopen
