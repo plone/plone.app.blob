@@ -9,6 +9,11 @@ plone.app.blob - 1.0a3 Unreleased
       Now the file is closed before the call to `consumeFile()`.
       [rochael]
 
+    - Fix for Windows regarding the generation of the temporary file used for
+      file uploads so that it doesn't get deleted after being moved to the
+      blob storare
+      [rochael]
+
     - Change file size calculation so as not to need to reopen the file, which
       broke on Windows
       [rochael]
