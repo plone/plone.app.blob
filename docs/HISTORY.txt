@@ -18,6 +18,11 @@ plone.app.blob - 1.0a3 Unreleased
       broke on Windows
       [rochael]
 
+    - Changed the primary field of the blob content types to not to be
+      "searchable" as this causes indexing of the blob content making ram
+      consumption go through the roof
+      [witsch]
+
 plone.app.blob - 1.0a2 Released December 12, 2007
 
     - Various minor bug fixes regarding migration, content icons etc
