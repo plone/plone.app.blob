@@ -3,19 +3,23 @@
 # file uploads are not anonymous, but instead provide a file name that
 # can later be used with the blob class' `consumeFile` method...
 
-import os as _os
-
 from ZPublisher import HTTPRequest
-from tempfile import mkstemp, _TemporaryFileWrapper as TFWBase, _bin_openflags
+from tempfile import mkstemp, _bin_openflags
+from tempfile import _TemporaryFileWrapper as TFW
 from cgi import FieldStorage
+from os.path import isfile
+from os import unlink, fdopen
 
-class _TemporaryFileWrapper(TFWBase):
-    """Variant of tempfile._TemporaryFileWrapper that doesn't rely on the
-    automatic windows behaviour of deleting closed files, and doesn't
-    complain if the file has been moved from under its feet"""
 
-    unlink = staticmethod(_os.unlink)
-    isfile = staticmethod(_os.path.isfile)
+class TemporaryFileWrapper(TFW):
+    """ variant of tempfile._TemporaryFileWrapper that doesn't rely on the
+        automatic windows behaviour of deleting closed files, which even
+        happens, when the file has been moved -- e.g. to the blob storage,
+        and doesn't complain about such a move either """
+
+    unlink = staticmethod(unlink)
+    isfile = staticmethod(isfile)
+
     def close(self):
         if not self.close_called:
             self.close_called = True
@@ -26,12 +30,12 @@ class _TemporaryFileWrapper(TFWBase):
         if self.isfile(self.name):
             self.unlink(self.name)
 
+
 class NamedFieldStorage(FieldStorage):
 
     def make_file(self, binary=None):
-        fd, name = mkstemp()
-        f = _os.fdopen(fd, "w+b", -1)
-        return _TemporaryFileWrapper(f, name)
+        handle, name = mkstemp()
+        return TemporaryFileWrapper(fdopen(handle, 'w+b'), name)
 
 
 original_init = HTTPRequest.FileUpload.__init__
