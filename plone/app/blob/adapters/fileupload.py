@@ -16,12 +16,15 @@ class BlobbableFileUpload(object):
 
     def __init__(self, context):
         self.context = context
+        self.__mimetype = guessMimetype(self.context, self.filename())
 
     def feed(self, blob):
         """ see interface ... """
         filename = getattr(self.context, 'name', None)
-        if os.name != 'nt' and filename is not None:
+        #if os.name != 'nt' and filename is not None:
+        if filename is not None:
             assert isfile(filename), 'invalid file for blob: %s' % filename
+            self.context.close()
             blob.consumeFile(filename)
         else:   # the cgi module only creates a tempfile for 1000+ bytes
             self.context.seek(0)    # just to be sure we copy everything...
@@ -35,5 +38,5 @@ class BlobbableFileUpload(object):
 
     def mimetype(self):
         """ see interface ... """
-        return guessMimetype(self.context, self.filename())
+        return self.__mimetype
 
