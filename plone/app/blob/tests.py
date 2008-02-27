@@ -105,26 +105,20 @@ class BlobTestCase(PloneTestCase.PloneTestCase):
         blob = self.folder['blob']
         # test with a small file
         gif = decodestring(self.gif)
-        f = makeFileUpload(gif, 'test.gif')
-        blob.update(file=f)
+        blob.update(file=makeFileUpload(gif, 'test.gif'))
         self.assertEqual(blob.get_size(), len(gif))
         # and a large one
-        f = makeFileUpload(largefile_data, 'test.txt')
-        blob.update(file=f)
+        blob.update(file=makeFileUpload(largefile_data, 'test.txt'))
         self.assertEqual(blob.get_size(), len(largefile_data))
 
     def testOpenAfterConsume(self):
-        """it's an expected use case to be able to open a blob for reading
-        immediately after populating it by consuming"""
+        """ it's an expected use case to be able to open a blob for
+            reading immediately after populating it by consuming """
         self.folder.invokeFactory('Blob', 'blob')
         blob = self.folder['blob']
-        f = makeFileUpload(largefile_data, 'test.txt')
-        blob.update(file=f)
+        blob.update(file=makeFileUpload(largefile_data, 'test.txt'))
         b = blob.getFile().getBlob().open('r')
         self.assertEqual(b.read(10), largefile_data[:10])
-        b.close()
-        import transaction
-        transaction.savepoint()
 
     def testIcon(self):
         self.folder.invokeFactory('Blob', 'blob', title='foo')
