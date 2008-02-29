@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '1.0b2'
+version = '1.0b3'
 readme = open("README.txt").read()
 
 setup(name = 'plone.app.blob',
