@@ -1,4 +1,6 @@
 from os.path import isfile
+from shutil import copyfileobj
+from os import name as os_name
 
 from zope.interface import implements
 from zope.component import adapts
@@ -20,9 +22,13 @@ class BlobbableFileUpload(object):
     def feed(self, blob):
         """ see interface ... """
         filename = getattr(self.context, 'name', None)
-        if filename is not None:
+        if os_name == 'nt' and filename is not None:
+            # for now a copy is needed on windows...
+            blobfile = blob.open('w') 
+            copyfileobj(self.context, blobfile)
+            blobfile.close()
+        elif filename is not None:
             assert isfile(filename), 'invalid file for blob: %s' % filename
-            self.context.close()
             blob.consumeFile(filename)
         else:   # the cgi module only creates a tempfile for 1000+ bytes
             self.context.seek(0)    # just to be sure we copy everything...

@@ -4,6 +4,10 @@ Changelog for plone.app.blob
 
 plone.app.blob - 1.0b2 Unreleased
 
+    - Reverted fix for Windows that closed the file upload object in order
+      to work around a problem with reading from the blob file afterwards.
+      [witsch]
+
 
 plone.app.blob - 1.0b1 Released February 28, 2008
 
