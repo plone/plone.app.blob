@@ -1,4 +1,6 @@
 todos:
+- explain which gs profile to use
+- add section about buildout-installer to the docs
 - answer remaining questions in the faq section
 - image support:  sub-type, scaling, migration etc
 - document administration & backup issues
