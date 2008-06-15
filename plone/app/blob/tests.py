@@ -131,6 +131,14 @@ class BlobTestCase(PloneTestCase.PloneTestCase):
         blob.update(file='some text...')
         self.assertEqual(blob.getIcon(), 'plone/txt.png')
 
+    def testIconLookupForUnknownMimeType(self):
+        """ test for http://plone.org/products/plone.app.blob/issues/1 """
+        self.folder.invokeFactory('File', 'foo', file='foo')
+        self.folder.foo.setContentType('application/foo')
+        self.folder.invokeFactory('Blob', 'blob')
+        self.folder.blob.update(file=self.folder.foo)
+        self.assertEqual(self.folder.blob.getIcon(), 'plone/file_icon.gif')
+
 
 def test_suite():
     return TestSuite((

@@ -4,6 +4,10 @@ Changelog for plone.app.blob
 
 plone.app.blob - 1.0b3 Unreleased
 
+    - Fix issue where the mime-type registry returned an empty tuple when
+      looking up an unknown mime-type.  This fixes
+      http://plone.org/products/plone.app.blob/issues/1
+      [witsch]
 
 plone.app.blob - 1.0b2 Released February 29, 2008
 
