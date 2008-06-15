@@ -25,7 +25,7 @@ as well :)).
   .. _`migration purposes`: http://dev.plone.org/collective/browser/contentmigration/
   .. _`buildout`: http://pypi.python.org/pypi/zc.buildout
   .. _`based on ploneout`: http://dev.plone.org/plone/browser/plone.app.blob/buildouts/ploneout
-  .. _`based on plone.recipe.plone`: http://dev.plone.org/plone/browser/plone.app.blob/buildouts/plone-3.0
+  .. _`based on plone.recipe.plone`: http://dev.plone.org/plone/browser/plone.app.blob/buildouts/plone-3.x
 
 In any way, the setup should make the new content type available as well as
 instantiable:

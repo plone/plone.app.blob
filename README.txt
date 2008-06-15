@@ -104,9 +104,9 @@ install the "plone.app.blob" package using one of the above mentioned methods.
 
 For your convenience a working buildout configuration, including
 ``bootstrap.py`` and ``buildout.cfg``, is provided as a subversion checkout at
-`http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.0`__.
+`http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.x`__.
 
-  .. __: http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.0
+  .. __: http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.x
 
 A sample ZEO buildout configuration could look like this::
 
@@ -175,7 +175,7 @@ In addition, more information on how to use buildout is available in the
 `accompanying README.txt`__ as well as in `Martin's`_ excellent `buildout
 tutorial`_ on `plone.org`_.
 
-  .. __: http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.0/README.txt
+  .. __: http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.x/README.txt
   .. _`Martin's`: http://martinaspeli.net/
   .. _`buildout tutorial`: http://plone.org/documentation/tutorial/buildout
   .. _`plone.org`: http://plone.org/
@@ -203,7 +203,7 @@ section of your ``buildout.cfg``, so that it reads like::
 You can also refer to the above mentioned `sample buildout.cfg`_ for details.
 
   .. _`Products.contentmigration`: http://pypi.python.org/pypi/Products.contentmigration/
-  .. _`sample buildout.cfg`: http://dev.plone.org/plone/browser/plone.app.blob/buildouts/plone-3.0/buildout.cfg
+  .. _`sample buildout.cfg`: http://dev.plone.org/plone/browser/plone.app.blob/buildouts/plone-3.x/buildout.cfg
 
 In order to then migrate your existing file content to blobs you can use the
 migration interface provided at http://localhost:8080/plone/@@blob-migration,
@@ -234,7 +234,7 @@ enough.  In the meantime here are the recommended workarounds:
     `svn:external`_ to the ``products/`` directory of your buildout or
     upgrade to `Plone 3.0.4`_ by re-running buildout.
 
-  .. _`provided buildout`: http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.0
+  .. _`provided buildout`: http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.x
   .. _`1.5 branch`: http://svn.zope.org/Products.PluggableAuthService/branches/1.5/
   .. _`svn:external`: http://svnbook.red-bean.com/en/1.0/ch07s03.html
 
