@@ -211,6 +211,10 @@ where "plone" should be replaced with the id of your "Plone Site" object.  The
 page will show you the number of available ``ATFile`` instances and lets you
 convert them to the provided blob content type by clicking a button.
 
+If you encounter errors during migration |---| especially after applying the
+"ATFile replacement" profile (or quick-installing "plone.app.blob: ATFile
+replacement" for that matter) |---| please refer to the next section.
+
 
 Troubleshooting
 ---------------
@@ -315,6 +319,71 @@ enough.  In the meantime here are the recommended workarounds:
       ...
       eggs = plone.app.blob
       ...
+
+
+**"AttributeError: 'NoneType' object has no attribute 'product'" during migration**
+
+  Symptom
+    After installing "plone.app.blob" via the quick-installer or applying
+    the "plone.app.blob: ATFile replacement" profile you are seeing migration
+    errors like::
+    
+      Traceback (innermost last):
+        Module ZPublisher.Publish, line 119, in publish
+        Module ZPublisher.mapply, line 88, in mapply
+        Module ZPublisher.Publish, line 42, in call_object
+        Module plone.app.blob.browser.migration, line 24, in __call__
+        Module plone.app.blob.migrations, line 42, in migrateATFiles
+        Module Products.contentmigration.basemigrator.walker, line 126, in go
+        Module Products.contentmigration.basemigrator.walker, line 205, in migrate
+      MigrationError: MigrationError for obj at /... (File -> Blob):
+      Traceback (most recent call last):
+        File ".../Products/contentmigration/basemigrator/walker.py", line 174, in migrate
+          migrator.migrate()
+        File ".../Products/contentmigration/basemigrator/migrator.py", line 185, in migrate
+          method()
+        File ".../Products/contentmigration/archetypes.py", line 111, in beforeChange_schema
+          archetype = getType(self.dst_meta_type, fti.product)
+      AttributeError: 'NoneType' object has no attribute 'product'
+  Problem
+    The current migration code has been written to convert existing "File"
+    content to the "Blob" content type provided by the base "plone.app.blob"
+    profile.  However, that type isn't known when just installing the "ATFile
+    replacement" profile.  The latter is probably what you want to install,
+    though, as former "File" content will keep the same portal type, i.e.
+    "File" after being migrated.  This way no apparent changes are visible,
+    which might help with avoiding confusion.
+  Solution
+    For now you might work around this by either applying the "plone.app.blob"
+    profile via the ZMI in ``/portal_setup``.  This will install the above
+    mentioned "Blob" content type.  After that migration will work, but your
+    former "File" content will have the "Blob" content type.
+
+    If that's not what you want, simply change line line 17 in
+    ``plone/app/blob/migrations.py`` (which is probably contained in an egg
+    directory located somewhere like ``eggs/plone.app.blob-1.0b2-py2.4.egg/``
+    relative to your buildout/installation) from::
+
+       dst_portal_type = 'Blob'
+
+    to::
+
+       dst_portal_type = 'File'
+
+    After that migration should use the new "File" type, based on ZODB blobs.
+    Once you've migrated you might remove or disable the "Blob" type from
+    ``/portal_types`` again.
+
+    If you have already migrated to "Blob" content, but would rather like to
+    have "File" items, you can change the two previous lines to::
+
+       src_portal_type = 'Blob'
+       src_meta_type = 'ATBlob'
+
+    and re-run the blob migration.  This will convert your "Blob"s to show up
+    as "File"s again.  You should probably pack your ZODB afterwards to avoid
+    having its blob storage occupy twice as much disk space as actually
+    needed (the extra migration will create new blobs).
 
 
 FAQ
