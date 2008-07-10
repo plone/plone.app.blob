@@ -1,4 +1,5 @@
-Changelog for plone.app.blob
+Changelog
+---------
 
     (name of developer listed in brackets)
 

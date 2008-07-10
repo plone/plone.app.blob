@@ -1,12 +1,16 @@
 from setuptools import setup, find_packages
+from os.path import join
 
-version = '1.0b3'
+name = 'plone.app.blob'
+path = name.split('.') + ['version.txt']
+version = open(join(*path)).read().strip()
 readme = open("README.txt").read()
+history = open(join('docs', 'HISTORY.txt')).read().replace(name + ' - ', '')
 
-setup(name = 'plone.app.blob',
+setup(name = name,
       version = version,
       description = 'ZODB 3.8 blob support for Plone 3.x',
-      long_description = readme[readme.find('Overview'):],
+      long_description = readme[readme.find('\n\n'):] + '\n' + history,
       classifiers = [
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
