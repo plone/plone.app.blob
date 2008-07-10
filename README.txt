@@ -372,7 +372,9 @@ enough.  In the meantime here are the recommended workarounds:
 
     After that migration should use the new "File" type, based on ZODB blobs.
     Once you've migrated you might remove or disable the "Blob" type from
-    ``/portal_types`` again.
+    ``/portal_types`` again.  A future version of "plone.app.blob" will try
+    auto-detect the correct target type for the migration (or at least allow
+    to specify it) to make this more convenient.
 
     If you have already migrated to "Blob" content, but would rather like to
     have "File" items, you can change the two previous lines to::

@@ -1,4 +1,5 @@
 todos:
+- fix migration when using "atfile replacement" profile
 - explain which gs profile to use
 - add section about buildout-installer to the docs
 - answer remaining questions in the faq section
