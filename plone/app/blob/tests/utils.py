@@ -21,9 +21,7 @@ Content-Length: %d
 
 def makeFileUpload(data, filename):
     request_data = upload_request % (filename, len(data), data)
-    req = HTTPRequest(StringIO(request_data),
-                      test_environment.copy(),
-                      None)
+    req = HTTPRequest(StringIO(request_data), test_environment.copy(), None)
     req.processInputs()
     return req.form.get('file')
 
