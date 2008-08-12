@@ -1,7 +1,7 @@
 from plone.app.blob.tests.base import BlobTestCase      # import first!
 
 import os.path
-from unittest import TestSuite, makeSuite
+from unittest import defaultTestLoader
 from ZPublisher.HTTPRequest import HTTPRequest
 
 from plone.app.blob.utils import guessMimetype
@@ -120,7 +120,5 @@ class IntegrationTests(BlobTestCase):
 
 
 def test_suite():
-    return TestSuite((
-        makeSuite(IntegrationTests),
-    ))
+    return defaultTestLoader.loadTestsFromName(__name__)
 
