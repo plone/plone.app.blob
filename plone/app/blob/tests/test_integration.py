@@ -1,4 +1,4 @@
-from plone.app.blob import db   # needs to be imported first to set up ZODB
+from plone.app.blob.tests import db # needs to be imported first to set up ZODB
 db  # make pyflakes happy...
 
 import os.path
