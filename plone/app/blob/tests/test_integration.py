@@ -2,14 +2,12 @@ from plone.app.blob.tests.base import BlobTestCase      # import first!
 
 from unittest import defaultTestLoader
 from plone.app.blob.utils import guessMimetype
-from plone.app.blob.tests.utils import makeFileUpload
+from plone.app.blob.tests.utils import makeFileUpload, getImage
 from StringIO import StringIO
-from base64 import decodestring
 from os.path import isfile
 
 
 largefile_data = ('test' * 2048)
-gif_data = 'R0lGODlhAQABAPAAAPj8+AAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='
 pdf_data = '%PDF-1.4 fake pdf...'
 
 
@@ -21,7 +19,7 @@ class IntegrationTests(BlobTestCase):
         self.assert_(isfile(f.name))
 
     def testMimetypeGuessing(self):
-        gif = StringIO(decodestring(gif_data))
+        gif = StringIO(getImage())
         self.assertEqual(guessMimetype(gif), 'image/gif')
         self.assertEqual(guessMimetype(gif, 'image.jpg'), 'image/jpeg')
         self.assertEqual(guessMimetype(StringIO(), 'image.jpg'), 'image/jpeg')
@@ -42,7 +40,7 @@ class IntegrationTests(BlobTestCase):
     def testStringValue(self):
         self.folder.invokeFactory('Blob', 'blob')
         blob = self.folder['blob']
-        value = decodestring(gif_data)
+        value = getImage()
         blob.update(title="I'm blob", file=value)
         self.assertEqual(blob.getContentType(), 'image/gif')
         self.assertEqual(str(blob.getFile()), value)
@@ -57,7 +55,7 @@ class IntegrationTests(BlobTestCase):
         self.folder.invokeFactory('Blob', 'blob')
         blob = self.folder['blob']
         # test with a small file
-        gif = decodestring(gif_data)
+        gif = getImage()
         blob.update(file=makeFileUpload(gif, 'test.gif'))
         self.assertEqual(blob.get_size(), len(gif))
         # and a large one
@@ -76,7 +74,7 @@ class IntegrationTests(BlobTestCase):
     def testIcon(self):
         self.folder.invokeFactory('Blob', 'blob', title='foo')
         blob = self.folder.blob
-        blob.update(file=decodestring(gif_data))
+        blob.update(file=getImage())
         self.assertEqual(blob.getIcon(), 'plone/image.png')
         blob.update(file=pdf_data)
         self.assertEqual(blob.getIcon(), 'plone/pdf.png')

@@ -1,5 +1,6 @@
 from ZPublisher.HTTPRequest import HTTPRequest
 from StringIO import StringIO
+from base64 import decodestring
 
 
 test_environment = {
@@ -24,4 +25,9 @@ def makeFileUpload(data, filename):
     req = HTTPRequest(StringIO(request_data), test_environment.copy(), None)
     req.processInputs()
     return req.form.get('file')
+
+
+def getImage():
+    gif = 'R0lGODlhAQABAPAAAPj8+AAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='
+    return decodestring(gif)
 
