@@ -8,6 +8,7 @@
     title="plone.app.blob"
     directory="profiles/default"
     description="Content types to integrate ZODB 3.8 Blob support"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     provides="Products.GenericSetup.interfaces.EXTENSION"
     />
 
@@ -16,6 +17,7 @@
     title="plone.app.blob: ATFile replacement"
     directory="profiles/atfile-replacement"
     description="Extension profile to replace the standard 'File' content type with a compatible, blob-based one"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     provides="Products.GenericSetup.interfaces.EXTENSION"
     />
 
