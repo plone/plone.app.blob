@@ -18,6 +18,7 @@ from Products.Archetypes.utils import contentDispositionHeader
 
 from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
 from plone.app.blob.interfaces import IBlobbable, IWebDavUpload
+from plone.app.blob.mixins import ImageFieldMixin
 
 
 class WebDavUpload(object):
@@ -109,7 +110,7 @@ class BlobWrapper(Implicit, Persistent):
 InitializeClass(BlobWrapper)
 
 
-class BlobField(ObjectField):
+class BlobField(ObjectField, ImageFieldMixin):
     """ file field implementation based on zodb blobs """
 
     _properties = ObjectField._properties.copy()

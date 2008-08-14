@@ -15,9 +15,10 @@ from Products.ATContentTypes.content.schemata import ATContentTypeSchema
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from Products.MimetypesRegistry.common import MimeTypeException
 
-from plone.app.blob.interfaces import IATBlob
+from plone.app.blob.interfaces import IATBlob, IATBlobImage
 from plone.app.blob.config import packageName
 from plone.app.blob.field import BlobMarshaller
+from plone.app.blob.mixins import ImageMixin
 from plone.app.blob.markings import markAs
 
 
@@ -47,7 +48,7 @@ def addATBlobImage(container, id, **kwargs):
     return addATBlob(container, id, subtype='Image', **kwargs)
 
 
-class ATBlob(ATCTFileContent):
+class ATBlob(ATCTFileContent, ImageMixin):
     """ a chunk of binary data """
     implements(IATBlob)
 
@@ -64,9 +65,12 @@ class ATBlob(ATCTFileContent):
 
     security.declareProtected(View, 'index_html')
     def index_html(self, REQUEST, RESPONSE):
-        """ download the file inline """
+        """ download the file inline (or return the tag for images) """
         field = self.getPrimaryField()
-        return field.download(self, REQUEST, RESPONSE)
+        if IATBlobImage.providedBy(self):
+            return field.index_html(self, REQUEST, RESPONSE)
+        else:
+            return field.download(self, REQUEST, RESPONSE)
 
     # helper & explicit accessor and mutator methods
 
@@ -88,18 +92,6 @@ class ATBlob(ATCTFileContent):
         mutator = self.getField('file').getMutator(self)
         mutator(value, **kwargs)
 
-    security.declareProtected(View, 'getImage')
-    def getImage(self, **kwargs):
-        """ archetypes.schemaextender (wisely) doesn't mess with classes,
-            so we have to provide our own accessor """
-        return self.getBlobWrapper()
-
-    security.declareProtected(ModifyPortalContent, 'setImage')
-    def setImage(self, value, **kwargs):
-        """ set image contents and possibly also the id """
-        mutator = self.getField('image').getMutator(self)
-        mutator(value, **kwargs)
-
     # compatibility methods when used as ATFile replacement
 
     security.declareProtected(View, 'get_data')
@@ -115,7 +107,10 @@ class ATBlob(ATCTFileContent):
         """ return data as a string;  this is highly inefficient as it
             loads the complete blob content into memory, but the method
             is unfortunately still used here and there... """
-        return self.get_data()
+        if IATBlobImage.providedBy(self):
+            return self.getPrimaryField().tag(self)
+        else:
+            return self.get_data()
 
     security.declareProtected(ModifyPortalContent, 'setFilename')
     def setFilename(self, value, key=None):
