@@ -60,6 +60,10 @@ class FileReplacementTests(ReplacementTestCase):
         self.assertEqual(foo.Contributors(), ('me',))
         blob = foo.getImage().getBlob().open('r')
         self.assertEqual(blob.read(), 'plain text')
+        # also make sure the catalog is up to date
+        brain = self.portal.portal_catalog(id = 'foo')[0]
+        self.assertEqual(foo.UID(), brain.UID)
+        self.assertEqual(foo.getObjSize(), brain.getObjSize)
 
 
 class ImageReplacementTests(ReplacementTestCase):
@@ -112,6 +116,10 @@ class ImageReplacementTests(ReplacementTestCase):
         self.assertEqual(foo.Contributors(), ('me',))
         blob = foo.getImage().getBlob().open('r')
         self.assertEqual(blob.read(), gif)
+        # also make sure the catalog is up to date
+        brain = self.portal.portal_catalog(id = 'foo')[0]
+        self.assertEqual(foo.UID(), brain.UID)
+        self.assertEqual(foo.getObjSize(), brain.getObjSize)
 
 
 def test_suite():
