@@ -11,6 +11,21 @@ from Products.CMFCore.utils import getToolByName
 from transaction import savepoint
 
 
+def getMigrationWalker(context, migrator):
+    """ set up migration walker using the given item migrator """
+    portal = getToolByName(context, 'portal_url').getPortalObject()
+    return CustomQueryWalker(portal, migrator, query = {})
+
+
+def migrate(context, walker):
+    """ migrate instances using the given walker """
+    walker = walker(context)
+    savepoint(optimistic=True)
+    walker.go()
+    return walker.getOutput()
+
+
+# migration of file content to blob content type
 class ATFileToBlobMigrator(ATItemMigrator):
     src_portal_type = 'File'
     src_meta_type = 'ATFile'
@@ -30,15 +45,8 @@ class ATFileToBlobMigrator(ATItemMigrator):
 
 
 def getATFilesMigrationWalker(self):
-    """ set up walker for migrating ATFile instances """
-    portal = getToolByName(self, 'portal_url').getPortalObject()
-    return CustomQueryWalker(portal, ATFileToBlobMigrator, query = {})
-
+    return getMigrationWalker(self, migrator=ATFileToBlobMigrator)
 
 def migrateATFiles(self):
-    """ migrate ATFile instances """
-    walker = getATFilesMigrationWalker(self)
-    savepoint(optimistic=True)
-    walker.go()
-    return walker.getOutput()
+    return migrate(self, walker=getATFilesMigrationWalker)
 
