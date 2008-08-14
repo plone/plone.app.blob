@@ -6,7 +6,21 @@
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       name="blob-migration"
       template="migration.pt"
-      class=".migration.MigrationView"
-      permission="cmf.ManagePortal" /> 
+      class=".migration.BlobMigrationView"
+      permission="cmf.ManagePortal" />
+
+  <browser:page
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="blob-file-migration"
+      template="migration.pt"
+      class=".migration.FileMigrationView"
+      permission="cmf.ManagePortal" />
+
+  <browser:page
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="blob-image-migration"
+      template="migration.pt"
+      class=".migration.ImageMigrationView"
+      permission="cmf.ManagePortal" />
 
 </configure>

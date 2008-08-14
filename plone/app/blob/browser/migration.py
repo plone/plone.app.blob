@@ -7,9 +7,16 @@ from Products.statusmessages.interfaces import IStatusMessage
 from plone.app.blob.migrations import haveContentMigrations
 from plone.app.blob.migrations import migrateATFiles
 from plone.app.blob.migrations import getATFilesMigrationWalker
+from plone.app.blob.migrations import migrateATBlobFiles
+from plone.app.blob.migrations import getATBlobFilesMigrationWalker
+from plone.app.blob.migrations import migrateATBlobImages
+from plone.app.blob.migrations import getATBlobImagesMigrationWalker
 
 
-class MigrationView(BrowserView):
+class BlobMigrationView(BrowserView):
+
+    migration = migrateATFiles
+    walker = getATFilesMigrationWalker
 
     def __call__(self):
         context = aq_inner(self.context)
@@ -21,7 +28,7 @@ class MigrationView(BrowserView):
             IStatusMessage(request).addStatusMessage(msg, type='warning')
             options = { 'notinstalled': 42 }
         elif clicked('migrate'):
-            output = migrateATFiles(self)
+            output = self.migration()
             count = len(output.split('\n')) - 1
             msg = _(u'blob_migration_info',
                 default=u'Blob migration performed for ${count} item(s).',
@@ -33,7 +40,19 @@ class MigrationView(BrowserView):
             IStatusMessage(request).addStatusMessage(msg, type='info')
             request.RESPONSE.redirect(getToolByName(context, 'portal_url')())
         else:
-            walker = getATFilesMigrationWalker(self)
+            walker = self.walker()
             options = { 'available': len(list(walker.walk())) }
         return self.index(**options)
+
+
+class FileMigrationView(BlobMigrationView):
+
+    migration = migrateATBlobFiles
+    walker = getATBlobFilesMigrationWalker
+
+
+class ImageMigrationView(BlobMigrationView):
+
+    migration = migrateATBlobImages
+    walker = getATBlobImagesMigrationWalker
 
