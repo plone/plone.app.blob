@@ -43,6 +43,9 @@ def addATBlob(container, id, subtype='File', **kwargs):
 def addATBlobFile(container, id, **kwargs):
     return addATBlob(container, id, subtype='File', **kwargs)
 
+def addATBlobImage(container, id, **kwargs):
+    return addATBlob(container, id, subtype='Image', **kwargs)
+
 
 class ATBlob(ATCTFileContent):
     """ a chunk of binary data """
@@ -70,7 +73,7 @@ class ATBlob(ATCTFileContent):
     security.declarePrivate('getBlobWrapper')
     def getBlobWrapper(self):
         """ return wrapper class containing the actual blob """
-        accessor = self.getField('file').getAccessor(self)
+        accessor = self.getPrimaryField().getAccessor(self)
         return accessor()
 
     security.declareProtected(View, 'getFile')
@@ -83,6 +86,18 @@ class ATBlob(ATCTFileContent):
     def setFile(self, value, **kwargs):
         """ set the file contents and possibly also the id """
         mutator = self.getField('file').getMutator(self)
+        mutator(value, **kwargs)
+
+    security.declareProtected(View, 'getImage')
+    def getImage(self, **kwargs):
+        """ archetypes.schemaextender (wisely) doesn't mess with classes,
+            so we have to provide our own accessor """
+        return self.getBlobWrapper()
+
+    security.declareProtected(ModifyPortalContent, 'setImage')
+    def setImage(self, value, **kwargs):
+        """ set image contents and possibly also the id """
+        mutator = self.getField('image').getMutator(self)
         mutator(value, **kwargs)
 
     # compatibility methods when used as ATFile replacement

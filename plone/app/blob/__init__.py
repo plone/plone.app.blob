@@ -17,11 +17,15 @@ def initialize(context):
 
     content_types, constructors, ftis = atapi.process_types(
         atapi.listTypes(packageName), packageName)
+    extra_constructors = {
+        content.ATBlob: (content.addATBlobFile, content.addATBlobImage),
+    }
 
     for atype, constructor in zip(content_types, constructors):
+        extras = extra_constructors.get(atype, ())
         utils.ContentInit("%s: %s" % (packageName, atype.portal_type),
             content_types      = (atype,),
             permission         = permissions[atype.portal_type],
-            extra_constructors = (constructor, content.addATBlobFile),
+            extra_constructors = (constructor,) + extras,
             ).initialize(context)
 

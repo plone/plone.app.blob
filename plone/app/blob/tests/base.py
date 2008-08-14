@@ -15,12 +15,15 @@ def setupPackage():
     fiveconfigure.debug_mode = True
     import plone.app.blob
     zcml.load_config('configure.zcml', plone.app.blob)
+    import plone.app.imaging
+    zcml.load_config('configure.zcml', plone.app.imaging)
     fiveconfigure.debug_mode = False
     installPackage('plone.app.blob')
 
 setupPackage()
 PloneTestCase.setupPloneSite(extension_profiles=(
     'plone.app.blob:default',
+    'plone.app.imaging:default',
 ))
 
 

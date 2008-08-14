@@ -17,9 +17,14 @@
   </class>
 
   <adapter
-      name="plone.app.blob.subtypes.file"
-      for="plone.app.blob.interfaces.IATBlobFile"
-      factory=".subtypes.file.SchemaExtender" />
+    name="plone.app.blob.subtypes.file"
+    for="plone.app.blob.interfaces.IATBlobFile"
+    factory=".subtypes.file.SchemaExtender" />
+
+  <adapter
+    name="plone.app.blob.subtypes.image"
+    for="plone.app.blob.interfaces.IATBlobImage"
+    factory=".subtypes.image.SchemaExtender" />
 
 </configure>
 
