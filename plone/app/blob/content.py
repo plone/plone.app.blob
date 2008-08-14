@@ -65,7 +65,7 @@ class ATBlob(ATCTFileContent, ImageMixin):
 
     security.declareProtected(View, 'index_html')
     def index_html(self, REQUEST, RESPONSE):
-        """ download the file inline (or return the tag for images) """
+        """ download the file inline or as an attachment """
         field = self.getPrimaryField()
         if IATBlobImage.providedBy(self):
             return field.index_html(self, REQUEST, RESPONSE)
