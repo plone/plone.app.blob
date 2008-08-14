@@ -6,11 +6,16 @@ from Products.ATContentTypes.configuration import zconf
 from Products.validation import V_REQUIRED
 from archetypes.schemaextender.interfaces import ISchemaExtender
 from archetypes.schemaextender.field import ExtensionField
+from plone.app.imaging.utils import getAllowedSizes
 from plone.app.blob.field import BlobField
 
 
 class ExtensionBlobField(ExtensionField, BlobField):
     """ derivative of blobfield for extending schemas """
+
+    @property
+    def sizes(self):
+        return getAllowedSizes()
 
 
 class SchemaExtender(object):
