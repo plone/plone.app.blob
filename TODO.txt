@@ -1,5 +1,5 @@
 todos:
-- image support: blob adapter for scales, content creation browsertests
+- image support: blob adapter for scales
 - fix migration when using "atfile replacement" profile
 - explain which gs profile to use
 - add section about buildout-installer to the docs

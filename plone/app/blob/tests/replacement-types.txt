@@ -46,3 +46,47 @@ Now let's make sure we can also edit it:
   '...Info...Changes saved...
    ...Foobar...foobar.pdf...PDF document,...5Kb...'
 
+
+Images
+------
+
+Next a similar test is conducted for an "Image" content item:
+
+  >>> from plone.app.blob.tests.utils import getImage
+  >>> browser.open(self.folder.absolute_url())
+
+  >>> browser.getLink(url='createObject?type_name=Image').click()
+  >>> browser.url
+  'http://nohost/plone/.../portal_factory/Image/image.../edit'
+  >>> browser.getControl(name='title').value = 'Bar'
+  >>> control = browser.getControl(name='image_file')
+  >>> control.filename = 'bar.gif'
+  >>> control.value = StringIO(getImage())
+  >>> browser.getControl('Save').click()
+
+  >>> browser.url
+  'http://nohost/plone/.../bar.gif/view'
+  >>> browser.contents
+  '...Info...Changes saved...
+   ...Bar...
+   ...<img src="http://.../bar.gif/image_preview"...title="Bar" height="1" width="1" />...
+   ...Click to view full-size...Size...1 kB...'
+
+Now let's make sure we can also edit it:
+
+  >>> browser.getLink('Edit').click()
+  >>> browser.getControl(name='title').value = 'Foobar'
+  >>> browser.getControl('Replace with new image').selected = True
+  >>> control = browser.getControl(name='image_file')
+  >>> control.filename = 'foobar.gif'
+  >>> control.value = StringIO(getImage())
+  >>> browser.getControl('Save').click()
+
+  >>> browser.url
+  'http://nohost/plone/.../bar.gif/view'
+  >>> browser.contents
+  '...Info...Changes saved...
+   ...Foobar...
+   ...<img src="http://.../bar.gif/image_preview"...title="Foobar" height="1" width="1" />...
+   ...Click to view full-size...Size...1 kB...'
+
