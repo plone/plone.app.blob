@@ -50,3 +50,15 @@ def getATFilesMigrationWalker(self):
 def migrateATFiles(self):
     return migrate(self, walker=getATFilesMigrationWalker)
 
+
+# migration of file content to file replacement content type
+class ATFileToBlobFileMigrator(ATFileToBlobMigrator):
+    dst_portal_type = 'File'
+
+
+def getATBlobFilesMigrationWalker(self):
+    return getMigrationWalker(self, migrator=ATFileToBlobFileMigrator)
+
+def migrateATBlobFiles(self):
+    return migrate(self, walker=getATBlobFilesMigrationWalker)
+

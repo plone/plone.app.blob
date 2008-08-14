@@ -30,6 +30,8 @@ class BlobReplacementLayer(PloneSite):
         # make sure it's loaded...
         types = getToolByName(portal, 'portal_types')
         assert types.getTypeInfo('File').product == 'plone.app.blob'
+        # allow creating the replaced types
+        types.getTypeInfo('ATFile').global_allow = True
         # and commit the changes
         commit()
         close(root)

@@ -3,7 +3,9 @@ from plone.app.blob.tests.base import ReplacementTestCase   # import first!
 from unittest import defaultTestLoader
 from Products.ATContentTypes.interface.file import IATFile, IFileContent
 from Products.ATContentTypes.interface.image import IATImage, IImageContent
+from Products.ATContentTypes.content.file import ATFile
 from plone.app.blob.interfaces import IATBlobFile, IATBlobImage
+from plone.app.blob.migrations import migrateATBlobFiles
 from plone.app.blob.field import BlobField
 from plone.app.blob.content import ATBlob
 from plone.app.blob.tests.utils import getImage
@@ -29,6 +31,34 @@ class FileReplacementTests(ReplacementTestCase):
         self.failUnless(IATFile.providedBy(foo), 'no IATFile?')
         self.failUnless(IFileContent.providedBy(foo), 'no IFileContent?')
         self.failUnless(IATBlobFile.providedBy(foo), 'no IATBlobFile?')
+
+    def testFileMigration(self):
+        foo = self.folder[self.folder.invokeFactory('ATFile', id='foo',
+            title='a file', file='plain text', subject=('foo', 'bar'),
+            contributors=('me'))]
+        # fake old content from before applying the replacement profile
+        foo._setPortalTypeName('File')
+        foo.reindexObject(idxs=('portal_type',))
+        # check to be migrated content
+        self.failUnless(isinstance(foo, ATFile), 'not a file?')
+        self.assertEqual(foo.Title(), 'a file')
+        self.assertEqual(foo.getContentType(), 'text/plain')
+        self.assertEqual(foo.getPortalTypeName(), 'File')
+        self.assertEqual(foo.Subject(), ('foo', 'bar'))
+        self.assertEqual(foo.Contributors(), ('me',))
+        # migrate & check migrated content item
+        self.assertEqual(migrateATBlobFiles(self.portal),
+            'Migrating /plone/Members/test_user_1_/foo (File -> File)\n')
+        foo = self.folder['foo']
+        self.failUnless(isinstance(foo, ATBlob), 'not a blob?')
+        self.failUnless(isinstance(foo.getField('file'), BlobField), 'no blob?')
+        self.assertEqual(foo.Title(), 'a file')
+        self.assertEqual(foo.getContentType(), 'text/plain')
+        self.assertEqual(foo.getPortalTypeName(), 'File')
+        self.assertEqual(foo.Subject(), ('foo', 'bar'))
+        self.assertEqual(foo.Contributors(), ('me',))
+        blob = foo.getImage().getBlob().open('r')
+        self.assertEqual(blob.read(), 'plain text')
 
 
 class ImageReplacementTests(ReplacementTestCase):
