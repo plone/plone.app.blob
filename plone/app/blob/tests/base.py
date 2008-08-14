@@ -4,6 +4,7 @@ db  # make pyflakes happy...
 from Testing.ZopeTestCase import installPackage
 from Products.Five import zcml
 from Products.Five import fiveconfigure
+from Products.Five.testbrowser import Browser
 from Products.PloneTestCase import PloneTestCase
 from Products.PloneTestCase.layer import onsetup
 from plone.app.blob.tests.layer import BlobLayer, BlobReplacementLayer
@@ -38,9 +39,24 @@ class BlobFunctionalTestCase(PloneTestCase.FunctionalTestCase):
 
     layer = BlobLayer
 
+    def getBrowser(self, loggedIn=True):
+        """ instantiate and return a testbrowser for convenience """
+        browser = Browser()
+        if loggedIn:
+            user = PloneTestCase.default_user
+            pwd = PloneTestCase.default_password
+            browser.addHeader('Authorization', 'Basic %s:%s' % (user, pwd))
+        return browser
+
 
 class ReplacementTestCase(PloneTestCase.PloneTestCase):
     """ base class for integration tests using replacement types """
+
+    layer = BlobReplacementLayer
+
+
+class ReplacementFunctionalTestCase(BlobFunctionalTestCase):
+    """ base class for functional tests """
 
     layer = BlobReplacementLayer
 
