@@ -3,6 +3,7 @@
 
   <adapter factory=".fileupload.BlobbableFileUpload" />
   <adapter factory=".atfile.BlobbableATFile" />
+  <adapter factory=".atimage.BlobbableATImage" />
   <adapter factory=".stringio.BlobbableStringIO" />
   <adapter factory=".webdav.BlobbableWebDavUpload" />
 

@@ -62,3 +62,26 @@ def getATBlobFilesMigrationWalker(self):
 def migrateATBlobFiles(self):
     return migrate(self, walker=getATBlobFilesMigrationWalker)
 
+
+# migration of image content to image replacement content type
+class ATImageToBlobImageMigrator(ATFileToBlobMigrator):
+    src_portal_type = 'Image'
+    src_meta_type = 'ATImage'
+    dst_portal_type = 'Image'
+    dst_meta_type = 'ATBlob'
+
+    # migrate all fields except 'image', which needs special handling...
+    fields_map = {
+        'image': None,
+    }
+
+    def migrate_data(self):
+        self.new.getField('image').getMutator(self.new)(self.old)
+
+
+def getATBlobImagesMigrationWalker(self):
+    return getMigrationWalker(self, migrator=ATImageToBlobImageMigrator)
+
+def migrateATBlobImages(self):
+    return migrate(self, walker=getATBlobImagesMigrationWalker)
+
