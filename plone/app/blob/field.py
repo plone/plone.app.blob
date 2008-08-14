@@ -44,9 +44,11 @@ class BlobMarshaller(PrimaryFieldMarshaller):
 class BlobWrapper(Implicit, Persistent):
     """ persistent wrapper for a zodb blob, also holding some metadata """
 
-    security  = ClassSecurityInfo()
+    security = ClassSecurityInfo()
+    context = None
 
-    def __init__(self):
+    def __init__(self, instance):
+        self.context = instance
         self.blob = Blob()
         self.content_type = 'application/octet-stream'
         self.filename = None
@@ -70,6 +72,7 @@ class BlobWrapper(Implicit, Persistent):
         return getsize(current_filename)
 
     __len__ = get_size
+    getSize = get_size
 
     security.declarePrivate('setContentType')
     def setContentType(self, value):
@@ -106,6 +109,13 @@ class BlobWrapper(Implicit, Persistent):
 
     data = ComputedAttribute(__str__, 0)
 
+    def absolute_url(self):
+        # XXX: might not be a good idea to create a circular reference here!
+        if hasattr(self.context, 'absolute_url'):
+            return self.context.absolute_url()
+        else:
+            return ''
+
 
 InitializeClass(BlobWrapper)
 
@@ -134,7 +144,7 @@ class BlobField(ObjectField, ImageFieldMixin):
             return
         # create a new blob instead of modifying the old one to
         # achieve copy-on-write semantics.
-        blob = BlobWrapper()
+        blob = BlobWrapper(instance)
         if isinstance(value, basestring):
             # make StringIO from string, because StringIO may be adapted to Blobabble
             value = StringIO(value)
