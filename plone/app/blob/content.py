@@ -16,6 +16,7 @@ from Products.MimetypesRegistry.common import MimeTypeException
 from plone.app.blob.interfaces import IATBlob
 from plone.app.blob.config import packageName
 from plone.app.blob.field import BlobMarshaller
+from plone.app.blob.markings import markAs
 
 
 ATBlobSchema = ATContentTypeSchema.copy()
@@ -39,6 +40,10 @@ class ATBlob(ATCTFileContent):
     summary = ATFieldProperty('description')
 
     security  = ClassSecurityInfo()
+
+    def __init__(self, *args, **kwargs):
+        markAs(self, 'File')
+        super(ATBlob, self).__init__(*args, **kwargs)
 
     security.declareProtected(View, 'index_html')
     def index_html(self, REQUEST, RESPONSE):

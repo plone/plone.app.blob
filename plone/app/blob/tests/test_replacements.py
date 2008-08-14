@@ -1,6 +1,8 @@
 from plone.app.blob.tests.base import ReplacementTestCase   # import first!
 
 from unittest import defaultTestLoader
+from Products.ATContentTypes.interface.file import IATFile, IFileContent
+from plone.app.blob.interfaces import IATBlobFile
 from plone.app.blob.field import BlobField
 from plone.app.blob.content import ATBlob
 
@@ -19,6 +21,12 @@ class FileReplacementTests(ReplacementTestCase):
         self.failUnless(isinstance(foo.getField('file'), BlobField), 'no blob?')
         blob = foo.getFile().getBlob().open('r')
         self.assertEqual(blob.read(), 'plain text')
+
+    def testFileBlobInterfaces(self):
+        foo = self.folder[self.folder.invokeFactory('File', 'foo')]
+        self.failUnless(IATFile.providedBy(foo), 'no IATFile?')
+        self.failUnless(IFileContent.providedBy(foo), 'no IFileContent?')
+        self.failUnless(IATBlobFile.providedBy(foo), 'no IATBlobFile?')
 
 
 def test_suite():
