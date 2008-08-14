@@ -1,9 +1,9 @@
 todos:
+- image support: blob adapter for scales, content creation browsertests
 - fix migration when using "atfile replacement" profile
 - explain which gs profile to use
 - add section about buildout-installer to the docs
 - answer remaining questions in the faq section
-- image support:  sub-type, scaling, migration etc
 - document administration & backup issues
 - document motivation for blobs & design decision
 - figure out a backup solution for repozo (for the common case):
