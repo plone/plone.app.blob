@@ -30,6 +30,10 @@ class IBlobbable(Interface):
             `None` otherwise """
 
 
+class IBlobField(Interface):
+    """ marker interface for blob-based archetypes field """
+
+
 class IFileUpload(Interface):
     """ marker interface for ZPublisher.HTTPRequest.FileUpload class """
 

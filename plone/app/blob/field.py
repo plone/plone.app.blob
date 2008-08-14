@@ -17,7 +17,7 @@ from Products.Archetypes.Registry import registerField
 from Products.Archetypes.utils import contentDispositionHeader
 
 from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
-from plone.app.blob.interfaces import IBlobbable, IWebDavUpload
+from plone.app.blob.interfaces import IBlobbable, IWebDavUpload, IBlobField
 from plone.app.blob.mixins import ImageFieldMixin
 
 
@@ -112,6 +112,7 @@ InitializeClass(BlobWrapper)
 
 class BlobField(ObjectField, ImageFieldMixin):
     """ file field implementation based on zodb blobs """
+    implements(IBlobField)
 
     _properties = ObjectField._properties.copy()
     _properties.update({
