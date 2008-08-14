@@ -22,6 +22,6 @@ def initialize(context):
         utils.ContentInit("%s: %s" % (packageName, atype.portal_type),
             content_types      = (atype,),
             permission         = permissions[atype.portal_type],
-            extra_constructors = (constructor,),
+            extra_constructors = (constructor, content.addATBlobFile),
             ).initialize(context)
 

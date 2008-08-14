@@ -7,14 +7,16 @@ from plone.app.blob.interfaces import IATBlobFile
 
 
 interfaces = {
+    'Blob': [ IATBlobFile, IATFile, IFileContent ],
     'File': [ IATBlobFile, IATFile, IFileContent ],
 }
 
 
 def markAs(obj, typename):
-    alsoProvides(obj, *interfaces[typename])
+    for i in interfaces.get(typename, ()):
+        alsoProvides(obj, i)
 
 def ummarkAs(obj, typename):
-    for i in interfaces[typename]:
+    for i in interfaces.get(typename, ()):
         noLongerProvides(obj, i)
 

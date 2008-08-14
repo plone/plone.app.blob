@@ -1,4 +1,6 @@
 from zope.interface import implements
+from zope.lifecycleevent import ObjectCreatedEvent, ObjectModifiedEvent
+from zope.event import notify
 
 from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
@@ -26,6 +28,22 @@ finalizeATCTSchema(ATBlobSchema, folderish=False, moveDiscussion=False)
 ATBlobSchema.registerLayer('marshall', BlobMarshaller())
 
 
+def addATBlob(container, id, subtype='File', **kwargs):
+    """ extended at-constructor copied from ClassGen.py """
+    obj = ATBlob(id)
+    if subtype is not None:
+        markAs(obj, subtype)    # mark with interfaces needed for subtype
+    notify(ObjectCreatedEvent(obj))
+    container._setObject(id, obj)
+    obj = container._getOb(id)
+    obj.initializeArchetype(**kwargs)
+    notify(ObjectModifiedEvent(obj))
+    return obj.getId()
+
+def addATBlobFile(container, id, **kwargs):
+    return addATBlob(container, id, subtype='File', **kwargs)
+
+
 class ATBlob(ATCTFileContent):
     """ a chunk of binary data """
     implements(IATBlob)
@@ -40,10 +58,6 @@ class ATBlob(ATCTFileContent):
     summary = ATFieldProperty('description')
 
     security  = ClassSecurityInfo()
-
-    def __init__(self, *args, **kwargs):
-        markAs(self, 'File')
-        super(ATBlob, self).__init__(*args, **kwargs)
 
     security.declareProtected(View, 'index_html')
     def index_html(self, REQUEST, RESPONSE):
