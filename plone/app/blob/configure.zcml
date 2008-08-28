@@ -8,6 +8,7 @@
   <include file="profiles.zcml" />
 
   <include package="archetypes.schemaextender" />
+  <include package="plone.app.imaging" />
 
   <include package=".adapters" />
   <include package=".browser" />
