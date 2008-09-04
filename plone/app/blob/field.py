@@ -18,6 +18,7 @@ from Products.Archetypes.utils import contentDispositionHeader
 
 from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
 from plone.app.blob.interfaces import IBlobbable, IWebDavUpload, IBlobField
+from plone.app.blob.interfaces import IBlobWrapper
 from plone.app.blob.mixins import ImageFieldMixin
 
 
@@ -43,6 +44,7 @@ class BlobMarshaller(PrimaryFieldMarshaller):
 
 class BlobWrapper(Implicit, Persistent):
     """ persistent wrapper for a zodb blob, also holding some metadata """
+    implements(IBlobWrapper)
 
     security = ClassSecurityInfo()
     context = None

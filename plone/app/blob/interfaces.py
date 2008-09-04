@@ -30,6 +30,10 @@ class IBlobbable(Interface):
             `None` otherwise """
 
 
+class IBlobWrapper(Interface):
+    """ marker interface for the persistent wrapper class for zodb blobs """
+
+
 class IBlobField(Interface):
     """ marker interface for blob-based archetypes field """
 
