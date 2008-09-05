@@ -32,6 +32,21 @@ class ImageFieldMixin(ImageField):
             return handler.getScale(instance, scale)
         return None
 
+    security.declarePrivate('removeScales')
+    def removeScales(self, instance, **kwargs):
+        """ remove the scaled images """
+        handler = IImageScaleHandler(self, None)
+        if handler is not None:
+            handler.removeScales(instance)
+
+    security.declareProtected(ModifyPortalContent, 'createScales')
+    def createScales(self, instance, value=None):
+        """ creates the scales and save them """
+        assert value is None, "can only create scales for current data"
+        handler = IImageScaleHandler(self, None)
+        if handler is not None:
+            handler.createScales(instance)
+
 
 class ImageMixin(ATCTImageTransform):
     """ mixin class for methods needed for image content """
