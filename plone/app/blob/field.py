@@ -21,7 +21,6 @@ from plone.app.blob.interfaces import IBlobbable, IWebDavUpload, IBlobField
 from plone.app.blob.interfaces import IBlobWrapper
 from plone.app.blob.mixins import ImageFieldMixin
 
-from plone.app.imaging.interfaces import IImageScaleHandler
 
 class WebDavUpload(object):
     """ helper class when handling webdav uploads;  the class is needed
@@ -50,15 +49,11 @@ class BlobWrapper(Implicit, Persistent):
     security = ClassSecurityInfo()
     context = None
 
-    def __init__(self, instance, blob=None, content_type=None, filename=None):
+    def __init__(self, instance):
         self.context = instance
-        if blob is None:
-            blob = Blob()
-        self.blob = blob
-        if content_type is None:
-            content_type= 'application/octet-stream'
-        self.content_type = content_type
-        self.filename = filename
+        self.blob = Blob()
+        self.content_type = 'application/octet-stream'
+        self.filename = None
 
     security.declarePrivate('getBlob')
     def getBlob(self):
@@ -146,9 +141,6 @@ class BlobField(ObjectField, ImageFieldMixin):
     def set(self, instance, value, **kwargs):
         """ use input value to populate the blob and set the associated
             file name and mimetype """
-        handler = IImageScaleHandler(self, None)
-        if handler is not None:
-            handler.removeScales(instance)
         if value == "DELETE_FILE":
             super(BlobField, self).unset(instance, **kwargs)
             return
@@ -165,9 +157,6 @@ class BlobField(ObjectField, ImageFieldMixin):
             blob.setFilename(blobbable.filename())
         super(BlobField, self).set(instance, blob, **kwargs)
         self.fixAutoId(instance)
-        # XXX think about this: for: only change db in POST, explicit; against: slower upload, longer txn
-        if handler is not None and blob.getContentType().startswith('image/'):
-            handler.createScales(instance)
 
     security.declarePrivate('fixAutoId')
     def fixAutoId(self, instance):

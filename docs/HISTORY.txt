@@ -5,9 +5,6 @@ Changelog
 
 plone.app.blob - 1.0b3 Unreleased
 
-    - Store scales as blobs.
-      [elro]
-
     - Fix issue where the mime-type registry returned an empty tuple when
       looking up an unknown mime-type.  This fixes
       http://plone.org/products/plone.app.blob/issues/1
