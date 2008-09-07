@@ -1,6 +1,6 @@
-from plone.app.blob.tests.base import BlobTestCase      # import first!
-
 from unittest import defaultTestLoader
+from plone.app.blob.tests.base import BlobTestCase
+
 from plone.app.blob.utils import guessMimetype
 from plone.app.blob.tests.utils import makeFileUpload, getImage
 from StringIO import StringIO

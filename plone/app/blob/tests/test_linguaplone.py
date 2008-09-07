@@ -1,5 +1,5 @@
-from plone.app.blob.tests.base import BlobLinguaTestCase    # import first!
 from unittest import TestSuite, defaultTestLoader
+from plone.app.blob.tests.base import BlobLinguaTestCase
 
 from Products.CMFCore.utils import getToolByName
 from plone.app.blob.tests.utils import getData, hasLinguaPlone

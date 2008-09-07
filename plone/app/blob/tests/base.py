@@ -1,6 +1,3 @@
-from plone.app.blob.tests import db # needs to be imported first to set up ZODB
-db  # make pyflakes happy...
-
 from Testing.ZopeTestCase import installPackage, installProduct
 from Products.Five import zcml
 from Products.Five import fiveconfigure
