@@ -18,6 +18,11 @@
   </class>
 
   <adapter
+    name="plone.app.blob.subtypes.blob"
+    for="plone.app.blob.interfaces.IATBlobBlob"
+    factory=".subtypes.blob.SchemaExtender" />
+
+  <adapter
     name="plone.app.blob.subtypes.file"
     for="plone.app.blob.interfaces.IATBlobFile"
     factory=".subtypes.file.SchemaExtender" />

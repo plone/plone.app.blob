@@ -42,6 +42,10 @@ class IFileUpload(Interface):
     """ marker interface for ZPublisher.HTTPRequest.FileUpload class """
 
 
+class IATBlobBlob(Interface):
+    """ marker interface for sample blob subtype """
+
+
 class IATBlobFile(Interface):
     """ marker interface for subtype mimicking the `ATFile` type """
 

@@ -29,7 +29,7 @@ finalizeATCTSchema(ATBlobSchema, folderish=False, moveDiscussion=False)
 ATBlobSchema.registerLayer('marshall', BlobMarshaller())
 
 
-def addATBlob(container, id, subtype='File', **kwargs):
+def addATBlob(container, id, subtype='Blob', **kwargs):
     """ extended at-constructor copied from ClassGen.py """
     obj = ATBlob(id)
     if subtype is not None:

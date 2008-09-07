@@ -4,11 +4,11 @@
 from zope.interface import alsoProvides, noLongerProvides
 from Products.ATContentTypes.interface.file import IATFile, IFileContent
 from Products.ATContentTypes.interface.image import IATImage, IImageContent
-from plone.app.blob.interfaces import IATBlobFile, IATBlobImage
+from plone.app.blob.interfaces import IATBlobBlob, IATBlobFile, IATBlobImage
 
 
 interfaces = {
-    'Blob': [ IATBlobFile, IATFile, IFileContent ],
+    'Blob': [ IATBlobBlob, IATFile, IFileContent ],
     'File': [ IATBlobFile, IATFile, IFileContent ],
     'Image': [ IATBlobImage, IATImage, IImageContent ],
 }

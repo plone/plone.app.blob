@@ -44,8 +44,8 @@ instantiable:
 The new instance should have been marked with the default sub-type and
 therefore also contain the extended schema:
 
-  >>> from plone.app.blob.interfaces import IATBlobFile
-  >>> IATBlobFile.providedBy(blob)
+  >>> from plone.app.blob.interfaces import IATBlobBlob
+  >>> IATBlobBlob.providedBy(blob)
   True
   >>> blob.getField('file')
   <Field file(blob:rw)>
@@ -145,14 +145,14 @@ using a testbrowser:
   >>> browser.getLink(url='createObject?type_name=Blob').click()
   >>> browser.url
   'http://nohost/plone/.../portal_factory/Blob/blob.../edit'
-  >>> browser.getControl(name='title').value = 'Foo'
+  >>> browser.getControl(name='title').value = 'Foo bar'
   >>> control = browser.getControl(name='file_file')
   >>> control.filename = 'foo.pdf'
   >>> control.value = StringIO('%PDF-1.4 fake pdf...' + 'foo' * 1000)
   >>> browser.getControl('Save').click()
   >>> browser.url
-  'http://nohost/plone/.../foo.pdf/view'
+  'http://nohost/plone/.../foo-bar/view'
   >>> browser.contents
   '...Info...Changes saved...
-   ...Foo...foo.pdf...PDF document,...2Kb...'
+   ...Foo bar...foo.pdf...PDF document,...2Kb...'
 
