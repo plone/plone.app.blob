@@ -5,6 +5,11 @@ Changelog
 
 plone.app.blob - 1.0b3 Unreleased
 
+    - Only use the file name for id generation for the replacement types,
+      i.e. "File" and "Image", but not custom types.  This fixes
+      http://plone.org/products/plone.app.blob/issues/3
+      [witsch]
+
     - Fix issue where the mime-type registry returned an empty tuple when
       looking up an unknown mime-type.  This fixes
       http://plone.org/products/plone.app.blob/issues/1
