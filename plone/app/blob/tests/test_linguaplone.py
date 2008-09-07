@@ -39,6 +39,19 @@ class LinguaTests(BlobLinguaTestCase):
         # be using the same blob...
         self.assertEqual(fish.getGuide().getBlob(), fisch.getGuide().getBlob())
 
+    def testCreateAndRemoveTranslatedBlobelFish(self):
+        guide = getData('plone.pdf')
+        fish = self.folder[self.folder.invokeFactory('BlobelFish', 'flobby')]
+        fish.update(title='Me fish.', guide=guide, language='en')
+        # add a translation, after which both should use the same blob...
+        fisch = fish.addTranslation('de', title='Ich Fisch.')
+        self.assertEqual(fish.getGuide().getBlob(), fisch.getGuide().getBlob())
+        self.assertEqual(getattr(self.folder, 'flobby-de'), fisch)
+        # now let's remove it again and make sure the blob's still okay...
+        fish.removeTranslation('de')
+        self.assertRaises(AttributeError, getattr, self.folder, 'flobby-de')
+        self.assertEqual(str(fish.getGuide()), guide)
+
 
 def test_suite():
     if hasLinguaPlone():
