@@ -11,6 +11,10 @@ from plone.app.blob.field import BlobField
 class ExtensionBlobField(ExtensionField, BlobField):
     """ derivative of blobfield for extending schemas """
 
+    def set(self, instance, value, **kwargs):
+        super(ExtensionBlobField, self).set(instance, value, **kwargs)
+        self.fixAutoId(instance)
+
 
 class SchemaExtender(object):
     implements(ISchemaExtender)
