@@ -41,3 +41,26 @@ class BlobReplacementLayer(PloneSite):
     def tearDown(cls):
         pass
 
+
+class BlobLinguaLayer(PloneSite):
+    """ layer for integration tests with LinguaPlone """
+
+    @classmethod
+    def setUp(cls):
+        root = app()
+        portal = root.plone
+        # import replacement profiles
+        profile = 'profile-plone.app.blob:testing'
+        tool = getToolByName(portal, 'portal_setup')
+        tool.runAllImportStepsFromProfile(profile, purge_old=False)
+        # make sure it's loaded...
+        types = getToolByName(portal, 'portal_types')
+        assert types.getTypeInfo('BlobelFish')
+        # and commit the changes
+        commit()
+        close(root)
+
+    @classmethod
+    def tearDown(cls):
+        pass
+

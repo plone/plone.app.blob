@@ -1,6 +1,8 @@
 from ZPublisher.HTTPRequest import HTTPRequest
 from StringIO import StringIO
 from base64 import decodestring
+from os.path import dirname, join
+from plone.app.blob import tests
 
 
 test_environment = {
@@ -30,4 +32,29 @@ def makeFileUpload(data, filename):
 def getImage():
     gif = 'R0lGODlhAQABAPAAAPj8+AAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='
     return decodestring(gif)
+
+
+def getFile(filename):
+    """ return a file object from the test data folder """
+    filename = join(dirname(tests.__file__), 'data', filename)
+    return open(filename, 'r')
+
+
+def getData(filename):
+    """ return file data """
+    return getFile(filename).read()
+
+
+def hasLinguaPlone():
+    """ test if LinguaPlone is available """
+    try:
+        from Products import LinguaPlone
+        LinguaPlone     # make pyflakes happy
+        return True
+    except ImportError:
+        msg = 'WARNING: LinguaPlone not found. Skipping tests.'
+        print '*' * len(msg)
+        print msg
+        print '*' * len(msg)
+        return False
 

@@ -30,4 +30,13 @@
     provides="Products.GenericSetup.interfaces.EXTENSION"
     />
 
+  <genericsetup:registerProfile
+    name="testing"
+    title="plone.app.blob: testing"
+    directory="profiles/testing"
+    description="Extension profile to set up a testing environment"
+    for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
+    provides="Products.GenericSetup.interfaces.EXTENSION"
+    />
+
 </configure>

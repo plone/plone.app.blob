@@ -1,14 +1,21 @@
 from plone.app.blob.tests import db # needs to be imported first to set up ZODB
 db  # make pyflakes happy...
 
-from Testing.ZopeTestCase import installPackage
+from Testing.ZopeTestCase import installPackage, installProduct
 from Products.Five import zcml
 from Products.Five import fiveconfigure
 from Products.Five.testbrowser import Browser
 from Products.PloneTestCase import PloneTestCase
 from Products.PloneTestCase.layer import onsetup
 from plone.app.blob.tests.layer import BlobLayer, BlobReplacementLayer
+from plone.app.blob.tests.layer import BlobLinguaLayer
 
+try:
+    # try to import the sample type for testing LinguaPlone
+    from plone.app.blob.tests import lingua
+    lingua      # make pyflakes happy
+except ImportError:
+    pass
 
 @onsetup
 def setupPackage():
@@ -21,6 +28,7 @@ def setupPackage():
     fiveconfigure.debug_mode = False
     installPackage('plone.app.blob')
 
+installProduct('LinguaPlone')
 setupPackage()
 PloneTestCase.setupPloneSite(extension_profiles=(
     'plone.app.blob:default',
@@ -59,4 +67,10 @@ class ReplacementFunctionalTestCase(BlobFunctionalTestCase):
     """ base class for functional tests """
 
     layer = BlobReplacementLayer
+
+
+class BlobLinguaTestCase(BlobTestCase):
+    """ base class for functional tests """
+
+    layer = BlobLinguaLayer
 
