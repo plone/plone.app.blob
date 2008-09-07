@@ -18,6 +18,8 @@ class LinguaTests(BlobLinguaTestCase):
         foo = self.folder[self.folder.invokeFactory('BlobelFish', 'flobby')]
         foo.update(title='Me fish.', guide=guide, language='en')
         # check content item
+        self.assertEqual(foo.Title(), 'Me fish.')
+        self.assertEqual(foo.Language(), 'en')
         self.assertEqual(foo.getPortalTypeName(), 'BlobelFish')
         self.assertEqual(foo.getContentType(), 'application/pdf')
         self.assertEqual(str(foo.getGuide()), guide)
@@ -28,6 +30,8 @@ class LinguaTests(BlobLinguaTestCase):
         fish.update(title='Me fish.', guide=guide, language='en')
         # add a translation and check it
         fisch = fish.addTranslation('de', title='Ich Fisch.')
+        self.assertEqual(fisch.Title(), 'Ich Fisch.')
+        self.assertEqual(fisch.Language(), 'de')
         self.assertEqual(fisch.getPortalTypeName(), 'BlobelFish')
         self.assertEqual(fisch.getContentType(), 'application/pdf')
         self.assertEqual(str(fisch.getGuide()), guide)
