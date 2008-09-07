@@ -49,11 +49,16 @@ class BlobWrapper(Implicit, Persistent):
     security = ClassSecurityInfo()
     context = None
 
-    def __init__(self, instance, blob=None):
+    def __init__(self, instance):
         self.context = instance
-        self.blob = blob or Blob()
+        self.blob = Blob()
         self.content_type = 'application/octet-stream'
         self.filename = None
+
+    security.declarePrivate('setBlob')
+    def setBlob(self, blob):
+        """ set the contained blob object """
+        self.blob = blob
 
     security.declarePrivate('getBlob')
     def getBlob(self):
@@ -122,6 +127,10 @@ class BlobWrapper(Implicit, Persistent):
 InitializeClass(BlobWrapper)
 
 
+class ReuseBlob(Exception):
+    """ exception indicating that a blob should be reused """
+
+
 class BlobField(ObjectField, ImageFieldMixin):
     """ file field implementation based on zodb blobs """
     implements(IBlobField)
@@ -144,19 +153,18 @@ class BlobField(ObjectField, ImageFieldMixin):
         if value == "DELETE_FILE":
             super(BlobField, self).unset(instance, **kwargs)
             return
-        if isinstance(value, BlobWrapper):
-            # if the value already is a blobwrapper, simply use...
-            blob = BlobWrapper(instance, value.getBlob())
-        else:
-            # otherwise create a new blob instead of modifying the old one to
-            # achieve copy-on-write semantics.
-            blob = BlobWrapper(instance)
+        # create a new blob instead of modifying the old one to
+        # achieve copy-on-write semantics.
+        blob = BlobWrapper(instance)
         if isinstance(value, basestring):
             # make StringIO from string, because StringIO may be adapted to Blobabble
             value = StringIO(value)
         if value is not None:
             blobbable = IBlobbable(value)
-            blobbable.feed(blob.getBlob())
+            try:
+                blobbable.feed(blob.getBlob())
+            except ReuseBlob, exception:
+                blob.setBlob(exception.args[0])     # reuse the given blob
             blob.setContentType(blobbable.mimetype())
             blob.setFilename(blobbable.filename())
         super(BlobField, self).set(instance, blob, **kwargs)

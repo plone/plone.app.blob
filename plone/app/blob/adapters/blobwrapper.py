@@ -2,6 +2,7 @@ from zope.interface import implements
 from zope.component import adapts
 
 from plone.app.blob.interfaces import IBlobbable, IBlobWrapper
+from plone.app.blob.field import ReuseBlob
 
 
 class BlobbableBlobWrapper(object):
@@ -14,8 +15,7 @@ class BlobbableBlobWrapper(object):
 
     def feed(self, blob):
         """ see interface ... """
-        # do nothing except making sure the blob is already set (and the same)
-        assert self.context.blob is blob
+        raise ReuseBlob, self.context.getBlob()
 
     def filename(self):
         """ see interface ... """
