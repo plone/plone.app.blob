@@ -49,9 +49,9 @@ class BlobWrapper(Implicit, Persistent):
     security = ClassSecurityInfo()
     context = None
 
-    def __init__(self, instance):
+    def __init__(self, instance, blob=None):
         self.context = instance
-        self.blob = Blob()
+        self.blob = blob or Blob()
         self.content_type = 'application/octet-stream'
         self.filename = None
 
@@ -144,9 +144,13 @@ class BlobField(ObjectField, ImageFieldMixin):
         if value == "DELETE_FILE":
             super(BlobField, self).unset(instance, **kwargs)
             return
-        # create a new blob instead of modifying the old one to
-        # achieve copy-on-write semantics.
-        blob = BlobWrapper(instance)
+        if isinstance(value, BlobWrapper):
+            # if the value already is a blobwrapper, simply use...
+            blob = BlobWrapper(instance, value.getBlob())
+        else:
+            # otherwise create a new blob instead of modifying the old one to
+            # achieve copy-on-write semantics.
+            blob = BlobWrapper(instance)
         if isinstance(value, basestring):
             # make StringIO from string, because StringIO may be adapted to Blobabble
             value = StringIO(value)

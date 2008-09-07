@@ -1,6 +1,7 @@
 <configure xmlns="http://namespaces.zope.org/zope"
     i18n_domain="plone.app.blob">
 
+  <adapter factory=".blobwrapper.BlobbableBlobWrapper" />
   <adapter factory=".fileupload.BlobbableFileUpload" />
   <adapter factory=".atfile.BlobbableATFile" />
   <adapter factory=".atimage.BlobbableATImage" />
