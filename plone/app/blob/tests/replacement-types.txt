@@ -25,7 +25,7 @@ Let's start with creating a "File" content item:
   >>> browser.getControl('Save').click()
 
   >>> browser.url
-  'http://nohost/plone/.../foo.pdf/view'
+  'http://nohost/plone/.../foo.../view'
   >>> browser.contents
   '...Info...Changes saved...
    ...Foo...foo.pdf...PDF document,...2Kb...'
@@ -41,7 +41,7 @@ Now let's make sure we can also edit it:
   >>> browser.getControl('Save').click()
 
   >>> browser.url
-  'http://nohost/plone/.../foo.pdf/view'
+  'http://nohost/plone/.../foo.../view'
   >>> browser.contents
   '...Info...Changes saved...
    ...Foobar...foobar.pdf...PDF document,...5Kb...'
@@ -65,11 +65,11 @@ Next a similar test is conducted for an "Image" content item:
   >>> browser.getControl('Save').click()
 
   >>> browser.url
-  'http://nohost/plone/.../bar.gif/view'
+  'http://nohost/plone/.../bar.../view'
   >>> browser.contents
   '...Info...Changes saved...
    ...Bar...
-   ...<img src="http://.../bar.gif/image_preview"...title="Bar" height="1" width="1" />...
+   ...<img src="http://.../bar.../image_preview"...title="Bar" height="1" width="1" />...
    ...Click to view full-size...Size...1 kB...'
 
 Now let's make sure we can also edit it:
@@ -83,10 +83,10 @@ Now let's make sure we can also edit it:
   >>> browser.getControl('Save').click()
 
   >>> browser.url
-  'http://nohost/plone/.../bar.gif/view'
+  'http://nohost/plone/.../bar.../view'
   >>> browser.contents
   '...Info...Changes saved...
    ...Foobar...
-   ...<img src="http://.../bar.gif/image_preview"...title="Foobar" height="1" width="1" />...
+   ...<img src="http://.../bar.../image_preview"...title="Foobar" height="1" width="1" />...
    ...Click to view full-size...Size...1 kB...'
 
