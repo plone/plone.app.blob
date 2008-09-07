@@ -4,10 +4,12 @@ from os import name as os_name
 
 from zope.interface import implements
 from zope.component import adapts
+from ZODB.blob import Blob
 
 from plone.app.blob.interfaces import IBlobbable
 from plone.app.blob.interfaces import IFileUpload
 from plone.app.blob.utils import guessMimetype
+from plone.app.blob.field import ReuseBlob
 
 
 class BlobbableFileUpload(object):
@@ -21,6 +23,11 @@ class BlobbableFileUpload(object):
 
     def feed(self, blob):
         """ see interface ... """
+        cached = getattr(self.context, 'blob', None)
+        if cached is not None and isinstance(cached, Blob):
+            raise ReuseBlob, cached
+        else:
+            self.context.blob = blob
         filename = getattr(self.context, 'name', None)
         if os_name == 'nt' and filename is not None:
             # for now a copy is needed on windows...

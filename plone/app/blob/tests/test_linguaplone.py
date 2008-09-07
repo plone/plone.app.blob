@@ -3,6 +3,7 @@ from plone.app.blob.tests.base import BlobLinguaTestCase
 
 from Products.CMFCore.utils import getToolByName
 from plone.app.blob.tests.utils import getData, hasLinguaPlone
+from plone.app.blob.tests.utils import makeFileUpload
 
 
 class LinguaTests(BlobLinguaTestCase):
@@ -51,6 +52,20 @@ class LinguaTests(BlobLinguaTestCase):
         fish.removeTranslation('de')
         self.assertRaises(AttributeError, getattr, self.folder, 'flobby-de')
         self.assertEqual(str(fish.getGuide()), guide)
+
+    def testEditTranslatedBlobelFish(self):
+        guide = getData('plone.pdf')
+        fish = self.folder[self.folder.invokeFactory('BlobelFish', 'flobby')]
+        fish.update(title='Me fish.', guide=guide, language='en')
+        # add a translation and then upload a new file...
+        fisch = fish.addTranslation('de', title='Ich Fisch.')
+        blob = fish.getGuide().getBlob()
+        test = getData('plone.pdf')
+        fish.update(guide=makeFileUpload(test, 'test.pdf'))
+        self.assertNotEqual(fish.getGuide().getBlob(), blob)
+        self.assertEqual(fish.getGuide().getBlob(), fisch.getGuide().getBlob())
+        self.assertEqual(str(fish.getGuide()), test)
+        self.assertEqual(str(fisch.getGuide()), test)
 
 
 def test_suite():
