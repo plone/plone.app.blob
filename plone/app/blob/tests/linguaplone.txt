@@ -44,3 +44,25 @@ Let's check the default view:
    ...Flobby...
    ...guide.pdf...PDF document,...28Kb...'
 
+Next we add a translation and check it:
+
+  >>> browser.getLink(url='@@translate?newlanguage=de').click()
+  >>> browser.getControl('Title').value = 'Flubbie'
+  >>> browser.handleErrors = False
+  >>> browser.getControl('Save').click()
+  >>> browser.url
+  'http://nohost/plone/.../flubbie/...'
+  >>> browser.contents
+  '...Info...Changes saved...
+   ...Flubbie...
+   ...guide.pdf...PDF document,...28Kb...'
+
+We also check if the two items are using the same underlying ZODB blob for
+storing the PDF data.  This should be the case, since the field was marked
+to be language-independent:
+
+  >>> flobby = self.folder.flobby
+  >>> flubbie = self.folder.flubbie
+  >>> flobby.getGuide().getBlob() is flubbie.getGuide().getBlob()
+  True
+
