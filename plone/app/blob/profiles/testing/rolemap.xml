@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<rolemap>
+  <permissions>
+    <permission name="plone.app.blob: Add BlobelFish" acquire="True">
+        <role name="Manager" />
+        <role name="Owner" />
+    </permission>
+  </permissions>
+</rolemap>

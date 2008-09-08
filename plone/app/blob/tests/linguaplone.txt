@@ -1,0 +1,45 @@
+Blob-aware LinguaPlone content
+==============================
+
+This test tries to make sure blob-based, multi-lingual content can be
+properly created and edited.
+
+
+Creation
+--------
+
+Before we can start creating a content item we need to set the supported
+languages to more than one, so creation of copies for multi-language content
+can be testet:
+
+  >>> self.setRoles('Manager')
+  >>> from Products.CMFCore.utils import getToolByName
+  >>> ltool = getToolByName(self.portal, 'portal_languages')
+  >>> ltool.manage_setLanguageSettings(defaultLanguage='en',
+  ...   supportedLanguages=('en', 'de'))
+
+Now we can use a test-browser to try to create an instance of the
+multi-lingual, file-like sample type:
+
+  >>> browser = self.getBrowser()
+  >>> browser.open(self.folder.absolute_url())
+  >>> browser.getLink(url='createObject?type_name=BlobelFish').click()
+  >>> browser.url
+  'http://nohost/plone/.../portal_factory/BlobelFish/blobelfish.../edit'
+  >>> browser.getControl(name='title').value = 'Flobby'
+
+  >>> from plone.app.blob.tests.utils import getFile
+  >>> control = browser.getControl(name='guide_file')
+  >>> control.filename = 'guide.pdf'
+  >>> control.value = getFile('plone.pdf')
+  >>> browser.getControl('Save').click()
+
+Let's check the default view:
+
+  >>> browser.url
+  'http://nohost/plone/.../flobby/...'
+  >>> browser.contents
+  '...Info...Changes saved...
+   ...Flobby...
+   ...guide.pdf...PDF document,...28Kb...'
+
