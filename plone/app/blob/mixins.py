@@ -15,6 +15,8 @@ class ImageFieldMixin(ImageField):
     security.declareProtected(View, 'getSize')
     def getSize(self, instance, scale=None):
         """ get size of scale or original """
+        if scale is None:
+            return self.get(instance).getSize()
         handler = IImageScaleHandler(self, None)
         if handler is not None:
             image = handler.getScale(instance, scale)

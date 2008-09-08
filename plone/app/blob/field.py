@@ -4,6 +4,7 @@ from StringIO import StringIO
 from Acquisition import Implicit
 from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
+from OFS.Image import getImageInfo
 from Globals import InitializeClass
 from ZPublisher.Iterators import filestream_iterator
 from ZODB.blob import Blob
@@ -79,7 +80,14 @@ class BlobWrapper(Implicit, Persistent):
         return getsize(current_filename)
 
     __len__ = get_size
-    getSize = get_size
+
+    security.declareProtected(View, 'getSize')
+    def getSize(self):
+        """ return image dimensions of the blob """
+        blob = self.blob.open()
+        data = blob.read(32)
+        blob.close()
+        return getImageInfo(data)[1:]
 
     security.declarePrivate('setContentType')
     def setContentType(self, value):

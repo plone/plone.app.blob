@@ -81,6 +81,9 @@ class ImageReplacementTests(ReplacementTestCase):
         self.failUnless(isinstance(foo.getField('image'), BlobField), 'no blob?')
         blob = foo.getImage().getBlob().open('r')
         self.assertEqual(blob.read(), gif)
+        # let's also check the `getSize` and `tag` methods
+        self.assertEqual(foo.getSize(), (1, 1))
+        self.failUnless('/foo/image"' in foo.tag())
 
     def testImageBlobInterfaces(self):
         foo = self.folder[self.folder.invokeFactory('Image', 'foo')]
