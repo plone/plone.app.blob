@@ -65,3 +65,41 @@ to be language-independent:
   >>> flobby.getGuide().getBlob() is flubbie.getGuide().getBlob()
   True
 
+
+Editing
+-------
+
+Let's also make sure we can edit the new content item:
+
+  >>> browser.getLink('Edit').click()
+  >>> browser.getControl(name='title').value = 'Ein schlauer Fisch'
+  >>> browser.getControl('Replace with new file').selected = True
+  >>> control = browser.getControl(name='guide_file')
+  >>> control.filename = 'test.pdf'
+  >>> control.value = getFile('test.pdf')
+  >>> browser.getControl('Save').click()
+
+  >>> browser.url
+  'http://nohost/plone/.../flubbie/...'
+  >>> browser.contents
+  '...Info...Changes saved...
+   ...Ein schlauer Fisch...
+   ...test.pdf...PDF document,...18Kb...'
+
+The field holding the file-content is language-independent, so the PDF should
+have changed in the english version as well:
+
+  >>> browser.getLink('English').click()
+  >>> browser.url
+  'http://nohost/plone/.../flobby...'
+  >>> browser.contents
+  '...Flobby...
+   ...test.pdf...PDF document,...18Kb...'
+
+Let's also check if they're still using the same, albeit now different blob:
+
+  >>> flobby.getGuide().getBlob() is flubbie.getGuide().getBlob()
+  True
+  >>> str(flobby.getGuide()) == getFile('test.pdf').read()
+  True
+
