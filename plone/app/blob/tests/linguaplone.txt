@@ -48,7 +48,6 @@ Next we add a translation and check it:
 
   >>> browser.getLink(url='@@translate?newlanguage=de').click()
   >>> browser.getControl('Title').value = 'Flubbie'
-  >>> browser.handleErrors = False
   >>> browser.getControl('Save').click()
   >>> browser.url
   'http://nohost/plone/.../flubbie/...'
