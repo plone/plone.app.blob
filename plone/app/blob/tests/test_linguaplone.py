@@ -60,7 +60,7 @@ class LinguaTests(BlobLinguaTestCase):
         # add a translation and then upload a new file...
         fisch = fish.addTranslation('de', title='Ich Fisch.')
         blob = fish.getGuide().getBlob()
-        test = getData('plone.pdf')
+        test = getData('test.pdf')
         fish.update(guide=makeFileUpload(test, 'test.pdf'))
         self.assertNotEqual(fish.getGuide().getBlob(), blob)
         self.assertEqual(fish.getGuide().getBlob(), fisch.getGuide().getBlob())
