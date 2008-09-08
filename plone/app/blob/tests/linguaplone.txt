@@ -13,15 +13,16 @@ languages to more than one, so creation of copies for multi-language content
 can be testet:
 
   >>> self.setRoles('Manager')
-  >>> from Products.CMFCore.utils import getToolByName
-  >>> ltool = getToolByName(self.portal, 'portal_languages')
-  >>> ltool.manage_setLanguageSettings(defaultLanguage='en',
-  ...   supportedLanguages=('en', 'de'))
-
-Now we can use a test-browser to try to create an instance of the
-multi-lingual, file-like sample type:
-
   >>> browser = self.getBrowser()
+  >>> browser.open(portal.absolute_url())
+  >>> browser.getLink('Site Setup').click()
+  >>> browser.getLink('Language').click()
+  >>> browser.getControl('Available languages').displayValue = ['English', 'German']
+  >>> browser.getControl('Save').click()
+
+Now we can try to create an instance of the multi-lingual, file-like
+sample type:
+
   >>> browser.open(self.folder.absolute_url())
   >>> browser.getLink(url='createObject?type_name=BlobelFish').click()
   >>> browser.url
