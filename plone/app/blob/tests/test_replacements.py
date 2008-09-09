@@ -26,6 +26,15 @@ class FileReplacementTests(ReplacementTestCase):
         self.failUnless(isinstance(foo.getField('file'), BlobField), 'no blob?')
         blob = foo.getFile().getBlob().open('r')
         self.assertEqual(blob.read(), 'plain text')
+        # let's also check the `get_size` and `index_html` methods
+        self.assertEqual(foo.get_size(), 10)
+        request = foo.REQUEST
+        response = request.RESPONSE
+        self.assertEqual(foo.index_html(request, response).read(), 'plain text')
+        headers = response.headers
+        self.assertEqual(response.headers['status'], '200 OK')
+        self.assertEqual(response.headers['content-length'], '10')
+        self.assertEqual(response.headers['content-type'], 'text/plain')
 
     def testFileBlobInterfaces(self):
         foo = self.folder[self.folder.invokeFactory('File', 'foo')]
