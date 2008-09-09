@@ -84,7 +84,13 @@ class ImageReplacementTests(ReplacementTestCase):
         # let's also check the `getSize`, `tag` and `index_html` methods
         self.assertEqual(foo.getSize(), (1, 1))
         self.failUnless('/foo/image"' in foo.tag())
-        self.assertEqual(foo.index_html(None, None).read(), gif)
+        request = foo.REQUEST
+        response = request.RESPONSE
+        self.assertEqual(foo.index_html(request, response).read(), gif)
+        headers = response.headers
+        self.assertEqual(response.headers['status'], '200 OK')
+        self.assertEqual(response.headers['content-length'], '43')
+        self.assertEqual(response.headers['content-type'], 'image/gif')
 
     def testImageBlobInterfaces(self):
         foo = self.folder[self.folder.invokeFactory('Image', 'foo')]

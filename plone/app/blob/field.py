@@ -10,6 +10,7 @@ from ZPublisher.Iterators import filestream_iterator
 from ZODB.blob import Blob
 from persistent import Persistent
 from transaction import savepoint
+from webdav.common import rfc1123_date
 
 from Products.CMFCore.permissions import View
 from Products.Archetypes.atapi import ObjectField, FileWidget
@@ -219,6 +220,8 @@ class BlobField(ObjectField, ImageFieldMixin):
                 filename=filename)
             RESPONSE.setHeader("Content-disposition", header_value)
         blob = self.get(instance, raw=True)     # TODO: why 'raw'?
+        RESPONSE.setHeader('Last-Modified', rfc1123_date(instance._p_mtime))
+        RESPONSE.setHeader('Content-Type', self.getContentType(instance))
         RESPONSE.setHeader("Content-Length", blob.get_size())
         return blob.getIterator()
 
