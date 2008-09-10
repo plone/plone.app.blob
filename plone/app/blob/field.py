@@ -85,10 +85,25 @@ class BlobWrapper(Implicit, Persistent):
     security.declareProtected(View, 'getSize')
     def getSize(self):
         """ return image dimensions of the blob """
+        # TODO: this should probably be cached...
         blob = self.blob.open()
         data = blob.read(32)
         blob.close()
         return getImageInfo(data)[1:]
+
+    security.declareProtected(View, 'width')
+    @property
+    def width(self):
+        """ provide the image width as an attribute """
+        width, height = self.getSize()
+        return width
+
+    security.declareProtected(View, 'height')
+    @property
+    def height(self):
+        """ provide the image height as an attribute """
+        width, height = self.getSize()
+        return height
 
     security.declarePrivate('setContentType')
     def setContentType(self, value):

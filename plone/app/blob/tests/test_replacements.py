@@ -91,7 +91,10 @@ class ImageReplacementTests(ReplacementTestCase):
         blob = foo.getImage().getBlob().open('r')
         self.assertEqual(blob.read(), gif)
         # let's also check the `getSize`, `tag` and `index_html` methods
+        # as well as the size attributes
         self.assertEqual(foo.getSize(), (1, 1))
+        self.assertEqual(foo.width, 1)
+        self.assertEqual(foo.height, 1)
         self.failUnless('/foo/image"' in foo.tag())
         request = foo.REQUEST
         response = request.RESPONSE
