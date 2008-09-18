@@ -1,5 +1,6 @@
 from zope.component import adapts
 from zope.interface import implements
+from Products.Archetypes.Field import Image
 from Products.Archetypes.utils import shasattr
 from plone.app.imaging.traverse import DefaultImageScaleHandler
 from plone.app.imaging.interfaces import IImageScaleHandler
@@ -18,7 +19,11 @@ class BlobImageScaleHandler(DefaultImageScaleHandler):
         field = self.context
         available = field.getAvailableSizes(instance)
         if scale is None:
-            image = field.get(instance)
+            blob = field.getRaw(instance)
+            filename = blob.getFilename()
+            image = Image(field.getName(), title=filename,
+                file=blob.getIterator(), content_type=blob.getContentType())
+            image.filename = filename
         elif scale in available:
             width, height = available[scale]
             image = self.createScale(instance, scale, width, height)

@@ -97,20 +97,40 @@ without the `/view` action part:
   >>> browser.open(url)
   >>> browser.contents
   "<open file '/...blob', mode 'rb' at 0x...>"
+  >>> browser.headers['status']
+  '200 OK'
+  >>> browser.headers['content-type']
+  'image/gif'
+  >>> browser.headers['content-disposition']
+  'inline; filename="foobar.gif"'
 
 Appending `/index_html` should be the same:
 
   >>> browser.open(url + '/index_html')
   >>> browser.contents
   "<open file '/...blob', mode 'rb' at 0x...>"
+  >>> browser.headers['status']
+  '200 OK'
+  >>> browser.headers['content-type']
+  'image/gif'
+  >>> browser.headers['content-disposition']
+  'inline; filename="foobar.gif"'
 
 Let's also check the scaled versions included the un-scaled variant:
 
   >>> browser.open(url + '/image_thumb')
   >>> browser.contents
   '\x89PNG...'
+  >>> browser.headers['status']
+  '200 OK'
+  >>> browser.headers['content-type']
+  'image/png'
 
   >>> browser.open(url + '/image')
   >>> browser.contents
-  "<open file '/...blob', mode 'rb' at 0x...>"
+  'GIF89a...'
+  >>> browser.headers['status']
+  '200 OK'
+  >>> browser.headers['content-type']
+  'image/gif'
 
