@@ -104,3 +104,13 @@ Appending `/index_html` should be the same:
   >>> browser.contents
   "<open file '/...blob', mode 'rb' at 0x...>"
 
+Let's also check the scaled versions included the un-scaled variant:
+
+  >>> browser.open(url + '/image_thumb')
+  >>> browser.contents
+  '\x89PNG...'
+
+  >>> browser.open(url + '/image')
+  >>> browser.contents
+  "<open file '/...blob', mode 'rb' at 0x...>"
+

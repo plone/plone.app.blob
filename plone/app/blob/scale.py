@@ -16,15 +16,15 @@ class BlobImageScaleHandler(DefaultImageScaleHandler):
     def getScale(self, instance, scale):
         """ return scaled and aq-wrapped version for given image data """
         field = self.context
-        if scale is None:
-            return field.get(instance)
         available = field.getAvailableSizes(instance)
-        if scale in available:
+        if scale is None:
+            image = field.get(instance)
+        elif scale in available:
             width, height = available[scale]
             image = self.createScale(instance, scale, width, height)
-            if image is not None:
-                if shasattr(image, '__of__', acquire=True):
-                    image = image.__of__(instance)
-                return image
-        return None
+        else:
+            image = None
+        if image is not None and shasattr(image, '__of__', acquire=True):
+            image = image.__of__(instance)
+        return image
 
