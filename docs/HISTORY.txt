@@ -5,6 +5,9 @@ Changelog
 
 plone.app.blob - 1.0b3 Unreleased
 
+    - Added missing metadata.xml to the default profile.
+      [hannosch]
+
     - Only use the file name for id generation for the replacement types,
       i.e. "File" and "Image", but not custom types.  This fixes
       http://plone.org/products/plone.app.blob/issues/3
