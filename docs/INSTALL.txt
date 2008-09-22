@@ -1,0 +1,1 @@
+Please refer to http://plone.org/products/plone.app.blob regarding installation of this package.
