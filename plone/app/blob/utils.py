@@ -1,7 +1,14 @@
 from zope.component import getUtility
 from zope.contenttype import guess_content_type
 
+from OFS.Image import getImageInfo
 from Products.MimetypesRegistry.interfaces import IMimetypesRegistryTool
+
+try:
+    from PIL.Image import open as iopen
+    hasPIL = True
+except ImportError:
+    hasPIL = False
 
 
 def guessMimetype(data, filename=None):
@@ -16,4 +23,13 @@ def guessMimetype(data, filename=None):
         mimetype, enc = guess_content_type(filename, data, mimetype=None)
     data.seek(pos)
     return str(mimetype)
+
+
+def getImageSize(img):
+    """ determine the dimensions for the given image file """
+    if hasPIL:
+        return iopen(img).size
+    else:
+        data = img.read(32)
+        return getImageInfo(data)[1:]
 

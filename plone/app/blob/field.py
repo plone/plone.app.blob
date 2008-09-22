@@ -4,7 +4,6 @@ from StringIO import StringIO
 from Acquisition import Implicit
 from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
-from OFS.Image import getImageInfo
 from Globals import InitializeClass
 from ZPublisher.Iterators import filestream_iterator
 from ZODB.blob import Blob
@@ -22,6 +21,7 @@ from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
 from plone.app.blob.interfaces import IBlobbable, IWebDavUpload, IBlobField
 from plone.app.blob.interfaces import IBlobWrapper
 from plone.app.blob.mixins import ImageFieldMixin
+from plone.app.blob.utils import getImageSize
 
 
 class WebDavUpload(object):
@@ -87,9 +87,9 @@ class BlobWrapper(Implicit, Persistent):
         """ return image dimensions of the blob """
         # TODO: this should probably be cached...
         blob = self.blob.open()
-        data = blob.read(32)
+        size = getImageSize(blob)
         blob.close()
-        return getImageInfo(data)[1:]
+        return size
 
     security.declareProtected(View, 'width')
     @property
