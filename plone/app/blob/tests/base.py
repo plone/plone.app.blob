@@ -44,13 +44,16 @@ class BlobFunctionalTestCase(PloneTestCase.FunctionalTestCase):
 
     layer = BlobLayer
 
+    def getCredentials(self):
+        return '%s:%s' % (PloneTestCase.default_user,
+            PloneTestCase.default_password)
+
     def getBrowser(self, loggedIn=True):
         """ instantiate and return a testbrowser for convenience """
         browser = Browser()
         if loggedIn:
-            user = PloneTestCase.default_user
-            pwd = PloneTestCase.default_password
-            browser.addHeader('Authorization', 'Basic %s:%s' % (user, pwd))
+            auth = 'Basic %s' % self.getCredentials()
+            browser.addHeader('Authorization', auth)
         return browser
 
 
