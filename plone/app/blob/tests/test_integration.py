@@ -62,6 +62,12 @@ class IntegrationTests(BlobTestCase):
         blob.update(file=makeFileUpload(largefile_data, 'test.txt'))
         self.assertEqual(blob.get_size(), len(largefile_data))
 
+    def testGetSizeOnFileContent(self):
+        self.folder.invokeFactory('Blob', 'blob', title='foo', file=pdf_data)
+        blob = self.folder['blob']
+        field = blob.getFile()
+        self.assertEqual(field.getSize(), None)
+
     def testOpenAfterConsume(self):
         """ it's an expected use case to be able to open a blob for
             reading immediately after populating it by consuming """

@@ -5,6 +5,10 @@ Changelog
 
 plone.app.blob - 1.0b3 Unreleased
 
+    - Fix helper for determining image sizes to not break for non-image
+      content.
+      [witsch]
+
     - Use PIL for determining image sizes as the OFS code cannot handle
       certain types of JPEGs.
       [witsch]

@@ -28,7 +28,10 @@ def guessMimetype(data, filename=None):
 def getImageSize(img):
     """ determine the dimensions for the given image file """
     if hasPIL:
-        return iopen(img).size
+        try:
+            return iopen(img).size
+        except IOError:
+            return None
     else:
         data = img.read(32)
         return getImageInfo(data)[1:]
