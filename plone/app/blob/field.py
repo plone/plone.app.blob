@@ -49,10 +49,8 @@ class BlobWrapper(Implicit, Persistent):
     implements(IBlobWrapper)
 
     security = ClassSecurityInfo()
-    context = None
 
-    def __init__(self, instance):
-        self.context = instance
+    def __init__(self):
         self.blob = Blob()
         self.content_type = 'application/octet-stream'
         self.filename = None
@@ -140,13 +138,6 @@ class BlobWrapper(Implicit, Persistent):
 
     data = ComputedAttribute(__str__, 0)
 
-    def absolute_url(self):
-        # XXX: might not be a good idea to create a circular reference here!
-        if hasattr(self.context, 'absolute_url'):
-            return self.context.absolute_url()
-        else:
-            return ''
-
 
 InitializeClass(BlobWrapper)
 
@@ -168,7 +159,19 @@ class BlobField(ObjectField, ImageFieldMixin):
         'default_content_type' : 'application/octet-stream',
     })
 
-    security  = ClassSecurityInfo()
+    security = ClassSecurityInfo()
+
+    security.declarePrivate('getUnwrapped')
+    def getUnwrapped(self, instance, **kwargs):
+        return super(BlobField, self).get(instance, **kwargs)
+
+    security.declarePrivate('get')
+    def get(self, instance, **kwargs):
+        value = super(BlobField, self).get(instance, **kwargs)
+        if getattr(value, '__of__', None) is not None:
+            return value.__of__(instance)
+        else:
+            return value
 
     security.declarePrivate('set')
     def set(self, instance, value, **kwargs):
@@ -179,7 +182,7 @@ class BlobField(ObjectField, ImageFieldMixin):
             return
         # create a new blob instead of modifying the old one to
         # achieve copy-on-write semantics.
-        blob = BlobWrapper(instance)
+        blob = BlobWrapper()
         if isinstance(value, basestring):
             # make StringIO from string, because StringIO may be adapted to Blobabble
             value = StringIO(value)
@@ -234,7 +237,7 @@ class BlobField(ObjectField, ImageFieldMixin):
                 disposition=disposition,
                 filename=filename)
             RESPONSE.setHeader("Content-disposition", header_value)
-        blob = self.get(instance, raw=True)     # TODO: why 'raw'?
+        blob = self.getUnwrapped(instance, raw=True)    # TODO: why 'raw'?
         RESPONSE.setHeader('Last-Modified', rfc1123_date(instance._p_mtime))
         RESPONSE.setHeader('Content-Type', self.getContentType(instance))
         RESPONSE.setHeader("Content-Length", blob.get_size())
@@ -243,7 +246,7 @@ class BlobField(ObjectField, ImageFieldMixin):
     security.declarePublic('get_size')
     def get_size(self, instance):
         """ return the size of the blob used for get_size in BaseObject """
-        blob = self.get(instance)
+        blob = self.getUnwrapped(instance)
         if blob is not None:
             return blob.get_size()
         else:
@@ -252,7 +255,7 @@ class BlobField(ObjectField, ImageFieldMixin):
     security.declarePublic('getContentType')
     def getContentType(self, instance, fromBaseUnit=True):
         """ return the mimetype associated with the blob data """
-        blob = self.get(instance)
+        blob = self.getUnwrapped(instance)
         if blob is not None:
             return blob.getContentType()
         else:
@@ -261,7 +264,7 @@ class BlobField(ObjectField, ImageFieldMixin):
     security.declarePrivate('getFilename')
     def getFilename(self, instance, fromBaseUnit=True):
         """ return the file name associated with the blob data """
-        blob = self.get(instance)
+        blob = self.getUnwrapped(instance)
         if blob is not None:
             return blob.getFilename()
         else:
