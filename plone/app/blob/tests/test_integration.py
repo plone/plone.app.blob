@@ -68,6 +68,13 @@ class IntegrationTests(BlobTestCase):
         field = blob.getFile()
         self.assertEqual(field.getSize(), None)
 
+    def testAbsoluteURL(self):
+        self.folder.invokeFactory('Blob', 'blob')
+        blob = self.folder['blob']
+        url = self.folder.absolute_url() + '/blob'
+        self.assertEqual(blob.absolute_url(), url)
+        self.assertEqual(blob.getFile().absolute_url(), url)
+
     def testOpenAfterConsume(self):
         """ it's an expected use case to be able to open a blob for
             reading immediately after populating it by consuming """
