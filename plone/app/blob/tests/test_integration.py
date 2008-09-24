@@ -102,6 +102,21 @@ class IntegrationTests(BlobTestCase):
         self.folder.blob.update(file=self.folder.foo)
         self.assertEqual(self.folder.blob.getIcon(), 'plone/file_icon.gif')
 
+    def testVersioning(self):
+        self.folder.invokeFactory('Blob', 'blob', title='foo')
+        blob = self.folder.blob
+        blob.edit(file=pdf_data)
+        repository = self.portal.portal_repository
+        repository.applyVersionControl(blob, comment='version 1')
+        blob.edit(file='some text...')
+        repository.save(blob, comment='version 2')
+        version = repository.retrieve(blob, 0)
+        self.assertEqual(version.object.data, pdf_data)
+        version = repository.retrieve(blob, 1)
+        self.assertEqual(version.object.data, 'some text...')
+        repository.revert(blob, 0)
+        self.assertEqual(blob.data, pdf_data)
+
 
 def test_suite():
     return defaultTestLoader.loadTestsFromName(__name__)
