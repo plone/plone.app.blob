@@ -63,6 +63,10 @@ HTTPRequest.FileUpload.__init__ = initFileUpload
 # or images can be versioned without raising an error again.  please note
 # though, that the contained files/images still won't.  once this has been
 # properly fixed, the workaround can very likely be removed again...
+#
+# update: the methods in question have been fixed in zodb 3.8.1b8 and b9.
+# as b9 hasn't been released yet the fix for `open` remains, but all of this
+# should be removed once the new beta (or 3.8.1 final) is out.
 def setstate_wrapper(method):
     def wrapper(self, *args, **kw):
         if self.readers is None and self.writers is None:
