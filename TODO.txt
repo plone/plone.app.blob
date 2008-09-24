@@ -1,5 +1,4 @@
 todos:
-- test theuni's bushy zodb branch
 - investigate problem regarding versioning
 - turn off linkintegrity checking during migration
 - image support: blob adapter for scales
