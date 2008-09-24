@@ -5,6 +5,10 @@ Changelog
 
 plone.app.blob - 1.0b3 Unreleased
 
+    - Add workaround to prevent breakage with CMFEditions (blob-based
+      content can still not be versioned, though).
+      [witsch]
+
     - Add missing acquisition-wrapper, also allowing to remove circular
       references between instance and field, which broke pickling.
       [witsch]

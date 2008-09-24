@@ -3,6 +3,7 @@
 # file uploads are not anonymous, but instead provide a file name that
 # can later be used with the blob class' `consumeFile` method...
 
+from ZODB.blob import Blob
 from ZPublisher import HTTPRequest
 from tempfile import mkstemp, _TemporaryFileWrapper as TFW
 from cgi import FieldStorage
@@ -47,4 +48,28 @@ def initFileUpload(self, aFieldStorage):
 
 HTTPRequest.FieldStorage = NamedFieldStorage
 HTTPRequest.FileUpload.__init__ = initFileUpload
+
+
+# when CMFEditions creates a version, i.e. a copy of the to be versioned
+# object, it creates a pickle of the object and then loads it again to
+# construct a (deep) copy.  in the case of zodb blobs, this will also create
+# new blob instances, but not copy the referenced blob files along the way.
+# this might not be a problem in itself, as file and image content doesn't
+# get versioned by default anyway, but the blob instance isn't properly
+# initialized either (normally `__setstate__` would have been called at some
+# point).
+# to temporarily work around this wrappers are needed for some methods in
+# `ZODB.blob.Blob`, with which folderish content containing blob-based files
+# or images can be versioned without raising an error again.  please note
+# though, that the contained files/images still won't.  once this has been
+# properly fixed, the workaround can very likely be removed again...
+def setstate_wrapper(method):
+    def wrapper(self, *args, **kw):
+        if self.readers is None and self.writers is None:
+            self.__setstate__()     # set readers and writers to lists
+        return method(self, *args, **kw)
+    return wrapper
+
+Blob._p_invalidate = setstate_wrapper(Blob._p_invalidate)
+Blob.open = setstate_wrapper(Blob.open)
 
