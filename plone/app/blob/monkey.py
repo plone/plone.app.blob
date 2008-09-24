@@ -70,6 +70,5 @@ def setstate_wrapper(method):
         return method(self, *args, **kw)
     return wrapper
 
-Blob._p_invalidate = setstate_wrapper(Blob._p_invalidate)
 Blob.open = setstate_wrapper(Blob.open)
 
