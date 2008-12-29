@@ -162,6 +162,18 @@ A sample ZEO buildout configuration could look like this::
   eggs = ${client1:eggs}
   zcml = ${client1:zcml}
 
+Please note the configuration options ``blob-storage`` and ``shared-blob``
+specified in ``[client1]`` and ``[client2]``.  To enable blob support on a ZEO
+client (or standalone instance) you always have to specify a path in the
+``blob-storage`` configuration option.  If ``shared-blob`` is set to "on", the
+ZEO client will assume it can read blob files directly from within the path
+specified in the ``blob-storage`` option.  This path might also refer to a
+network share in case the ZEO client and server are installed on separate
+machines. However, to stream blob files trough the ZEO connection you will
+have to set the ``shared-blob`` option to "off".  The path specified in the
+``blob-storage`` option will be ignored in this situation, but it needs to be
+set nevertheless.
+
 More detailed instructions on how to set things up as well as some background
 information on blobs |---| or in other words the story of an "early adopter"
 |---| can be found in `Ken Manheimer's wiki`__.  This is a highly useful
