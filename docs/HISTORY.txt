@@ -5,6 +5,9 @@ Changelog
 
 plone.app.blob - 1.0b3 Unreleased
 
+    - Make tests clean up their temporary blob directories.
+      [stefan]
+
     - Remove quota argument from DemoStorage calls.
       [stefan]
 
