@@ -23,9 +23,9 @@ def setupPackage():
     import plone.app.imaging
     zcml.load_config('configure.zcml', plone.app.imaging)
     fiveconfigure.debug_mode = False
-    installPackage('plone.app.blob', quiet=1)
+    installPackage('plone.app.blob', quiet=True)
 
-installProduct('LinguaPlone', quiet=1)
+installProduct('LinguaPlone', quiet=True)
 setupPackage()
 PloneTestCase.setupPloneSite(extension_profiles=(
     'plone.app.blob:default',
