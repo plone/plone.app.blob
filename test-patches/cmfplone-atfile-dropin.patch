@@ -1,0 +1,20 @@
+Index: parts/plone/CMFPlone/tests/PloneTestCase.py
+===================================================================
+--- parts/plone/CMFPlone/tests/PloneTestCase.py	(revision 17963)
++++ parts/plone/CMFPlone/tests/PloneTestCase.py	(working copy)
+@@ -5,4 +5,5 @@
+ # $Id$
+ 
++from plone.app.blob.tests import db   # needs to be imported first to set up ZODB
+ from Products.PloneTestCase.ptc import *
+ 
+@@ -13,5 +15,8 @@
+ classImplements(PloneSite, ITestCasePloneSiteRoot)
+ 
+-setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture'])
++from plone.app.blob.tests.base import setupPackage
++setupPackage()
++
++setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture', 'plone.app.blob:atfile-testing'])
+ 
+ 

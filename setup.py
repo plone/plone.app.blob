@@ -2,9 +2,9 @@ from setuptools import setup, find_packages
 from os.path import join
 
 name = 'plone.app.blob'
-path = name.split('.') + ['version.txt']
+path = ['src'] + name.split('.') + ['version.txt']
 version = open(join(*path)).read().strip()
-readme = open("README.txt").read()
+readme = open('README.txt').read()
 history = open(join('docs', 'HISTORY.txt')).read().replace(name + ' - ', '')
 
 setup(name = name,
@@ -17,7 +17,8 @@ setup(name = name,
       url = 'http://plone.org/products/plone.app.blob',
       download_url = 'http://pypi.python.org/pypi/plone.app.blob/',
       license = 'GPL',
-      packages = find_packages(),
+      packages = find_packages('src'),
+      package_dir = {'': 'src'},
       namespace_packages = ['plone', 'plone.app'],
       include_package_data = True,
       platforms = 'Any',
