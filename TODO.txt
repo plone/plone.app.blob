@@ -1,7 +1,7 @@
 todos:
-- investigate problem regarding versioning
-- turn off linkintegrity checking during migration
 - image support: blob adapter for scales
+- turn off linkintegrity checking & collective.indexing during migration
+- investigate problem regarding versioning
 - fix migration when using "atfile replacement" profile
 - explain which gs profile to use
 - add section about buildout-installer to the docs
