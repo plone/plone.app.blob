@@ -1,7 +1,7 @@
-Index: parts/plone/ATContentTypes/tests/webdav.txt
+Index: parts/omelette/Products/ATContentTypes/tests/webdav.txt
 ===================================================================
---- parts/plone/ATContentTypes/tests/webdav.txt	(revision 54941)
-+++ parts/plone/ATContentTypes/tests/webdav.txt	(working copy)
+--- parts/omelette/Products/ATContentTypes/tests/webdav.txt	(revision 54941)
++++ parts/omelette/Products/ATContentTypes/tests/webdav.txt	(working copy)
 @@ -23,4 +23,6 @@
    >>> self.setRoles(['Manager'])
    >>> self.portal.setTitle('Portal Title')
@@ -9,10 +9,10 @@ Index: parts/plone/ATContentTypes/tests/webdav.txt
 +  'Registry installed...'
    >>> self.setRoles(['Member'])
  
-Index: parts/plone/ATContentTypes/tests/test_installation.py
+Index: parts/omelette/Products/ATContentTypes/tests/test_installation.py
 ===================================================================
---- parts/plone/ATContentTypes/tests/test_installation.py	(revision 54941)
-+++ parts/plone/ATContentTypes/tests/test_installation.py	(working copy)
+--- parts/omelette/Products/ATContentTypes/tests/test_installation.py	(revision 54941)
++++ parts/omelette/Products/ATContentTypes/tests/test_installation.py	(working copy)
 @@ -57,5 +57,5 @@
          # test that all types are installed well
          ttool = self.ttool
@@ -28,10 +28,10 @@ Index: parts/plone/ATContentTypes/tests/test_installation.py
 +
      def test_not_quickinstalled(self):
          qi = getattr(self.portal, 'portal_quickinstaller')
-Index: parts/plone/ATContentTypes/tests/test_atfile.py
+Index: parts/omelette/Products/ATContentTypes/tests/test_atfile.py
 ===================================================================
---- parts/plone/ATContentTypes/tests/test_atfile.py	(revision 54941)
-+++ parts/plone/ATContentTypes/tests/test_atfile.py	(working copy)
+--- parts/omelette/Products/ATContentTypes/tests/test_atfile.py	(revision 54941)
++++ parts/omelette/Products/ATContentTypes/tests/test_atfile.py	(working copy)
 @@ -36,4 +36,5 @@
  import StringIO
  
@@ -66,20 +66,20 @@ Index: parts/plone/ATContentTypes/tests/test_atfile.py
 +        self.failUnless(field.type == 'blob', 'Value is %s' % field.type)
          self.failUnless(isinstance(field.storage, AnnotationStorage),
                          'Value is %s' % type(field.storage))
-Index: parts/plone/ATContentTypes/tests/test_aaa.py
+Index: parts/omelette/Products/ATContentTypes/tests/test_aaa.py
 ===================================================================
---- parts/plone/ATContentTypes/tests/test_aaa.py	(revision 0)
-+++ parts/plone/ATContentTypes/tests/test_aaa.py	(revision 0)
+--- parts/omelette/Products/ATContentTypes/tests/test_aaa.py	(revision 0)
++++ parts/omelette/Products/ATContentTypes/tests/test_aaa.py	(revision 0)
 @@ -0,0 +1,5 @@
 +from plone.app.blob.tests import db   # needs to be imported first to set up ZODB
 +from unittest import TestSuite
 +
 +def test_suite():
 +    return TestSuite()
-Index: parts/plone/ATContentTypes/tests/atcttestcase.py
+Index: parts/omelette/Products/ATContentTypes/tests/atcttestcase.py
 ===================================================================
---- parts/plone/ATContentTypes/tests/atcttestcase.py	(revision 54941)
-+++ parts/plone/ATContentTypes/tests/atcttestcase.py	(working copy)
+--- parts/omelette/Products/ATContentTypes/tests/atcttestcase.py	(revision 54941)
++++ parts/omelette/Products/ATContentTypes/tests/atcttestcase.py	(working copy)
 @@ -31,5 +31,10 @@
  from Products.PloneTestCase.setup import portal_owner
  ZopeTestCase.installProduct('SiteAccess')
@@ -100,10 +100,10 @@ Index: parts/plone/ATContentTypes/tests/atcttestcase.py
 +        # self.failUnlessEqual(ti.Metatype(), self.meta_type)
  
      def test_doesImplementDC(self):
-Index: parts/plone/ATContentTypes/content/file.py
+Index: parts/omelette/Products/ATContentTypes/content/file.py
 ===================================================================
---- parts/plone/ATContentTypes/content/file.py	(revision 54941)
-+++ parts/plone/ATContentTypes/content/file.py	(working copy)
+--- parts/omelette/Products/ATContentTypes/content/file.py	(revision 54941)
++++ parts/omelette/Products/ATContentTypes/content/file.py	(working copy)
 @@ -104,4 +104,7 @@
      security       = ClassSecurityInfo()
  
