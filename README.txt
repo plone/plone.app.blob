@@ -62,7 +62,7 @@ this::
   parts = plone zope2 instance
   find-links =
       http://dist.plone.org
-      http://download.zope.org/ppix/ 
+      http://download.zope.org/ppix/
       http://download.zope.org/distribution/
       http://effbot.org/downloads
   eggs = elementtree
@@ -114,7 +114,7 @@ A sample ZEO buildout configuration could look like this::
   parts = plone zope2 zeo client1 client2
   find-links =
     http://dist.plone.org
-    http://download.zope.org/ppix/ 
+    http://download.zope.org/ppix/
     http://download.zope.org/distribution/
     http://effbot.org/downloads
   eggs = elementtree
@@ -131,7 +131,7 @@ A sample ZEO buildout configuration could look like this::
   zope2-location = ${zope2:location}
   zeo-address = 127.0.0.1:8100
   zeo-var = ${buildout:directory}/var
-  blob-storage = ${zeo:zeo-var}/blobstorage 
+  blob-storage = ${zeo:zeo-var}/blobstorage
   eggs = plone.app.blob
 
   [client1]
@@ -274,7 +274,7 @@ enough.  In the meantime here are the recommended workarounds:
     in your ``~/.buildout/default.cfg``.  Alternatively, running buildout
     with option "``-n``" should update the recipe to the latest version.
 
-  .. _`plone.recipe.zope2instance`: http://pypi.python.org/pypi/plone.recipe.zope2instance/    
+  .. _`plone.recipe.zope2instance`: http://pypi.python.org/pypi/plone.recipe.zope2instance/
   .. _`1.0`: http://pypi.python.org/pypi/plone.recipe.zope2instance/1.0
 
 
@@ -339,7 +339,7 @@ enough.  In the meantime here are the recommended workarounds:
     After installing "plone.app.blob" via the quick-installer or applying
     the "plone.app.blob: ATFile replacement" profile you are seeing migration
     errors like::
-    
+
       Traceback (innermost last):
         Module ZPublisher.Publish, line 119, in publish
         Module ZPublisher.mapply, line 88, in mapply
@@ -405,20 +405,20 @@ FAQ
 
 Is it possible to use "plone.app.blob" in installations not based on `zc.buildout`_?
 
-  Yes, but that would require some additional steps, since it depends on ZODB 
+  Yes, but that would require some additional steps, since it depends on ZODB
   3.8, but Plone currently ships with Zope 2.10, which still comes with
   ZODB 3.7.  So, to make things work you could either install the `required
-  versions`__ of all additionally needed packages into your ``lib/python/`` 
-  directory or use the respective eggs and make sure they get preferred over      
-  their older versions on ``import``, for example by setting up 
+  versions`__ of all additionally needed packages into your ``lib/python/``
+  directory or use the respective eggs and make sure they get preferred over
+  their older versions on ``import``, for example by setting up
   ``PYTHONPATH``.
 
   .. __: http://dev.plone.org/plone/browser/plone.app.blob/trunk/setup.py#L35
 
-  Alternatively it should also be possible to install the package using 
-  `easy_install`_, which would automatically install its dependencies 
+  Alternatively it should also be possible to install the package using
+  `easy_install`_, which would automatically install its dependencies
   including ZODB 3.8, too.  Again you would need to set up your ``PYTHONPATH``
-  to make sure the desired versions are used.  However, installing the package 
+  to make sure the desired versions are used.  However, installing the package
   like this is likely to have side effects on other Zope/Plone instances on
   your system, so you probably want to use `virtualenv`_ here at least.
 
@@ -438,7 +438,7 @@ What about image support, i.e. a drop-in for ``ATImage`` content?
   probably already work quite well, proper image support is planned for a
   later release.  "proper" here means using a sub-typing approach as
   `presented by Rocky Burt`__ in Naples, which will have several advantages
-  including a cleaner and better structured code, but will also take a little 
+  including a cleaner and better structured code, but will also take a little
   longer to implement.
 
   .. __: http://www.serverzen.com/training/subtyping-unleashed
