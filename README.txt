@@ -33,9 +33,9 @@ Requirements
 ------------
 
 Plone 3.0 or newer is required. The package has been tested with all versions
-from 3.0 up to and including 3.0.4. However, as all versions before 3.0.4
+from 3.0 up to and including 3.2.2. However, as all versions before 3.0.4
 require a workaround described in the `Troubleshooting`_ section below, it is
-recommended to use `Plone 3.0.4`_.
+recommended to use `Plone 3.0.4`_ or a more recent version.
 
   .. _`Plone 3.0.4`: http://plone.org/products/plone/releases/3.0.4
 
