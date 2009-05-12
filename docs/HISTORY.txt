@@ -5,6 +5,10 @@ Changelog
 
 plone.app.blob - 1.0b3 Unreleased
 
+    - Make code more robust in case of missing blob files.
+      This fixes http://plone.org/products/plone.app.blob/issues/10
+      [witsch]
+
     - Make tests clean up their temporary blob directories.
       [stefan]
 

@@ -1,4 +1,4 @@
-from os.path import getsize
+from os.path import getsize, isfile
 from zope.interface import implements
 from StringIO import StringIO
 from Acquisition import Implicit
@@ -7,6 +7,7 @@ from ComputedAttribute import ComputedAttribute
 from Globals import InitializeClass
 from ZPublisher.Iterators import filestream_iterator
 from ZODB.blob import Blob
+from ZODB.POSException import POSKeyError
 from persistent import Persistent
 from transaction import savepoint
 from webdav.common import rfc1123_date
@@ -73,8 +74,11 @@ class BlobWrapper(Implicit, Persistent):
     security.declareProtected(View, 'get_size')
     def get_size(self):
         """ return the size of the blob """
-        current_filename = self.blob._current_filename()
-        if current_filename is None:
+        try:
+            current_filename = self.blob._current_filename()
+        except POSKeyError:
+            return 0
+        if current_filename is None or not isfile(current_filename):
             return 0
         return getsize(current_filename)
 
@@ -134,7 +138,10 @@ class BlobWrapper(Implicit, Persistent):
         """ return data as a string;  this is highly inefficient as it
             loads the complete blob content into memory, but the method
             is unfortunately still used here and there... """
-        return self.blob.open().read()
+        try:
+            return self.blob.open().read()
+        except (IOError, POSKeyError):
+            return ''
 
     data = ComputedAttribute(__str__, 0)
 

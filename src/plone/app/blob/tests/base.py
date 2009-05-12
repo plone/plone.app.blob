@@ -1,4 +1,4 @@
-from Testing.ZopeTestCase import installPackage, installProduct
+from Testing.ZopeTestCase import installPackage, installProduct, Sandboxed
 from Products.Five import zcml
 from Products.Five import fiveconfigure
 from Products.Five.testbrowser import Browser
@@ -33,7 +33,7 @@ PloneTestCase.setupPloneSite(extension_profiles=(
 ))
 
 
-class BlobTestCase(PloneTestCase.PloneTestCase):
+class BlobTestCase(Sandboxed, PloneTestCase.PloneTestCase):
     """ base class for integration tests """
 
     layer = BlobLayer
