@@ -5,6 +5,10 @@ Changelog
 
 plone.app.blob - 1.0b3 Unreleased
 
+    - Clean up GenericSetup profiles to allow separate installation of
+      replacement types for "File" and "Image" content.
+      [witsch]
+
     - Add index accessor to make indexing of file content work again.
       This fixes http://plone.org/products/plone.app.blob/issues/12
       [witsch]
