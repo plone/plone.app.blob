@@ -52,13 +52,6 @@ Index: parts/omelette/Products/ATContentTypes/tests/test_atfile.py
 +        self._dummy = self.createDummy(klass=ATBlob)
  
      def test_fileField(self):
-@@ -196,5 +197,5 @@
-         self.failUnless(field.required == 1, 'Value is %s' % field.required)
-         self.failUnless(field.default == '', 'Value is %s' % str(field.default))
--        self.failUnless(field.searchable == True, 'Value is %s' % field.searchable)
-+        # self.failUnless(field.searchable == True, 'Value is %s' % field.searchable)
-         self.failUnless(field.vocabulary == (),
-                         'Value is %s' % str(field.vocabulary))
 @@ -215,5 +216,5 @@
                          'Value is %s' % field.generateMode)
          self.failUnless(field.force == '', 'Value is %s' % field.force)

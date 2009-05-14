@@ -1,9 +1,11 @@
+from logging import getLogger
 from zope.interface import implements
 from zope.lifecycleevent import ObjectCreatedEvent, ObjectModifiedEvent
 from zope.event import notify
 
 from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
+from ZODB.POSException import ConflictError
 from Products.Archetypes.atapi import AnnotationStorage
 from Products.Archetypes.atapi import ATFieldProperty
 from Products.Archetypes.atapi import registerType
@@ -95,9 +97,27 @@ class ATBlob(ATCTFileContent, ImageMixin):
     # index accessor using portal transforms to provide index data
 
     security.declarePrivate('getIndexValue')
-    def getIndexValue(self, instance):
-        """ an accessor method used for indexing the field's value """
-        return ''
+    def getIndexValue(self, mimetype='text/plain'):
+        """ an accessor method used for indexing the field's value
+            XXX: the implementation is mostly based on archetype's
+            `FileField.getIndexable` and rather naive as all data gets
+            loaded into memory if a suitable transform was found.
+            this should probably use `plone.transforms` in the future """
+        field = self.getPrimaryField()
+        source = field.getContentType(self)
+        transforms = getToolByName(self, 'portal_transforms')
+        if transforms._findPath(source, mimetype) is None:
+            return ''
+        value = str(field.get(self))
+        filename = field.getFilename(self)
+        try:
+            return str(transforms.convertTo(mimetype, value,
+                mimetype=source, filename=filename))
+        except (ConflictError, KeyboardInterrupt):
+            raise
+        except:
+            getLogger(__name__).exception('exception while trying to convert '
+               'blob contents to "text/plain" for %r', self)
 
     # compatibility methods when used as ATFile replacement
 

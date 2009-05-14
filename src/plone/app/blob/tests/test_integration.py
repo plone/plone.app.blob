@@ -107,6 +107,9 @@ class IntegrationTests(BlobTestCase):
         field = blob.getField('file')
         accessor = field.getIndexAccessor(blob)
         self.assertEqual(field.index_method, accessor.func_name)
+        data = accessor()
+        self.failUnless('Plone' in data)
+        self.failIf('PDF' in data)
 
     def testOpenAfterConsume(self):
         """ it's an expected use case to be able to open a blob for

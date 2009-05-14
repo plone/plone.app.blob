@@ -5,6 +5,10 @@ Changelog
 
 plone.app.blob - 1.0b3 Unreleased
 
+    - Add index accessor to make indexing of file content work again.
+      This fixes http://plone.org/products/plone.app.blob/issues/12
+      [witsch]
+
     - Make code more robust in case of missing blob files.
       This fixes http://plone.org/products/plone.app.blob/issues/10
       [witsch]

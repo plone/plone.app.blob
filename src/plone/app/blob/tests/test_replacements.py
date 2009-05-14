@@ -80,6 +80,9 @@ class FileReplacementTests(ReplacementTestCase):
         field = foo.getField('file')
         accessor = field.getIndexAccessor(foo)
         self.assertEqual(field.index_method, accessor.func_name)
+        data = accessor()
+        self.failUnless('Plone' in data)
+        self.failIf('PDF' in data)
 
 
 class ImageReplacementTests(ReplacementTestCase):
