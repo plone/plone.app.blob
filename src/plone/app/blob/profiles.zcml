@@ -4,6 +4,15 @@
     i18n_domain="plone.app.blob">
 
   <genericsetup:registerProfile
+    name="default"
+    title="plone.app.blob: 'File' and 'Image' replacement types"
+    directory="profiles/default"
+    description="Extension profile to replace the standard 'File' and 'Image' content types with compatible drop-ins based on ZODB 3.8 blobs"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    provides="Products.GenericSetup.interfaces.EXTENSION"
+    />
+
+  <genericsetup:registerProfile
     name="sample-type"
     title="plone.app.blob"
     directory="profiles/sample"
@@ -14,7 +23,7 @@
 
   <genericsetup:registerProfile
     name="file-replacement"
-    title="plone.app.blob: ATFile replacement"
+    title="plone.app.blob: 'File' replacement type"
     directory="profiles/file-replacement"
     description="Extension profile to replace the standard 'File' content type with a compatible, blob-based one"
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
@@ -22,11 +31,11 @@
     />
 
   <genericsetup:registerProfile
-    name="atfile-testing"
-    title="plone.app.blob: ATFile replacement testing"
-    directory="profiles/file-replacement"
-    description="Extension profile to replace the standard 'File' content type for testing"
-    for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
+    name="image-replacement"
+    title="plone.app.blob: 'Image' replacement type"
+    directory="profiles/image-replacement"
+    description="Extension profile to replace the standard 'Image' content type with a compatible, blob-based one"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     provides="Products.GenericSetup.interfaces.EXTENSION"
     />
 
