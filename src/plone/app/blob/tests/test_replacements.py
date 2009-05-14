@@ -9,7 +9,7 @@ from plone.app.blob.interfaces import IATBlobFile, IATBlobImage
 from plone.app.blob.migrations import migrateATBlobFiles, migrateATBlobImages
 from plone.app.blob.field import BlobField
 from plone.app.blob.content import ATBlob
-from plone.app.blob.tests.utils import getImage
+from plone.app.blob.tests.utils import getImage, getData
 
 
 class FileReplacementTests(ReplacementTestCase):
@@ -73,6 +73,13 @@ class FileReplacementTests(ReplacementTestCase):
         brain = self.portal.portal_catalog(id = 'foo')[0]
         self.assertEqual(foo.UID(), brain.UID)
         self.assertEqual(foo.getObjSize(), brain.getObjSize)
+
+    def testIndexAccessor(self):
+        foo = self.folder[self.folder.invokeFactory('File', 'foo',
+            title='foo', file=getData('plone.pdf'))]
+        field = foo.getField('file')
+        accessor = field.getIndexAccessor(foo)
+        self.assertEqual(field.index_method, accessor.func_name)
 
 
 class ImageReplacementTests(ReplacementTestCase):

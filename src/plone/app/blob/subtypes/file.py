@@ -5,10 +5,10 @@ from Products.Archetypes.atapi import FileWidget
 from Products.validation import V_REQUIRED
 from archetypes.schemaextender.interfaces import ISchemaExtender
 from archetypes.schemaextender.field import ExtensionField
-from plone.app.blob.field import BlobField
+from plone.app.blob.field import BlobField, IndexMethodFix
 
 
-class ExtensionBlobField(ExtensionField, BlobField):
+class ExtensionBlobField(IndexMethodFix, ExtensionField, BlobField):
     """ derivative of blobfield for extending schemas """
 
     def set(self, instance, value, **kwargs):
@@ -30,6 +30,7 @@ class SchemaExtender(object):
                 default = '',
                 accessor = 'getFile',
                 mutator = 'setFile',
+                index_method = 'getIndexValue',
                 languageIndependent = True,
                 storage = AnnotationStorage(migrate=True),
                 validators = (('isNonEmptyFile', V_REQUIRED),

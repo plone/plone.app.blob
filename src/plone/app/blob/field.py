@@ -281,3 +281,17 @@ class BlobField(ObjectField, ImageFieldMixin):
 registerField(BlobField, title='Blob',
               description='Used for storing files in blobs')
 
+
+class IndexMethodFix:
+    """ archetypes.schemaextender's `getIndexAccessor` is currently broken
+        wrt to the `index_method` schema attribute, so until this is fixed
+        upstream we need to override the method in order to be able to use
+        a custom indexer;  to do so mix this in before `ExtensionField` """
+
+    def getIndexAccessor(self, instance):
+        """ return the index accessor """
+        name = getattr(self, 'index_method', None)
+        if name is not None:
+            return getattr(instance, name)
+        else:
+            return super(IndexMethodFix, self).getIndexAccessor(instance)

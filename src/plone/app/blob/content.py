@@ -92,6 +92,13 @@ class ATBlob(ATCTFileContent, ImageMixin):
         mutator = self.getField('file').getMutator(self)
         mutator(value, **kwargs)
 
+    # index accessor using portal transforms to provide index data
+
+    security.declarePrivate('getIndexValue')
+    def getIndexValue(self, instance):
+        """ an accessor method used for indexing the field's value """
+        return ''
+
     # compatibility methods when used as ATFile replacement
 
     security.declareProtected(View, 'get_data')

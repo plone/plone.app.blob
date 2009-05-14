@@ -2,7 +2,7 @@ from unittest import defaultTestLoader
 from plone.app.blob.tests.base import BlobTestCase
 
 from plone.app.blob.utils import guessMimetype
-from plone.app.blob.tests.utils import makeFileUpload, getImage
+from plone.app.blob.tests.utils import makeFileUpload, getImage, getData
 from StringIO import StringIO
 from transaction import commit
 from os.path import isfile
@@ -100,6 +100,13 @@ class IntegrationTests(BlobTestCase):
         url = self.folder.absolute_url() + '/blob'
         self.assertEqual(blob.absolute_url(), url)
         self.assertEqual(blob.getFile().absolute_url(), url)
+
+    def testIndexAccessor(self):
+        blob = self.folder[self.folder.invokeFactory('Blob', 'blob',
+            title='foo', file=getData('plone.pdf'))]
+        field = blob.getField('file')
+        accessor = field.getIndexAccessor(blob)
+        self.assertEqual(field.index_method, accessor.func_name)
 
     def testOpenAfterConsume(self):
         """ it's an expected use case to be able to open a blob for
