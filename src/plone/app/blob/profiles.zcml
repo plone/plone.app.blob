@@ -13,19 +13,10 @@
     />
 
   <genericsetup:registerProfile
-    name="sample-type"
-    title="plone.app.blob"
-    directory="profiles/sample"
-    description="plone.app.blob: Sample content type based on ZODB 3.8 blobs"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    provides="Products.GenericSetup.interfaces.EXTENSION"
-    />
-
-  <genericsetup:registerProfile
     name="file-replacement"
     title="plone.app.blob: 'File' replacement type"
     directory="profiles/file-replacement"
-    description="Extension profile to replace the standard 'File' content type with a compatible, blob-based one"
+    description="Extension profile to replace the standard 'File' content type with a compatible one based on ZODB 3.8 blobs"
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     provides="Products.GenericSetup.interfaces.EXTENSION"
     />
@@ -34,7 +25,16 @@
     name="image-replacement"
     title="plone.app.blob: 'Image' replacement type"
     directory="profiles/image-replacement"
-    description="Extension profile to replace the standard 'Image' content type with a compatible, blob-based one"
+    description="Extension profile to replace the standard 'Image' content type with a compatible one based on ZODB 3.8 blobs"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    provides="Products.GenericSetup.interfaces.EXTENSION"
+    />
+
+  <genericsetup:registerProfile
+    name="sample-type"
+    title="plone.app.blob: Sample 'Blob' content type"
+    directory="profiles/sample"
+    description="plone.app.blob: Sample content type based on ZODB 3.8 blobs"
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     provides="Products.GenericSetup.interfaces.EXTENSION"
     />
