@@ -24,9 +24,10 @@ class BlobReplacementLayer(PloneSite):
         root = app()
         portal = root.plone
         # import replacement profiles
-        profile = 'profile-plone.app.blob:default'
         tool = getToolByName(portal, 'portal_setup')
-        tool.runAllImportStepsFromProfile(profile, purge_old=False)
+        for name in 'file-replacement', 'image-replacement':
+            profile = 'profile-plone.app.blob:%s' % name
+            tool.runAllImportStepsFromProfile(profile, purge_old=False)
         # make sure it's loaded...
         types = getToolByName(portal, 'portal_types')
         assert types.getTypeInfo('File').product == 'plone.app.blob'
