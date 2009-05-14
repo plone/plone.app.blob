@@ -82,7 +82,7 @@ Index: parts/omelette/Products/ATContentTypes/tests/atcttestcase.py
 +from plone.app.blob.tests.base import setupPackage
 +setupPackage()
 +
-+PloneTestCase.setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture', 'plone.app.blob:atfile-testing'])
++PloneTestCase.setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture', 'plone.app.blob:default'])
  
  import os
 @@ -142,5 +147,6 @@

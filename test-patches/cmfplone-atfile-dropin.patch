@@ -15,6 +15,6 @@ Index: parts/omelette/Products/CMFPlone/tests/PloneTestCase.py
 +from plone.app.blob.tests.base import setupPackage
 +setupPackage()
 +
-+setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture', 'plone.app.blob:atfile-testing'])
++setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture', 'plone.app.blob:default'])
  
  
