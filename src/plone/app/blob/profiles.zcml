@@ -31,10 +31,10 @@
     />
 
   <genericsetup:registerProfile
-    name="testing"
-    title="plone.app.blob: testing"
-    directory="profiles/testing"
-    description="Extension profile to set up a testing environment"
+    name="testing-lingua"
+    title="plone.app.blob: LinguaPlone testing"
+    directory="profiles/lingua"
+    description="Extension profile for testing LinguaPlone compatibility"
     for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
     provides="Products.GenericSetup.interfaces.EXTENSION"
     />

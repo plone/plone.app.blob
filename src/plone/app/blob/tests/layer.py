@@ -50,7 +50,7 @@ class BlobLinguaLayer(PloneSite):
         root = app()
         portal = root.plone
         # import replacement profiles
-        profile = 'profile-plone.app.blob:testing'
+        profile = 'profile-plone.app.blob:testing-lingua'
         tool = getToolByName(portal, 'portal_setup')
         tool.runAllImportStepsFromProfile(profile, purge_old=False)
         # make sure it's loaded...
