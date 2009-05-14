@@ -24,6 +24,7 @@ def setupPackage():
     zcml.load_config('configure.zcml', plone.app.imaging)
     fiveconfigure.debug_mode = False
     installPackage('plone.app.blob', quiet=True)
+    installPackage('plone.app.imaging', quiet=True)
 
 installProduct('LinguaPlone', quiet=True)
 setupPackage()
