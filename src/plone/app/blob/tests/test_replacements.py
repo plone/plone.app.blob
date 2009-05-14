@@ -84,6 +84,14 @@ class FileReplacementTests(ReplacementTestCase):
         self.failUnless('Plone' in data)
         self.failIf('PDF' in data)
 
+    def testSearchableText(self):
+        foo = self.folder[self.folder.invokeFactory('File', 'foo',
+            title='foo', file=getData('plone.pdf'))]
+        data = foo.SearchableText()
+        self.failUnless('foo' in data)
+        self.failUnless('Plone' in data)
+        self.failIf('PDF' in data)
+
 
 class ImageReplacementTests(ReplacementTestCase):
 

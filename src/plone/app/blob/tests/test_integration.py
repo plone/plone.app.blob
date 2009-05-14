@@ -111,6 +111,15 @@ class IntegrationTests(BlobTestCase):
         self.failUnless('Plone' in data)
         self.failIf('PDF' in data)
 
+    def testSearchableText(self):
+        blob = self.folder[self.folder.invokeFactory('Blob', 'blob',
+            title='foo', file=getData('plone.pdf'))]
+        data = blob.SearchableText()
+        self.failUnless('blob' in data)
+        self.failUnless('foo' in data)
+        self.failUnless('Plone' in data)
+        self.failIf('PDF' in data)
+
     def testOpenAfterConsume(self):
         """ it's an expected use case to be able to open a blob for
             reading immediately after populating it by consuming """
