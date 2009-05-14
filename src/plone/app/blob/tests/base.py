@@ -29,7 +29,7 @@ def setupPackage():
 installProduct('LinguaPlone', quiet=True)
 setupPackage()
 PloneTestCase.setupPloneSite(extension_profiles=(
-    'plone.app.blob:default',
+    'plone.app.blob:sample-type',
     'plone.app.imaging:default',
 ))
 
