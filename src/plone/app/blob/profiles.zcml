@@ -5,9 +5,9 @@
 
   <genericsetup:registerProfile
     name="default"
-    title="plone.app.blob: 'File' and 'Image' replacement types"
+    title="plone.app.blob: 'File' replacement type"
     directory="profiles/default"
-    description="Extension profile to replace the standard 'File' and 'Image' content types with compatible drop-ins based on ZODB 3.8 blobs"
+    description="Extension profile to replace the standard 'File' content type with a compatible one based on ZODB 3.8 blobs"
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     provides="Products.GenericSetup.interfaces.EXTENSION"
     />
@@ -17,7 +17,7 @@
     title="plone.app.blob: 'File' replacement type"
     directory="profiles/file-replacement"
     description="Extension profile to replace the standard 'File' content type with a compatible one based on ZODB 3.8 blobs"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
     provides="Products.GenericSetup.interfaces.EXTENSION"
     />
 
