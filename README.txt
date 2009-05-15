@@ -14,15 +14,19 @@ performance both cpu- as well as memory-wise.
 Status
 ------
 
-At the moment the integration is in a working state, but needs more field
-testing.  The provided blob-based content type should be more or less safely
-usable as a drop-in replacement for ``ATFile``. As such it has been
+At the moment the integration for "File" content should be stable, but still
+needs more field testing.  It is being successfully used in several production
+deployments, though.  The provided blob-based content type should safely
+usable as a drop-in replacement for ``ATFile``.  As such it has been
 successfully tested against all ``CMFPlone`` and ``ATContentTypes`` tests.
-Instructions for replicating the necessary test setup and running these tests
-yourself can be found at http://dev.plone.org/plone/changeset/18321.
+Please use the provided ``test-compatibility.sh`` script to run these tests
+for yourself.
 
-More detailed an up-to-date information about the integration and the current
-status can be found in the corresponding `plone enhancement ticket`_.
+Image support is still in an alpha stadium and not enabled by default. It can
+be activated by applying the respective profile via the portal setup tool.
+
+More detailed information about the integration and the current status can be
+found in the corresponding `plone enhancement ticket`_.
 
   .. _`plone enhancement ticket`: http://dev.plone.org/plone/ticket/6805
   .. |--| unicode:: U+2013   .. en dash
