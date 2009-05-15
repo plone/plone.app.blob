@@ -8,7 +8,7 @@ Index: extras/Plone/Products/CMFPlone/tests/PloneTestCase.py
 +from plone.app.blob.tests import db   # needs to be imported first to set up ZODB
  from Products.PloneTestCase.ptc import *
  
-@@ -13,5 +15,8 @@
+@@ -13,5 +14,8 @@
  classImplements(PloneSite, ITestCasePloneSiteRoot)
  
 -setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture'])
@@ -17,4 +17,4 @@ Index: extras/Plone/Products/CMFPlone/tests/PloneTestCase.py
 +
 +setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture', 'plone.app.blob:default'])
  
- 
+ from plone.protect.authenticator import AuthenticatorView
