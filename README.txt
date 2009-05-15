@@ -464,14 +464,14 @@ about?
 
 
 .. TODO: answer the following...
-.. [4:59pm] <jonstahl> Given the overall clutter and confusion in the
+.. <jonstahl> Given the overall clutter and confusion in the
 ..   broader file system storage product space, it might be helpful to expand
 ..   the Overview paragraph a bit. The things I'm wondering are: how does
 ..   Blob differ from FSS? Is it different from other blob implementations?
 ..   Are there things naive people might expect of plone.app.blob that it
 ..   *doesn't* do? (e.g. massive increase the speed of serving large files.
 ..   This doesn't really fully replace tramline, right?
-..  [4:59pm] <jonstahl> A bit of information on how you can use
+.. <jonstahl> A bit of information on how you can use
 ..   plone.app.blog in your custom content types might helpful too.
 
 
