@@ -1,4 +1,4 @@
-from Testing.ZopeTestCase import installPackage, installProduct, Sandboxed
+from Testing.ZopeTestCase import installPackage, Sandboxed
 from Products.Five import zcml
 from Products.Five import fiveconfigure
 from Products.Five.testbrowser import Browser
@@ -26,7 +26,6 @@ def setupPackage():
     installPackage('plone.app.blob', quiet=True)
     installPackage('plone.app.imaging', quiet=True)
 
-installProduct('LinguaPlone', quiet=True)
 setupPackage()
 PloneTestCase.setupPloneSite(extension_profiles=(
     'plone.app.blob:sample-type',

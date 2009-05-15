@@ -1,4 +1,6 @@
-from Testing.ZopeTestCase import app, close
+from Testing.ZopeTestCase import app, close, installProduct
+from Products.Five import zcml
+from Products.Five import fiveconfigure
 from Products.CMFCore.utils import getToolByName
 from Products.PloneTestCase.layer import PloneSite
 from transaction import commit
@@ -48,9 +50,15 @@ class BlobLinguaLayer(PloneSite):
 
     @classmethod
     def setUp(cls):
+        # load zcml
+        fiveconfigure.debug_mode = True
+        from Products import LinguaPlone
+        zcml.load_config('configure.zcml', LinguaPlone)
+        fiveconfigure.debug_mode = False
+        # install package, import profile...
+        installProduct('LinguaPlone', quiet=True)
         root = app()
         portal = root.plone
-        # import replacement profiles
         profile = 'profile-plone.app.blob:testing-lingua'
         tool = getToolByName(portal, 'portal_setup')
         tool.runAllImportStepsFromProfile(profile, purge_old=False)
