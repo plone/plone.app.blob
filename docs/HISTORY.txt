@@ -3,7 +3,7 @@ Changelog
 
     (name of developer listed in brackets)
 
-plone.app.blob - 1.0b3 Unreleased
+plone.app.blob - 1.0b3 Released May 15, 2009
 
     - Clean up GenericSetup profiles to allow separate installation of
       replacement types for "File" and "Image" content.
