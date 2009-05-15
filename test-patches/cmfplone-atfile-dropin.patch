@@ -1,7 +1,7 @@
-Index: parts/omelette/Products/CMFPlone/tests/PloneTestCase.py
+Index: extras/Plone/Products/CMFPlone/tests/PloneTestCase.py
 ===================================================================
---- parts/omelette/Products/CMFPlone/tests/PloneTestCase.py	(revision 17963)
-+++ parts/omelette/Products/CMFPlone/tests/PloneTestCase.py	(working copy)
+--- extras/Plone/Products/CMFPlone/tests/PloneTestCase.py	(revision 17963)
++++ extras/Plone/Products/CMFPlone/tests/PloneTestCase.py	(working copy)
 @@ -5,4 +5,5 @@
  # $Id$
  

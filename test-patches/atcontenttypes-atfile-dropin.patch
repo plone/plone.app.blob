@@ -1,7 +1,7 @@
-Index: parts/omelette/Products/ATContentTypes/tests/webdav.txt
+Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/webdav.txt
 ===================================================================
---- parts/omelette/Products/ATContentTypes/tests/webdav.txt	(revision 54941)
-+++ parts/omelette/Products/ATContentTypes/tests/webdav.txt	(working copy)
+--- extras/Products.ATContentTypes/Products/ATContentTypes/tests/webdav.txt	(revision 54941)
++++ extras/Products.ATContentTypes/Products/ATContentTypes/tests/webdav.txt	(working copy)
 @@ -23,4 +23,6 @@
    >>> self.setRoles(['Manager'])
    >>> self.portal.setTitle('Portal Title')
@@ -9,10 +9,10 @@ Index: parts/omelette/Products/ATContentTypes/tests/webdav.txt
 +  'Registry installed...'
    >>> self.setRoles(['Member'])
  
-Index: parts/omelette/Products/ATContentTypes/tests/test_installation.py
+Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_installation.py
 ===================================================================
---- parts/omelette/Products/ATContentTypes/tests/test_installation.py	(revision 54941)
-+++ parts/omelette/Products/ATContentTypes/tests/test_installation.py	(working copy)
+--- extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_installation.py	(revision 54941)
++++ extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_installation.py	(working copy)
 @@ -57,5 +57,5 @@
          # test that all types are installed well
          ttool = self.ttool
@@ -28,10 +28,10 @@ Index: parts/omelette/Products/ATContentTypes/tests/test_installation.py
 +
      def test_not_quickinstalled(self):
          qi = getattr(self.portal, 'portal_quickinstaller')
-Index: parts/omelette/Products/ATContentTypes/tests/test_atfile.py
+Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_atfile.py
 ===================================================================
---- parts/omelette/Products/ATContentTypes/tests/test_atfile.py	(revision 54941)
-+++ parts/omelette/Products/ATContentTypes/tests/test_atfile.py	(working copy)
+--- extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_atfile.py	(revision 54941)
++++ extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_atfile.py	(working copy)
 @@ -36,4 +36,5 @@
  import StringIO
  
@@ -59,20 +59,20 @@ Index: parts/omelette/Products/ATContentTypes/tests/test_atfile.py
 +        self.failUnless(field.type == 'blob', 'Value is %s' % field.type)
          self.failUnless(isinstance(field.storage, AnnotationStorage),
                          'Value is %s' % type(field.storage))
-Index: parts/omelette/Products/ATContentTypes/tests/test_aaa.py
+Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_aaa.py
 ===================================================================
---- parts/omelette/Products/ATContentTypes/tests/test_aaa.py	(revision 0)
-+++ parts/omelette/Products/ATContentTypes/tests/test_aaa.py	(revision 0)
+--- extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_aaa.py	(revision 0)
++++ extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_aaa.py	(revision 0)
 @@ -0,0 +1,5 @@
 +from plone.app.blob.tests import db   # needs to be imported first to set up ZODB
 +from unittest import TestSuite
 +
 +def test_suite():
 +    return TestSuite()
-Index: parts/omelette/Products/ATContentTypes/tests/atcttestcase.py
+Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/atcttestcase.py
 ===================================================================
---- parts/omelette/Products/ATContentTypes/tests/atcttestcase.py	(revision 54941)
-+++ parts/omelette/Products/ATContentTypes/tests/atcttestcase.py	(working copy)
+--- extras/Products.ATContentTypes/Products/ATContentTypes/tests/atcttestcase.py	(revision 54941)
++++ extras/Products.ATContentTypes/Products/ATContentTypes/tests/atcttestcase.py	(working copy)
 @@ -31,5 +31,10 @@
  from Products.PloneTestCase.setup import portal_owner
  ZopeTestCase.installProduct('SiteAccess')
@@ -93,10 +93,10 @@ Index: parts/omelette/Products/ATContentTypes/tests/atcttestcase.py
 +        # self.failUnlessEqual(ti.Metatype(), self.meta_type)
  
      def test_doesImplementDC(self):
-Index: parts/omelette/Products/ATContentTypes/content/file.py
+Index: extras/Products.ATContentTypes/Products/ATContentTypes/content/file.py
 ===================================================================
---- parts/omelette/Products/ATContentTypes/content/file.py	(revision 54941)
-+++ parts/omelette/Products/ATContentTypes/content/file.py	(working copy)
+--- extras/Products.ATContentTypes/Products/ATContentTypes/content/file.py	(revision 54941)
++++ extras/Products.ATContentTypes/Products/ATContentTypes/content/file.py	(working copy)
 @@ -104,4 +104,7 @@
      security       = ClassSecurityInfo()
  
