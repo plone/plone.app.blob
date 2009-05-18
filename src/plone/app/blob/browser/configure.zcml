@@ -23,4 +23,11 @@
       class=".migration.ImageMigrationView"
       permission="cmf.ManagePortal" />
 
+  <browser:page
+      for="*"
+      name="blob-maintenance"
+      class=".maintenance.MaintenanceView"
+      allowed_interface="..interfaces.IBlobMaintenanceView"
+      permission="cmf.ManagePortal" />
+
 </configure>

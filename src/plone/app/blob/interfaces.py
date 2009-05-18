@@ -57,3 +57,9 @@ class IATBlobImage(Interface):
 class IWebDavUpload(Interface):
     """ marker interface for webdav upload helper class """
 
+
+class IBlobMaintenanceView(Interface):
+    """ helper view for upgrade & maintenance tasks """
+
+    def resetSubtypes(batch=1000):
+        """ walk all catalog entries and reset sub-type markings """

@@ -57,7 +57,7 @@ class BlobFunctionalTestCase(PloneTestCase.FunctionalTestCase):
         return browser
 
 
-class ReplacementTestCase(PloneTestCase.PloneTestCase):
+class ReplacementTestCase(Sandboxed, PloneTestCase.PloneTestCase):
     """ base class for integration tests using replacement types """
 
     layer = BlobReplacementLayer

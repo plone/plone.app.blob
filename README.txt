@@ -238,6 +238,29 @@ Troubleshooting
 The following are some known issues, that will hopefully be resolved soon
 enough.  In the meantime here are the recommended workarounds:
 
+**"AttributeError: 'NoneType' object has no attribute 'getAccessor'" Exception**
+
+  Symptom
+    After upgrading from version `1.0b2`_ or earlier you're getting an error
+    like the following when trying to view blob-based content::
+
+      Traceback (innermost last):
+        Module ZPublisher.Publish, line 119, in publish
+        ...
+        Module Products.ATContentTypes.content.base, line 300, in get_content_type
+      AttributeError: 'NoneType' object has no attribute 'getAccessor'
+  Problem
+    Recent versions have added support for sub-types based on marker
+    interfaces and your existing blob-based content hasn't been marked yet.
+  Solution
+    Upgrade to at least `1.0b4`_, re-install "plone.app.blob" via the
+    quick-installer and reset all sub-types by accessing the
+    ``@@blob-maintenance/resetSubtypes`` view.
+
+  .. _`1.0b2`: http://pypi.python.org/pypi/plone.app.blob/1.0b2
+  .. _`1.0b4`: http://pypi.python.org/pypi/plone.app.blob/1.0b4
+
+
 **"Invalid plugin id" Exception**
 
   Symptom

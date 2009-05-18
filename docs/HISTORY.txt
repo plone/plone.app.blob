@@ -5,6 +5,10 @@ Changelog
 
 plone.app.blob - 1.0b4 Unreleased
 
+    - Provide maintenance view for (re)setting blob sub-types, which can also
+      be used to fix things after upgrading from 1.0b2 or earlier.
+      This fixes http://plone.org/products/plone.app.blob/issues/19
+      [witsch]
 
 plone.app.blob - 1.0b3 Released May 15, 2009
 

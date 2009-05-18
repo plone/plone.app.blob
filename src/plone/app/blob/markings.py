@@ -18,7 +18,7 @@ def markAs(obj, typename):
     for i in interfaces.get(typename, ()):
         alsoProvides(obj, i)
 
-def ummarkAs(obj, typename):
+def unmarkAs(obj, typename):
     for i in interfaces.get(typename, ()):
         noLongerProvides(obj, i)
 
