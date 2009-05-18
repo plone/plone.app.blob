@@ -3,7 +3,10 @@ Changelog
 
     (name of developer listed in brackets)
 
-plone.app.blob - 1.0b4 Unreleased
+plone.app.blob - 1.0b5 Unreleased
+
+
+plone.app.blob - 1.0b4 Released May 19, 2009
 
     - Provide maintenance view for (re)setting blob sub-types, which can also
       be used to fix things after upgrading from 1.0b2 or earlier.
