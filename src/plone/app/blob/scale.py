@@ -36,7 +36,7 @@ class BlobImageScaleHandler(DefaultImageScaleHandler):
                 # 
                 # An IOError("cannot identify image file") is then raised.
                 #
-                # An example is for example the Products.ARFFilePreview
+                # An example is the Products.ARFFilePreview registered
                 # 'file_preview' browser page.
                 # 
                 # Since we are not traversing to an image, we want to merely 
