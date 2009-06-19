@@ -167,6 +167,14 @@ class BlobAdapterTests(ReplacementTestCase):
         foo = self.handler.getScale(self.image, 'foo?')
         self.assertEqual(foo, None)
 
+    def testGetScaleForNonImage(self):
+        data = getData('plone.pdf')
+        file = self.folder[self.folder.invokeFactory('File', id='bar', file=data)]
+        field = file.getField('file')
+        handler = BlobImageScaleHandler(field)
+        bar = handler.getScale(file, 'foo')
+        self.assertEqual(bar, None)
+        
 
 def test_suite():
     return TestSuite([
