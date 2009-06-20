@@ -1,4 +1,4 @@
-from unittest import defaultTestLoader
+from unittest import TestSuite, makeSuite
 from plone.app.blob.tests.base import BlobTestCase, BlobFunctionalTestCase
 
 from plone.app.blob.utils import guessMimetype
@@ -184,5 +184,7 @@ class FunctionalIntegrationTests(BlobFunctionalTestCase):
 
 
 def test_suite():
-    return defaultTestLoader.loadTestsFromName(__name__)
-
+    return TestSuite([
+        makeSuite(IntegrationTests),
+        makeSuite(FunctionalIntegrationTests),
+    ])
