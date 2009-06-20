@@ -26,27 +26,10 @@ class BlobImageScaleHandler(DefaultImageScaleHandler):
             image.filename = filename
         elif scale in available:
             width, height = available[scale]
-            try:
-                image = self.createScale(instance, scale, width, height)
-            except IOError:
-                # It is possible that this handler is called when traversing to 
-                # a browser view, page template or python script which is named 
-                # in such a way that it conforms with the $fieldname_$scale image 
-                # traversing convention and then ultimately ending up here.
-                # 
-                # An IOError("cannot identify image file") is then raised.
-                #
-                # An example is the Products.ARFFilePreview registered
-                # 'file_preview' browser page.
-                # 
-                # Since we are not traversing to an image, we want to merely 
-                # catch the error and return None.
-                image = None
+            image = self.createScale(instance, scale, width, height)
         else:
             image = None
-
         if image is not None and shasattr(image, '__of__', acquire=True):
             image = image.__of__(instance)
         return image
-
 
