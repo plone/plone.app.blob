@@ -1,5 +1,5 @@
 from unittest import defaultTestLoader
-from plone.app.blob.tests.base import BlobTestCase
+from plone.app.blob.tests.base import BlobTestCase, BlobFunctionalTestCase
 
 from plone.app.blob.utils import guessMimetype
 from plone.app.blob.tests.utils import makeFileUpload, getImage, getData
@@ -169,6 +169,18 @@ class IntegrationTests(BlobTestCase):
         # self.assertEqual(version.object.data, 'some text...')
         repository.revert(blob, 0)
         # self.assertEqual(blob.data, pdf_data)
+
+
+class FunctionalIntegrationTests(BlobFunctionalTestCase):
+
+    def testDefaultView(self):
+        self.folder.invokeFactory('Blob', 'blob', title='Foo Bar', file=pdf_data)
+        base = '/'.join(self.folder.blob.getPhysicalPath())
+        credentials = self.getCredentials()
+        output = str(self.publish(base + '/view', basic=credentials))
+        self.failUnless('Foo Bar' in output, '404?')
+        self.failUnless('PDF document' in output, '404?')
+        self.failIf("We're sorry, but that page doesn't exist" in output, '404!')
 
 
 def test_suite():

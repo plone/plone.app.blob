@@ -7,11 +7,14 @@ from Products.validation import V_REQUIRED
 from archetypes.schemaextender.interfaces import ISchemaExtender
 from archetypes.schemaextender.field import ExtensionField
 from plone.app.imaging.utils import getAllowedSizes
+from plone.app.blob.interfaces import IBlobImageField
 from plone.app.blob.field import BlobField, IndexMethodFix
+from plone.app.blob.mixins import ImageFieldMixin
 
 
-class ExtensionBlobField(IndexMethodFix, ExtensionField, BlobField):
+class ExtensionBlobField(IndexMethodFix, ExtensionField, BlobField, ImageFieldMixin):
     """ derivative of blobfield for extending schemas """
+    implements(IBlobImageField)
 
     def set(self, instance, value, **kwargs):
         super(ExtensionBlobField, self).set(instance, value, **kwargs)

@@ -21,7 +21,6 @@ from Products.Archetypes.utils import contentDispositionHeader
 from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
 from plone.app.blob.interfaces import IBlobbable, IWebDavUpload, IBlobField
 from plone.app.blob.interfaces import IBlobWrapper
-from plone.app.blob.mixins import ImageFieldMixin
 from plone.app.blob.utils import getImageSize
 
 
@@ -153,7 +152,7 @@ class ReuseBlob(Exception):
     """ exception indicating that a blob should be reused """
 
 
-class BlobField(ObjectField, ImageFieldMixin):
+class BlobField(ObjectField):
     """ file field implementation based on zodb blobs """
     implements(IBlobField)
 

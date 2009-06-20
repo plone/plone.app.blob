@@ -4,13 +4,13 @@ from Products.Archetypes.Field import Image
 from Products.Archetypes.utils import shasattr
 from plone.app.imaging.traverse import DefaultImageScaleHandler
 from plone.app.imaging.interfaces import IImageScaleHandler
-from plone.app.blob.interfaces import IBlobField
+from plone.app.blob.interfaces import IBlobImageField
 
 
 class BlobImageScaleHandler(DefaultImageScaleHandler):
     """ handler for creating and storing scaled version of images in blobs """
     implements(IImageScaleHandler)
-    adapts(IBlobField)
+    adapts(IBlobImageField)
 
     # XXX: fix me by storing things in blobs!!
 

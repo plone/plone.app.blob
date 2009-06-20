@@ -168,10 +168,36 @@ class BlobAdapterTests(ReplacementTestCase):
         self.assertEqual(foo, None)
 
 
+class BlobAdapterPublisherTests(ReplacementFunctionalTestCase):
+
+    def testScalingViaBlobAdapter(self):
+        # make sure `getScale` of the blob-specific scale handler is called
+        self.counter = 0
+        original = BlobImageScaleHandler.getScale
+        def getScale(adapter, instance, scale):
+            self.counter += 1
+            return original(adapter, instance, scale)
+        BlobImageScaleHandler.getScale = getScale
+        data = getData('image.gif')
+        folder = self.folder
+        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        # make sure traversing works as expected
+        base = '/'.join(folder.getPhysicalPath())
+        credentials = self.getCredentials()
+        response = self.publish(base + '/foo/image', basic=credentials)
+        self.assertEqual(response.getStatus(), 200)
+        self.assertEqual(response.getBody(), data)
+        # undo the evil monkey patching...
+        BlobImageScaleHandler.getScale = original
+        # and make sure the traversal adapter was call in fact
+        self.assertEqual(self.counter, 1)
+
+
 def test_suite():
     return TestSuite([
         makeSuite(BlobImageTraverseTests),
         makeSuite(BlobImagePublisherTests),
         makeSuite(BlobAdapterTests),
+        makeSuite(BlobAdapterPublisherTests),
     ])
 
