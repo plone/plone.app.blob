@@ -5,6 +5,10 @@ Changelog
 
 plone.app.blob - 1.0b5 Unreleased
 
+    - Fix registration of blob-based image scale adapter to prevent getting
+      404s for content other than images.  This fixes the second issue
+      related to http://plone.org/products/plone.app.blob/issues/19
+      [witsch]
 
 plone.app.blob - 1.0b4 Released May 19, 2009
 
