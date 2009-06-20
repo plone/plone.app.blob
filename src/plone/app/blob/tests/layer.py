@@ -1,4 +1,4 @@
-from Testing.ZopeTestCase import app, close, installProduct
+from Testing.ZopeTestCase import app, close, installProduct, installPackage
 from Products.Five import zcml
 from Products.Five import fiveconfigure
 from Products.CMFCore.utils import getToolByName
@@ -11,21 +11,44 @@ class BlobLayer(PloneSite):
 
     @classmethod
     def setUp(cls):
-        pass
+        # load zcml & install packages
+        fiveconfigure.debug_mode = True
+        from plone.app import blob
+        zcml.load_config('configure.zcml', blob)
+        fiveconfigure.debug_mode = False
+        installPackage('plone.app.blob', quiet=True)
+        # import replacement profiles
+        root = app()
+        portal = root.plone
+        tool = getToolByName(portal, 'portal_setup')
+        profile = 'profile-plone.app.blob:sample-type'
+        tool.runAllImportStepsFromProfile(profile, purge_old=False)
+        # make sure it's loaded...
+        types = getToolByName(portal, 'portal_types')
+        assert types.getTypeInfo('Blob').product == 'plone.app.blob'
+        # and commit the changes
+        commit()
+        close(root)
 
     @classmethod
     def tearDown(cls):
         pass
 
 
-class BlobReplacementLayer(PloneSite):
+class BlobReplacementLayer(BlobLayer):
     """ layer for integration tests using replacement types """
 
     @classmethod
     def setUp(cls):
+        # load zcml & install packages
+        fiveconfigure.debug_mode = True
+        from plone.app import imaging
+        zcml.load_config('configure.zcml', imaging)
+        fiveconfigure.debug_mode = False
+        installPackage('plone.app.imaging', quiet=True)
+        # import replacement profiles
         root = app()
         portal = root.plone
-        # import replacement profiles
         tool = getToolByName(portal, 'portal_setup')
         for name in 'file-replacement', 'image-replacement':
             profile = 'profile-plone.app.blob:%s' % name

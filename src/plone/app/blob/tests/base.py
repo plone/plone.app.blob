@@ -1,9 +1,6 @@
-from Testing.ZopeTestCase import installPackage, Sandboxed
-from Products.Five import zcml
-from Products.Five import fiveconfigure
+from Testing.ZopeTestCase import Sandboxed
 from Products.Five.testbrowser import Browser
 from Products.PloneTestCase import PloneTestCase
-from Products.PloneTestCase.layer import onsetup
 from plone.app.blob.tests.layer import BlobLayer, BlobReplacementLayer
 from plone.app.blob.tests.layer import BlobLinguaLayer
 
@@ -14,23 +11,8 @@ try:
 except ImportError:
     pass
 
-@onsetup
-def setupPackage():
-    """ set up the package and its dependencies """
-    fiveconfigure.debug_mode = True
-    import plone.app.blob
-    zcml.load_config('configure.zcml', plone.app.blob)
-    import plone.app.imaging
-    zcml.load_config('configure.zcml', plone.app.imaging)
-    fiveconfigure.debug_mode = False
-    installPackage('plone.app.blob', quiet=True)
-    installPackage('plone.app.imaging', quiet=True)
 
-setupPackage()
-PloneTestCase.setupPloneSite(extension_profiles=(
-    'plone.app.blob:sample-type',
-    'plone.app.imaging:default',
-))
+PloneTestCase.setupPloneSite()
 
 
 class BlobTestCase(Sandboxed, PloneTestCase.PloneTestCase):
