@@ -1,14 +1,3 @@
-Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/webdav.txt
-===================================================================
---- extras/Products.ATContentTypes/Products/ATContentTypes/tests/webdav.txt	(revision 54941)
-+++ extras/Products.ATContentTypes/Products/ATContentTypes/tests/webdav.txt	(working copy)
-@@ -23,4 +23,6 @@
-   >>> self.setRoles(['Manager'])
-   >>> self.portal.setTitle('Portal Title')
-+  >>> self.portal.portal_quickinstaller.installProduct('Marshall')
-+  'Registry installed...'
-   >>> self.setRoles(['Member'])
- 
 Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_installation.py
 ===================================================================
 --- extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_installation.py	(revision 54941)
@@ -63,30 +52,61 @@ Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_aaa.py
 ===================================================================
 --- extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_aaa.py	(revision 0)
 +++ extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_aaa.py	(revision 0)
-@@ -0,0 +1,5 @@
-+from plone.app.blob.tests import db   # needs to be imported first to set up ZODB
+@@ -0,0 +1,15 @@
 +from unittest import TestSuite
++from plone.app.blob.tests import bbb
++from Products.PloneTestCase import PloneTestCase
++
++
++# while the following test case is emtpty, it takes care of setting up a
++# blob-aware zodb for testing against blobs
++
++class BlobSetupTestCase(PloneTestCase.PloneTestCase):
++
++    layer = bbb.plone
++
 +
 +def test_suite():
 +    return TestSuite()
+
+Property changes on: extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_aaa.py
+___________________________________________________________________
+Name: svn:eol-style
+   + native
+
 Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/atcttestcase.py
 ===================================================================
 --- extras/Products.ATContentTypes/Products/ATContentTypes/tests/atcttestcase.py	(revision 54941)
 +++ extras/Products.ATContentTypes/Products/ATContentTypes/tests/atcttestcase.py	(working copy)
-@@ -31,5 +31,11 @@
+@@ -31,4 +31,7 @@
  from Products.PloneTestCase.setup import portal_owner
  ZopeTestCase.installProduct('SiteAccess')
--PloneTestCase.setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture'])
-+ZopeTestCase.installProduct('Marshall')
 +
 +from plone.app.blob.markings import markAs
-+from plone.app.blob.tests.base import setupPackage
-+setupPackage()
-+
-+PloneTestCase.setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture', 'plone.app.blob:default'])
++from plone.app.blob.tests import bbb
+ PloneTestCase.setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture'])
  
- import os
-@@ -142,5 +148,6 @@
+@@ -68,8 +71,10 @@
+ 
+ class ATCTSiteTestCase(PloneTestCase.PloneTestCase):
+-    pass
++
++    layer = bbb.plone
+ 
+ class ATCTFunctionalSiteTestCase(PloneTestCase.FunctionalTestCase):
+-    pass
++
++    layer = bbb.plone
+ 
+ class ATCTTypeTestCase(ATCTSiteTestCase):
+@@ -79,4 +84,6 @@
+     """
+ 
++    layer = bbb.plone
++
+     klass = None
+     cmf_klass = None
+@@ -142,5 +149,6 @@
          self.failUnlessEqual(ti.Title(), self.title)
          self.failUnlessEqual(ti.getIcon(), self.icon)
 -        self.failUnlessEqual(ti.Metatype(), self.meta_type)
@@ -94,7 +114,7 @@ Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/atcttestcase
 +        # self.failUnlessEqual(ti.Metatype(), self.meta_type)
  
      def test_doesImplementDC(self):
-@@ -241,7 +248,8 @@
+@@ -241,7 +249,8 @@
          self.setRoles(['Manager',])
  
 -    def createDummy(self, klass, id='dummy'):

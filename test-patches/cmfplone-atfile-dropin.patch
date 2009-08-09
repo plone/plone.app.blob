@@ -1,20 +1,22 @@
 Index: extras/Plone/Products/CMFPlone/tests/PloneTestCase.py
 ===================================================================
---- extras/Plone/Products/CMFPlone/tests/PloneTestCase.py	(revision 17963)
+--- extras/Plone/Products/CMFPlone/tests/PloneTestCase.py	(revision 28521)
 +++ extras/Plone/Products/CMFPlone/tests/PloneTestCase.py	(working copy)
 @@ -5,4 +5,5 @@
  # $Id$
  
-+from plone.app.blob.tests import db   # needs to be imported first to set up ZODB
++from plone.app.blob.tests import bbb
  from Products.PloneTestCase.ptc import *
  
-@@ -13,5 +14,8 @@
- classImplements(PloneSite, ITestCasePloneSiteRoot)
+@@ -24,4 +25,6 @@
+     """
  
--setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture'])
-+from plone.app.blob.tests.base import setupPackage
-+setupPackage()
++    layer = bbb.plone
 +
-+setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture', 'plone.app.blob:default'])
- 
- from plone.protect.authenticator import AuthenticatorView
+     def setRequestMethod(self, method):
+         self.app.REQUEST.set('REQUEST_METHOD', method)
+@@ -42,2 +45,4 @@
+        something fancy on Your Branch (tm), put it here.
+     """
++
++    layer = bbb.plone

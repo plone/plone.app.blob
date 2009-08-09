@@ -17,7 +17,7 @@ class BlobLayer(PloneSite):
         zcml.load_config('configure.zcml', blob)
         fiveconfigure.debug_mode = False
         installPackage('plone.app.blob', quiet=True)
-        # import replacement profiles
+        # import the default profile
         root = app()
         portal = root.plone
         tool = getToolByName(portal, 'portal_setup')
@@ -26,6 +26,36 @@ class BlobLayer(PloneSite):
         # make sure it's loaded...
         types = getToolByName(portal, 'portal_types')
         assert types.getTypeInfo('Blob').product == 'plone.app.blob'
+        # and commit the changes
+        commit()
+        close(root)
+
+    @classmethod
+    def tearDown(cls):
+        pass
+
+
+class BlobFileReplacementLayer(BlobLayer):
+    """ layer for integration tests using the file replacement type """
+
+    @classmethod
+    def setUp(cls):
+        # load zcml & install packages
+        fiveconfigure.debug_mode = True
+        from plone.app import imaging
+        zcml.load_config('configure.zcml', imaging)
+        fiveconfigure.debug_mode = False
+        # import replacement profiles
+        root = app()
+        portal = root.plone
+        tool = getToolByName(portal, 'portal_setup')
+        profile = 'profile-plone.app.blob:file-replacement'
+        tool.runAllImportStepsFromProfile(profile, purge_old=False)
+        # make sure it's loaded...
+        types = getToolByName(portal, 'portal_types')
+        assert types.getTypeInfo('File').product == 'plone.app.blob'
+        # allow creating the replaced types
+        types.getTypeInfo('ATFile').global_allow = True
         # and commit the changes
         commit()
         close(root)
