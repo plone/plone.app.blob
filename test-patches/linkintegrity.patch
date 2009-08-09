@@ -1,0 +1,63 @@
+Index: extras/plone.app.linkintegrity/plone/app/linkintegrity/docs/testFileRemoval.txt
+===================================================================
+--- extras/plone.app.linkintegrity/plone/app/linkintegrity/docs/testFileRemoval.txt	(revision 28518)
++++ extras/plone.app.linkintegrity/plone/app/linkintegrity/docs/testFileRemoval.txt	(working copy)
+@@ -11,5 +11,5 @@
+ 
+   >>> p.doc1.getRefs()
+-  [<ATFile at /plone/file1>]
++  [<ATBlob at /plone/file1>]
+ 
+ Then we use a browser to try to delete the referenced file.  Before we
+Index: extras/plone.app.linkintegrity/plone/app/linkintegrity/docs/testFileWithSpacesRemoval.txt
+===================================================================
+--- extras/plone.app.linkintegrity/plone/app/linkintegrity/docs/testFileWithSpacesRemoval.txt	(revision 28518)
++++ extras/plone.app.linkintegrity/plone/app/linkintegrity/docs/testFileWithSpacesRemoval.txt	(working copy)
+@@ -11,5 +11,5 @@
+ 
+   >>> portal['some spaces.doc']
+-  <ATFile at /plone/some spaces.doc>
++  <ATBlob at /plone/some spaces.doc>
+ 
+ Now we create the necessary links:
+@@ -23,5 +23,5 @@
+ 
+   >>> p.doc1.getRefs()
+-  [<ATFile at /plone/some spaces.doc>]
++  [<ATBlob at /plone/some spaces.doc>]
+ 
+ Then we use a browser to try to delete the referenced file.  Before we
+Index: extras/plone.app.linkintegrity/plone/app/linkintegrity/tests/layer.py
+===================================================================
+--- extras/plone.app.linkintegrity/plone/app/linkintegrity/tests/layer.py	(revision 28518)
++++ extras/plone.app.linkintegrity/plone/app/linkintegrity/tests/layer.py	(working copy)
+@@ -1,6 +1,6 @@
++from plone.app.blob.tests import bbb        # needs to be imported first
+ from AccessControl.SecurityManagement import newSecurityManager
+ from Testing import ZopeTestCase
+ from Products.PloneTestCase import PloneTestCase
+-from Products.PloneTestCase.layer import PloneSite
+ from StringIO import StringIO
+ from base64 import decodestring
+@@ -8,5 +8,5 @@
+ 
+ 
+-class PloneLinkintegrity(PloneSite):
++class PloneLinkintegrity(bbb.plone):
+ 
+     @classmethod
+@@ -20,4 +20,14 @@
+         newSecurityManager(None, user)
+ 
++        # the mimetype registry isn't registered as a utility for some
++        # reason when trying to add content during the layer setup;  this
++        # is most likely due to call `app()` again (see above), which seems
++        # to no be a good idea... :)  however, loading the GS profile of
++        # `Products.MimetypesRegistry` again helps
++        from Products.CMFCore.utils import getToolByName
++        tool = getToolByName(portal, 'portal_setup')
++        profile = 'profile-Products.MimetypesRegistry:MimetypesRegistry'
++        tool.runAllImportStepsFromProfile(profile, purge_old=False)
++
+         # create sample content
+         gif = 'R0lGODlhAQABAPAAAPj8+AAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='
