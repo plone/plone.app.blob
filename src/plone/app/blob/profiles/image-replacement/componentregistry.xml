@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<componentregistry>
+ <adapters>
+  <adapter
+     for_="plone.app.blob.interfaces.IBlobImageField
+           zope.publisher.interfaces.IRequest"
+     provides="zope.publisher.interfaces.browser.IBrowserPublisher"
+     factory="plone.app.blob.scale.BlobImageScaleHandler" />
+ </adapters>
+ <utilities/>
+</componentregistry>
