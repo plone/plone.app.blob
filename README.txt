@@ -200,19 +200,17 @@ tutorial`_ on `plone.org`_.
 Migrating existing content
 --------------------------
 
-In-place content migration is provided for existing ``ATFile`` content. The
-`Products.contentmigration`_ package is required for this to work. To install
-this package you will again need to add its name to the "eggs" and "zcml"
-section of your ``buildout.cfg``, so that it reads like::
+In-place content migration is provided for existing "File" and "Image"
+content.  The `Products.contentmigration`_ package is required for this to
+work.  To install this package you will again need to add its name to the
+"eggs" and "zcml" section of your ``buildout.cfg``, so that it reads like::
 
   [instance]
   ...
-  eggs =
-      ${buildout:eggs}
-      ${plone:eggs}
+  eggs +=
       plone.app.blob
       Products.contentmigration
-  zcml =
+  zcml +=
       plone.app.blob
       Products.contentmigration
 
@@ -222,14 +220,14 @@ You can also refer to the above mentioned `sample buildout.cfg`_ for details.
   .. _`sample buildout.cfg`: http://dev.plone.org/plone/browser/plone.app.blob/buildouts/plone-3.x/buildout.cfg
 
 In order to then migrate your existing file content to blobs you can use the
-migration interface provided at http://localhost:8080/plone/@@blob-migration,
-where "plone" should be replaced with the id of your "Plone Site" object.  The
-page will show you the number of available ``ATFile`` instances and lets you
-convert them to the provided blob content type by clicking a button.
+migration interfaces provided at ``http://<site>/@@blob-file-migration`` to
+migrate "File" content as well as ``http://<site>/@@blob-image-migration``
+for "Image" content respectively.  ``<site>`` will need to be replaced with
+the URL of your "Plone Site" object here, of course.  The pages will show you
+the number of available ``ATFile`` or ``ATImage`` instances and then lets you
+convert these to the provided blob content types by clicking a button.
 
-If you encounter errors during migration |---| especially after applying the
-"ATFile replacement" profile (or quick-installing "plone.app.blob: ATFile
-replacement" for that matter) |---| please refer to the next section.
+Please refer to the next section if you encounter any errors during migration.
 
 
 Troubleshooting
