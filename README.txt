@@ -238,6 +238,35 @@ Troubleshooting
 The following are some known issues, that will hopefully be resolved soon
 enough.  In the meantime here are the recommended workarounds:
 
+**"FileFieldException: Value is not File or String (...)" Exception**
+
+  Symptom
+    After upgrading your buildout you're getting an error like the following
+    during blob migration::
+
+      Traceback (innermost last):
+        File ".../basemigrator/walker.py", line 174, in migrate
+        ...
+        File ".../Archetypes/Field.py", line 931, in _process_input
+      FileFieldException: Value is not File or String (...)
+  Problem
+    Your version of ``archetypes.schemaextender`` has been upgraded to `1.1`_
+    while running buildout.  You either didn't run it in non-newest mode
+    (``-N``) or have not pinned down the version of
+    ``archetypes.schemaextender``.
+  Solution
+    Downgrade ``archetypes.schemaextender`` to version 1.0 for the moment.
+    You can do this by adding a version pin like:
+
+      [versions]
+      archetypes.schemaextender = 1.0
+
+    to your ``buildout.cfg``.  A proper fix to add compatibility to the
+    latest version is being worked on.
+
+  .. _`1.1`: http://pypi.python.org/pypi/archetypes.schemaextender/1.1
+
+
 **"AttributeError: 'NoneType' object has no attribute 'getAccessor'" Exception**
 
   Symptom
