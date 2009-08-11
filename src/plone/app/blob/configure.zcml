@@ -32,4 +32,8 @@
     for="plone.app.blob.interfaces.IATBlobImage"
     factory=".subtypes.image.SchemaExtender" />
 
+  <adapter
+    factory=".scale.BlobImageScaleHandler" />
+
 </configure>
+
