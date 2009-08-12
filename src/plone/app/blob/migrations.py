@@ -1,10 +1,10 @@
 try:
-    from Products.contentmigration.archetypes import ATItemMigrator
+    from Products.contentmigration.archetypes import InplaceATItemMigrator
     from Products.contentmigration.walker import CustomQueryWalker
     haveContentMigrations = True
-    ATItemMigrator  # make pyflakes happy...
+    BaseMigrator = InplaceATItemMigrator
 except ImportError:
-    ATItemMigrator = object
+    BaseMigrator = object
     haveContentMigrations = False
 
 from Products.CMFCore.utils import getToolByName
@@ -26,7 +26,7 @@ def migrate(context, walker):
 
 
 # migration of file content to blob content type
-class ATFileToBlobMigrator(ATItemMigrator):
+class ATFileToBlobMigrator(BaseMigrator):
     src_portal_type = 'File'
     src_meta_type = 'ATFile'
     dst_portal_type = 'Blob'
@@ -41,7 +41,7 @@ class ATFileToBlobMigrator(ATItemMigrator):
         self.new.getField('file').getMutator(self.new)(self.old)
 
     def last_migrate_reindex(self):
-        self.new.reindexObject()
+        self.new.reindexObject(idxs=['object_provides'])
 
 
 def getATFilesMigrationWalker(self):

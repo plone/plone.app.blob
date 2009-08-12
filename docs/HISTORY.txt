@@ -5,6 +5,10 @@ Changelog
 
 plone.app.blob - 1.0b5 Unreleased
 
+    - Speed up migration of existing content by using "in-place" migrators
+      and avoid unnecessary re-indexing.
+      [witsch]
+
     - Fix registration of blob-based image scale adapter to prevent getting
       404s for content other than images.  This fixes the second issue
       related to http://plone.org/products/plone.app.blob/issues/19
