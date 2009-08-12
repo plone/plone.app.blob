@@ -3,6 +3,8 @@ from plone.app.blob.tests.base import ReplacementTestCase   # import first!
 from unittest import defaultTestLoader
 from Products.ATContentTypes.interface.file import IATFile, IFileContent
 from Products.ATContentTypes.interface.image import IATImage, IImageContent
+from Products.ATContentTypes.interfaces import IATFile as Z2IATFile
+from Products.ATContentTypes.interfaces import IATImage as Z2IATImage
 from Products.ATContentTypes.content.file import ATFile
 from Products.ATContentTypes.content.image import ATImage
 from plone.app.blob.interfaces import IATBlobFile, IATBlobImage
@@ -41,6 +43,8 @@ class FileReplacementTests(ReplacementTestCase):
         self.failUnless(IATFile.providedBy(foo), 'no IATFile?')
         self.failUnless(IFileContent.providedBy(foo), 'no IFileContent?')
         self.failUnless(IATBlobFile.providedBy(foo), 'no IATBlobFile?')
+        self.failUnless(Z2IATFile.isImplementedBy(foo), 'no zope2 IATFile?')
+        self.failIf(Z2IATImage.isImplementedBy(foo), 'zope2 IATImage?')
 
     def testFileMigration(self):
         foo = self.folder[self.folder.invokeFactory('ATFile', id='foo',
@@ -127,6 +131,8 @@ class ImageReplacementTests(ReplacementTestCase):
         self.failUnless(IATImage.providedBy(foo), 'no IATImage?')
         self.failUnless(IImageContent.providedBy(foo), 'no IImageContent?')
         self.failUnless(IATBlobImage.providedBy(foo), 'no IATBlobImage?')
+        self.failUnless(Z2IATImage.isImplementedBy(foo), 'no zope2 IATImage?')
+        self.failIf(Z2IATFile.isImplementedBy(foo), 'zope2 IATFile?')
 
     def testImageMigration(self):
         gif = getImage()

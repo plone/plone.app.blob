@@ -11,7 +11,6 @@ from Products.Archetypes.atapi import ATFieldProperty
 from Products.Archetypes.atapi import registerType
 from Products.CMFCore.permissions import View, ModifyPortalContent
 from Products.CMFCore.utils import getToolByName
-from Products.ATContentTypes.interfaces import IATFile
 from Products.ATContentTypes.content.base import ATCTFileContent
 from Products.ATContentTypes.content.schemata import ATContentTypeSchema
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
@@ -53,8 +52,6 @@ def addATBlobImage(container, id, **kwargs):
 class ATBlob(ATCTFileContent, ImageMixin):
     """ a chunk of binary data """
     implements(IATBlob)
-
-    __implements__ = ATCTFileContent.__implements__, IATFile
 
     portal_type = 'Blob'
     _at_rename_after_creation = True
