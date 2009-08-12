@@ -2,17 +2,22 @@ Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_install
 ===================================================================
 --- extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_installation.py	(revision 54941)
 +++ extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_installation.py	(working copy)
-@@ -57,5 +57,5 @@
+@@ -57,6 +57,6 @@
          # test that all types are installed well
          ttool = self.ttool
 -        ids = ('Document', 'Favorite', 'File',
+-            'Folder', 'Image', 'Large Plone Folder', 'Link',
 +        ids = ('Document', 'Favorite',
-             'Folder', 'Image', 'Large Plone Folder', 'Link',
++            'Folder', 'Large Plone Folder', 'Link',
              'News Item', 'Topic', 'Event')
-@@ -67,4 +67,7 @@
+ 
+@@ -67,4 +67,10 @@
              self.failUnless(tinfo.product == 'ATContentTypes', tinfo.product)
  
 +        tinfo = ttool['File']
++        self.failUnless(tinfo.product == 'plone.app.blob', tinfo.product)
++
++        tinfo = ttool['Image']
 +        self.failUnless(tinfo.product == 'plone.app.blob', tinfo.product)
 +
      def test_not_quickinstalled(self):
@@ -45,6 +50,37 @@ Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_atfile.
                          'Value is %s' % field.generateMode)
          self.failUnless(field.force == '', 'Value is %s' % field.force)
 -        self.failUnless(field.type == 'file', 'Value is %s' % field.type)
++        self.failUnless(field.type == 'blob', 'Value is %s' % field.type)
+         self.failUnless(isinstance(field.storage, AnnotationStorage),
+                         'Value is %s' % type(field.storage))
+Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_atimage.py
+===================================================================
+--- extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_atimage.py	(revision 54941)
++++ extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_atimage.py	(working copy)
+@@ -40,4 +40,5 @@
+ from Products.ATContentTypes.tests.utils import dcEdit, PACKAGE_HOME
+ 
++from plone.app.blob.content import ATBlob
+ from Products.ATContentTypes.content.image import ATImage
+ from Products.ATContentTypes.interfaces import IImageContent
+@@ -81,5 +82,5 @@
+ class TestSiteATImage(atcttestcase.ATCTTypeTestCase):
+ 
+-    klass = ATImage
++    klass = ATBlob
+     portal_type = 'Image'
+     title = 'Image'
+@@ -233,5 +234,5 @@
+     def afterSetUp(self):
+         atcttestcase.ATCTFieldTestCase.afterSetUp(self)
+-        self._dummy = self.createDummy(klass=ATImage)
++        self._dummy = self.createDummy(klass=ATBlob, subtype='Image')
+ 
+     def test_imageField(self):
+@@ -261,5 +262,5 @@
+                         'Value is %s' % field.generateMode)
+         self.failUnless(field.force == '', 'Value is %s' % field.force)
+-        self.failUnless(field.type == 'image', 'Value is %s' % field.type)
 +        self.failUnless(field.type == 'blob', 'Value is %s' % field.type)
          self.failUnless(isinstance(field.storage, AnnotationStorage),
                          'Value is %s' % type(field.storage))
@@ -136,3 +172,15 @@ Index: extras/Products.ATContentTypes/Products/ATContentTypes/content/file.py
 +
      security.declareProtected(View, 'index_html')
      def index_html(self, REQUEST=None, RESPONSE=None):
+Index: extras/Products.ATContentTypes/Products/ATContentTypes/content/image.py
+===================================================================
+--- extras/Products.ATContentTypes/Products/ATContentTypes/content/image.py	(revision 54941)
++++ extras/Products.ATContentTypes/Products/ATContentTypes/content/image.py	(working copy)
+@@ -108,4 +108,7 @@
+     security       = ClassSecurityInfo()
+ 
++    def __init__(self, *args, **kwargs):
++        raise 'WeDidntWannaUseThisThingAnymoreException!'
++
+     def exportImage(self, format, width, height):
+         return '',''
