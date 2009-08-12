@@ -10,6 +10,14 @@ separately from your usual ``FileStorage`` database, i.e. ``Data.fs``.  This
 has several advantages, most importantly a much smaller ``Data.fs`` and better
 performance both cpu- as well as memory-wise.
 
+  .. |__| unicode:: U+20  .. space
+
+
+Contents
+--------
+
+.. contents:: |__|
+
 
 Status
 ------
