@@ -14,7 +14,7 @@ from transaction import savepoint
 def getMigrationWalker(context, migrator):
     """ set up migration walker using the given item migrator """
     portal = getToolByName(context, 'portal_url').getPortalObject()
-    return CustomQueryWalker(portal, migrator, full_transaction=True)
+    return CustomQueryWalker(portal, migrator, use_savepoint=True)
 
 
 def migrate(context, walker):
