@@ -96,7 +96,7 @@ without the `/view` action part:
   >>> url = browser.url.replace('/view', '')
   >>> browser.open(url)
   >>> browser.contents
-  "<open file '/...blob', mode 'rb' at 0x...>"
+  '<plone.app.blob.iterators.BlobStreamIterator object at 0x...>'
   >>> browser.headers['status']
   '200 OK'
   >>> browser.headers['content-type']
@@ -108,7 +108,7 @@ Appending `/index_html` should be the same:
 
   >>> browser.open(url + '/index_html')
   >>> browser.contents
-  "<open file '/...blob', mode 'rb' at 0x...>"
+  '<plone.app.blob.iterators.BlobStreamIterator object at 0x...>'
   >>> browser.headers['status']
   '200 OK'
   >>> browser.headers['content-type']

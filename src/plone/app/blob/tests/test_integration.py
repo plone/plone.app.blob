@@ -70,7 +70,7 @@ class IntegrationTests(BlobTestCase):
         commit()
         self.assertEqual(blob.get_size(), len(pdf_data))
         # now let's pretend the blob file is missing for some reason...
-        remove(blob.getFile().getBlob()._current_filename())
+        remove(blob.getFile().getBlob().committed())
         self.assertEqual(blob.get_size(), 0)
         # things shouldn't break either when the object isn't loaded yet
         blob.getFile().getBlob()._p_changed = None
@@ -82,7 +82,7 @@ class IntegrationTests(BlobTestCase):
         commit()
         self.assertEqual(blob.get_data(), pdf_data)
         # now let's pretend the blob file is missing for some reason...
-        remove(blob.getFile().getBlob()._current_filename())
+        remove(blob.getFile().getBlob().committed())
         self.assertEqual(blob.get_data(), '')
         # things shouldn't break either when the object isn't loaded yet
         blob.getFile().getBlob()._p_changed = None

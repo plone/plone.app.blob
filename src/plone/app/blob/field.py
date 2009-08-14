@@ -1,11 +1,10 @@
-from os.path import getsize, isfile
+from os import fstat
 from zope.interface import implements
 from StringIO import StringIO
 from Acquisition import Implicit
 from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
 from Globals import InitializeClass
-from ZPublisher.Iterators import filestream_iterator
 from ZODB.blob import Blob
 from ZODB.POSException import POSKeyError
 from persistent import Persistent
@@ -21,6 +20,7 @@ from Products.Archetypes.utils import contentDispositionHeader
 from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
 from plone.app.blob.interfaces import IBlobbable, IWebDavUpload, IBlobField
 from plone.app.blob.interfaces import IBlobWrapper
+from plone.app.blob.iterators import BlobStreamIterator
 from plone.app.blob.utils import getImageSize
 
 
@@ -68,18 +68,18 @@ class BlobWrapper(Implicit, Persistent):
     security.declarePrivate('getIterator')
     def getIterator(self):
         """ return a filestream iterator object from the blob """
-        return filestream_iterator(self.blob._current_filename(), 'rb')
+        return BlobStreamIterator(self.blob)
 
     security.declareProtected(View, 'get_size')
     def get_size(self):
         """ return the size of the blob """
         try:
-            current_filename = self.blob._current_filename()
-        except POSKeyError:
-            return 0
-        if current_filename is None or not isfile(current_filename):
-            return 0
-        return getsize(current_filename)
+            blob = self.blob.open('r')
+            size = fstat(blob.fileno()).st_size
+            blob.close()
+        except (POSKeyError, IOError):
+            size = 0
+        return size
 
     __len__ = get_size
 
