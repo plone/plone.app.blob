@@ -24,7 +24,10 @@ class BlobStreamIterator(object):
 
     def __len__(self):
         return fstat(self.blob.fileno()).st_size
-
+    
+    def __iter__(self):
+        return self
+    
     # bbb methods to pretend we're a file-like object
 
     def close(self):
