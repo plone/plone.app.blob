@@ -5,6 +5,12 @@ Changelog
 
 plone.app.blob - 1.0b5 Unreleased
 
+    - Fix compatibility issue with `repoze.zope2`.
+      [optilude, witsch]
+
+    - Fix compatibility issues with ZODB 3.9 and Plone 4.0.
+      [witsch]
+
     - Speed up migration of existing content by using "in-place" migrators
       and avoid unnecessary re-indexing.
       [witsch]
