@@ -1,0 +1,15 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:monkey="http://namespaces.plone.org/monkey"
+    i18n_domain="plone.app.blob">
+
+  <include package="collective.monkeypatcher" file="meta.zcml" />
+
+  <monkey:patch
+     class="ZPublisher.HTTPResponse.HTTPResponse"
+     original="setBody"
+     replacement=".patches.setBody"
+     handler=".patches.applyPatch"
+     docstringWarning="false" />
+
+</configure>

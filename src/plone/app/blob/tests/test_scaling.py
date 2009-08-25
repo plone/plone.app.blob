@@ -88,9 +88,7 @@ class BlobImagePublisherTests(TraverseCounterMixin, ReplacementFunctionalTestCas
         # first the image itself...
         response = self.publish(base + '/foo', basic=credentials)
         self.assertEqual(response.getStatus(), 200)
-        # note: functional tests can't handle iterators yet, so the output
-        # appears as a str()'d file object; this is ok, though and works ttw
-        self.failUnless(response.getBody().startswith('<plone.app.blob.iterators'))
+        self.assertEqual(response.getBody(), data)
         self.assertEqual(response.getHeader('Content-Type'), 'image/gif')
         # then the field without a scale name
         response = self.publish(base + '/foo/image', basic=credentials)

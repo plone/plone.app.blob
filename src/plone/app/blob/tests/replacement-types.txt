@@ -53,6 +53,7 @@ Images
 Next a similar test is conducted for an "Image" content item:
 
   >>> from plone.app.blob.tests.utils import getImage
+  >>> gif = getImage()
   >>> browser.open(self.folder.absolute_url())
 
   >>> browser.getLink(url='createObject?type_name=Image').click()
@@ -61,7 +62,7 @@ Next a similar test is conducted for an "Image" content item:
   >>> browser.getControl(name='title').value = 'Bar'
   >>> control = browser.getControl(name='image_file')
   >>> control.filename = 'bar.gif'
-  >>> control.value = StringIO(getImage())
+  >>> control.value = StringIO(gif)
   >>> browser.getControl('Save').click()
 
   >>> browser.url
@@ -79,7 +80,7 @@ Now let's make sure we can also edit it:
   >>> browser.getControl('Replace with new image').selected = True
   >>> control = browser.getControl(name='image_file')
   >>> control.filename = 'foobar.gif'
-  >>> control.value = StringIO(getImage())
+  >>> control.value = StringIO(gif)
   >>> browser.getControl('Save').click()
 
   >>> browser.url
@@ -95,8 +96,8 @@ without the `/view` action part:
 
   >>> url = browser.url.replace('/view', '')
   >>> browser.open(url)
-  >>> browser.contents
-  '<plone.app.blob.iterators.BlobStreamIterator object at 0x...>'
+  >>> browser.contents == gif
+  True
   >>> browser.headers['status']
   '200 OK'
   >>> browser.headers['content-type']
@@ -107,8 +108,8 @@ without the `/view` action part:
 Appending `/index_html` should be the same:
 
   >>> browser.open(url + '/index_html')
-  >>> browser.contents
-  '<plone.app.blob.iterators.BlobStreamIterator object at 0x...>'
+  >>> browser.contents == gif
+  True
   >>> browser.headers['status']
   '200 OK'
   >>> browser.headers['content-type']
