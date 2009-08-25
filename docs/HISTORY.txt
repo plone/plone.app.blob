@@ -3,7 +3,7 @@ Changelog
 
     (name of developer listed in brackets)
 
-plone.app.blob - 1.0b5 Unreleased
+plone.app.blob - 1.0b5 Released August 26, 2009
 
     - Fix compatibility issue with `repoze.zope2`.
       [optilude, witsch]
