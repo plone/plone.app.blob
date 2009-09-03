@@ -253,11 +253,10 @@ The following are some known issues, that will hopefully be resolved soon
 enough.  In the meantime here are the recommended workarounds:
 
 
-**"FileFieldException: Value is not File or String (...)" Exception**
+**"AttributeError: 'module' object has no attribute 'VersionBase'" Exception**
 
   Symptom
     After upgrading your buildout you're getting errors like the following::
-    during blob migration::
 
       Traceback (innermost last):
         ...
