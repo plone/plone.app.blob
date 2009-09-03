@@ -29,24 +29,24 @@ class SchemaExtender(object):
     implements(ISchemaExtender)
 
     fields = [
-            ExtensionBlobField('image',
-                required = True,
-                primary = True,
-                default = '',
-                accessor = 'getImage',
-                mutator = 'setImage',
-                languageIndependent = True,
-                storage = AnnotationStorage(migrate=True),
-                swallowResizeExceptions = zconf.swallowImageResizeExceptions.enable,
-                pil_quality = zconf.pil_config.quality,
-                pil_resize_algo = zconf.pil_config.resize_algo,
-                max_size = zconf.ATImage.max_image_dimension,
-                validators = (('isNonEmptyFile', V_REQUIRED),
-                              ('checkFileMaxSize', V_REQUIRED)),
-                widget = ImageWidget(label = _(u'label_image', default=u'Image'),
-                                     description=_(u''),
-                                     show_content_type = False,))
-        ]
+        ExtensionBlobField('image',
+            required = True,
+            primary = True,
+            default = '',
+            accessor = 'getImage',
+            mutator = 'setImage',
+            languageIndependent = True,
+            storage = AnnotationStorage(migrate=True),
+            swallowResizeExceptions = zconf.swallowImageResizeExceptions.enable,
+            pil_quality = zconf.pil_config.quality,
+            pil_resize_algo = zconf.pil_config.resize_algo,
+            max_size = zconf.ATImage.max_image_dimension,
+            validators = (('isNonEmptyFile', V_REQUIRED),
+                          ('checkFileMaxSize', V_REQUIRED)),
+            widget = ImageWidget(label = _(u'label_image', default=u'Image'),
+                                 description=_(u''),
+                                 show_content_type = False,))
+    ]
 
     def __init__(self, context):
         self.context = context

@@ -16,22 +16,22 @@ class SchemaExtender(object):
     implements(ISchemaExtender)
 
     fields = [
-            ExtensionBlobField('file',
-                required = True,
-                primary = True,
-                searchable = True,
-                default = '',
-                accessor = 'getFile',
-                mutator = 'setFile',
-                index_method = 'getIndexValue',
-                languageIndependent = True,
-                storage = AnnotationStorage(migrate=True),
-                validators = (('isNonEmptyFile', V_REQUIRED),
-                              ('checkFileMaxSize', V_REQUIRED)),
-                widget = FileWidget(label = _(u'label_file', default=u'File'),
-                                    description=_(u''),
-                                    show_content_type = False,))
-        ]
+        ExtensionBlobField('file',
+            required = True,
+            primary = True,
+            searchable = True,
+            default = '',
+            accessor = 'getFile',
+            mutator = 'setFile',
+            index_method = 'getIndexValue',
+            languageIndependent = True,
+            storage = AnnotationStorage(migrate=True),
+            validators = (('isNonEmptyFile', V_REQUIRED),
+                          ('checkFileMaxSize', V_REQUIRED)),
+            widget = FileWidget(label = _(u'label_file', default=u'File'),
+                                description=_(u''),
+                                show_content_type = False,))
+    ]
 
     def __init__(self, context):
         self.context = context
