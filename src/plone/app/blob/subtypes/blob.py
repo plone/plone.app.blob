@@ -15,11 +15,7 @@ class ExtensionBlobField(IndexMethodFix, ExtensionField, BlobField):
 class SchemaExtender(object):
     implements(ISchemaExtender)
 
-    def __init__(self, context):
-        self.context = context
-
-    def getFields(self):
-        return [
+    fields = [
             ExtensionBlobField('file',
                 required = True,
                 primary = True,
@@ -37,3 +33,8 @@ class SchemaExtender(object):
                                     show_content_type = False,))
         ]
 
+    def __init__(self, context):
+        self.context = context
+
+    def getFields(self):
+        return self.fields

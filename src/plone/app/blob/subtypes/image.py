@@ -28,11 +28,7 @@ class ExtensionBlobField(IndexMethodFix, ExtensionField, BlobField, ImageFieldMi
 class SchemaExtender(object):
     implements(ISchemaExtender)
 
-    def __init__(self, context):
-        self.context = context
-
-    def getFields(self):
-        return [
+    fields = [
             ExtensionBlobField('image',
                 required = True,
                 primary = True,
@@ -52,3 +48,8 @@ class SchemaExtender(object):
                                      show_content_type = False,))
         ]
 
+    def __init__(self, context):
+        self.context = context
+
+    def getFields(self):
+        return self.fields
