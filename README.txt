@@ -78,6 +78,10 @@ this::
       http://download.zope.org/distribution/
       http://effbot.org/downloads
   eggs = elementtree
+  versions = versions
+
+  [versions]
+  ZODB3 = 3.8.3
 
   [plone]
   recipe = plone.recipe.plone
@@ -130,6 +134,10 @@ A sample ZEO buildout configuration could look like this::
     http://download.zope.org/distribution/
     http://effbot.org/downloads
   eggs = elementtree
+  versions = versions
+
+  [versions]
+  ZODB3 = 3.8.3
 
   [plone]
   recipe = plone.recipe.plone
@@ -244,6 +252,36 @@ Troubleshooting
 The following are some known issues, that will hopefully be resolved soon
 enough.  In the meantime here are the recommended workarounds:
 
+
+**"FileFieldException: Value is not File or String (...)" Exception**
+
+  Symptom
+    After upgrading your buildout you're getting errors like the following::
+    during blob migration::
+
+      Traceback (innermost last):
+        ...
+        Module App.PersistentExtra, line 57, in locked_in_version
+      AttributeError: 'module' object has no attribute 'VersionBase'
+  Problem
+    Version `1.0b5`_ of ``plone.app.blob`` adds `support for Plone 4`_ as
+    well as `Dexterity`_, which is why the version restriction for ZODB had
+    to be lifted.  However, while Plone 4 will use Zope 2.12 and ZODB 3.9,
+    Plone 3.x doesn't work with either of these.
+  Solution
+    Downgrade ``ZODB3`` to a release from the 3.8 series.  You can do this by
+    adding a version pin like::
+
+      [versions]
+      ZODB3 = 3.8.3
+
+    to your ``buildout.cfg``.
+
+  .. _`1.0b5`: http://pypi.python.org/pypi/plone.app.blob/1.0b5
+  .. _`support for Plone 4`: http://dev.plone.org/plone/ticket/7822
+  .. _`Dexterity`: http://plone.org/products/dexterity/
+
+
 **"FileFieldException: Value is not File or String (...)" Exception**
 
   Symptom
@@ -262,7 +300,7 @@ enough.  In the meantime here are the recommended workarounds:
     ``archetypes.schemaextender``.
   Solution
     Downgrade ``archetypes.schemaextender`` to version 1.0 for the moment.
-    You can do this by adding a version pin like:
+    You can do this by adding a version pin like::
 
       [versions]
       archetypes.schemaextender = 1.0
