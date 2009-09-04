@@ -5,6 +5,9 @@ Changelog
 
 plone.app.blob - 1.0b6 Unreleased
 
+    - Allow certain file types to be downloaded immediately.
+      See http://plone.org/products/plone.app.blob/issues/4
+      [optilude]
 
 plone.app.blob - 1.0b5 Released August 26, 2009
 
