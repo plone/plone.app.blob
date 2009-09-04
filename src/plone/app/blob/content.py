@@ -12,6 +12,7 @@ from Products.Archetypes.atapi import registerType
 from Products.CMFCore.permissions import View, ModifyPortalContent
 from Products.CMFCore.utils import getToolByName
 from Products.ATContentTypes.content.base import ATCTFileContent
+from Products.ATContentTypes.content.file import ATFile
 from Products.ATContentTypes.content.schemata import ATContentTypeSchema
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from Products.MimetypesRegistry.common import MimeTypeException
@@ -67,6 +68,8 @@ class ATBlob(ATCTFileContent, ImageMixin):
         """ download the file inline or as an attachment """
         field = self.getPrimaryField()
         if IATBlobImage.providedBy(self):
+            return field.index_html(self, REQUEST, RESPONSE)
+        elif field.getContentType(self) in ATFile.inlineMimetypes:
             return field.index_html(self, REQUEST, RESPONSE)
         else:
             return field.download(self, REQUEST, RESPONSE)
