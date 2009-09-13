@@ -30,6 +30,9 @@ setup(name = name,
           'archetypes.schemaextender >=1.0b1',
           'plone.app.imaging',
       ],
+      extras_require={
+        'tests': ['collective.monkeypatcher'],
+      },
       classifiers = [
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
