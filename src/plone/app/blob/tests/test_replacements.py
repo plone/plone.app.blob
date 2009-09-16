@@ -74,10 +74,37 @@ class FileReplacementTests(ReplacementTestCase):
         self.assertEqual(foo.Contributors(), ('me',))
         blob = foo.getImage().getBlob().open('r')
         self.assertEqual(blob.read(), 'plain text')
-        # also make sure the catalog is up to date
-        brain = self.portal.portal_catalog(id = 'foo')[0]
+
+    def testCatalogAfterFileMigration(self):
+        foo = self.folder[self.folder.invokeFactory('ATFile', id='foo',
+            title='a file', file='plain text', subject=('foo', 'bar'),
+            contributors=('me'))]
+        # fake old content from before applying the replacement profile
+        foo._setPortalTypeName('File')
+        foo.reindexObject(idxs=('portal_type',))
+        # remember the catalog data so it can be checked
+        catalog = self.portal.portal_catalog
+        rid = catalog(id='foo')[0].getRID()
+        index_data = catalog.getIndexDataForRID(rid)
+        meta_data = catalog.getMetadataForRID(rid)
+        # migrate & check migrated content item
+        self.assertEqual(migrateATBlobFiles(self.portal),
+            'Migrating /plone/Members/test_user_1_/foo (File -> File)\n')
+        foo = self.folder['foo']
+        brain = catalog(id='foo')[0]
         self.assertEqual(foo.UID(), brain.UID)
         self.assertEqual(foo.getObjSize(), brain.getObjSize)
+        self.assertEqual(foo.getPortalTypeName(), brain.Type)
+        # compare pre-migration and current catalog data...
+        okay = ('meta_type', 'Type', 'object_provides', 'SearchableText', 'Language')
+        for key, value in catalog.getIndexDataForRID(brain.getRID()).items():
+            if not key in okay:
+                self.assertEqual(index_data[key], value, 'index: %s' % key)
+        okay = ('meta_type',)
+        for key, value in catalog.getMetadataForRID(brain.getRID()).items():
+            if not key in okay:
+                self.assertEqual(meta_data[key], value, 'meta: %s' % key)
+
 
     def testIndexAccessor(self):
         foo = self.folder[self.folder.invokeFactory('File', 'foo',
@@ -164,10 +191,37 @@ class ImageReplacementTests(ReplacementTestCase):
         self.assertEqual(foo.Contributors(), ('me',))
         blob = foo.getImage().getBlob().open('r')
         self.assertEqual(blob.read(), gif)
-        # also make sure the catalog is up to date
-        brain = self.portal.portal_catalog(id = 'foo')[0]
+
+    def testCatalogAfterImageMigration(self):
+        gif = getImage()
+        foo = self.folder[self.folder.invokeFactory('ATImage', id='foo',
+            title='an image', image=gif, subject=('foo', 'bar'),
+            contributors=('me'))]
+        # fake old content from before applying the replacement profile
+        foo._setPortalTypeName('Image')
+        foo.reindexObject(idxs=('portal_type',))
+        # remember the catalog data so it can be checked
+        catalog = self.portal.portal_catalog
+        rid = catalog(id='foo')[0].getRID()
+        index_data = catalog.getIndexDataForRID(rid)
+        meta_data = catalog.getMetadataForRID(rid)
+        # migrate & check migrated content item
+        self.assertEqual(migrateATBlobImages(self.portal),
+            'Migrating /plone/Members/test_user_1_/foo (Image -> Image)\n')
+        foo = self.folder['foo']
+        brain = catalog(id='foo')[0]
         self.assertEqual(foo.UID(), brain.UID)
         self.assertEqual(foo.getObjSize(), brain.getObjSize)
+        self.assertEqual(foo.getPortalTypeName(), brain.Type)
+        # compare pre-migration and current catalog data...
+        okay = ('meta_type', 'Type', 'object_provides', 'Language')
+        for key, value in catalog.getIndexDataForRID(brain.getRID()).items():
+            if not key in okay:
+                self.assertEqual(index_data[key], value, 'index: %s' % key)
+        okay = ('meta_type', 'getIcon')
+        for key, value in catalog.getMetadataForRID(brain.getRID()).items():
+            if not key in okay:
+                self.assertEqual(meta_data[key], value, 'meta: %s' % key)
 
 
 def test_suite():

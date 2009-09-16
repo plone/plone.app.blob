@@ -5,6 +5,9 @@ Changelog
 
 plone.app.blob - 1.0b6 Unreleased
 
+    - Fix migration issue regarding stale catalog index- & meta-data.
+      [witsch]
+
     - Allow certain file types to be downloaded immediately.
       See http://plone.org/products/plone.app.blob/issues/4
       [optilude]
