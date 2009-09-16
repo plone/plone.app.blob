@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<object name="Image"
+<object name="ATImage"
    meta_type="Factory-based Type Information with dynamic views"
    i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title" i18n:translate="">Image (ATImage w/o blobs)</property>
+ <property name="title" i18n:translate="">Image (w/o blobs)</property>
  <property name="description"
-      i18n:translate="">An image, which can be referenced in documents or displayed in an album.</property>
+      i18n:translate="">An old-style image not based on ZODB blobs.</property>
  <property name="content_icon">image_icon.gif</property>
  <property name="content_meta_type">ATImage</property>
  <property name="product">ATContentTypes</property>
