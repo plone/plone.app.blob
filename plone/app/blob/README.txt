@@ -35,6 +35,7 @@ instantiable:
   >>> portal_types.getTypeInfo('Blob')
   <DynamicViewTypeInformation at /plone/portal_types/Blob>
 
+  >>> self.setRoles(['Manager'])
   >>> folder.invokeFactory('Blob', id='blob', title='a Blob')
   'blob'
   >>> blob = folder.blob
@@ -133,7 +134,7 @@ or wrong data from showing up in some views, i.e. folder listing:
 Finally the correct creation of blob-based content "through the web" is tested
 using a testbrowser:
 
-  >>> self.setRoles('Editor')
+  >>> self.setRoles('Manager')
   >>> from Products.Five.testbrowser import Browser
   >>> from Products.PloneTestCase import PloneTestCase as ptc
   >>> user, pwd = ptc.default_user, ptc.default_password
@@ -150,8 +151,8 @@ using a testbrowser:
   >>> control.value = StringIO('%PDF-1.4 fake pdf...' + 'foo' * 1000)
   >>> browser.getControl('Save').click()
   >>> browser.url
-  'http://nohost/plone/.../foo.pdf/view'
+  'http://nohost/plone/.../foo.pdf/view?portal_status_message=Changes%20saved.'
   >>> browser.contents
-  '...Info...Changes saved...
-   ...Foo...foo.pdf...PDF document,...2Kb...'
+  '...Changes saved...
+   ...Foo...pdf.png...2.9 kB...'
 

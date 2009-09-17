@@ -3,14 +3,14 @@ db  # make pyflakes happy...
 
 import os.path
 from unittest import TestSuite, makeSuite
-from Testing.ZopeTestCase import installPackage, ZopeDocFileSuite
+from Testing.ZopeTestCase import ZopeDocFileSuite
 from ZPublisher.HTTPRequest import HTTPRequest
 from Products.Five import zcml
 from Products.Five import fiveconfigure
 from Products.PloneTestCase import PloneTestCase
 from Products.PloneTestCase.layer import onsetup
 
-from plone.app.blob.utils import guessMimetype
+from plone.app.blob.utils import guessMimetype as guessMimetypeHelper
 
 from StringIO import StringIO
 from base64 import decodestring
@@ -23,7 +23,14 @@ def setupPackage():
     import plone.app.blob
     zcml.load_config('configure.zcml', plone.app.blob)
     fiveconfigure.debug_mode = False
-    installPackage('plone.app.blob')
+
+    # make sure the monkey patches from `pythonproducts` are appied; they get
+    # loaded with an `installProduct('Five')`, but zcml layer's `setUp()`
+    # calls `five.safe_load_site()`, which in turn calls `cleanUp()` from
+    # `zope.testing.cleanup`, effectively removing the patches again *before*
+    # the tests are run; so we need to explicitly apply them again... %)
+    from Products.Five import pythonproducts
+    pythonproducts.applyPatches()
 
 setupPackage()
 PloneTestCase.setupPloneSite(extension_profiles=(
@@ -69,6 +76,8 @@ class BlobTestCase(PloneTestCase.PloneTestCase):
         self.assert_(os.path.isfile(f.name))
 
     def testMimetypeGuessing(self):
+        def guessMimetype(data, filename=None):
+            return guessMimetypeHelper(data, filename, context=self.portal)
         gif = StringIO(decodestring(self.gif))
         self.assertEqual(guessMimetype(gif), 'image/gif')
         self.assertEqual(guessMimetype(gif, 'image.jpg'), 'image/jpeg')
