@@ -1,14 +1,16 @@
-from plone.app.blob import db   # needs to be imported first to set up ZODB
+from plone.app.blob.tests import db # needs to be imported first to set up ZODB
+db  # make pyflakes happy...
 
+import os.path
 from unittest import TestSuite, makeSuite
-from Testing.ZopeTestCase import ZopeDocFileSuite
+from Testing.ZopeTestCase import installPackage, ZopeDocFileSuite
 from ZPublisher.HTTPRequest import HTTPRequest
 from Products.Five import zcml
 from Products.Five import fiveconfigure
 from Products.PloneTestCase import PloneTestCase
 from Products.PloneTestCase.layer import onsetup
 
-from plone.app.blob.utils import guessMimetype as guessMimetypeHelper
+from plone.app.blob.utils import guessMimetype
 
 from StringIO import StringIO
 from base64 import decodestring
@@ -21,14 +23,7 @@ def setupPackage():
     import plone.app.blob
     zcml.load_config('configure.zcml', plone.app.blob)
     fiveconfigure.debug_mode = False
-
-    # make sure the monkey patches from `pythonproducts` are appied; they get
-    # loaded with an `installProduct('Five')`, but zcml layer's `setUp()`
-    # calls `five.safe_load_site()`, which in turn calls `cleanUp()` from
-    # `zope.testing.cleanup`, effectively removing the patches again *before*
-    # the tests are run; so we need to explicitly apply them again... %)
-    from Products.Five import pythonproducts
-    pythonproducts.applyPatches()
+    installPackage('plone.app.blob')
 
 setupPackage()
 PloneTestCase.setupPloneSite(extension_profiles=(
@@ -43,15 +38,25 @@ test_environment = {
     'SERVER_PORT': '80',
 }
 
-largefile_data = '''
+largefile_data = ('test' * 2048)
+
+upload_request = '''
 --12345
-Content-Disposition: form-data; name="file"; filename="file"
+Content-Disposition: form-data; name="file"; filename="%s"
 Content-Type: application/octet-stream
+Content-Length: %d
 
-test %s
+%s
 
-''' % ('test' * 1000)
+'''
 
+def makeFileUpload(data, filename):
+    request_data = upload_request % (filename, len(data), data)
+    req = HTTPRequest(StringIO(request_data),
+                      test_environment.copy(),
+                      None)
+    req.processInputs()
+    return req.form.get('file')
 
 class BlobTestCase(PloneTestCase.PloneTestCase):
 
@@ -60,19 +65,27 @@ class BlobTestCase(PloneTestCase.PloneTestCase):
 
     def testFileName(self):
         """ checks fileupload object supports the filename """
-        req = HTTPRequest(StringIO(largefile_data), test_environment.copy(), None)
-        req.processInputs()
-        f = req.form.get('file')
-        self.assert_(f.name)
+        f = makeFileUpload(largefile_data, 'test.txt')
+        self.assert_(os.path.isfile(f.name))
 
     def testMimetypeGuessing(self):
-        def guessMimetype(data, filename=None):
-            return guessMimetypeHelper(data, filename, context=self.portal)
         gif = StringIO(decodestring(self.gif))
         self.assertEqual(guessMimetype(gif), 'image/gif')
         self.assertEqual(guessMimetype(gif, 'image.jpg'), 'image/jpeg')
         self.assertEqual(guessMimetype(StringIO(), 'image.jpg'), 'image/jpeg')
         self.assertEqual(guessMimetype(StringIO('foo')), 'text/plain')
+
+    def testFileUploadPatch(self):
+        f = makeFileUpload(largefile_data, 'test.txt')
+        name = f.name
+        # the filesystem file of a large file should exist
+        self.failUnless(os.path.isfile(name), name)
+        # even after it's been closed
+        f.close()
+        self.failUnless(os.path.isfile(name), name)
+        # but should go away when deleted
+        del f
+        self.failIf(os.path.isfile(name), name)
 
     def testStringValue(self):
         self.folder.invokeFactory('Blob', 'blob')
@@ -91,9 +104,22 @@ class BlobTestCase(PloneTestCase.PloneTestCase):
     def testSize(self):
         self.folder.invokeFactory('Blob', 'blob')
         blob = self.folder['blob']
-        value = decodestring(self.gif)
-        blob.update(title="I'm blob", file=value)
-        self.assertEqual(blob.get_size(), len(value))
+        # test with a small file
+        gif = decodestring(self.gif)
+        blob.update(file=makeFileUpload(gif, 'test.gif'))
+        self.assertEqual(blob.get_size(), len(gif))
+        # and a large one
+        blob.update(file=makeFileUpload(largefile_data, 'test.txt'))
+        self.assertEqual(blob.get_size(), len(largefile_data))
+
+    def testOpenAfterConsume(self):
+        """ it's an expected use case to be able to open a blob for
+            reading immediately after populating it by consuming """
+        self.folder.invokeFactory('Blob', 'blob')
+        blob = self.folder['blob']
+        blob.update(file=makeFileUpload(largefile_data, 'test.txt'))
+        b = blob.getFile().getBlob().open('r')
+        self.assertEqual(b.read(10), largefile_data[:10])
 
     def testIcon(self):
         self.folder.invokeFactory('Blob', 'blob', title='foo')
@@ -104,6 +130,14 @@ class BlobTestCase(PloneTestCase.PloneTestCase):
         self.assertEqual(blob.getIcon(), 'plone/pdf.png')
         blob.update(file='some text...')
         self.assertEqual(blob.getIcon(), 'plone/txt.png')
+
+    def testIconLookupForUnknownMimeType(self):
+        """ test for http://plone.org/products/plone.app.blob/issues/1 """
+        self.folder.invokeFactory('File', 'foo', file='foo')
+        self.folder.foo.setContentType('application/foo')
+        self.folder.invokeFactory('Blob', 'blob')
+        self.folder.blob.update(file=self.folder.foo)
+        self.assertEqual(self.folder.blob.getIcon(), 'plone/file_icon.gif')
 
 
 def test_suite():

@@ -2,6 +2,7 @@ try:
     from Products.contentmigration.archetypes import ATItemMigrator
     from Products.contentmigration.walker import CustomQueryWalker
     haveContentMigrations = True
+    ATItemMigrator  # make pyflakes happy...
 except ImportError:
     ATItemMigrator = object
     haveContentMigrations = False

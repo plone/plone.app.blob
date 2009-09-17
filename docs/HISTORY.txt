@@ -1,12 +1,48 @@
-Changelog for plone.app.blob
+Changelog
+---------
 
     (name of developer listed in brackets)
 
-plone.app.blob - 1.0a3 Unreleased
+plone.app.blob - 1.0b3 Unreleased
 
     - Change file size calculation so as not to need to reopen the file, which
       broke on windows
       [rochael]
+
+    - Fix issue where the mime-type registry returned an empty tuple when
+      looking up an unknown mime-type.  This fixes
+      http://plone.org/products/plone.app.blob/issues/1
+      [witsch]
+
+plone.app.blob - 1.0b2 Released February 29, 2008
+
+    - Reverted fix for Windows that closed the file upload object in order
+      to work around a problem with reading from the blob file afterwards.
+      [witsch]
+
+plone.app.blob - 1.0b1 Released February 28, 2008
+
+    - Minor bug fixes and cleanups
+      [witsch]
+
+    - Fix for a problem regarding file uploads on Windows, where renaming
+      the still open temporary file isn't allowed and hence caused an error.
+      Now the file is closed before the call to `consumeFile()`.
+      [rochael]
+
+    - Fix for Windows regarding the generation of the temporary file used for
+      file uploads so that it doesn't get deleted after being moved to the
+      blob storare
+      [rochael]
+
+    - Change file size calculation so as not to need to reopen the file, which
+      broke on Windows
+      [rochael]
+
+    - Changed the primary field of the blob content types to not to be
+      "searchable" as this causes indexing of the blob content making ram
+      consumption go through the roof
+      [witsch]
 
 plone.app.blob - 1.0a2 Released December 12, 2007
 
@@ -18,7 +54,7 @@ plone.app.blob - 1.0a2 Released December 12, 2007
       [naro]
 
     - Added alternative GenericSetup profile to allow to replace ATFile
-      as the "File" content type 
+      as the "File" content type
       [witsch]
 
 plone.app.blob - 1.0a1 Released December 7, 2007

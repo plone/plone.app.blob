@@ -25,7 +25,7 @@ as well :)).
   .. _`migration purposes`: http://dev.plone.org/collective/browser/contentmigration/
   .. _`buildout`: http://pypi.python.org/pypi/zc.buildout
   .. _`based on ploneout`: http://dev.plone.org/plone/browser/plone.app.blob/buildouts/ploneout
-  .. _`based on plone.recipe.plone`: http://dev.plone.org/plone/browser/plone.app.blob/buildouts/plone-3.0
+  .. _`based on plone.recipe.plone`: http://dev.plone.org/plone/browser/plone.app.blob/buildouts/plone-3.x
 
 In any way, the setup should make the new content type available as well as
 instantiable:
@@ -129,4 +129,29 @@ or wrong data from showing up in some views, i.e. folder listing:
   >>> catalog = getToolByName(portal, 'portal_catalog')
   >>> brain = catalog(id = 'foo')[0]
   >>> self.assertEqual(folder.foo.getObjSize(), brain.getObjSize)
+
+Finally the correct creation of blob-based content "through the web" is tested
+using a testbrowser:
+
+  >>> self.setRoles('Editor')
+  >>> from Products.Five.testbrowser import Browser
+  >>> from Products.PloneTestCase import PloneTestCase as ptc
+  >>> user, pwd = ptc.default_user, ptc.default_password
+  >>> browser = Browser()
+  >>> browser.addHeader('Authorization', 'Basic %s:%s' % (user, pwd))
+
+  >>> browser.open('http://nohost/plone/Members/%s' % user)
+  >>> browser.getLink(url='createObject?type_name=Blob').click()
+  >>> browser.url
+  'http://nohost/plone/.../portal_factory/Blob/blob.../edit'
+  >>> browser.getControl(name='title').value = 'Foo'
+  >>> control = browser.getControl(name='file_file')
+  >>> control.filename = 'foo.pdf'
+  >>> control.value = StringIO('%PDF-1.4 fake pdf...' + 'foo' * 1000)
+  >>> browser.getControl('Save').click()
+  >>> browser.url
+  'http://nohost/plone/.../foo.pdf/view'
+  >>> browser.contents
+  '...Info...Changes saved...
+   ...Foo...foo.pdf...PDF document,...2Kb...'
 

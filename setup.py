@@ -1,34 +1,24 @@
 from setuptools import setup, find_packages
+from os.path import join
 
-version = '1.0a3'
+name = 'plone.app.blob'
+path = name.split('.') + ['version.txt']
+version = open(join(*path)).read().strip()
 readme = open("README.txt").read()
+history = open(join('docs', 'HISTORY.txt')).read().replace(name + ' - ', '')
 
-setup(name = 'plone.app.blob',
+setup(name = name,
       version = version,
       description = 'ZODB 3.8 blob support for Plone 3.x',
-      long_description = readme[readme.find('Overview'):],
-      classifiers = [
-        'Development Status :: 3 - Alpha',
-        'Environment :: Web Environment',
-        'Framework :: Plone',
-        'Framework :: Zope2',
-        'Framework :: Zope3',
-        'Intended Audience :: Developers',
-        'Intended Audience :: System Administrators',
-        'Intended Audience :: Other Audience',
-        'License :: OSI Approved :: GNU General Public License (GPL)',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Topic :: Software Development :: Libraries :: Python Modules',
-      ],
+      long_description = readme[readme.find('\n\n'):] + '\n' + history,
       keywords = 'zodb blob support plone integration',
       author = 'Andreas Zeidler - Plone Foundation',
       author_email = 'plone-developers@lists.sourceforge.net',
-      url = 'http://dev.plone.org/plone/ticket/6805',
-      download_url = 'http://cheeseshop.python.org/pypi/plone.app.blob/',
+      url = 'http://plone.org/products/plone.app.blob',
+      download_url = 'http://pypi.python.org/pypi/plone.app.blob/',
       license = 'GPL',
       packages = find_packages(),
-      namespace_packages = ['plone.app'],
+      namespace_packages = ['plone', 'plone.app'],
       include_package_data = True,
       platforms = 'Any',
       zip_safe = False,
@@ -42,6 +32,18 @@ setup(name = 'plone.app.blob',
           'zope.proxy >=3.4,<3.4.999',
           'zodbcode >=3.4,<3.4.999',
           'archetypes.schemaextender >=1.0b1',
+      ],
+      classifiers = [
+        'Development Status :: 4 - Beta',
+        'Environment :: Web Environment',
+        'Framework :: Plone',
+        'Intended Audience :: Developers',
+        'Intended Audience :: System Administrators',
+        'Intended Audience :: Other Audience',
+        'License :: OSI Approved :: GNU General Public License (GPL)',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Topic :: Software Development :: Libraries :: Python Modules',
       ],
 )
 

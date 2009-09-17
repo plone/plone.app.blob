@@ -114,7 +114,7 @@ class ATBlob(ATCTFileContent):
             mimetypeitem = mtr.lookup(contenttype)
         except MimeTypeException, msg:
             mimetypeitem = None
-        if not mimetypeitem:
+        if mimetypeitem is None or mimetypeitem == ():
             return super(ATBlob, self).getIcon(relative_to_portal)
         icon = mimetypeitem[0].icon_path
         if not relative_to_portal:

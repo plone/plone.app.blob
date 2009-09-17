@@ -1,6 +1,6 @@
 from os.path import dirname
 
-import Testing
+import Testing; Testing # make pyflakes happy...
 import App.config
 cfg = App.config.getConfiguration()
 cfg.testinghome = dirname(__file__)

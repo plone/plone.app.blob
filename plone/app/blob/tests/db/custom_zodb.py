@@ -1,4 +1,4 @@
-import ZODB
+import ZODB; ZODB   # make pyflakes happy...
 from ZODB.DemoStorage import DemoStorage
 from ZODB.blob import BlobStorage
 from tempfile import mkdtemp

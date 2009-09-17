@@ -104,15 +104,70 @@ install the "plone.app.blob" package using one of the above mentioned methods.
 
 For your convenience a working buildout configuration, including
 ``bootstrap.py`` and ``buildout.cfg``, is provided as a subversion checkout at
-`http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.0`__.
+`http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.x`__.
 
-  .. __: http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.0
+  .. __: http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.x
 
-More detailed instructions on how to set things up (including a working zeo
-configuration) as well as some background information on blobs |---| or in
-other words the story of an "early adopter" |---| can be found in `Ken
-Manheimer's wiki`__.  This is a highly useful resource and recommended read
-for people trying to give blobs a spin.
+A sample ZEO buildout configuration could look like this::
+
+  [buildout]
+  parts = plone zope2 zeo client1 client2
+  find-links =
+    http://dist.plone.org
+    http://download.zope.org/ppix/ 
+    http://download.zope.org/distribution/
+    http://effbot.org/downloads
+  eggs = elementtree
+
+  [plone]
+  recipe = plone.recipe.plone
+
+  [zope2]
+  recipe = plone.recipe.zope2install
+  url = ${plone:zope2-url}
+
+  [zeo]
+  recipe = plone.recipe.zope2zeoserver
+  zope2-location = ${zope2:location}
+  zeo-address = 127.0.0.1:8100
+  zeo-var = ${buildout:directory}/var
+  blob-storage = ${zeo:zeo-var}/blobstorage 
+  eggs = plone.app.blob
+
+  [client1]
+  recipe = plone.recipe.zope2instance
+  zope2-location = ${zope2:location}
+  zeo-address = ${zeo:zeo-address}
+  blob-storage = ${zeo:blob-storage}
+  zeo-client = on
+  shared-blob = on
+  user = admin:admin
+  products = ${plone:products}
+  eggs =
+    ${buildout:eggs}
+    ${plone:eggs}
+    plone.app.blob
+  zcml = plone.app.blob
+
+  [client2]
+  recipe = plone.recipe.zope2instance
+  http-address = 8081
+  zope2-location = ${client1:zope2-location}
+  zeo-client = ${client1:zeo-client}
+  zeo-address = ${client1:zeo-address}
+  blob-storage = ${client1:blob-storage}
+  shared-blob = ${client1:shared-blob}
+  user = ${client1:user}
+  products = ${client1:products}
+  eggs = ${client1:eggs}
+  zcml = ${client1:zcml}
+
+More detailed instructions on how to set things up as well as some background
+information on blobs |---| or in other words the story of an "early adopter"
+|---| can be found in `Ken Manheimer's wiki`__.  This is a highly useful
+resource and recommended read for people trying to give blobs a spin.  Please
+note however, that most of the recipe changes described in these instructions
+have already been incorporated in the particular recipes by now.
 
   .. __: http://myriadicity.net/Sundry/PloneBlobs
 
@@ -120,7 +175,7 @@ In addition, more information on how to use buildout is available in the
 `accompanying README.txt`__ as well as in `Martin's`_ excellent `buildout
 tutorial`_ on `plone.org`_.
 
-  .. __: http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.0/README.txt
+  .. __: http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.x/README.txt
   .. _`Martin's`: http://martinaspeli.net/
   .. _`buildout tutorial`: http://plone.org/documentation/tutorial/buildout
   .. _`plone.org`: http://plone.org/
@@ -148,13 +203,17 @@ section of your ``buildout.cfg``, so that it reads like::
 You can also refer to the above mentioned `sample buildout.cfg`_ for details.
 
   .. _`Products.contentmigration`: http://pypi.python.org/pypi/Products.contentmigration/
-  .. _`sample buildout.cfg`: http://dev.plone.org/plone/browser/plone.app.blob/buildouts/plone-3.0/buildout.cfg
+  .. _`sample buildout.cfg`: http://dev.plone.org/plone/browser/plone.app.blob/buildouts/plone-3.x/buildout.cfg
 
 In order to then migrate your existing file content to blobs you can use the
 migration interface provided at http://localhost:8080/plone/@@blob-migration,
 where "plone" should be replaced with the id of your "Plone Site" object.  The
 page will show you the number of available ``ATFile`` instances and lets you
 convert them to the provided blob content type by clicking a button.
+
+If you encounter errors during migration |---| especially after applying the
+"ATFile replacement" profile (or quick-installing "plone.app.blob: ATFile
+replacement" for that matter) |---| please refer to the next section.
 
 
 Troubleshooting
@@ -179,7 +238,7 @@ enough.  In the meantime here are the recommended workarounds:
     `svn:external`_ to the ``products/`` directory of your buildout or
     upgrade to `Plone 3.0.4`_ by re-running buildout.
 
-  .. _`provided buildout`: http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.0
+  .. _`provided buildout`: http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.x
   .. _`1.5 branch`: http://svn.zope.org/Products.PluggableAuthService/branches/1.5/
   .. _`svn:external`: http://svnbook.red-bean.com/en/1.0/ch07s03.html
 
@@ -205,6 +264,128 @@ enough.  In the meantime here are the recommended workarounds:
 
   .. _`plone.recipe.zope2instance`: http://pypi.python.org/pypi/plone.recipe.zope2instance/    
   .. _`1.0`: http://pypi.python.org/pypi/plone.recipe.zope2instance/1.0
+
+
+**missing distribution for required "zdaemon" and "ZConfig" eggs**
+
+  Symptom
+    When running buildout you're getting errors like::
+
+      Getting distribution for 'zdaemon>=1.4a2,<1.4.999'.
+      While:
+        Installing instance.
+        Getting distribution for 'zdaemon>=1.4a2,<1.4.999'.
+      Error: Couldn't find a distribution for 'zdaemon>=1.4a2,<1.4.999'.
+
+    or::
+
+      Getting distribution for 'ZConfig>=2.4a2,<2.4.999'.
+      While:
+        Installing instance.
+        Getting distribution for 'ZConfig>=2.4a2,<2.4.999'.
+      Error: Couldn't find a distribution for 'ZConfig>=2.4a2,<2.4.999'.
+  Problem
+    ``zdaemon`` and ``ZConfig`` eggs have only been released to the
+    `Cheeseshop`_ starting from more recent versions, i.e. 2.0 and 2.5
+    respectively.  Older distributions in egg format are only available
+    from http://download.zope.org/distribution
+  Solution
+    Add the above link to the ``find-links`` setting of the ``[buildout]``
+    section in your ``buildout.cfg``, like::
+
+      find-links =
+          http://download.zope.org/distribution/
+          ...
+
+  .. _`Cheeseshop`: http://pypi.python.org/pypi
+
+
+**"ZRPCError: bad handshake 'Z303'"**
+
+  Symptom
+    With a ZEO setup you are getting errors like::
+
+      ZRPCError: bad handshake 'Z303'
+  Problem
+    You probably haven't added ``plone.app.blob`` to the ``eggs`` setting in
+    your ``[zeo]`` buildout part.  Without it the ZEO server will not use
+    the required version 3.8 of ZODB and hence not support blobs.
+  Solution
+    Add the string ``plone.app.blob`` to the ``eggs`` setting in the ``[zeo]``
+    section (i.e. the one using the ``plone.recipe.zope2zeoserver`` recipe)
+    in your ``buildout.cfg``, like::
+
+      [zeo]
+      ...
+      eggs = plone.app.blob
+      ...
+
+
+**"AttributeError: 'NoneType' object has no attribute 'product'" during migration**
+
+  Symptom
+    After installing "plone.app.blob" via the quick-installer or applying
+    the "plone.app.blob: ATFile replacement" profile you are seeing migration
+    errors like::
+    
+      Traceback (innermost last):
+        Module ZPublisher.Publish, line 119, in publish
+        Module ZPublisher.mapply, line 88, in mapply
+        Module ZPublisher.Publish, line 42, in call_object
+        Module plone.app.blob.browser.migration, line 24, in __call__
+        Module plone.app.blob.migrations, line 42, in migrateATFiles
+        Module Products.contentmigration.basemigrator.walker, line 126, in go
+        Module Products.contentmigration.basemigrator.walker, line 205, in migrate
+      MigrationError: MigrationError for obj at /... (File -> Blob):
+      Traceback (most recent call last):
+        File ".../Products/contentmigration/basemigrator/walker.py", line 174, in migrate
+          migrator.migrate()
+        File ".../Products/contentmigration/basemigrator/migrator.py", line 185, in migrate
+          method()
+        File ".../Products/contentmigration/archetypes.py", line 111, in beforeChange_schema
+          archetype = getType(self.dst_meta_type, fti.product)
+      AttributeError: 'NoneType' object has no attribute 'product'
+  Problem
+    The current migration code has been written to convert existing "File"
+    content to the "Blob" content type provided by the base "plone.app.blob"
+    profile.  However, that type isn't known when just installing the "ATFile
+    replacement" profile.  The latter is probably what you want to install,
+    though, as former "File" content will keep the same portal type, i.e.
+    "File" after being migrated.  This way no apparent changes are visible,
+    which might help with avoiding confusion.
+  Solution
+    For now you might work around this by either applying the "plone.app.blob"
+    profile via the ZMI in ``/portal_setup``.  This will install the above
+    mentioned "Blob" content type.  After that migration will work, but your
+    former "File" content will have the "Blob" content type.
+
+    If that's not what you want, simply change line line 17 in
+    ``plone/app/blob/migrations.py`` (which is probably contained in an egg
+    directory located somewhere like ``eggs/plone.app.blob-1.0b2-py2.4.egg/``
+    relative to your buildout/installation) from::
+
+       dst_portal_type = 'Blob'
+
+    to::
+
+       dst_portal_type = 'File'
+
+    After that migration should use the new "File" type, based on ZODB blobs.
+    Once you've migrated you might remove or disable the "Blob" type from
+    ``/portal_types`` again.  A future version of "plone.app.blob" will try
+    auto-detect the correct target type for the migration (or at least allow
+    to specify it) to make this more convenient.
+
+    If you have already migrated to "Blob" content, but would rather like to
+    have "File" items, you can change the two previous lines to::
+
+       src_portal_type = 'Blob'
+       src_meta_type = 'ATBlob'
+
+    and re-run the blob migration.  This will convert your "Blob"s to show up
+    as "File"s again.  You should probably pack your ZODB afterwards to avoid
+    having its blob storage occupy twice as much disk space as actually
+    needed (the extra migration will create new blobs).
 
 
 FAQ
