@@ -14,7 +14,7 @@
 
   <genericsetup:registerProfile
     name="file-replacement"
-    title="plone.app.blob: 'File' replacement type"
+    title="plone.app.blob: 'File' replacement type (testing)"
     directory="profiles/file-replacement"
     description="Extension profile to replace the standard 'File' content type with a compatible one based on ZODB 3.8 blobs"
     for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
