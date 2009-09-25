@@ -11,7 +11,6 @@ Files
 Let's start with creating a "File" content item:
 
   >>> from StringIO import StringIO
-  >>> self.setRoles('Editor')
   >>> browser = self.getBrowser()
   >>> browser.open(self.folder.absolute_url())
 
