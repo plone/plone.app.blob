@@ -13,19 +13,25 @@ def initialize(context):
     content.__name__    # make pyflakes happy...
 
     from Products.Archetypes import atapi
+    from Products.ATContentTypes import permission as atct
     from Products.CMFCore import utils
 
     content_types, constructors, ftis = atapi.process_types(
         atapi.listTypes(packageName), packageName)
-    extra_constructors = {
-        content.ATBlob: (content.addATBlobFile, content.addATBlobImage),
-    }
-
     for atype, constructor in zip(content_types, constructors):
-        extras = extra_constructors.get(atype, ())
         utils.ContentInit("%s: %s" % (packageName, atype.portal_type),
             content_types      = (atype,),
             permission         = permissions[atype.portal_type],
-            extra_constructors = (constructor,) + extras,
+            extra_constructors = (constructor,),
             ).initialize(context)
 
+    replacement_types = (
+        ('File', content.addATBlobFile),
+        ('Image', content.addATBlobImage),
+    )
+    for name, constructor in replacement_types:
+        utils.ContentInit("%s: %s" % (packageName, name),
+            content_types      = (content.ATBlob,),
+            permission         = atct.permissions.get(name),
+            extra_constructors = (constructor,),
+            ).initialize(context)
