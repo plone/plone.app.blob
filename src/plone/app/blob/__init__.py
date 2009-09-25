@@ -5,16 +5,16 @@ def initialize(context):
     """ initializer called when used as a zope2 product """
 
     # setup non-anonymous file uploads
-    import monkey
+    from plone.app.blob import monkey
     monkey.__name__     # make pyflakes happy...
 
     # initialize portal content
-    import content
+    from plone.app.blob import content
     content.__name__    # make pyflakes happy...
 
+    from Products.CMFCore import utils
     from Products.Archetypes import atapi
     from Products.ATContentTypes import permission as atct
-    from Products.CMFCore import utils
 
     content_types, constructors, ftis = atapi.process_types(
         atapi.listTypes(packageName), packageName)

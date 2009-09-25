@@ -116,7 +116,6 @@ class FileReplacementTests(ReplacementTestCase):
             if not key in okay:
                 self.assertEqual(meta_data[key], value, 'meta: %s' % key)
 
-
     def testIndexAccessor(self):
         foo = self.folder[self.folder.invokeFactory('File', 'foo',
             title='foo', file=getData('plone.pdf'))]
