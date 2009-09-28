@@ -4,6 +4,8 @@ from plone.app.blob.tests.base import ReplacementFunctionalTestCase
 from plone.app.blob.tests.utils import getData
 from plone.app.imaging.traverse import ImageTraverser
 from plone.app.blob.scale import BlobImageScaleHandler
+from plone.app.blob.config import blobScalesAttr
+from ZODB.blob import Blob
 from StringIO import StringIO
 from PIL.Image import open
 
@@ -76,6 +78,51 @@ class BlobImageTraverseTests(TraverseCounterMixin, ReplacementTestCase):
         self.assertEqual(self.counter, 2)
 
 
+class BlobImageScaleTests(ReplacementTestCase):
+
+    def afterSetUp(self):
+        self.counter = 0        # wrap `createScale` with a counter
+        self.original = BlobImageScaleHandler.createScale
+        def createScale(*args, **kw):
+            self.counter += 1
+            return self.original(*args, **kw)
+        BlobImageScaleHandler.createScale = createScale
+
+    def beforeTearDown(self):
+        BlobImageScaleHandler.createScale = self.original
+
+    def testBlobCreation(self):
+        data = getData('image.gif')
+        folder = self.folder
+        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        # make sure the scaled version is actually stored in a blob; we
+        # also count invocations of `createScale`, which should be 0 still
+        self.assertEqual(self.counter, 0)
+        traverse = folder.REQUEST.traverseName
+        thumb = traverse(image, 'image_thumb')
+        blob = getattr(image, blobScalesAttr)['image']['thumb']['blob']
+        self.failUnless(isinstance(blob, Blob), 'no blob?')
+        self.assertEqual(blob.open('r').read(), thumb.data)
+        self.assertEqual(self.counter, 1)
+        # the scale was created, now let's access it a few more times
+        thumb = traverse(image, 'image_thumb')
+        thumb = traverse(image, 'image_thumb')
+        self.assertEqual(self.counter, 1)
+
+    def testScaleInvalidation(self):
+        data = getData('image.gif')
+        folder = self.folder
+        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        # first view the thumbnail of the original image
+        traverse = folder.REQUEST.traverseName
+        thumb1 = traverse(image, 'image_thumb')
+        # now upload a new one and make sure the thumbnail has changed
+        image.update(image=getData('image.jpg'))
+        traverse = folder.REQUEST.traverseName
+        thumb2 = traverse(image, 'image_thumb')
+        self.failIf(thumb1.data == thumb2.data, 'thumb not updated?')
+
+
 class BlobImagePublisherTests(TraverseCounterMixin, ReplacementFunctionalTestCase):
 
     def testPublishThumb(self):
@@ -135,11 +182,9 @@ class BlobAdapterTests(ReplacementTestCase):
 
     def testCreateScale(self):
         foo = self.handler.createScale(self.image, 'foo', 100, 80)
-        self.assertEqual(foo.getId(), 'image_foo')
-        self.assertEqual(foo.getContentType(), 'image/png')
-        self.assertEqual(foo.data[:4], '\x89PNG')
-        self.assertEqual(foo.width, 80)
-        self.assertEqual(foo.height, 80)
+        self.assertEqual(foo['id'], 'image_foo')
+        self.assertEqual(foo['content_type'], 'image/png')
+        self.assertEqual(foo['data'][:4], '\x89PNG')
 
     def testCreateScaleWithZeroWidth(self):
         foo = self.handler.createScale(self.image, 'foo', 100, 0)
@@ -194,6 +239,7 @@ class BlobAdapterPublisherTests(ReplacementFunctionalTestCase):
 def test_suite():
     return TestSuite([
         makeSuite(BlobImageTraverseTests),
+        makeSuite(BlobImageScaleTests),
         makeSuite(BlobImagePublisherTests),
         makeSuite(BlobAdapterTests),
         makeSuite(BlobAdapterPublisherTests),

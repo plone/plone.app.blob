@@ -1,4 +1,5 @@
 from zope.interface import implements
+from Acquisition import Implicit, aq_base
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Archetypes.atapi import AnnotationStorage
 from Products.Archetypes.atapi import ImageWidget
@@ -8,6 +9,7 @@ from archetypes.schemaextender.interfaces import ISchemaExtender
 from archetypes.schemaextender.field import ExtensionField
 from plone.app.imaging.utils import getAllowedSizes
 from plone.app.blob.interfaces import IBlobImageField
+from plone.app.blob.config import blobScalesAttr
 from plone.app.blob.field import BlobField, IndexMethodFix
 from plone.app.blob.mixins import ImageFieldMixin
 
@@ -19,6 +21,8 @@ class ExtensionBlobField(IndexMethodFix, ExtensionField, BlobField, ImageFieldMi
     def set(self, instance, value, **kwargs):
         super(ExtensionBlobField, self).set(instance, value, **kwargs)
         self.fixAutoId(instance)
+        if hasattr(aq_base(instance), blobScalesAttr):
+            delattr(aq_base(instance), blobScalesAttr)
 
     @property
     def sizes(self):

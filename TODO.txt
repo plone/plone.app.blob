@@ -1,5 +1,4 @@
 todos:
-- image support: blob adapter for scales
 - turn off linkintegrity checking & collective.indexing during migration
 - investigate problem regarding versioning
 - fix migration when using "atfile replacement" profile

@@ -7,3 +7,4 @@ permissions = {
     'BlobelFish': 'plone.app.blob: Add BlobelFish',
 }
 
+blobScalesAttr = '__blob_scales'
