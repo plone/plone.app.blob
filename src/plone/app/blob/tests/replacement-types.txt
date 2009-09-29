@@ -97,7 +97,7 @@ without the `/view` action part:
   >>> browser.open(url)
   >>> browser.contents == gif
   True
-  >>> browser.headers['status']
+  >>> browser.headers['status'].upper()
   '200 OK'
   >>> browser.headers['content-type']
   'image/gif'
@@ -109,7 +109,7 @@ Appending `/index_html` should be the same:
   >>> browser.open(url + '/index_html')
   >>> browser.contents == gif
   True
-  >>> browser.headers['status']
+  >>> browser.headers['status'].upper()
   '200 OK'
   >>> browser.headers['content-type']
   'image/gif'
@@ -121,7 +121,7 @@ Let's also check the scaled versions included the un-scaled variant:
   >>> browser.open(url + '/image_thumb')
   >>> browser.contents
   '\x89PNG...'
-  >>> browser.headers['status']
+  >>> browser.headers['status'].upper()
   '200 OK'
   >>> browser.headers['content-type']
   'image/png'
@@ -129,7 +129,7 @@ Let's also check the scaled versions included the un-scaled variant:
   >>> browser.open(url + '/image')
   >>> browser.contents
   'GIF89a...'
-  >>> browser.headers['status']
+  >>> browser.headers['status'].upper()
   '200 OK'
   >>> browser.headers['content-type']
   'image/gif'
