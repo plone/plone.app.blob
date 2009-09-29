@@ -47,6 +47,7 @@ def initFileUpload(self, aFieldStorage):
 
 
 HTTPRequest.FieldStorage = NamedFieldStorage
+HTTPRequest.ZopeFieldStorage = NamedFieldStorage
 HTTPRequest.FileUpload.__init__ = initFileUpload
 
 
