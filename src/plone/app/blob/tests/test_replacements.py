@@ -123,7 +123,7 @@ class FileReplacementTests(ReplacementTestCase):
         accessor = field.getIndexAccessor(foo)
         self.assertEqual(field.index_method, accessor.func_name)
         data = accessor()
-        self.failUnless('Plone' in data)
+        self.failUnless('Plone' in data, 'pdftohtml not installed?')
         self.failIf('PDF' in data)
 
     def testSearchableText(self):
@@ -131,7 +131,7 @@ class FileReplacementTests(ReplacementTestCase):
             title='foo', file=getData('plone.pdf'))]
         data = foo.SearchableText()
         self.failUnless('foo' in data)
-        self.failUnless('Plone' in data)
+        self.failUnless('Plone' in data, 'pdftohtml not installed?')
         self.failIf('PDF' in data)
 
 

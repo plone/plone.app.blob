@@ -108,7 +108,7 @@ class IntegrationTests(BlobTestCase):
         accessor = field.getIndexAccessor(blob)
         self.assertEqual(field.index_method, accessor.func_name)
         data = accessor()
-        self.failUnless('Plone' in data)
+        self.failUnless('Plone' in data, 'pdftohtml not installed?')
         self.failIf('PDF' in data)
 
     def testSearchableText(self):
@@ -117,7 +117,7 @@ class IntegrationTests(BlobTestCase):
         data = blob.SearchableText()
         self.failUnless('blob' in data)
         self.failUnless('foo' in data)
-        self.failUnless('Plone' in data)
+        self.failUnless('Plone' in data, 'pdftohtml not installed?')
         self.failIf('PDF' in data)
 
     def testOpenAfterConsume(self):
