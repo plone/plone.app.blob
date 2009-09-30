@@ -1,4 +1,4 @@
-from Testing.ZopeTestCase import app, close, installProduct, installPackage
+from Testing.ZopeTestCase import app, close, installProduct
 from Products.Five import zcml
 from Products.Five import fiveconfigure
 from Products.CMFCore.utils import getToolByName
@@ -18,13 +18,13 @@ class BlobLayer(PloneSite):
         from plone.app.blob import tests
         zcml.load_config('testing.zcml', tests)
         fiveconfigure.debug_mode = False
-        installPackage('plone.app.blob', quiet=True)
         # import the default profile
         root = app()
         portal = root.plone
         tool = getToolByName(portal, 'portal_setup')
         profile = 'profile-plone.app.blob:sample-type'
-        tool.runAllImportStepsFromProfile(profile, purge_old=False)
+        tool.setImportContext(profile)
+        tool.runAllImportSteps()
         # make sure it's loaded...
         types = getToolByName(portal, 'portal_types')
         assert types.getTypeInfo('Blob').product == 'plone.app.blob'
@@ -52,7 +52,8 @@ class BlobFileReplacementLayer(BlobLayer):
         portal = root.plone
         tool = getToolByName(portal, 'portal_setup')
         profile = 'profile-plone.app.blob:file-replacement'
-        tool.runAllImportStepsFromProfile(profile, purge_old=False)
+        tool.setImportContext(profile)
+        tool.runAllImportSteps()
         # make sure it's loaded...
         types = getToolByName(portal, 'portal_types')
         assert types.getTypeInfo('File').product == 'plone.app.blob'
@@ -77,14 +78,16 @@ class BlobReplacementLayer(BlobLayer):
         from plone.app import imaging
         zcml.load_config('configure.zcml', imaging)
         fiveconfigure.debug_mode = False
-        installPackage('plone.app.imaging', quiet=True)
         # import replacement profiles
         root = app()
         portal = root.plone
         tool = getToolByName(portal, 'portal_setup')
         for name in 'file-replacement', 'image-replacement':
             profile = 'profile-plone.app.blob:%s' % name
-            tool.runAllImportStepsFromProfile(profile, purge_old=False)
+            tool.setImportContext(profile)
+            tool.runAllImportSteps()
+        tool.setImportContext('profile-plone.app.imaging:default')
+        tool.runAllImportSteps()
         # make sure it's loaded...
         types = getToolByName(portal, 'portal_types')
         assert types.getTypeInfo('File').product == 'plone.app.blob'
@@ -116,7 +119,8 @@ class BlobLinguaLayer(PloneSite):
         portal = root.plone
         profile = 'profile-plone.app.blob:testing-lingua'
         tool = getToolByName(portal, 'portal_setup')
-        tool.runAllImportStepsFromProfile(profile, purge_old=False)
+        tool.setImportContext(profile)
+        tool.runAllImportSteps()
         # make sure it's loaded...
         types = getToolByName(portal, 'portal_types')
         assert types.getTypeInfo('BlobelFish')

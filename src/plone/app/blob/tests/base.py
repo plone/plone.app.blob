@@ -1,6 +1,9 @@
 from Testing.ZopeTestCase import Sandboxed
+from Products.Five import fiveconfigure
+from Products.Five import zcml
 from Products.Five.testbrowser import Browser
 from Products.PloneTestCase import PloneTestCase
+from Products.PloneTestCase.layer import onsetup
 from plone.app.blob.tests.layer import BlobLayer, BlobReplacementLayer
 from plone.app.blob.tests.layer import BlobLinguaLayer
 
@@ -11,6 +14,27 @@ try:
 except ImportError:
     pass
 
+@onsetup
+def setupPackage():
+    """ set up the package and its dependencies """
+    fiveconfigure.debug_mode = True
+    import plone.app.blob
+    zcml.load_config('configure.zcml', plone.app.blob)
+    import plone.app.imaging
+    zcml.load_config('configure.zcml', plone.app.imaging)
+    import archetypes.schemaextender
+    zcml.load_config('configure.zcml', archetypes.schemaextender)
+    fiveconfigure.debug_mode = False
+
+    # make sure the monkey patches from `pythonproducts` are appied; they get
+    # loaded with an `installProduct('Five')`, but zcml layer's `setUp()`
+    # calls `five.safe_load_site()`, which in turn calls `cleanUp()` from
+    # `zope.testing.cleanup`, effectively removing the patches again *before*
+    # the tests are run; so we need to explicitly apply them again... %)
+    from Products.Five import pythonproducts
+    pythonproducts.applyPatches()
+
+setupPackage()
 
 PloneTestCase.setupPloneSite()
 

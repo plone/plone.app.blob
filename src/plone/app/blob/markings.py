@@ -1,7 +1,7 @@
 # convenience helpers to apply needed marker interfaces to blob-based content
 # TODO: this could use named utilities to make it more pluggable
 
-from zope.interface import alsoProvides, noLongerProvides
+from zope.interface import alsoProvides
 from Products.ATContentTypes.interface.file import IATFile, IFileContent
 from Products.ATContentTypes.interface.image import IATImage, IImageContent
 from plone.app.blob.interfaces import IATBlobBlob, IATBlobFile, IATBlobImage
@@ -33,7 +33,8 @@ def markAs(obj, typename):
 
 def unmarkAs(obj, typename):
     for i in interfaces.get(typename, ()):
-        noLongerProvides(obj, i)
+        pass
+        #noLongerProvides(obj, i)
     z2 = z2interfaces.get(typename, None)
     if z2 is not None:
         implements = getattr(obj, '__implements__', [])

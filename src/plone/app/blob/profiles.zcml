@@ -17,7 +17,7 @@
     title="plone.app.blob: 'File' replacement type"
     directory="profiles/file-replacement"
     description="Extension profile to replace the standard 'File' content type with a compatible one based on ZODB 3.8 blobs"
-    for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
+    for="*"
     provides="Products.GenericSetup.interfaces.EXTENSION"
     />
 
@@ -44,7 +44,7 @@
     title="plone.app.blob: LinguaPlone testing"
     directory="profiles/lingua"
     description="Extension profile for testing LinguaPlone compatibility"
-    for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
+    for="*"
     provides="Products.GenericSetup.interfaces.EXTENSION"
     />
 

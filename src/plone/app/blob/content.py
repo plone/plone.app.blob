@@ -1,13 +1,12 @@
 from logging import getLogger
 from zope.interface import implements
-from zope.lifecycleevent import ObjectCreatedEvent, ObjectModifiedEvent
+from zope.app.event.objectevent import ObjectCreatedEvent, ObjectModifiedEvent
 from zope.event import notify
 
 from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
 from ZODB.POSException import ConflictError
 from Products.Archetypes.atapi import AnnotationStorage
-from Products.Archetypes.atapi import ATFieldProperty
 from Products.Archetypes.atapi import registerType
 from Products.CMFCore.permissions import View, ModifyPortalContent
 from Products.CMFCore.utils import getToolByName
@@ -58,8 +57,6 @@ class ATBlob(ATCTFileContent, ImageMixin):
     _at_rename_after_creation = True
     schema = ATBlobSchema
 
-    title = ATFieldProperty('title')
-    summary = ATFieldProperty('description')
 
     security  = ClassSecurityInfo()
 

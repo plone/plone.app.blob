@@ -14,7 +14,7 @@ def initialize(context):
 
     from Products.Archetypes import atapi
     from Products.CMFCore import utils
-
+ 
     content_types, constructors, ftis = atapi.process_types(
         atapi.listTypes(packageName), packageName)
     extra_constructors = {
@@ -27,5 +27,6 @@ def initialize(context):
             content_types      = (atype,),
             permission         = permissions[atype.portal_type],
             extra_constructors = (constructor,) + extras,
+            fti                = ftis,                          
             ).initialize(context)
 

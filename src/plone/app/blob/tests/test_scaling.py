@@ -11,15 +11,15 @@ from PIL.Image import open
 class TraverseCounterMixin:
 
     def afterSetUp(self):
-        self.counter = 0        # wrap `publishTraverse` with a counter
-        self.original = ImageTraverser.publishTraverse
-        def publishTraverse(adapter, request, name):
+        self.counter = 0        # wrap `traverse` with a counter
+        self.original = ImageTraverser.traverse
+        def traverse(adapter, name, furtherPath=[]):
             self.counter += 1
-            return self.original(adapter, request, name)
-        ImageTraverser.publishTraverse = publishTraverse
+            return self.original(adapter, name, furtherPath)
+        ImageTraverser.traverse = traverse
 
     def beforeTearDown(self):
-        ImageTraverser.publishTraverse = self.original
+        ImageTraverser.traverse = self.original
 
 
 class BlobImageTraverseTests(TraverseCounterMixin, ReplacementTestCase):
@@ -29,11 +29,11 @@ class BlobImageTraverseTests(TraverseCounterMixin, ReplacementTestCase):
         folder = self.folder
         image = folder[folder.invokeFactory('Image', id='foo', image=data)]
         # make sure traversing works as is and with scaling
-        traverse = folder.REQUEST.traverseName
-        self.assertEqual(traverse(image, 'image').data, data)
+        foo = image.unrestrictedTraverse('image')
+        self.assertEqual(foo.data, data)
         sizes = image.getField('image').getAvailableSizes(image)
         self.failUnless('thumb' in sizes.keys())
-        thumb = traverse(image, 'image_thumb')
+        thumb = image.unrestrictedTraverse('image_thumb')
         self.assertEqual(thumb.getContentType(), 'image/png')
         self.assertEqual(thumb.data[:4], '\x89PNG')
         width, height = sizes['thumb']
@@ -56,8 +56,7 @@ class BlobImageTraverseTests(TraverseCounterMixin, ReplacementTestCase):
         iprops = self.portal.portal_properties.imaging_properties
         iprops.manage_changeProperties(allowed_sizes=['foo 23:23', 'bar 6:8'])
         # make sure traversing works with the new sizes
-        traverse = folder.REQUEST.traverseName
-        foo = traverse(image, 'image_foo')
+        foo = image.unrestrictedTraverse('image_foo')
         self.assertEqual(foo.getContentType(), 'image/png')
         self.assertEqual(foo.data[:4], '\x89PNG')
         self.assertEqual(foo.width, 23)
@@ -67,7 +66,7 @@ class BlobImageTraverseTests(TraverseCounterMixin, ReplacementTestCase):
         tag = '<img src="%s" alt="foo" title="foo" height="23" width="23" />'
         self.assertEqual(foo.tag(), tag % url)
         # and the other specified size
-        bar = traverse(image, 'image_bar')
+        bar = image.unrestrictedTraverse('image_bar')
         self.assertEqual(bar.getContentType(), 'image/png')
         self.assertEqual(bar.data[:4], '\x89PNG')
         self.assertEqual(bar.width, 6)

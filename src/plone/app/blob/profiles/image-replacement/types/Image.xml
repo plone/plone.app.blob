@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <object name="Image"
    meta_type="Factory-based Type Information with dynamic views"
-   i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
  <property name="content_meta_type">ATBlob</property>
  <property name="product">plone.app.blob</property>
  <property name="factory">addATBlobImage</property>

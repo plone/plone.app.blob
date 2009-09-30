@@ -11,7 +11,7 @@ Files
 Let's start with creating a "File" content item:
 
   >>> from StringIO import StringIO
-  >>> self.setRoles('Editor')
+  >>> self.setRoles('Manager')
   >>> browser = self.getBrowser()
   >>> browser.open(self.folder.absolute_url())
 
@@ -25,10 +25,10 @@ Let's start with creating a "File" content item:
   >>> browser.getControl('Save').click()
 
   >>> browser.url
-  'http://nohost/plone/.../foo.../view'
+  'http://nohost/plone/.../foo.../view?portal_status_message=Changes%20saved.'
   >>> browser.contents
   '...Info...Changes saved...
-   ...Foo...foo.pdf...PDF document,...2Kb...'
+   ...Foo...foo.pdf...2.9 kB...'
 
 Now let's make sure we can also edit it:
 
@@ -41,10 +41,10 @@ Now let's make sure we can also edit it:
   >>> browser.getControl('Save').click()
 
   >>> browser.url
-  'http://nohost/plone/.../foo.../view'
+  'http://nohost/plone/.../foo.../view?portal_status_message=Changes%20saved.'
   >>> browser.contents
   '...Info...Changes saved...
-   ...Foobar...foobar.pdf...PDF document,...5Kb...'
+   ...Foobar...5.9 kB...'
 
 
 Images
@@ -66,12 +66,11 @@ Next a similar test is conducted for an "Image" content item:
   >>> browser.getControl('Save').click()
 
   >>> browser.url
-  'http://nohost/plone/.../bar.../view'
+  'http://nohost/plone/.../bar.../view?portal_status_message=Changes%20saved.'
   >>> browser.contents
   '...Info...Changes saved...
    ...Bar...
    ...<img src="http://.../bar.../image_preview"...title="Bar" height="1" width="1" />...
-   ...Click to view full-size...Size...1 kB...'
 
 Now let's make sure we can also edit it:
 
@@ -82,14 +81,14 @@ Now let's make sure we can also edit it:
   >>> control.filename = 'foobar.gif'
   >>> control.value = StringIO(gif)
   >>> browser.getControl('Save').click()
-
+  
   >>> browser.url
-  'http://nohost/plone/.../bar.../view'
+  'http://nohost/plone/.../foo.../view?portal_status_message=Changes%20saved.'
   >>> browser.contents
-  '...Info...Changes saved...
+  '...Changes saved...
    ...Foobar...
-   ...<img src="http://.../bar.../image_preview"...title="Foobar" height="1" width="1" />...
-   ...Click to view full-size...Size...1 kB...'
+   ...<img src="http://.../bar.../image_preview"...title="Foobar" height="0" width="0" />...
+
 
 Viewing an image should also work when browsing its URL directly, i.e.
 without the `/view` action part:

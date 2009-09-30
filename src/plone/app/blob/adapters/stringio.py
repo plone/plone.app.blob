@@ -28,5 +28,5 @@ class BlobbableStringIO(object):
 
     def mimetype(self):
         """ see interface ... """
-        return guessMimetype(self.context, self.filename())
+        return guessMimetype(self.context, self.filename(), context=self.aq)
 

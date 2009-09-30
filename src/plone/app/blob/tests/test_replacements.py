@@ -81,7 +81,7 @@ class FileReplacementTests(ReplacementTestCase):
             contributors=('me'))]
         # fake old content from before applying the replacement profile
         foo._setPortalTypeName('File')
-        foo.reindexObject(idxs=('portal_type',))
+        foo.reindexObject()
         # remember the catalog data so it can be checked
         catalog = self.portal.portal_catalog
         rid = catalog(id='foo')[0].getRID()
@@ -199,7 +199,7 @@ class ImageReplacementTests(ReplacementTestCase):
             contributors=('me'))]
         # fake old content from before applying the replacement profile
         foo._setPortalTypeName('Image')
-        foo.reindexObject(idxs=('portal_type',))
+        foo.reindexObject()
         # remember the catalog data so it can be checked
         catalog = self.portal.portal_catalog
         rid = catalog(id='foo')[0].getRID()
