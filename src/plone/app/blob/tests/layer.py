@@ -114,6 +114,7 @@ class BlobLinguaLayer(PloneSite):
         zcml.load_config('configure.zcml', LinguaPlone)
         fiveconfigure.debug_mode = False
         # install package, import profile...
+        installProduct('PloneLanguageTool', quiet=True)
         installProduct('LinguaPlone', quiet=True)
         root = app()
         portal = root.plone
@@ -121,6 +122,8 @@ class BlobLinguaLayer(PloneSite):
         tool = getToolByName(portal, 'portal_setup')
         tool.setImportContext(profile)
         tool.runAllImportSteps()
+        qtool = getToolByName(portal, 'portal_quickinstaller')
+        qtool.installProduct('LinguaPlone')
         # make sure it's loaded...
         types = getToolByName(portal, 'portal_types')
         assert types.getTypeInfo('BlobelFish')

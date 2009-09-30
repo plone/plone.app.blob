@@ -30,7 +30,8 @@ class LinguaTests(BlobLinguaTestCase):
         fish = self.folder[self.folder.invokeFactory('BlobelFish', 'flobby')]
         fish.update(title='Me fish.', guide=guide, language='en')
         # add a translation and check it
-        fisch = fish.addTranslation('de', title='Ich Fisch.')
+        fish.addTranslation('de', title='Ich Fisch.')
+        fisch = fish.getTranslation('de')        
         self.assertEqual(fisch.Title(), 'Ich Fisch.')
         self.assertEqual(fisch.Language(), 'de')
         self.assertEqual(fisch.getPortalTypeName(), 'BlobelFish')
@@ -45,7 +46,8 @@ class LinguaTests(BlobLinguaTestCase):
         fish = self.folder[self.folder.invokeFactory('BlobelFish', 'flobby')]
         fish.update(title='Me fish.', guide=guide, language='en')
         # add a translation, after which both should use the same blob...
-        fisch = fish.addTranslation('de', title='Ich Fisch.')
+        fish.addTranslation('de', title='Ich Fisch.')
+        fisch = fish.getTranslation('de')
         self.assertEqual(fish.getGuide().getBlob(), fisch.getGuide().getBlob())
         self.assertEqual(getattr(self.folder, 'flobby-de'), fisch)
         # now let's remove it again and make sure the blob's still okay...
@@ -58,7 +60,8 @@ class LinguaTests(BlobLinguaTestCase):
         fish = self.folder[self.folder.invokeFactory('BlobelFish', 'flobby')]
         fish.update(title='Me fish.', guide=guide, language='en')
         # add a translation and then upload a new file...
-        fisch = fish.addTranslation('de', title='Ich Fisch.')
+        fish.addTranslation('de', title='Ich Fisch.')
+        fisch = fish.getTranslation('de')        
         blob = fish.getGuide().getBlob()
         test = getData('test.pdf')
         fish.update(guide=makeFileUpload(test, 'test.pdf'))
