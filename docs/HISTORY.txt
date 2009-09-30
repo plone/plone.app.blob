@@ -13,6 +13,7 @@ plone.app.blob - 1.0b6 Unreleased
 
     - Use correct permissions when registering replacement types for
       "File" and "Image" content.
+      See http://plone.org/products/plone.app.blob/issues/9
       [witsch]
 
     - Fix migration issue regarding stale catalog index- & meta-data.
