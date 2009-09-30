@@ -5,6 +5,9 @@ Changelog
 
 plone.app.blob - 1.0b6 Unreleased
 
+    - Minor fixes and test updates for compatibility with Plone 4.0.
+      [witsch]
+
     - Store image scales in blobs.
       [witsch]
 
