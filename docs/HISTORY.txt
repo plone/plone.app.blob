@@ -23,6 +23,9 @@ plone.app.blob - 1.0b6 Unreleased
       See http://plone.org/products/plone.app.blob/issues/4
       [optilude]
 
+    - Fix performance issue regarding extension field.
+      [witsch]
+
 plone.app.blob - 1.0b5 Released August 26, 2009
 
     - Fix compatibility issue with `repoze.zope2`.
