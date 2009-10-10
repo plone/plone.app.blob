@@ -3,7 +3,7 @@ Changelog
 
     (name of developer listed in brackets)
 
-plone.app.blob - 1.0b6 Unreleased
+plone.app.blob - 1.0b6 Released October 10, 2009
 
     - Minor fixes and test updates for compatibility with Plone 4.0.
       [witsch]
