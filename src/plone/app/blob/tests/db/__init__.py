@@ -1,5 +1,6 @@
 # ZopeLite uses DemoStorage directly, so it needs monkey-patching... :(
 from Testing.ZopeTestCase import ZopeLite
+from ZODB.interfaces import IBlobStorage
 from ZODB.DemoStorage import DemoStorage
 from ZODB.blob import BlobStorage
 from tempfile import mkdtemp
@@ -16,4 +17,5 @@ def sandbox(base=None):
     storage = BlobStorage(blobdir, storage)
     return ZopeLite.ZODB.DB(storage)
 
-ZopeLite.sandbox = sandbox
+if not IBlobStorage.providedBy(DemoStorage()):
+    ZopeLite.sandbox = sandbox
