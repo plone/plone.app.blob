@@ -1,11 +1,3 @@
-from os.path import dirname
-
-import Testing; Testing # make pyflakes happy...
-import App.config
-cfg = App.config.getConfiguration()
-cfg.testinghome = dirname(__file__)
-
-
 # ZopeLite uses DemoStorage directly, so it needs monkey-patching... :(
 from Testing.ZopeTestCase import ZopeLite
 from ZODB.DemoStorage import DemoStorage
