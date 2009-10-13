@@ -2,8 +2,8 @@ from plone.app.blob.tests.base import ReplacementTestCase   # import first!
 
 from unittest import defaultTestLoader
 from zope.interface.interfaces import IInterface
-from Products.ATContentTypes.interface.file import IATFile, IFileContent
-from Products.ATContentTypes.interface.image import IATImage, IImageContent
+from Products.ATContentTypes.interface import file as atfile
+from Products.ATContentTypes.interface import image as atimage
 from Products.ATContentTypes.interfaces import IATFile as Z2IATFile
 from Products.ATContentTypes.interfaces import IATImage as Z2IATImage
 from Products.ATContentTypes.content.file import ATFile
@@ -53,8 +53,8 @@ class FileReplacementTests(ReplacementTestCase):
 
     def testFileBlobInterfaces(self):
         foo = self.folder[self.folder.invokeFactory('File', 'foo')]
-        self.failUnless(IATFile.providedBy(foo), 'no IATFile?')
-        self.failUnless(IFileContent.providedBy(foo), 'no IFileContent?')
+        self.failUnless(atfile.IATFile.providedBy(foo), 'no IATFile?')
+        self.failUnless(atfile.IFileContent.providedBy(foo), 'no IFileContent?')
         self.failUnless(IATBlobFile.providedBy(foo), 'no IATBlobFile?')
         if not IInterface.providedBy(Z2IATFile):    # this is zope < 2.12
             self.failUnless(Z2IATFile.isImplementedBy(foo), 'no zope2 IATFile?')
@@ -173,8 +173,8 @@ class ImageReplacementTests(ReplacementTestCase):
 
     def testImageBlobInterfaces(self):
         foo = self.folder[self.folder.invokeFactory('Image', 'foo')]
-        self.failUnless(IATImage.providedBy(foo), 'no IATImage?')
-        self.failUnless(IImageContent.providedBy(foo), 'no IImageContent?')
+        self.failUnless(atimage.IATImage.providedBy(foo), 'no IATImage?')
+        self.failUnless(atimage.IImageContent.providedBy(foo), 'no IImageContent?')
         self.failUnless(IATBlobImage.providedBy(foo), 'no IATBlobImage?')
         if not IInterface.providedBy(Z2IATFile):    # this is zope < 2.12
             self.failUnless(Z2IATImage.isImplementedBy(foo), 'no zope2 IATImage?')

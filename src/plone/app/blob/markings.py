@@ -2,8 +2,8 @@
 # TODO: this could use named utilities to make it more pluggable
 
 from zope.interface import alsoProvides, noLongerProvides
-from Products.ATContentTypes.interface.file import IATFile, IFileContent
-from Products.ATContentTypes.interface.image import IATImage, IImageContent
+from Products.ATContentTypes.interface import file as atfile
+from Products.ATContentTypes.interface import image as atimage
 from plone.app.blob.interfaces import IATBlobBlob, IATBlobFile, IATBlobImage
 
 # support for zope2-interfaces
@@ -12,9 +12,9 @@ from Products.ATContentTypes.interfaces import IATImage as Z2IATImage
 
 
 interfaces = {
-    'Blob': [ IATBlobBlob, IATFile, IFileContent ],
-    'File': [ IATBlobFile, IATFile, IFileContent ],
-    'Image': [ IATBlobImage, IATImage, IImageContent ],
+    'Blob': [ IATBlobBlob, atfile.IATFile, atfile.IFileContent ],
+    'File': [ IATBlobFile, atfile.IATFile, atfile.IFileContent ],
+    'Image': [ IATBlobImage, atimage.IATImage, atimage.IImageContent ],
 }
 
 z2interfaces = {
