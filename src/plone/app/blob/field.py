@@ -4,7 +4,7 @@ from StringIO import StringIO
 from Acquisition import Implicit
 from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
-from Globals import InitializeClass
+from App.class_init import InitializeClass
 from ZODB.blob import Blob
 from ZODB.POSException import POSKeyError
 from persistent import Persistent
