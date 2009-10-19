@@ -34,9 +34,10 @@ Image support is still in an alpha stadium and not enabled by default. It can
 be activated by applying the respective profile via the portal setup tool.
 
 More detailed information about the integration and the current status can be
-found in the corresponding `plone enhancement ticket`_.
+found in the corresponding `Plone enhancement`_ and `Plone 4 PLIP`_ tickets.
 
-  .. _`plone enhancement ticket`: http://dev.plone.org/plone/ticket/6805
+  .. _`Plone enhancement`: http://dev.plone.org/plone/ticket/6805
+  .. _`Plone 4 PLIP`: http://dev.plone.org/plone/ticket/7822
   .. |--| unicode:: U+2013   .. en dash
   .. |---| unicode:: U+2014  .. em dash
 
@@ -578,11 +579,12 @@ preferably success stories is most welcome and much appreciated. Especially,
 it would be interesting to hear about success or problems with migration of
 existing content and installations on platforms other than OSX.
 
-So please feel free to post comments to the above mentioned `plone enhancement
-ticket`_, file tickets in the `issue tracker`_ or contact me on `#plone`_,
-through the `plone developer mailing list`_ or directly via `email`_.
+So please feel free to file tickets in the `issue tracker`_, contact me on
+`#plone`_, `#plone-framework`_, the `plone developer mailing list`_ or
+directly via `email`_.
 
   .. _`issue tracker`: http://plone.org/products/plone.app.blob/issues
   .. _`#plone`: irc://irc.eu.freenode.net/plone
+  .. _`#plone-framework`: irc://irc.eu.freenode.net/plone-framework
   .. _`plone developer mailing list`: mailto:plone-developers@lists.sourceforge.net
   .. _`email`: mailto:az_at_zitc_dot_de
