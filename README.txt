@@ -46,7 +46,7 @@ Requirements
 ------------
 
 Plone 3.0 or newer is required. The package has been tested with all versions
-from 3.0 up to and including 3.2.2. However, as all versions before 3.0.4
+from 3.0 up to and including 4.0. However, as all versions before 3.0.4
 require a workaround described in the `Troubleshooting`_ section below, it is
 recommended to use `Plone 3.0.4`_ or a more recent version.
 
@@ -72,34 +72,27 @@ A sample buildout configuration file, i.e. ``buildout.cfg``, could look like
 this::
 
   [buildout]
-  parts = plone zope2 instance
+  parts = zope2 instance
+  extends = http://dist.plone.org/release/3.3.1/versions.cfg
   find-links =
-      http://dist.plone.org
-      http://download.zope.org/ppix/
-      http://download.zope.org/distribution/
-      http://effbot.org/downloads
-  eggs = elementtree
+      http://dist.plone.org/release/3.3.1
+      http://dist.plone.org/thirdparty/
   versions = versions
 
   [versions]
   ZODB3 = 3.8.3
 
-  [plone]
-  recipe = plone.recipe.plone
-
   [zope2]
   recipe = plone.recipe.zope2install
-  url = ${plone:zope2-url}
+  url = ${versions:zope2-url}
 
   [instance]
   recipe = plone.recipe.zope2instance
   zope2-location = ${zope2:location}
   blob-storage = var/blobstorage
   user = admin:admin
-  products = ${plone:products}
   eggs =
-      ${buildout:eggs}
-      ${plone:eggs}
+      Plone
       plone.app.blob
   zcml = plone.app.blob
 
@@ -119,33 +112,22 @@ install the "plone.app.blob" package using one of the above mentioned methods.
 
   .. _`ZMI`: http://localhost:8080/manage
 
-For your convenience a working buildout configuration, including
-``bootstrap.py`` and ``buildout.cfg``, is provided as a subversion checkout at
-`http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.x`__.
-
-  .. __: http://svn.plone.org/svn/plone/plone.app.blob/buildouts/plone-3.x
-
 A sample ZEO buildout configuration could look like this::
 
   [buildout]
-  parts = plone zope2 zeo client1 client2
+  parts = zope2 zeo client1 client2
+  extends = http://dist.plone.org/release/3.3.1/versions.cfg
   find-links =
-    http://dist.plone.org
-    http://download.zope.org/ppix/
-    http://download.zope.org/distribution/
-    http://effbot.org/downloads
-  eggs = elementtree
+      http://dist.plone.org/release/3.3.1
+      http://dist.plone.org/thirdparty/
   versions = versions
 
   [versions]
   ZODB3 = 3.8.3
 
-  [plone]
-  recipe = plone.recipe.plone
-
   [zope2]
   recipe = plone.recipe.zope2install
-  url = ${plone:zope2-url}
+  url = ${versions:zope2-url}
 
   [zeo]
   recipe = plone.recipe.zope2zeoserver
@@ -163,11 +145,9 @@ A sample ZEO buildout configuration could look like this::
   zeo-client = on
   shared-blob = on
   user = admin:admin
-  products = ${plone:products}
   eggs =
-    ${buildout:eggs}
-    ${plone:eggs}
-    plone.app.blob
+      Plone
+      plone.app.blob
   zcml = plone.app.blob
 
   [client2]
@@ -179,7 +159,6 @@ A sample ZEO buildout configuration could look like this::
   blob-storage = ${client1:blob-storage}
   shared-blob = ${client1:shared-blob}
   user = ${client1:user}
-  products = ${client1:products}
   eggs = ${client1:eggs}
   zcml = ${client1:zcml}
 
