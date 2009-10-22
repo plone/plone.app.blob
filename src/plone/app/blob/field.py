@@ -56,6 +56,11 @@ class BlobWrapper(Implicit, Persistent):
         self.content_type = 'application/octet-stream'
         self.filename = None
 
+    # AT widget expects these attributes since they are set on the OFS file object
+    # when you upload file/image
+    security.declarePublic('content_type') 
+    security.declarePublic('filename')
+
     security.declarePrivate('setBlob')
     def setBlob(self, blob):
         """ set the contained blob object """
