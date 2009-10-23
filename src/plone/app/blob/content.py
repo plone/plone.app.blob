@@ -17,7 +17,7 @@ from Products.ATContentTypes.content.schemata import ATContentTypeSchema
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from Products.MimetypesRegistry.common import MimeTypeException
 
-from plone.app.blob.interfaces import IATBlob, IATBlobImage
+from plone.app.blob.interfaces import IATBlob, IATBlobFile, IATBlobImage
 from plone.app.blob.config import packageName
 from plone.app.blob.field import BlobMarshaller
 from plone.app.blob.mixins import ImageMixin
@@ -138,6 +138,16 @@ class ATBlob(ATCTFileContent, ImageMixin):
             return self.getPrimaryField().tag(self)
         else:
             return self.get_data()
+
+    def __repr__(self):
+        """ try to mimic the the old file and image types from ATCT
+            for improved test compatibility """
+        res = super(ATBlob, self).__repr__()
+        if IATBlobFile.providedBy(self):
+            res = res.replace(ATBlob.__name__, 'ATFile', 1)
+        elif IATBlobImage.providedBy(self):
+            res = res.replace(ATBlob.__name__, 'ATImage', 1)
+        return res
 
     security.declareProtected(ModifyPortalContent, 'setFilename')
     def setFilename(self, value, key=None):
