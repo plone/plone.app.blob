@@ -1,4 +1,4 @@
-from zope.component import getUtility
+from zope.component import queryUtility
 from zope.contenttype import guess_content_type
 
 from OFS.Image import getImageInfo
@@ -16,11 +16,11 @@ def guessMimetype(data, filename=None):
         using the filename as a hint;  the current position in the file
         is tried to be preserved """
     pos = data.tell()
-    mtr = getUtility(IMimetypesRegistryTool)
+    mtr = queryUtility(IMimetypesRegistryTool)
     if mtr is not None:
         d, f, mimetype = mtr(data.read(1 << 14), mimetype=None, filename=filename)
     else:
-        mimetype, enc = guess_content_type(filename, data, mimetype=None)
+        mimetype, enc = guess_content_type(filename or '', data.read(), default=None)
     data.seek(pos)
     return str(mimetype)
 
