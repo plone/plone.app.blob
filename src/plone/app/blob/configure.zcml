@@ -14,6 +14,10 @@
   <include package=".adapters" />
   <include package=".browser" />
 
+  <class class="OFS.Image.File">
+    <implements interface=".interfaces.IOFSFile" />
+  </class>
+
   <class class="ZPublisher.HTTPRequest.FileUpload">
     <implements interface=".interfaces.IFileUpload" />
   </class>

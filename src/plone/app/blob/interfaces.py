@@ -42,6 +42,10 @@ class IBlobImageField(IBlobField):
     """ marker interface for blob-based archetypes image field """
 
 
+class IOFSFile(Interface):
+    """ marker interface for OFS.Image.File class """
+
+
 class IFileUpload(Interface):
     """ marker interface for ZPublisher.HTTPRequest.FileUpload class """
 

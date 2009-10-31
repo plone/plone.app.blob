@@ -1,5 +1,5 @@
 from zope.interface import implements
-from Acquisition import Implicit, aq_base
+from Acquisition import aq_base
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Archetypes.atapi import AnnotationStorage
 from Products.Archetypes.atapi import ImageWidget
