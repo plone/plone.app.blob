@@ -38,6 +38,7 @@ class ImageFieldMixin(ImageField):
 class ImageMixin(ATCTImageTransform):
     """ mixin class for methods needed for image content """
 
+    cmf_edit_kws = ('file',)
     security = ClassSecurityInfo()
 
     # accessor and mutator methods
