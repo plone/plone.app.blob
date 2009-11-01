@@ -1,14 +1,19 @@
 try:
     from Products.contentmigration.archetypes import InplaceATItemMigrator
+    from Products.contentmigration.migrator import BaseInlineMigrator
     from Products.contentmigration.walker import CustomQueryWalker
     haveContentMigrations = True
     BaseMigrator = InplaceATItemMigrator
+    InlineMigrator = BaseInlineMigrator
 except ImportError:
     BaseMigrator = object
+    InlineMigrator = object
     haveContentMigrations = False
 
-from Products.CMFCore.utils import getToolByName
 from transaction import savepoint
+from Products.CMFCore.utils import getToolByName
+from Products.Archetypes.interfaces import ISchema
+from plone.app.blob.interfaces import IBlobField
 
 
 def getMigrationWalker(context, migrator):
@@ -17,12 +22,55 @@ def getMigrationWalker(context, migrator):
     return CustomQueryWalker(portal, migrator, use_savepoint=True)
 
 
-def migrate(context, walker):
+def migrate(context, portal_type=None, meta_type=None, walker=None):
     """ migrate instances using the given walker """
-    walker = walker(context)
+    if walker is None:
+        migrator = makeMigrator(context, portal_type, meta_type)
+        walker = CustomQueryWalker(context, migrator, full_transaction=True)
+    else:
+        walker = walker(context)
     savepoint(optimistic=True)
     walker.go()
     return walker.getOutput()
+
+
+# helper to build custom blob migrators for the given type
+def makeMigrator(context, portal_type, meta_type=None):
+    """ generate a migrator for the given at-based portal type """
+    if meta_type is None:
+        meta_type = portal_type
+
+    class BlobMigrator(InlineMigrator):
+        src_portal_type = portal_type
+        src_meta_type = meta_type
+        dst_portal_type = portal_type
+        dst_meta_type = meta_type
+        fields = []
+
+        def getFields(self, obj):
+            if not self.fields:
+                # get the blob fields to migrate from the first object
+                for field in ISchema(obj).fields():
+                    if IBlobField.providedBy(field):
+                        self.fields.append(field.getName())
+            return self.fields
+
+        @property
+        def fields_map(self):
+            fields = self.getFields(None)
+            return dict([ (name, None) for name in fields ])
+
+        def migrate_data(self):
+            fields = self.getFields(self.obj)
+            for name in fields:
+                field = self.obj.getField(name)
+                value = field.get(self.obj)
+                field.getMutator(self.obj)(value)
+
+        def last_migrate_reindex(self):
+            self.obj.reindexObject()
+
+    return BlobMigrator
 
 
 # migration of file content to blob content type

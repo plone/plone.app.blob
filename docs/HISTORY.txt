@@ -5,6 +5,9 @@ Changelog
 
 plone.app.blob - 1.0b7 Unreleased
 
+    - Provide helper methods for easier migration of custom content types.
+      [ggozad, witsch]
+
     - Refactor test setup to make it work with ZODB 3.9.
       [witsch]
 
