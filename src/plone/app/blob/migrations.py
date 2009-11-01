@@ -63,8 +63,9 @@ def makeMigrator(context, portal_type, meta_type=None):
         def migrate_data(self):
             fields = self.getFields(self.obj)
             for name in fields:
+                oldfield = self.obj.schema[name]
+                value = oldfield.get(self.obj)
                 field = self.obj.getField(name)
-                value = field.get(self.obj)
                 field.getMutator(self.obj)(value)
 
         def last_migrate_reindex(self):
