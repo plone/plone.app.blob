@@ -62,6 +62,7 @@ class ATBlob(ATCTFileContent, ImageMixin):
     summary = ATFieldProperty('description')
 
     security  = ClassSecurityInfo()
+    cmf_edit_kws   = ('file',)
 
     security.declareProtected(View, 'index_html')
     def index_html(self, REQUEST, RESPONSE):
@@ -178,6 +179,20 @@ class ATBlob(ATCTFileContent, ImageMixin):
                 icon = icon[1:]
         return icon
 
+    security.declarePrivate('cmf_edit')
+    def cmf_edit(self, precondition='', file=None, title=None, **kwargs):
+        # implement cmf_edit for image and file distinctly
+        primary_field_name = self.getPrimaryField().getName()
+        if file is not None and primary_field_name == 'image':
+            self.setImage(file)
+        elif file is not None and primary_field_name == 'file':
+            self.setFile(file)
+        if title is not None:
+            self.setTitle(title)
+        if kwargs:
+            self.edit(**kwargs)
+        else:
+            self.reindexObject()
 
 registerType(ATBlob, packageName)
 

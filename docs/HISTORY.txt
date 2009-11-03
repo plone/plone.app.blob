@@ -5,6 +5,10 @@ Changelog
 
 plone.app.blob - 1.0b7 Unreleased
 
+    - Add some additional CMF/ATCT compatibility to the ATCT
+      replacement types using the "cmf_edit" method.
+      [alecm]
+
     - Provide helper methods for easier migration of custom content types.
       [ggozad, witsch]
 
