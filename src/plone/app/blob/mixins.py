@@ -65,7 +65,8 @@ class ImageMixin(ATCTImageTransform):
     security.declareProtected(View, 'getSize')
     def getSize(self, scale=None):
         field = self.getField('image')
-        return field.getSize(self, scale=scale)
+        if field is not None:
+            return field.getSize(self, scale=scale)
 
     security.declareProtected(View, 'getWidth')
     def getWidth(self, scale=None):
