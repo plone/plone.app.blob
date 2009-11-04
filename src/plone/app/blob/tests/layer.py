@@ -13,7 +13,7 @@ class BlobLayer(PloneSite):
     def setUp(cls):
         # load zcml & install packages
         fiveconfigure.debug_mode = True
-        from plone.app import blob
+        from plone.app.blob import tests
         zcml.load_config('testing.zcml', tests)
         fiveconfigure.debug_mode = False
         installPackage('plone.app.blob', quiet=True)
