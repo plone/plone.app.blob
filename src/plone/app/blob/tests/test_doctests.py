@@ -19,6 +19,9 @@ def test_suite():
         ZopeDocFileSuite(
            'replacement-types.txt', package='plone.app.blob.tests',
            test_class=ReplacementFunctionalTestCase, optionflags=optionflags),
+        ZopeDocFileSuite(
+           'transforms.txt', package='plone.app.blob.tests',
+           test_class=ReplacementFunctionalTestCase, optionflags=optionflags),
     ))
     if hasLinguaPlone():
         suite.addTest(

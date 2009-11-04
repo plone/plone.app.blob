@@ -1,0 +1,51 @@
+A simple test the make sure image transformations work as expected (also see
+http://dev.plone.org/plone/ticket/8506).  First we create an image and check
+the dimensions of the image itself and one of the scales:
+
+  >>> self.setRoles(('Manager',))
+  >>> from plone.app.blob.tests.utils import getData
+  >>> data = getData('image.jpg')
+  >>> portal.invokeFactory('Image', id='foo', title='Foo', image=data)
+  'foo'
+
+  >>> image = portal['foo']
+  >>> image.width, image.height
+  (500, 200)
+  >>> traverse = portal.REQUEST.traverseName
+  >>> scale = traverse(image, 'image_mini')
+  >>> scale.width, scale.height
+  (200, 80)
+
+Let's also check a custom scale size:
+
+  >>> iprops = portal.portal_properties.imaging_properties
+  >>> iprops.manage_changeProperties(allowed_sizes=
+  ...   ['mini 200:200', 'foo 100:100'])
+  >>> scale = traverse(image, 'image_foo')
+  >>> scale.width, scale.height
+  (100, 40)
+
+We use a testbrowser to rotate the image:
+
+  >>> browser = self.getBrowser()
+  >>> browser.open('http://nohost/plone')
+  >>> browser.getLink('Foo').click()
+  >>> browser.getLink('Transform').click()
+  >>> browser.getControl(name='method').displayValue = ['Rotate 90 clockwise']
+  >>> browser.getControl('Execute').click()
+
+Let's check if the image has been rotated — its dimensions should have
+switched due to the 90º rotation:
+
+  >>> image = portal['foo']
+  >>> image.width, image.height
+  (200, 500)
+
+The same should be true for its scales:
+
+  >>> scale = traverse(image, 'image_mini')
+  >>> scale.width, scale.height
+  (80, 200)
+  >>> scale = traverse(image, 'image_foo')
+  >>> scale.width, scale.height
+  (40, 100)
