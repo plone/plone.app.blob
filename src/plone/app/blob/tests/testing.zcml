@@ -5,6 +5,8 @@
     xmlns:monkey="http://namespaces.plone.org/monkey"
     i18n_domain="plone.app.blob">
 
+  <include package="plone.app.blob" />
+
   <include package="collective.monkeypatcher" file="meta.zcml" />
 
   <configure zcml:condition="installed Products.LinguaPlone">
