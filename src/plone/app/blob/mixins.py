@@ -79,4 +79,12 @@ class ImageMixin(ATCTImageTransform):
     width = ComputedAttribute(getWidth, 1)
     height = ComputedAttribute(getHeight, 1)
 
+    # methods from ATCTImageTransform
 
+    security.declarePrivate('getImageAsFile')
+    def getImageAsFile(self, img=None, scale=None):
+        """ get the img as file like object """
+        if img is None:
+            field = self.getField('image')
+            img = field.getScale(self, scale)
+        return self.getBlobWrapper().getBlob().open('r')

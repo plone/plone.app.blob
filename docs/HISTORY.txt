@@ -5,6 +5,10 @@ Changelog
 
 plone.app.blob - 1.0b7 Unreleased
 
+    - Override helper method to provide file-like objects for image
+      transformations.  This fixes http://dev.plone.org/plone/ticket/8506
+      [amleczko, witsch]
+
     - Add some additional CMF/ATCT compatibility to the ATCT
       replacement types using the "cmf_edit" method.
       [alecm]
