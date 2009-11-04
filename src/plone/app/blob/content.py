@@ -62,7 +62,7 @@ class ATBlob(ATCTFileContent, ImageMixin):
     summary = ATFieldProperty('description')
 
     security  = ClassSecurityInfo()
-    cmf_edit_kws   = ('file',)
+    cmf_edit_kws = ('file',)
 
     security.declareProtected(View, 'index_html')
     def index_html(self, REQUEST, RESPONSE):
@@ -194,5 +194,5 @@ class ATBlob(ATCTFileContent, ImageMixin):
         else:
             self.reindexObject()
 
-registerType(ATBlob, packageName)
 
+registerType(ATBlob, packageName)
