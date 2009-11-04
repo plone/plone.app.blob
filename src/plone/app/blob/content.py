@@ -8,7 +8,10 @@ from ComputedAttribute import ComputedAttribute
 from ZODB.POSException import ConflictError
 from Products.Archetypes.atapi import AnnotationStorage
 from Products.Archetypes.atapi import ATFieldProperty
-from Products.Archetypes.atapi import registerType
+try:
+    from Products.LinguaPlone.public import registerType
+except ImportError:
+    from Products.Archetypes.atapi import registerType
 from Products.CMFCore.permissions import View, ModifyPortalContent
 from Products.CMFCore.utils import getToolByName
 from Products.ATContentTypes.content.base import ATCTFileContent

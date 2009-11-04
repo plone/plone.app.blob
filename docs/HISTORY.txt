@@ -5,6 +5,10 @@ Changelog
 
 plone.app.blob - 1.0b7 Unreleased
 
+    - Update basic blob content type to be LinguaPlone-aware.  This fixes
+      http://plone.org/products/plone.app.blob/issues/24
+      [witsch]
+
     - Override helper method to provide file-like objects for image
       transformations.  This fixes http://dev.plone.org/plone/ticket/8506
       [amleczko, witsch]
