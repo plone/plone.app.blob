@@ -5,6 +5,9 @@ Changelog
 
 plone.app.blob - 1.0b7 Unreleased
 
+    - Fix regression in setup for running bbb tests against Plone 3.x.
+      [witsch]
+
     - Update migration view to issue warning when `plone.app.blob` has not
       been quick-installed yet.  Fixes http://dev.plone.org/plone/ticket/8496
       [witsch]
