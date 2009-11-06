@@ -115,7 +115,7 @@ install the "plone.app.blob" package using one of the above mentioned methods.
 A sample ZEO buildout configuration could look like this::
 
   [buildout]
-  parts = zope2 zeo client1 client2
+  parts = zope2 zeoserver instance1 instance2
   extends = http://dist.plone.org/release/3.3.1/versions.cfg
   find-links =
       http://dist.plone.org/release/3.3.1
@@ -129,19 +129,19 @@ A sample ZEO buildout configuration could look like this::
   recipe = plone.recipe.zope2install
   url = ${versions:zope2-url}
 
-  [zeo]
+  [zeoserver]
   recipe = plone.recipe.zope2zeoserver
   zope2-location = ${zope2:location}
   zeo-address = 127.0.0.1:8100
   zeo-var = ${buildout:directory}/var
-  blob-storage = ${zeo:zeo-var}/blobstorage
+  blob-storage = ${zeoserver:zeo-var}/blobstorage
   eggs = plone.app.blob
 
-  [client1]
+  [instance1]
   recipe = plone.recipe.zope2instance
   zope2-location = ${zope2:location}
-  zeo-address = ${zeo:zeo-address}
-  blob-storage = ${zeo:blob-storage}
+  zeo-address = ${zeoserver:zeo-address}
+  blob-storage = ${zeoserver:blob-storage}
   zeo-client = on
   shared-blob = on
   user = admin:admin
@@ -150,17 +150,17 @@ A sample ZEO buildout configuration could look like this::
       plone.app.blob
   zcml = plone.app.blob
 
-  [client2]
+  [instance2]
   recipe = plone.recipe.zope2instance
   http-address = 8081
-  zope2-location = ${client1:zope2-location}
-  zeo-client = ${client1:zeo-client}
-  zeo-address = ${client1:zeo-address}
-  blob-storage = ${client1:blob-storage}
-  shared-blob = ${client1:shared-blob}
-  user = ${client1:user}
-  eggs = ${client1:eggs}
-  zcml = ${client1:zcml}
+  zope2-location = ${instance1:zope2-location}
+  zeo-client = ${instance1:zeo-client}
+  zeo-address = ${instance1:zeo-address}
+  blob-storage = ${instance1:blob-storage}
+  shared-blob = ${instance1:shared-blob}
+  user = ${instance1:user}
+  eggs = ${instance1:eggs}
+  zcml = ${instance1:zcml}
 
 Please note the configuration options ``blob-storage`` and ``shared-blob``
 specified in ``[client1]`` and ``[client2]``.  To enable blob support on a ZEO
