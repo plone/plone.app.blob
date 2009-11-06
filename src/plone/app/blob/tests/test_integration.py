@@ -182,6 +182,27 @@ class FunctionalIntegrationTests(BlobFunctionalTestCase):
         self.failUnless('PDF document' in output, '404?')
         self.failIf("We're sorry, but that page doesn't exist" in output, '404!')
 
+    def testInlineMimetypes(self):
+        obj = self.folder[self.folder.invokeFactory('Blob', 'blob')]
+        def disposition(mimetype, filename):
+            obj.setFormat(mimetype)
+            obj.setFilename(filename)
+            response = self.publish('/%s' % obj.absolute_url(relative=True),
+                basic=self.getCredentials())
+            self.assertEqual(response.getStatus(), 200)
+            return response.getHeader('Content-Disposition')
+        # only PDFs and Office files are shown inline
+        self.assertEqual(disposition('application/pdf', 'foo.pdf'),
+            'inline; filename="foo.pdf"')
+        self.assertEqual(disposition('application/msword', 'foo.doc'),
+            'inline; filename="foo.doc"')
+        self.assertEqual(disposition('application/x-msexcel', 'foo.xls'),
+            'inline; filename="foo.xls"')
+        self.assertEqual(disposition('text/plain', 'foo.txt'),
+            'attachment; filename="foo.txt"')
+        self.assertEqual(disposition('application/octet-stream', 'foo.exe'),
+            'attachment; filename="foo.exe"')
+
 
 def test_suite():
     return TestSuite([
