@@ -1,4 +1,5 @@
 todos:
+- update migration view to allow selecting which migrations are to be run
 - turn off linkintegrity checking & collective.indexing during migration
 - investigate problem regarding versioning
 - fix migration when using "atfile replacement" profile
