@@ -23,10 +23,17 @@ class BlobMigrationView(BrowserView):
         request = aq_inner(self.request)
         options = {}
         clicked = request.form.has_key
-        if not haveContentMigrations:
+        portal_url = getToolByName(context, 'portal_url')()
+        quickinstaller = getToolByName(context, 'portal_quickinstaller')
+        if not quickinstaller.isProductInstalled('plone.app.blob'):
+            url = '%s/prefs_install_products_form' % portal_url
+            msg = _(u'Please install `plone.app.blob` to be able to migrate to blobs.')
+            IStatusMessage(request).addStatusMessage(msg, type='warning')
+            options = { 'notinstalled': 42, 'installer': url }
+        elif not haveContentMigrations:
             msg = _(u'Please install contentmigrations to be able to migrate to blobs.')
             IStatusMessage(request).addStatusMessage(msg, type='warning')
-            options = { 'notinstalled': 42 }
+            options = { 'nomigrations': 42 }
         elif clicked('migrate'):
             output = self.migration()
             count = len(output.split('\n')) - 1
@@ -38,7 +45,7 @@ class BlobMigrationView(BrowserView):
         elif clicked('cancel'):
             msg = _(u'Blob migration cancelled.')
             IStatusMessage(request).addStatusMessage(msg, type='info')
-            request.RESPONSE.redirect(getToolByName(context, 'portal_url')())
+            request.RESPONSE.redirect(portal_url)
         else:
             walker = self.walker()
             options = { 'available': len(list(walker.walk())) }

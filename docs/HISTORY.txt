@@ -5,6 +5,10 @@ Changelog
 
 plone.app.blob - 1.0b7 Unreleased
 
+    - Update migration view to issue warning when `plone.app.blob` has not
+      been quick-installed yet.  Fixes http://dev.plone.org/plone/ticket/8496
+      [witsch]
+
     - Preserve filename when editing via WebDAV.  This fixes
       http://plone.org/products/plone.app.blob/issues/23
       [witsch]

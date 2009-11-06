@@ -11,6 +11,15 @@
     i18n:translate="blob_migration_title">Blob Migration</h1>
 
 <div tal:condition="exists: options/notinstalled"
+     i18n:translate="blob_not_installed">
+  <p> The integration package for ZODB blob support, `plone.app.blob`,
+      needs to be installed in order for existing content to be migrated. </p>
+
+  <p> Please refer to the <a href="#" tal:attributes="href options/installer">
+      Add-on Products</a> section to do so. </p>
+</div>
+
+<div tal:condition="exists: options/nomigrations"
      i18n:translate="blob_migration_unavailable">
   <p> The migration facility is currently unavailable, since the
       <a href="http://pypi.python.org/pypi/Products.contentmigration/">
