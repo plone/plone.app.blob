@@ -10,6 +10,7 @@ from Products.Archetypes.atapi import AnnotationStorage
 from Products.Archetypes.atapi import ATFieldProperty
 try:
     from Products.LinguaPlone.public import registerType
+    registerType        # keep pyflakes happy
 except ImportError:
     from Products.Archetypes.atapi import registerType
 from Products.CMFCore.permissions import View, ModifyPortalContent

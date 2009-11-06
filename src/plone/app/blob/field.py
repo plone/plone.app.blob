@@ -6,6 +6,7 @@ from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
 try:
     from App.class_init import InitializeClass
+    InitializeClass     # keep pyflakes happy
 except ImportError:
     from Globals import InitializeClass
 from ZODB.blob import Blob
