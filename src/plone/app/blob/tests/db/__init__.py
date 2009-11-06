@@ -6,7 +6,7 @@ cfg = App.config.getConfiguration()
 cfg.testinghome = dirname(__file__)
 
 
-# # ZopeLite uses DemoStorage directly, so it needs monkey-patching... :(
+# ZopeLite uses DemoStorage directly, so it needs monkey-patching... :(
 from Testing.ZopeTestCase import ZopeLite
 from ZODB.interfaces import IBlobStorage
 from ZODB.DemoStorage import DemoStorage
