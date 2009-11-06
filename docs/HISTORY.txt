@@ -3,7 +3,7 @@ Changelog
 
     (name of developer listed in brackets)
 
-plone.app.blob - 1.0b7 Unreleased
+plone.app.blob - 1.0b7 Released November 6, 2009
 
     - Fix regression in setup for running bbb tests against Plone 3.x.
       [witsch]
