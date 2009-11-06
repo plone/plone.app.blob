@@ -33,18 +33,18 @@ class WebDavUpload(object):
     implements(IWebDavUpload)
 
     def __init__(self, file, filename=None, mimetype=None, **kwargs):
-         self.file = file
-         self.filename = filename
-         self.mimetype = mimetype
-         self.kwargs = kwargs
+        self.file = file
+        self.filename = filename
+        self.mimetype = mimetype
+        self.kwargs = kwargs
 
 
 class BlobMarshaller(PrimaryFieldMarshaller):
 
-     def demarshall(self, instance, data, **kwargs):
-         p = instance.getPrimaryField()
-         mutator = p.getMutator(instance)
-         mutator(WebDavUpload(**kwargs))
+    def demarshall(self, instance, data, **kwargs):
+        p = instance.getPrimaryField()
+        mutator = p.getMutator(instance)
+        mutator(WebDavUpload(**kwargs))
 
 
 class BlobWrapper(Implicit, Persistent):
