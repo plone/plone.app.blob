@@ -5,6 +5,10 @@ Changelog
 
 plone.app.blob - 1.0b7 Unreleased
 
+    - Preserve filename when editing via WebDAV.  This fixes
+      http://plone.org/products/plone.app.blob/issues/23
+      [witsch]
+
     - Update basic blob content type to be LinguaPlone-aware.  This fixes
       http://plone.org/products/plone.app.blob/issues/24
       [j23d]

@@ -1,4 +1,4 @@
-from unittest import defaultTestLoader
+from unittest import TestSuite, makeSuite
 from plone.app.blob.tests.base import ReplacementFunctionalTestCase
 from plone.app.blob.tests.utils import getImage
 from plone.app.blob.interfaces import IATBlobImage
@@ -20,6 +20,23 @@ class WebDavTests(ReplacementFunctionalTestCase):
         self.failUnless(IATBlobImage.providedBy(obj), 'no blob?')
         self.assertEqual(str(obj.getField('image').get(obj)), image)
 
+    def testWebDavUpdate(self):
+        image = StringIO(getImage())
+        image.filename = 'original.gif'
+        obj = self.folder[self.folder.invokeFactory('Image', id='foo',
+            title='an image', image=image)]
+        base = '/'.join(self.folder.getPhysicalPath())
+        response = self.publish(base + '/foo', request_method='PUT',
+            stdin=image, basic=self.getCredentials(),
+            env={'CONTENT_TYPE': 'image/gif'})
+        self.assertEqual(response.getStatus(), 204)
+        self.failUnless('foo' in self.folder.objectIds())
+        self.assertEqual(self.folder.foo.getId(), 'foo')
+        self.assertEqual(self.folder.foo.Title(), 'an image')
+        self.assertEqual(self.folder.foo.getFilename(), 'original.gif')
+
 
 def test_suite():
-    return defaultTestLoader.loadTestsFromName(__name__)
+    return TestSuite([
+        makeSuite(WebDavTests),
+    ])

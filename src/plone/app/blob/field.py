@@ -1,7 +1,7 @@
 from os import fstat
 from zope.interface import implements
 from StringIO import StringIO
-from Acquisition import Implicit
+from Acquisition import Implicit, aq_base
 from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
 try:
@@ -33,8 +33,10 @@ class WebDavUpload(object):
         to be able to provide an adapter for this way of creating a blob """
     implements(IWebDavUpload)
 
-    def __init__(self, file, filename=None, mimetype=None, **kwargs):
+    def __init__(self, file, filename=None, mimetype=None, context=None, **kwargs):
         self.file = file
+        if hasattr(aq_base(context), 'getFilename'):
+            filename = context.getFilename() or filename
         self.filename = filename
         self.mimetype = mimetype
         self.kwargs = kwargs
