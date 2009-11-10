@@ -30,4 +30,10 @@
       allowed_interface="..interfaces.IBlobMaintenanceView"
       permission="cmf.ManagePortal" />
 
+  <browser:page
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="blob-content-size"
+      class=".size.FileContentSizeView"
+      permission="cmf.ManagePortal" />
+
 </configure>

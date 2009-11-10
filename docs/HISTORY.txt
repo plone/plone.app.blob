@@ -5,6 +5,9 @@ Changelog
 
 plone.app.blob - 1.0b8 Unreleased
 
+    - Add helper view to get a rough estimate of the total size of binary
+      content in a site.
+      [witsch]
 
 plone.app.blob - 1.0b7 Released November 6, 2009
 
