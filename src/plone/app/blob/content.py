@@ -99,6 +99,16 @@ class ATBlob(ATCTFileContent, ImageMixin):
         mutator = self.getField('file').getMutator(self)
         mutator(value, **kwargs)
 
+    def _should_set_id_to_filename(self, filename, title):
+        """ For images, if title is blank, have the caller set my ID to the
+            uploaded file's name. """
+        if IATBlobImage.providedBy(self):
+            # When the title is blank, sometimes the filename is returned
+            return filename == title or not title
+        else:
+            return super(ATBlob, self)._should_set_id_to_filename(filename,
+                title)
+
     # index accessor using portal transforms to provide index data
 
     security.declarePrivate('getIndexValue')
