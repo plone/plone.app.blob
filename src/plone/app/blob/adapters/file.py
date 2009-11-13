@@ -1,0 +1,30 @@
+from zope.interface import implements
+from zope.component import adapts
+
+from plone.app.blob.interfaces import IBlobbable
+from plone.app.blob.utils import guessMimetype
+
+
+class BlobbableFile(object):
+    """ adapter for Python file objects to work with blobs """
+    implements(IBlobbable)
+    adapts(file)
+
+    def __init__(self, context):
+        self.context = context
+
+    def feed(self, blob):
+        """ see interface ... """
+        pos = self.context.tell()
+        self.context.seek(0)
+        blob.open('w').writelines(self.context)
+        self.context.seek(pos)
+
+    def filename(self):
+        """ see interface ... """
+        return getattr(self.context, 'name', None)
+
+    def mimetype(self):
+        """ see interface ... """
+        return guessMimetype(self.context, self.filename())
+

@@ -5,6 +5,9 @@ Changelog
 
 plone.app.blob - 1.0b8 Unreleased
 
+    - Add blobbable adapters for Python file objects and OFS Pdata objects.
+      [davisagli]
+
     - Add helper view to get a rough estimate of the total size of binary
       content in a site.
       [witsch]

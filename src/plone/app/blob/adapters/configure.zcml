@@ -7,6 +7,8 @@
   <adapter factory=".atfile.BlobbableATFile" />
   <adapter factory=".atimage.BlobbableATImage" />
   <adapter factory=".stringio.BlobbableStringIO" />
+  <adapter factory=".file.BlobbableFile" />
+  <adapter factory=".pdata.BlobbablePdata" />
   <adapter factory=".webdav.BlobbableWebDavUpload" />
 
 </configure>
