@@ -84,10 +84,16 @@ Migration from existing file content, i.e. `ATFile` instances, is also
 provided.  The payload data as well as all other fields should be properly
 migrated:
 
+  >>> initial_file_product = portal.portal_types.File.product
+  >>> initial_file_factory = portal.portal_types.File.factory
+  >>> portal.portal_types.File.product = 'ATContentTypes'
+  >>> portal.portal_types.File.factory = 'addATFile'
   >>> gif.filename = 'foo.gif'
   >>> folder.invokeFactory('File', id='foo', title='a file', file=gif,
   ...     subject=('foo', 'bar'), contributors=('me'))
   'foo'
+  >>> portal.portal_types.File.product = initial_file_product
+  >>> portal.portal_types.File.factory = initial_file_factory
   >>> folder.foo
   <ATFile at /plone/Members/test_user_1_/foo>
   >>> folder.foo.Title()
