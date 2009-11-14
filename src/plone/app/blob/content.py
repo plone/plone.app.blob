@@ -106,8 +106,12 @@ class ATBlob(ATCTFileContent, ImageMixin):
             # When the title is blank, sometimes the filename is returned
             return filename == title or not title
         else:
-            return super(ATBlob, self)._should_set_id_to_filename(filename,
-                title)
+            try:
+                return super(ATBlob, self)._should_set_id_to_filename(filename,
+                    title)
+            except AttributeError:
+                # BBB for Plone ATCT <2.0
+                return True
 
     # index accessor using portal transforms to provide index data
 
