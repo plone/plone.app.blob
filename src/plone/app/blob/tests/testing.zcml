@@ -7,8 +7,6 @@
 
   <include package="plone.app.blob" />
 
-  <include package="collective.monkeypatcher" file="meta.zcml" />
-
   <configure zcml:condition="installed Products.LinguaPlone">
     <five:deprecatedManageAddDelete class=".lingua.BlobelFish" />
   </configure>
