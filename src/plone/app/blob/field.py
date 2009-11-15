@@ -1,7 +1,5 @@
 from os import fstat
-
 from zope.interface import implements
-
 from StringIO import StringIO
 from DateTime.DateTime import DateTime
 from Acquisition import Implicit, aq_base
@@ -30,6 +28,7 @@ from plone.app.blob.interfaces import IBlobbable, IWebDavUpload, IBlobField
 from plone.app.blob.interfaces import IBlobWrapper
 from plone.app.blob.iterators import BlobStreamIterator, BlobStreamRangeIterator
 from plone.app.blob.utils import getImageSize
+
 
 class WebDavUpload(object):
     """ helper class when handling webdav uploads;  the class is needed
