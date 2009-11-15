@@ -7,6 +7,8 @@ version = open(join(*path)).read().strip()
 readme = open('README.txt').read()
 history = open(join('docs', 'HISTORY.txt')).read().replace(name + ' - ', '')
 
+tests_require = ['collective.testcaselayer']
+
 setup(name = name,
       version = version,
       description = 'ZODB 3.8 blob support for Plone 3.x',
@@ -30,6 +32,8 @@ setup(name = name,
           'archetypes.schemaextender >=1.0b1',
           'plone.app.imaging >1.0b3',
       ],
+      tests_require=tests_require,
+      extras_require={'tests': tests_require},
       classifiers = [
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
