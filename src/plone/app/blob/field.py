@@ -95,6 +95,10 @@ class BlobWrapper(Implicit, Persistent):
         return size
 
     __len__ = get_size
+    
+    def __nonzero__(self):
+        # even a 0-length blob should count as having a value present
+        return True
 
     security.declareProtected(View, 'getSize')
     def getSize(self):

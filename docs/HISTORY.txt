@@ -5,6 +5,10 @@ Changelog
 
 plone.app.blob - 1.0b8 Unreleased
 
+    - Make sure that BlobWrappers for zero-length blobs still evaluate to
+      boolean True.
+      [davisagli]
+
     - Fix image field validator to match that from `ATContentTypes`.
       [rossp]
 
