@@ -5,12 +5,13 @@ Changelog
 
 plone.app.blob - 1.0b8 Unreleased
 
-    - Fix image field validator to match that from ATContentTypes [rossp]
+    - Fix image field validator to match that from `ATContentTypes`.
+      [rossp]
 
-    - With ATContentTypes >=2.0, check the _should_set_id_to_filename method
-      to determine if ATBlob's fixAutoId method should set the item id to the
-      filename of the blob field.  For images, don't set it to the filename
-      if a title was supplied.
+    - With `ATContentTypes` >=2.0, check the `_should_set_id_to_filename`
+      method to determine if `ATBlob`'s `fixAutoId` method should set the
+      item id to the filename of the blob field.  For images, don't set it
+      to the filename if a title was supplied.
       [davisagli]
 
     - Add blobbable adapters for Python file objects and OFS Pdata objects.
