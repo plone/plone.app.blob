@@ -129,6 +129,27 @@ class IntegrationTests(BlobTestCase):
         b = blob.getFile().getBlob().open('r')
         self.assertEqual(b.read(10), largefile_data[:10])
 
+    def testRangeSupport(self):
+        blob = self.folder[self.folder.invokeFactory('Blob', 'blob',
+            title='foo', file=getData('plone.pdf'))]
+        field = blob.getField('file')
+        accessor = field.getIndexAccessor(blob)
+        request = self.folder.REQUEST
+        request.environ["HTTP_RANGE"] = "bytes=2-10"
+
+        orig_out = request.response.stdout
+        out = request.response.stdout = StringIO()
+        try:
+            blob.download(request)
+        finally:
+            request.response.stdout = orig_out
+
+        bf = blob.getFile().getBlob().open('r')
+        bf.seek(2)
+        header_len = 242
+        self.assertEqual(
+            bf.read(8), out.getvalue()[header_len:-1])
+
     def testIcon(self):
         self.folder.invokeFactory('Blob', 'blob', title='foo')
         blob = self.folder.blob

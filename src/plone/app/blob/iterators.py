@@ -41,3 +41,41 @@ class BlobStreamIterator(object):
 
     def tell(self):
         return self.blob.tell()
+
+class BlobStreamRangeIterator(BlobStreamIterator):
+
+    def __init__(self, blob, mode='r', streamsize=1<<16, start=0, end=None):
+        self.blob = blob.open(mode)
+        self.streamsize = streamsize
+        self.start = start
+        self.end = end
+        self.seek(start, 0)
+
+    def next(self):
+        """
+        raise a stopIteration if read bytes is upper than end value specified
+        by the range validator
+        """
+        
+        # this seems very ugly and it's not working
+        # trying to set the end, cause we get a None from the downloadmanager
+        if self.end is None:
+            self.end = self.__len__()
+
+        if self.tell() >= self.end:
+            ## nothing to read
+            raise StopIteration
+
+        if self.tell() + self.streamsize > self.end:
+            ## case of we must stop to the end buffer
+            data = self.blob.read(self.end - self.tell())
+            if not data:
+                raise StopIteration
+            return data
+
+        else:
+            ## normaly do the job like filestream_iterator
+            data = self.blob.read(self.streamsize)
+            if not data:
+                raise StopIteration
+            return data

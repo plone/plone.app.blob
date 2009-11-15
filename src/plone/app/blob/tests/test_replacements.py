@@ -1,3 +1,5 @@
+from StringIO import StringIO
+
 from plone.app.blob.tests.base import ReplacementTestCase   # import first!
 
 from unittest import defaultTestLoader
@@ -45,9 +47,17 @@ class FileReplacementTests(ReplacementTestCase):
         self.assertEqual(foo.get_size(), 10)
         request = foo.REQUEST
         response = request.RESPONSE
-        self.assertEqual(foo.index_html(request, response).next(), 'plain text')
+        orig_out = request.response.stdout
+        out = request.response.stdout = StringIO()
+        try:
+            foo.index_html(request, response)
+        finally:
+            request.response.stdout = orig_out
+
+        header_len = 192
+        self.assertEqual(out.getvalue()[header_len:], 'plain text')
         headers = response.headers
-        self.assertEqual(response.headers['status'], '200 OK')
+        self.assertEqual(response.getStatus(), 200)
         self.assertEqual(response.headers['content-length'], '10')
         self.assertEqual(response.headers['content-type'], 'text/plain')
 
@@ -165,9 +175,17 @@ class ImageReplacementTests(ReplacementTestCase):
         # `index_html` should return a stream-iterator
         request = foo.REQUEST
         response = request.RESPONSE
-        self.assertEqual(foo.index_html(request, response).next(), gif)
+        orig_out = request.response.stdout
+        out = request.response.stdout = StringIO()
+        try:
+            foo.index_html(request, response)
+        finally:
+            request.response.stdout = orig_out
+
+        header_len = 191
+        self.assertEqual(out.getvalue()[header_len:], gif)
         headers = response.headers
-        self.assertEqual(response.headers['status'], '200 OK')
+        self.assertEqual(response.getStatus(), 200)
         self.assertEqual(response.headers['content-length'], '43')
         self.assertEqual(response.headers['content-type'], 'image/gif')
 
