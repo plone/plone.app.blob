@@ -277,9 +277,7 @@ class BlobField(ObjectField):
             instance, blob, REQUEST, RESPONSE)
         if iterator is None:
             iterator = blob.getIterator()
-        for data in iterator:
-            RESPONSE.write(data)
-        return ''
+        return iterator
 
     def _if_modified_since_request_handler(
         self, instance, REQUEST, RESPONSE):
