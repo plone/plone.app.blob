@@ -94,6 +94,12 @@ class IntegrationTests(BlobTestCase):
         field = blob.getFile()
         self.assertEqual(field.getSize(), None)
 
+    def testZeroLengthFileIsBooleanTrue(self):
+        self.folder.invokeFactory('Blob', 'blob', title='foo', file='')
+        blob = self.folder['blob'].getFile()
+        self.assertEqual(len(blob), 0)
+        self.failUnless(bool(blob))
+
     def testAbsoluteURL(self):
         self.folder.invokeFactory('Blob', 'blob')
         blob = self.folder['blob']
