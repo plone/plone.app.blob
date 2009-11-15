@@ -13,11 +13,6 @@
     <five:deprecatedManageAddDelete class=".lingua.BlobelFish" />
   </configure>
 
-  <monkey:patch
-     class="ZPublisher.HTTPResponse.HTTPResponse"
-     original="setBody"
-     replacement=".patches.setBody"
-     handler=".patches.applyPatch"
-     docstringWarning="false" />
+  <include package="collective.testcaselayer" file="testing.zcml" />
 
 </configure>

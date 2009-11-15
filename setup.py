@@ -29,6 +29,7 @@ setup(name = name,
           'zope.proxy >=3.4',
           'archetypes.schemaextender >=1.0b1',
           'plone.app.imaging >1.0b3',
+          'collective.testcaselayer',
       ],
       extras_require={
         'tests': ['collective.monkeypatcher'],
