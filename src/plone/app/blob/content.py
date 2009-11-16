@@ -27,6 +27,13 @@ from plone.app.blob.field import BlobMarshaller
 from plone.app.blob.mixins import ImageMixin
 from plone.app.blob.markings import markAs
 
+# test for CMF 2.2
+try:
+    from Products.CMFCore.CMFCatalogAware import WorkflowAware
+    WorkflowAware # satisfy pyflakes
+    HAS_CMF_22 = True
+except ImportError:
+    HAS_CMF_22 = False
 
 ATBlobSchema = ATContentTypeSchema.copy()
 ATBlobSchema['title'].storage = AnnotationStorage()
@@ -34,18 +41,29 @@ ATBlobSchema['title'].storage = AnnotationStorage()
 finalizeATCTSchema(ATBlobSchema, folderish=False, moveDiscussion=False)
 ATBlobSchema.registerLayer('marshall', BlobMarshaller())
 
-
-def addATBlob(container, id, subtype='Blob', **kwargs):
-    """ extended at-constructor copied from ClassGen.py """
-    obj = ATBlob(id)
-    if subtype is not None:
-        markAs(obj, subtype)    # mark with interfaces needed for subtype
-    notify(ObjectCreatedEvent(obj))
-    container._setObject(id, obj)
-    obj = container._getOb(id)
-    obj.initializeArchetype(**kwargs)
-    notify(ObjectModifiedEvent(obj))
-    return obj.getId()
+# CMF 2.2 takes care of raising object events for old-style factories
+if HAS_CMF_22:
+    def addATBlob(container, id, subtype='Blob', **kwargs):
+        """ extended at-constructor copied from ClassGen.py """
+        obj = ATBlob(id)
+        if subtype is not None:
+            markAs(obj, subtype)    # mark with interfaces needed for subtype
+        container._setObject(id, obj, suppress_events=True)
+        obj = container._getOb(id)
+        obj.initializeArchetype(**kwargs)
+        return obj.getId()
+else: # CMF <2.2
+    def addATBlob(container, id, subtype='Blob', **kwargs):
+        """ extended at-constructor copied from ClassGen.py """
+        obj = ATBlob(id)
+        if subtype is not None:
+            markAs(obj, subtype)    # mark with interfaces needed for subtype
+        notify(ObjectCreatedEvent(obj))
+        container._setObject(id, obj)
+        obj = container._getOb(id)
+        obj.initializeArchetype(**kwargs)
+        notify(ObjectModifiedEvent(obj))
+        return obj.getId()
 
 def addATBlobFile(container, id, **kwargs):
     return addATBlob(container, id, subtype='File', **kwargs)

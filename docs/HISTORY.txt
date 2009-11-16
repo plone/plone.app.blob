@@ -5,6 +5,10 @@ Changelog
 
 plone.app.blob - 1.0b8 Unreleased
 
+    - Added a modified version of the customized ATBlob factory for use with
+      CMF 2.2.
+      [davisagli]
+
     - Make sure that BlobWrappers for zero-length blobs still evaluate to
       boolean True.
       [davisagli]
