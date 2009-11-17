@@ -6,7 +6,7 @@ path = ['src'] + name.split('.') + ['version.txt']
 version = open(join(*path)).read().strip()
 readme = open('README.txt').read()
 history = open(join('docs', 'HISTORY.txt')).read().replace(name + ' - ', '')
-tests_require = ['collective.testcaselayer']
+tests_require = ['collective.monkeypatcher']
 
 setup(name = name,
       version = version,

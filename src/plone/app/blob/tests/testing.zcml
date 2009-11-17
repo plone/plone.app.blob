@@ -7,10 +7,17 @@
 
   <include package="plone.app.blob" />
 
+  <include package="collective.monkeypatcher" />
+
   <configure zcml:condition="installed Products.LinguaPlone">
     <five:deprecatedManageAddDelete class=".lingua.BlobelFish" />
   </configure>
 
-  <include package="collective.testcaselayer" file="testing.zcml" />
+  <monkey:patch
+     class="ZPublisher.HTTPResponse.HTTPResponse"
+     original="setBody"
+     replacement=".patches.setBody"
+     handler=".patches.applyPatch"
+     docstringWarning="false" />
 
 </configure>
