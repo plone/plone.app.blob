@@ -256,10 +256,10 @@ class BlobField(ObjectField):
         RESPONSE.setHeader('Last-Modified', rfc1123_date(instance._p_mtime))
         RESPONSE.setHeader('Content-Type', self.getContentType(instance))
         RESPONSE.setHeader('Accept-Ranges', 'bytes')
-        if handleIfModifiedSince(
-            instance, REQUEST, RESPONSE):
+        if handleIfModifiedSince(instance, REQUEST, RESPONSE):
             return ''
-        RESPONSE.setHeader("Content-Length", blob.get_size())
+        length = blob.get_size()
+        RESPONSE.setHeader('Content-Length', length)
         filename = self.getFilename(instance)
         if filename is not None:
             filename = IUserPreferredFileNameNormalizer(REQUEST).normalize(
@@ -268,11 +268,8 @@ class BlobField(ObjectField):
                 disposition=disposition,
                 filename=filename)
             RESPONSE.setHeader("Content-disposition", header_value)
-        iterator = handleRequestRange(
-            instance, blob, REQUEST, RESPONSE)
-        if iterator is None:
-            iterator = blob.getIterator()
-        return iterator
+        range = handleRequestRange(instance, length, REQUEST, RESPONSE)
+        return blob.getIterator(**range)
 
     security.declarePublic('get_size')
     def get_size(self, instance):

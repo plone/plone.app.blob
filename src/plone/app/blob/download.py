@@ -30,7 +30,7 @@ def handleIfModifiedSince(instance, REQUEST, RESPONSE):
                 return True
 
 
-def handleRequestRange(instance, blob, REQUEST, RESPONSE):
+def handleRequestRange(instance, length, REQUEST, RESPONSE):
     # check if we have a range in the request
     ranges = None
     range = REQUEST.get_header('Range', None)
@@ -72,11 +72,11 @@ def handleRequestRange(instance, blob, REQUEST, RESPONSE):
             RESPONSE.setHeader('Accept-Ranges', 'bytes')
         if ranges and len(ranges) == 1:
             [(start, end)] = ranges
-            iterator = blob.getIterator(start=start, end=end)
             size = end - start
             RESPONSE.setHeader('Content-Length', size)
             RESPONSE.setHeader(
                 'Content-Range',
-                'bytes %d-%d/%d' % (start, end - 1, len(iterator)))
+                'bytes %d-%d/%d' % (start, end - 1, length))
             RESPONSE.setStatus(206) # Partial content
-            return iterator
+            return dict(start=start, end=end)
+    return {}
