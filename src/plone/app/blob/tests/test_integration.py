@@ -140,8 +140,6 @@ class IntegrationTests(BlobTestCase):
     def testRangeSupport(self):
         blob = self.folder[self.folder.invokeFactory('Blob', 'blob',
             title='foo', file=getData('plone.pdf'))]
-        field = blob.getField('file')
-        accessor = field.getIndexAccessor(blob)
         request = self.folder.REQUEST
         request.environ["HTTP_RANGE"] = "bytes=2-10"
         iterator = blob.download(request)
