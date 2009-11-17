@@ -92,9 +92,7 @@ class BlobWrapper(Implicit, Persistent):
 
     def __nonzero__(self):
         # count as having a value unless we lack both data and a filename
-        if len(self) or self.filename:
-            return True
-        return False
+        return bool(self.filename or len(self))
 
     security.declareProtected(View, 'getSize')
     def getSize(self):
