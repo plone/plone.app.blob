@@ -29,4 +29,3 @@ class BlobbableStringIO(object):
     def mimetype(self):
         """ see interface ... """
         return guessMimetype(self.context, self.filename())
-

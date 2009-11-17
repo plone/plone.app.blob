@@ -29,11 +29,11 @@ class BlobMigrationView(BrowserView):
             url = '%s/prefs_install_products_form' % portal_url
             msg = _(u'Please install `plone.app.blob` to be able to migrate to blobs.')
             IStatusMessage(request).addStatusMessage(msg, type='warning')
-            options = { 'notinstalled': 42, 'installer': url }
+            options = dict(notinstalled=42, installer=url)
         elif not haveContentMigrations:
             msg = _(u'Please install contentmigrations to be able to migrate to blobs.')
             IStatusMessage(request).addStatusMessage(msg, type='warning')
-            options = { 'nomigrations': 42 }
+            options = dict(nomigrations=42)
         elif clicked('migrate'):
             output = self.migration()
             count = len(output.split('\n')) - 1
@@ -41,14 +41,14 @@ class BlobMigrationView(BrowserView):
                 default=u'Blob migration performed for ${count} item(s).',
                 mapping={'count': count})
             IStatusMessage(request).addStatusMessage(msg, type='info')
-            options = { 'count': count, 'output': output }
+            options = dict(count=count, output=output)
         elif clicked('cancel'):
             msg = _(u'Blob migration cancelled.')
             IStatusMessage(request).addStatusMessage(msg, type='info')
             request.RESPONSE.redirect(portal_url)
         else:
             walker = self.walker()
-            options = { 'available': len(list(walker.walk())) }
+            options = dict(available=len(list(walker.walk())))
         return self.index(**options)
 
 
@@ -62,4 +62,3 @@ class ImageMigrationView(BlobMigrationView):
 
     migration = migrateATBlobImages
     walker = getATBlobImagesMigrationWalker
-

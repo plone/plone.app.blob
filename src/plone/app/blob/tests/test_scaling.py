@@ -244,4 +244,3 @@ def test_suite():
         makeSuite(BlobAdapterTests),
         makeSuite(BlobAdapterPublisherTests),
     ])
-

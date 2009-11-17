@@ -12,5 +12,3 @@ class BlobbableATImage(BlobbableATFile):
         """ see interface ... """
         data = self.context.getImageAsFile()
         blob.open('w').write(data.read())   # TODO: use copy or an iterator!!
-
-

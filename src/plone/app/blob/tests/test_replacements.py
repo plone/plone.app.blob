@@ -243,4 +243,3 @@ class ImageReplacementTests(ReplacementTestCase):
 
 def test_suite():
     return defaultTestLoader.loadTestsFromName(__name__)
-

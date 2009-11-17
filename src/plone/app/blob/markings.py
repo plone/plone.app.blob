@@ -12,16 +12,17 @@ from Products.ATContentTypes.interfaces import IATImage as Z2IATImage
 
 
 interfaces = {
-    'Blob': [ IATBlobBlob, atfile.IATFile, atfile.IFileContent ],
-    'File': [ IATBlobFile, atfile.IATFile, atfile.IFileContent ],
-    'Image': [ IATBlobImage, atimage.IATImage, atimage.IImageContent ],
+    'Blob': [IATBlobBlob, atfile.IATFile, atfile.IFileContent],
+    'File': [IATBlobFile, atfile.IATFile, atfile.IFileContent],
+    'Image': [IATBlobImage, atimage.IATImage, atimage.IImageContent],
 }
 
 z2interfaces = {
-    'Blob': [ Z2IATFile ],
-    'File': [ Z2IATFile ],
-    'Image': [ Z2IATImage ],
+    'Blob': [Z2IATFile],
+    'File': [Z2IATFile],
+    'Image': [Z2IATImage],
 }
+
 
 def markAs(obj, typename):
     for i in interfaces.get(typename, ()):
@@ -30,6 +31,7 @@ def markAs(obj, typename):
     if z2 is not None:
         implements = getattr(obj, '__implements__', [])
         obj.__implements__ = tuple(set(implements).union(z2))
+
 
 def unmarkAs(obj, typename):
     for i in interfaces.get(typename, ()):

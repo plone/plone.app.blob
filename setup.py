@@ -6,7 +6,6 @@ path = ['src'] + name.split('.') + ['version.txt']
 version = open(join(*path)).read().strip()
 readme = open('README.txt').read()
 history = open(join('docs', 'HISTORY.txt')).read().replace(name + ' - ', '')
-
 tests_require = ['collective.testcaselayer']
 
 setup(name = name,
@@ -32,8 +31,8 @@ setup(name = name,
           'archetypes.schemaextender >=1.0b1',
           'plone.app.imaging >1.0b3',
       ],
-      tests_require=tests_require,
-      extras_require={'test': tests_require},
+      tests_require = tests_require,
+      extras_require = {'test': tests_require},
       classifiers = [
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
@@ -47,4 +46,3 @@ setup(name = name,
         'Topic :: Software Development :: Libraries :: Python Modules',
       ],
 )
-

@@ -95,7 +95,7 @@ class BlobWrapper(Implicit, Persistent):
         return size
 
     __len__ = get_size
-    
+
     def __nonzero__(self):
         # count as having a value unless we lack both data and a filename
         if len(self) or self.filename:
@@ -177,11 +177,11 @@ class BlobField(ObjectField):
 
     _properties = ObjectField._properties.copy()
     _properties.update({
-        'type' : 'blob',
-        'default' : None,
-        'primary' : False,
-        'widget' : FileWidget,
-        'default_content_type' : 'application/octet-stream',
+        'type': 'blob',
+        'default': None,
+        'primary': False,
+        'widget': FileWidget,
+        'default_content_type': 'application/octet-stream',
     })
 
     security = ClassSecurityInfo()
@@ -258,18 +258,14 @@ class BlobField(ObjectField):
             REQUEST = instance.REQUEST
         if RESPONSE is None:
             RESPONSE = REQUEST.RESPONSE
-
         blob = self.getUnwrapped(instance, raw=True)    # TODO: why 'raw'?
         RESPONSE.setHeader('Last-Modified', rfc1123_date(instance._p_mtime))
         RESPONSE.setHeader('Content-Type', self.getContentType(instance))
         RESPONSE.setHeader('Accept-Ranges', 'bytes')
-
         if self._if_modified_since_request_handler(
             instance, REQUEST, RESPONSE):
             return ''
-
         RESPONSE.setHeader("Content-Length", blob.get_size())
-
         filename = self.getFilename(instance)
         if filename is not None:
             filename = IUserPreferredFileNameNormalizer(REQUEST).normalize(
@@ -278,7 +274,6 @@ class BlobField(ObjectField):
                 disposition=disposition,
                 filename=filename)
             RESPONSE.setHeader("Content-disposition", header_value)
-
         iterator = self._range_request_handler(
             instance, blob, REQUEST, RESPONSE)
         if iterator is None:
@@ -289,9 +284,9 @@ class BlobField(ObjectField):
         self, instance, REQUEST, RESPONSE):
         # HTTP If-Modified-Since header handling: return True if
         # we can handle this request by returning a 304 response
-        header=REQUEST.get_header('If-Modified-Since', None)
+        header = REQUEST.get_header('If-Modified-Since', None)
         if header is not None:
-            header=header.split( ';')[0]
+            header = header.split(';')[0]
             # Some proxies seem to send invalid date strings for this
             # header. If the date string is not valid, we ignore it
             # rather than raise an error to be generally consistent
@@ -300,8 +295,10 @@ class BlobField(ObjectField):
             # of the way they parse it).
             # This happens to be what RFC2616 tells us to do in the face of an
             # invalid date.
-            try:    mod_since=long(DateTime(header).timeTime())
-            except: mod_since=None
+            try:
+                mod_since = long(DateTime(header).timeTime())
+            except:
+                mod_since = None
             if mod_since is not None:
                 if instance._p_mtime:
                     last_mod = long(instance._p_mtime)
@@ -322,10 +319,8 @@ class BlobField(ObjectField):
             # Later on, we need to serve a different mime-type as well.
             range = request_range
         if_range = REQUEST.get_header('If-Range', None)
-
         if range is not None:
             ranges = parseRange(range)
-
             if if_range is not None:
                 # Only send ranges if the data isn't modified, otherwise send
                 # the whole object. Support both ETags and Last-Modified dates!
@@ -338,9 +333,11 @@ class BlobField(ObjectField):
                         ranges = None
                 else:
                     # Date
-                    date = if_range.split( ';')[0]
-                    try: mod_since=long(DateTime(date).timeTime())
-                    except: mod_since=None
+                    date = if_range.split(';')[0]
+                    try:
+                        mod_since = long(DateTime(date).timeTime())
+                    except:
+                        mod_since = None
                     if mod_since is not None:
                         if instance._p_mtime:
                             last_mod = long(instance._p_mtime)
@@ -352,7 +349,6 @@ class BlobField(ObjectField):
                             # response.
                             ranges = None
                 RESPONSE.setHeader('Accept-Ranges', 'bytes')
-    
             if ranges and len(ranges) == 1:
                 [(start, end)] = ranges
                 iterator = blob.getRangeIterator(start=start, end=end)

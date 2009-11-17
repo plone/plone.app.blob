@@ -15,7 +15,7 @@ class BlobbableBlobWrapper(object):
 
     def feed(self, blob):
         """ see interface ... """
-        raise ReuseBlob, self.context.getBlob()
+        raise ReuseBlob(self.context.getBlob())
 
     def filename(self):
         """ see interface ... """
@@ -24,4 +24,3 @@ class BlobbableBlobWrapper(object):
     def mimetype(self):
         """ see interface ... """
         return self.context.getContentType()
-

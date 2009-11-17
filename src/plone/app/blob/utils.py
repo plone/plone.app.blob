@@ -35,4 +35,3 @@ def getImageSize(img):
     else:
         data = img.read(32)
         return getImageInfo(data)[1:]
-

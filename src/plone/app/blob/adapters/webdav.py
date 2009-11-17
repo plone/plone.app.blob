@@ -31,4 +31,3 @@ class BlobbableWebDavUpload(object):
         if mimetype is None:
             mimetype = guessMimetype(self.context.file, self.filename())
         return mimetype
-

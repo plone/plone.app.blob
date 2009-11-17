@@ -25,13 +25,13 @@ class BlobbableFileUpload(object):
         """ see interface ... """
         cached = getattr(self.context, 'blob', None)
         if cached is not None and isinstance(cached, Blob):
-            raise ReuseBlob, cached
+            raise ReuseBlob(cached)
         else:
             self.context.blob = blob
         filename = getattr(self.context, 'name', None)
         if os_name == 'nt' and filename is not None:
             # for now a copy is needed on windows...
-            blobfile = blob.open('w') 
+            blobfile = blob.open('w')
             copyfileobj(self.context, blobfile)
             blobfile.close()
         elif filename is not None:
@@ -48,4 +48,3 @@ class BlobbableFileUpload(object):
     def mimetype(self):
         """ see interface ... """
         return self.__mimetype
-

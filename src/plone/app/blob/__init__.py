@@ -20,8 +20,8 @@ def initialize(context):
         atapi.listTypes(packageName), packageName)
     for atype, constructor in zip(content_types, constructors):
         utils.ContentInit("%s: %s" % (packageName, atype.portal_type),
-            content_types      = (atype,),
-            permission         = permissions[atype.portal_type],
+            content_types = (atype,),
+            permission = permissions[atype.portal_type],
             extra_constructors = (constructor,),
             ).initialize(context)
 
@@ -31,7 +31,7 @@ def initialize(context):
     )
     for name, constructor in replacement_types:
         utils.ContentInit("%s: %s" % (packageName, name),
-            content_types      = (content.ATBlob,),
-            permission         = atct.permissions.get(name),
+            content_types = (content.ATBlob,),
+            permission = atct.permissions.get(name),
             extra_constructors = (constructor,),
             ).initialize(context)

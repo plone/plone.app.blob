@@ -125,4 +125,3 @@ class BlobLinguaLayer(PloneSite):
     @classmethod
     def tearDown(cls):
         pass
-

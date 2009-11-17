@@ -57,4 +57,3 @@ def hasLinguaPlone():
         print msg
         print '*' * len(msg)
         return False
-

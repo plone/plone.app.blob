@@ -58,7 +58,7 @@ def makeMigrator(context, portal_type, meta_type=None):
         @property
         def fields_map(self):
             fields = self.getFields(None)
-            return dict([ (name, None) for name in fields ])
+            return dict([(name, None) for name in fields])
 
         def migrate_data(self):
             fields = self.getFields(self.obj)
@@ -133,4 +133,3 @@ def getATBlobImagesMigrationWalker(self):
 
 def migrateATBlobImages(self):
     return migrate(self, walker=getATBlobImagesMigrationWalker)
-

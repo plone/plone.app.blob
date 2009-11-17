@@ -10,7 +10,7 @@ from plone.app.imaging.interfaces import IImageScaleHandler
 class ImageFieldMixin(ImageField):
     """ mixin class for methods needed for image field """
 
-    security  = ClassSecurityInfo()
+    security = ClassSecurityInfo()
 
     security.declareProtected(View, 'getSize')
     def getSize(self, instance, scale=None):

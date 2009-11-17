@@ -30,4 +30,3 @@ def test_suite():
                test_class=BlobLinguaFunctionalTestCase, optionflags=optionflags),
         )
     return suite
-

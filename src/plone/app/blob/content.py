@@ -83,7 +83,7 @@ class ATBlob(ATCTFileContent, ImageMixin):
     title = ATFieldProperty('title')
     summary = ATFieldProperty('description')
 
-    security  = ClassSecurityInfo()
+    security = ClassSecurityInfo()
     cmf_edit_kws = ('file',)
 
     security.declareProtected(View, 'index_html')
@@ -209,7 +209,7 @@ class ATBlob(ATCTFileContent, ImageMixin):
             return super(ATBlob, self).getIcon(relative_to_portal)
         icon = mimetypeitem[0].icon_path
         if not relative_to_portal:
-            utool = getToolByName( self, 'portal_url' )
+            utool = getToolByName(self, 'portal_url')
             icon = utool(relative=1) + '/' + icon
             while icon[:1] == '/':
                 icon = icon[1:]

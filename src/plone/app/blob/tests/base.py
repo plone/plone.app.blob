@@ -61,4 +61,3 @@ class BlobLinguaFunctionalTestCase(BlobFunctionalTestCase):
     """ base class for functional tests """
 
     layer = BlobLinguaLayer
-

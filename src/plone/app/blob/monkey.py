@@ -76,4 +76,3 @@ def setstate_wrapper(method):
     return wrapper
 
 Blob.open = setstate_wrapper(Blob.open)
-
