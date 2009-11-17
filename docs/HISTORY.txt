@@ -3,7 +3,10 @@ Changelog
 
     (name of developer listed in brackets)
 
-plone.app.blob - 1.0b8 Unreleased
+plone.app.blob - 1.0b9 Unreleased
+
+
+plone.app.blob - 1.0b8 Released November 17, 2009
 
     - Added a modified version of the customized ATBlob factory for use with
       CMF 2.2.
