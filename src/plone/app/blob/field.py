@@ -26,7 +26,7 @@ from Products.Archetypes.utils import contentDispositionHeader
 from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
 from plone.app.blob.interfaces import IBlobbable, IWebDavUpload, IBlobField
 from plone.app.blob.interfaces import IBlobWrapper
-from plone.app.blob.iterators import BlobStreamIterator, BlobStreamRangeIterator
+from plone.app.blob.iterators import BlobStreamIterator
 from plone.app.blob.utils import getImageSize
 
 
@@ -74,14 +74,9 @@ class BlobWrapper(Implicit, Persistent):
         return self.blob
 
     security.declarePrivate('getIterator')
-    def getIterator(self):
+    def getIterator(self, **kw):
         """ return a filestream iterator object from the blob """
-        return BlobStreamIterator(self.blob)
-
-    security.declarePrivate('getRangeIterator')
-    def getRangeIterator(self, start, end):
-        """ return a filestream iterator object from the blob with range """
-        return BlobStreamRangeIterator(self.blob, start=start, end=end)
+        return BlobStreamIterator(self.blob, **kw)
 
     security.declareProtected(View, 'get_size')
     def get_size(self):
@@ -351,7 +346,7 @@ class BlobField(ObjectField):
                 RESPONSE.setHeader('Accept-Ranges', 'bytes')
             if ranges and len(ranges) == 1:
                 [(start, end)] = ranges
-                iterator = blob.getRangeIterator(start=start, end=end)
+                iterator = blob.getIterator(start=start, end=end)
                 size = end - start
                 RESPONSE.setHeader('Content-Length', size)
                 RESPONSE.setHeader(

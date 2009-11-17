@@ -140,12 +140,17 @@ class IntegrationTests(BlobTestCase):
     def testRangeSupport(self):
         blob = self.folder[self.folder.invokeFactory('Blob', 'blob',
             title='foo', file=getData('plone.pdf'))]
+        data = blob.getFile().getBlob().open('r').read()
         request = self.folder.REQUEST
         request.environ['HTTP_RANGE'] = 'bytes=2-10'
         iterator = blob.download(request)
-        bf = blob.getFile().getBlob().open('r')
-        bf.seek(2)
-        self.assertEqual(bf.read(9), iterator.next())
+        self.assertEqual(data[2:10+1], iterator.next())
+        # ranges should also work with multiple chunks read from the blob
+        request.environ['HTTP_RANGE'] = 'bytes=2-10'
+        iterator = blob.download(request)
+        iterator.streamsize = 5
+        self.assertEqual(data[2:2+5], iterator.next())
+        self.assertEqual(data[2+5:10+1], iterator.next())
 
     def testIcon(self):
         self.folder.invokeFactory('Blob', 'blob', title='foo')
