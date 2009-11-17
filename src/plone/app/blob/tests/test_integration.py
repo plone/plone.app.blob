@@ -141,7 +141,7 @@ class IntegrationTests(BlobTestCase):
         blob = self.folder[self.folder.invokeFactory('Blob', 'blob',
             title='foo', file=getData('plone.pdf'))]
         request = self.folder.REQUEST
-        request.environ["HTTP_RANGE"] = "bytes=2-10"
+        request.environ['HTTP_RANGE'] = 'bytes=2-10'
         iterator = blob.download(request)
         bf = blob.getFile().getBlob().open('r')
         bf.seek(2)
