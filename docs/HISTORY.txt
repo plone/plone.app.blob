@@ -13,6 +13,10 @@ plone.app.blob - 1.0b8 Unreleased
       boolean True.
       [davisagli]
 
+    - Implement range support for downloads.  This fixes
+      http://plone.org/products/plone.app.blob/issues/11
+      [j23d, rossp, witsch]
+
     - Fix image field validator to match that from `ATContentTypes`.
       [rossp]
 
