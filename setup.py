@@ -28,7 +28,7 @@ setup(name = name,
           'ZODB3 >=3.8.0',
           'zope.proxy >=3.4',
           'archetypes.schemaextender >=1.0b1',
-          'plone.app.imaging',
+          'plone.app.imaging >1.0b3',
           'plone.i18n ==1.1.a1',
       ],
       extras_require={

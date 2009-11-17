@@ -14,7 +14,18 @@ from plone.app.blob.content import ATBlob
 from plone.app.blob.tests.utils import getImage, getData
 
 
+def permissionsFor(name, product):
+    from Products import meta_types
+    for mt in meta_types:
+        if mt['product'] == product and name in mt['name']:
+            yield mt['permission']
+
+
 class FileReplacementTests(ReplacementTestCase):
+
+    def testAddFilePermission(self):
+        permissions = list(permissionsFor('File', 'plone.app.blob'))
+        self.assertEqual(permissions, ['ATContentTypes: Add File'])
 
     def testCreateFileBlob(self):
         foo = self.folder[self.folder.invokeFactory('File', 'foo')]
@@ -105,7 +116,6 @@ class FileReplacementTests(ReplacementTestCase):
             if not key in okay:
                 self.assertEqual(meta_data[key], value, 'meta: %s' % key)
 
-
     def testIndexAccessor(self):
         foo = self.folder[self.folder.invokeFactory('File', 'foo',
             title='foo', file=getData('plone.pdf'))]
@@ -126,6 +136,10 @@ class FileReplacementTests(ReplacementTestCase):
 
 
 class ImageReplacementTests(ReplacementTestCase):
+
+    def testAddImagePermission(self):
+        permissions = list(permissionsFor('Image', 'plone.app.blob'))
+        self.assertEqual(permissions, ['ATContentTypes: Add Image'])
 
     def testCreateImageBlob(self):
         gif = getImage()

@@ -5,6 +5,13 @@ Changelog
 
 plone.app.blob - 1.0b6 Unreleased
 
+    - Store image scales in blobs.
+      [witsch]
+
+    - Use correct permissions when registering replacement types for
+      "File" and "Image" content.
+      [witsch]
+
     - Fix migration issue regarding stale catalog index- & meta-data.
       [witsch]
 
