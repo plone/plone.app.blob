@@ -50,6 +50,7 @@ if HAS_CMF_22:
             markAs(obj, subtype)    # mark with interfaces needed for subtype
         container._setObject(id, obj, suppress_events=True)
         obj = container._getOb(id)
+        obj.manage_afterAdd(obj, container)
         obj.initializeArchetype(**kwargs)
         return obj.getId()
 else: # CMF <2.2
