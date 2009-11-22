@@ -37,6 +37,8 @@ except ImportError:
 
 ATBlobSchema = ATContentTypeSchema.copy()
 ATBlobSchema['title'].storage = AnnotationStorage()
+# titles not required for blobs, because we'll use the filename if missing
+ATBlobSchema['title'].required = False
 
 finalizeATCTSchema(ATBlobSchema, folderish=False, moveDiscussion=False)
 ATBlobSchema.registerLayer('marshall', BlobMarshaller())
@@ -119,18 +121,10 @@ class ATBlob(ATCTFileContent, ImageMixin):
         mutator(value, **kwargs)
 
     def _should_set_id_to_filename(self, filename, title):
-        """ For images, if title is blank, have the caller set my ID to the
+        """ If title is blank, have the caller set my ID to the
             uploaded file's name. """
-        if IATBlobImage.providedBy(self):
-            # When the title is blank, sometimes the filename is returned
-            return filename == title or not title
-        else:
-            try:
-                return super(ATBlob, self)._should_set_id_to_filename(filename,
-                    title)
-            except AttributeError:
-                # BBB for Plone ATCT <2.0
-                return True
+        # When the title is blank, sometimes the filename is returned
+        return filename == title or not title
 
     # index accessor using portal transforms to provide index data
 

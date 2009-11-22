@@ -191,6 +191,10 @@ class IntegrationTests(BlobTestCase):
         repository.revert(blob, 0)
         # self.assertEqual(blob.data, pdf_data)
 
+    def testTitleNotRequired(self):
+        self.folder.invokeFactory('Blob', 'blob', title='foo')
+        blob = self.folder.blob
+        self.failIf(blob.Schema()['title'].required)
 
 class FunctionalIntegrationTests(BlobFunctionalTestCase):
 

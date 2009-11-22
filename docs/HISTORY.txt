@@ -5,6 +5,14 @@ Changelog
 
 plone.app.blob - 1.0b9 Unreleased
 
+    - Make the title field non-required for ATBlobs, since it will be generated
+      from the filename if necessary.
+      [davisagli]
+    
+    - If a title was entered, use it instead of the filename to generate an id
+      for files (matching what was already done for images).
+      [davisagli]
+
     - Update the CMF 2.2 version of the ATBlob factory to match a fix I made
       in Archetypes 2.0a2.
       [davisagli]
