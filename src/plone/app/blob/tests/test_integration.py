@@ -151,6 +151,13 @@ class IntegrationTests(BlobTestCase):
         iterator.streamsize = 5
         self.assertEqual(data[2:2+5], iterator.next())
         self.assertEqual(data[2+5:10+1], iterator.next())
+        # ranges also have to work if end value is omitted (real case browser)
+        request.environ['HTTP_RANGE'] = 'bytes=2-'
+        iterator = blob.download(request)
+        iterator.streamsize = 5
+        self.assertEqual(data[2:2+5], iterator.next())
+        self.assertEqual(data[2+5:2+10], iterator.next())
+        self.assertEqual(data[2+10:2+15], iterator.next())
 
     def testIcon(self):
         self.folder.invokeFactory('Blob', 'blob', title='foo')
