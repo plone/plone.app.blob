@@ -5,6 +5,10 @@ Changelog
 
 plone.app.blob - 1.0b9 Unreleased
 
+    - Unify the ATBlob factories (for CMF>=2.2 and CMF<2.2) while still
+      preventing events from being fired for the former.
+      [witsch]
+
     - Fix range support for open ranges.
       [j23d, witsch]
 
