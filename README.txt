@@ -1,8 +1,9 @@
+===============================
 ZODB 3.8 blob support for Plone
 ===============================
 
 Overview
---------
+========
 
 This package aims to be an add-on for Plone 3.x integrating ZODB 3.8's blob
 support, which allows large binary data to be managed by the ZODB, but
@@ -14,13 +15,13 @@ performance both cpu- as well as memory-wise.
 
 
 Contents
---------
+========
 
 .. contents:: |__|
 
 
 Status
-------
+======
 
 At the moment the integration for "File" content should be stable, but still
 needs more field testing.  It is being successfully used in several production
@@ -43,7 +44,7 @@ found in the corresponding `Plone enhancement`_ and `Plone 4 PLIP`_ tickets.
 
 
 Requirements
-------------
+============
 
 Plone 3.0 or newer is required. The package has been tested with all versions
 from 3.0 up to and including 4.0. However, as all versions before 3.0.4
@@ -54,7 +55,7 @@ recommended to use `Plone 3.0.4`_ or a more recent version.
 
 
 Installation
-------------
+============
 
 The easiest way to get ZODB blob support in Plone 3 using this package is to
 work with installations based on `zc.buildout`_.  Other types of installations
@@ -194,7 +195,7 @@ tutorial`_ on `plone.org`_.
 
 
 Migrating existing content
---------------------------
+==========================
 
 In-place content migration is provided for existing "File" and "Image"
 content.  The `Products.contentmigration`_ package is required for this to
@@ -227,7 +228,7 @@ Please refer to the next section if you encounter any errors during migration.
 
 
 Troubleshooting
----------------
+===============
 
 The following are some known issues, that will hopefully be resolved soon
 enough.  In the meantime here are the recommended workarounds:
@@ -480,7 +481,7 @@ enough.  In the meantime here are the recommended workarounds:
 
 
 FAQ
----
+===
 
 Is it possible to use "plone.app.blob" in installations not based on `zc.buildout`_?
 
@@ -551,7 +552,7 @@ about?
 
 
 Feedback
---------
+========
 
 Any kind of feedback like bug reports, suggestions, feature requests and most
 preferably success stories is most welcome and much appreciated. Especially,

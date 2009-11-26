@@ -1,9 +1,8 @@
 Changelog
 ---------
 
-    (name of developer listed in brackets)
-
-plone.app.blob - 1.0b9 Unreleased
+1.0b9 - Unreleased
+------------------
 
     - Unify the ATBlob factories (for CMF>=2.2 and CMF<2.2) while still
       preventing events from being fired for the former.
@@ -24,7 +23,9 @@ plone.app.blob - 1.0b9 Unreleased
       in Archetypes 2.0a2.
       [davisagli]
 
-plone.app.blob - 1.0b8 Released November 17, 2009
+
+1.0b8 - 2009-11-17
+------------------
 
     - Added a modified version of the customized ATBlob factory for use with
       CMF 2.2.
@@ -54,7 +55,9 @@ plone.app.blob - 1.0b8 Released November 17, 2009
       content in a site.
       [witsch]
 
-plone.app.blob - 1.0b7 Released November 6, 2009
+
+1.0b7 - 2009-11-06
+------------------
 
     - Fix regression in setup for running bbb tests against Plone 3.x.
       [witsch]
@@ -85,7 +88,9 @@ plone.app.blob - 1.0b7 Released November 6, 2009
     - Refactor test setup to make it work with ZODB 3.9.
       [witsch]
 
-plone.app.blob - 1.0b6 Released October 10, 2009
+
+1.0b6 - 2009-10-10
+------------------
 
     - Minor fixes and test updates for compatibility with Plone 4.0.
       [witsch]
@@ -108,7 +113,9 @@ plone.app.blob - 1.0b6 Released October 10, 2009
     - Fix performance issue regarding extension field.
       [witsch]
 
-plone.app.blob - 1.0b5 Released August 26, 2009
+
+1.0b5 - 2009-08-26
+------------------
 
     - Fix compatibility issue with `repoze.zope2`.
       [optilude, witsch]
@@ -125,14 +132,18 @@ plone.app.blob - 1.0b5 Released August 26, 2009
       related to http://plone.org/products/plone.app.blob/issues/19
       [witsch]
 
-plone.app.blob - 1.0b4 Released May 19, 2009
+
+1.0b4 - 2009-11-19
+------------------
 
     - Provide maintenance view for (re)setting blob sub-types, which can also
       be used to fix things after upgrading from 1.0b2 or earlier.
       This fixes http://plone.org/products/plone.app.blob/issues/19
       [witsch]
 
-plone.app.blob - 1.0b3 Released May 15, 2009
+
+1.0b3 - 2009-11-15
+------------------
 
     - Clean up GenericSetup profiles to allow separate installation of
       replacement types for "File" and "Image" content.
@@ -181,13 +192,17 @@ plone.app.blob - 1.0b3 Released May 15, 2009
       http://plone.org/products/plone.app.blob/issues/1
       [witsch]
 
-plone.app.blob - 1.0b2 Released February 29, 2008
+
+1.0b2 - 2008-02-29
+------------------
 
     - Reverted fix for Windows that closed the file upload object in order
       to work around a problem with reading from the blob file afterwards.
       [witsch]
 
-plone.app.blob - 1.0b1 Released February 28, 2008
+
+1.0b1 - 2008-02-28
+------------------
 
     - Minor bug fixes and cleanups
       [witsch]
@@ -211,7 +226,9 @@ plone.app.blob - 1.0b1 Released February 28, 2008
       consumption go through the roof
       [witsch]
 
-plone.app.blob - 1.0a2 Released December 12, 2007
+
+1.0a2 - 2007-12-12
+------------------
 
     - Various minor bug fixes regarding migration, content icons etc
       [witsch]
@@ -224,11 +241,12 @@ plone.app.blob - 1.0a2 Released December 12, 2007
       as the "File" content type
       [witsch]
 
-plone.app.blob - 1.0a1 Released December 7, 2007
+
+1.0a1 - 2007-12-07
+------------------
 
     - Initial version
       [witsch]
 
     - Initial package structure.
       [zopeskel]
-
