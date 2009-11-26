@@ -71,8 +71,6 @@ def handleRequestRange(instance, length, REQUEST, RESPONSE):
                         ranges = None
             RESPONSE.setHeader('Accept-Ranges', 'bytes')
         if ranges and len(ranges) == 1:
-            length = instance.size()
-            [(start, end)] = ranges
             [(start, end)] = expandRanges(ranges, length)
             size = end - start
             RESPONSE.setHeader('Content-Length', size)

@@ -151,13 +151,13 @@ class IntegrationTests(BlobTestCase):
         iterator.streamsize = 5
         self.assertEqual(data[2:2+5], iterator.next())
         self.assertEqual(data[2+5:10+1], iterator.next())
-        # ranges also have to work if end value is omitted (real case browser)
+        # open and suffix ranges also have to work
         request.environ['HTTP_RANGE'] = 'bytes=2-'
         iterator = blob.download(request)
-        iterator.streamsize = 5
-        self.assertEqual(data[2:2+5], iterator.next())
-        self.assertEqual(data[2+5:2+10], iterator.next())
-        self.assertEqual(data[2+10:2+15], iterator.next())
+        self.assertEqual(data[2:], ''.join(iterator))
+        request.environ['HTTP_RANGE'] = 'bytes=-20'
+        iterator = blob.download(request)
+        self.assertEqual(data[-20:], ''.join(iterator))
 
     def testIcon(self):
         self.folder.invokeFactory('Blob', 'blob', title='foo')
@@ -202,6 +202,7 @@ class IntegrationTests(BlobTestCase):
         self.folder.invokeFactory('Blob', 'blob', title='foo')
         blob = self.folder.blob
         self.failIf(blob.Schema()['title'].required)
+
 
 class FunctionalIntegrationTests(BlobFunctionalTestCase):
 
