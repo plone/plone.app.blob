@@ -4,249 +4,249 @@ Changelog
 1.0b9 - Unreleased
 ------------------
 
-    - Unify the ATBlob factories (for CMF>=2.2 and CMF<2.2) while still
-      preventing events from being fired for the former.
-      [witsch]
+- Unify the ATBlob factories (for CMF>=2.2 and CMF<2.2) while still
+  preventing events from being fired for the former.
+  [witsch]
 
-    - Fix range support for open ranges.
-      [j23d, witsch]
+- Fix range support for open ranges.
+  [j23d, witsch]
 
-    - Make the title field non-required for ATBlobs, since it will be
-      generated from the filename if necessary.
-      [davisagli]
+- Make the title field non-required for ATBlobs, since it will be
+  generated from the filename if necessary.
+  [davisagli]
 
-    - If a title was entered, use it instead of the filename to generate an
-      id for files (matching what was already done for images).
-      [davisagli]
+- If a title was entered, use it instead of the filename to generate an
+  id for files (matching what was already done for images).
+  [davisagli]
 
-    - Update the CMF 2.2 version of the ATBlob factory to match a fix I made
-      in Archetypes 2.0a2.
-      [davisagli]
+- Update the CMF 2.2 version of the ATBlob factory to match a fix I made
+  in Archetypes 2.0a2.
+  [davisagli]
 
 
 1.0b8 - 2009-11-17
 ------------------
 
-    - Added a modified version of the customized ATBlob factory for use with
-      CMF 2.2.
-      [davisagli]
+- Added a modified version of the customized ATBlob factory for use with
+  CMF 2.2.
+  [davisagli]
 
-    - Make sure that BlobWrappers for zero-length blobs still evaluate to
-      boolean True.
-      [davisagli]
+- Make sure that BlobWrappers for zero-length blobs still evaluate to
+  boolean True.
+  [davisagli]
 
-    - Implement range support for downloads.  This fixes
-      http://plone.org/products/plone.app.blob/issues/11
-      [j23d, rossp, witsch]
+- Implement range support for downloads.  This fixes
+  http://plone.org/products/plone.app.blob/issues/11
+  [j23d, rossp, witsch]
 
-    - Fix image field validator to match that from `ATContentTypes`.
-      [rossp]
+- Fix image field validator to match that from `ATContentTypes`.
+  [rossp]
 
-    - With `ATContentTypes` >=2.0, check the `_should_set_id_to_filename`
-      method to determine if `ATBlob`'s `fixAutoId` method should set the
-      item id to the filename of the blob field.  For images, don't set it
-      to the filename if a title was supplied.
-      [davisagli]
+- With `ATContentTypes` >=2.0, check the `_should_set_id_to_filename`
+  method to determine if `ATBlob`'s `fixAutoId` method should set the
+  item id to the filename of the blob field.  For images, don't set it
+  to the filename if a title was supplied.
+  [davisagli]
 
-    - Add blobbable adapters for Python file objects and OFS Pdata objects.
-      [davisagli]
+- Add blobbable adapters for Python file objects and OFS Pdata objects.
+  [davisagli]
 
-    - Add helper view to get a rough estimate of the total size of binary
-      content in a site.
-      [witsch]
+- Add helper view to get a rough estimate of the total size of binary
+  content in a site.
+  [witsch]
 
 
 1.0b7 - 2009-11-06
 ------------------
 
-    - Fix regression in setup for running bbb tests against Plone 3.x.
-      [witsch]
+- Fix regression in setup for running bbb tests against Plone 3.x.
+  [witsch]
 
-    - Update migration view to issue warning when `plone.app.blob` has not
-      been quick-installed yet.  Fixes http://dev.plone.org/plone/ticket/8496
-      [witsch]
+- Update migration view to issue warning when `plone.app.blob` has not
+  been quick-installed yet.  Fixes http://dev.plone.org/plone/ticket/8496
+  [witsch]
 
-    - Preserve filename when editing via WebDAV.  This fixes
-      http://plone.org/products/plone.app.blob/issues/23
-      [witsch]
+- Preserve filename when editing via WebDAV.  This fixes
+  http://plone.org/products/plone.app.blob/issues/23
+  [witsch]
 
-    - Update basic blob content type to be LinguaPlone-aware.  This fixes
-      http://plone.org/products/plone.app.blob/issues/24
-      [j23d]
+- Update basic blob content type to be LinguaPlone-aware.  This fixes
+  http://plone.org/products/plone.app.blob/issues/24
+  [j23d]
 
-    - Override helper method to provide file-like objects for image
-      transformations.  This fixes http://dev.plone.org/plone/ticket/8506
-      [amleczko, witsch]
+- Override helper method to provide file-like objects for image
+  transformations.  This fixes http://dev.plone.org/plone/ticket/8506
+  [amleczko, witsch]
 
-    - Add some additional CMF/ATCT compatibility to the ATCT
-      replacement types using the "cmf_edit" method.
-      [alecm]
+- Add some additional CMF/ATCT compatibility to the ATCT
+  replacement types using the "cmf_edit" method.
+  [alecm]
 
-    - Provide helper methods for easier migration of custom content types.
-      [ggozad, witsch]
+- Provide helper methods for easier migration of custom content types.
+  [ggozad, witsch]
 
-    - Refactor test setup to make it work with ZODB 3.9.
-      [witsch]
+- Refactor test setup to make it work with ZODB 3.9.
+  [witsch]
 
 
 1.0b6 - 2009-10-10
 ------------------
 
-    - Minor fixes and test updates for compatibility with Plone 4.0.
-      [witsch]
+- Minor fixes and test updates for compatibility with Plone 4.0.
+  [witsch]
 
-    - Store image scales in blobs.
-      [witsch]
+- Store image scales in blobs.
+  [witsch]
 
-    - Use correct permissions when registering replacement types for
-      "File" and "Image" content.
-      See http://plone.org/products/plone.app.blob/issues/9
-      [witsch]
+- Use correct permissions when registering replacement types for
+  "File" and "Image" content.
+  See http://plone.org/products/plone.app.blob/issues/9
+  [witsch]
 
-    - Fix migration issue regarding stale catalog index- & meta-data.
-      [witsch]
+- Fix migration issue regarding stale catalog index- & meta-data.
+  [witsch]
 
-    - Allow certain file types to be downloaded immediately.
-      See http://plone.org/products/plone.app.blob/issues/4
-      [optilude]
+- Allow certain file types to be downloaded immediately.
+  See http://plone.org/products/plone.app.blob/issues/4
+  [optilude]
 
-    - Fix performance issue regarding extension field.
-      [witsch]
+- Fix performance issue regarding extension field.
+  [witsch]
 
 
 1.0b5 - 2009-08-26
 ------------------
 
-    - Fix compatibility issue with `repoze.zope2`.
-      [optilude, witsch]
+- Fix compatibility issue with `repoze.zope2`.
+  [optilude, witsch]
 
-    - Fix compatibility issues with ZODB 3.9 and Plone 4.0.
-      [witsch]
+- Fix compatibility issues with ZODB 3.9 and Plone 4.0.
+  [witsch]
 
-    - Speed up migration of existing content by using "in-place" migrators
-      and avoid unnecessary re-indexing.
-      [witsch]
+- Speed up migration of existing content by using "in-place" migrators
+  and avoid unnecessary re-indexing.
+  [witsch]
 
-    - Fix registration of blob-based image scale adapter to prevent getting
-      404s for content other than images.  This fixes the second issue
-      related to http://plone.org/products/plone.app.blob/issues/19
-      [witsch]
+- Fix registration of blob-based image scale adapter to prevent getting
+  404s for content other than images.  This fixes the second issue
+  related to http://plone.org/products/plone.app.blob/issues/19
+  [witsch]
 
 
 1.0b4 - 2009-11-19
 ------------------
 
-    - Provide maintenance view for (re)setting blob sub-types, which can also
-      be used to fix things after upgrading from 1.0b2 or earlier.
-      This fixes http://plone.org/products/plone.app.blob/issues/19
-      [witsch]
+- Provide maintenance view for (re)setting blob sub-types, which can also
+  be used to fix things after upgrading from 1.0b2 or earlier.
+  This fixes http://plone.org/products/plone.app.blob/issues/19
+  [witsch]
 
 
 1.0b3 - 2009-11-15
 ------------------
 
-    - Clean up GenericSetup profiles to allow separate installation of
-      replacement types for "File" and "Image" content.
-      [witsch]
+- Clean up GenericSetup profiles to allow separate installation of
+  replacement types for "File" and "Image" content.
+  [witsch]
 
-    - Add index accessor to make indexing of file content work again.
-      This fixes http://plone.org/products/plone.app.blob/issues/12
-      [witsch]
+- Add index accessor to make indexing of file content work again.
+  This fixes http://plone.org/products/plone.app.blob/issues/12
+  [witsch]
 
-    - Make code more robust in case of missing blob files.
-      This fixes http://plone.org/products/plone.app.blob/issues/10
-      [witsch]
+- Make code more robust in case of missing blob files.
+  This fixes http://plone.org/products/plone.app.blob/issues/10
+  [witsch]
 
-    - Make tests clean up their temporary blob directories.
-      [stefan]
+- Make tests clean up their temporary blob directories.
+  [stefan]
 
-    - Remove quota argument from DemoStorage calls.
-      [stefan]
+- Remove quota argument from DemoStorage calls.
+  [stefan]
 
-    - Add workaround to prevent breakage with CMFEditions (blob-based
-      content can still not be versioned, though).
-      [witsch]
+- Add workaround to prevent breakage with CMFEditions (blob-based
+  content can still not be versioned, though).
+  [witsch]
 
-    - Add missing acquisition-wrapper, also allowing to remove circular
-      references between instance and field, which broke pickling.
-      [witsch]
+- Add missing acquisition-wrapper, also allowing to remove circular
+  references between instance and field, which broke pickling.
+  [witsch]
 
-    - Fix helper for determining image sizes to not break for non-image
-      content.
-      [witsch]
+- Fix helper for determining image sizes to not break for non-image
+  content.
+  [witsch]
 
-    - Use PIL for determining image sizes as the OFS code cannot handle
-      certain types of JPEGs.
-      [witsch]
+- Use PIL for determining image sizes as the OFS code cannot handle
+  certain types of JPEGs.
+  [witsch]
 
-    - Added missing metadata.xml to the default profile.
-      [hannosch]
+- Added missing metadata.xml to the default profile.
+  [hannosch]
 
-    - Only use the file name for id generation for the replacement types,
-      i.e. "File" and "Image", but not custom types.  This fixes
-      http://plone.org/products/plone.app.blob/issues/3
-      [witsch]
+- Only use the file name for id generation for the replacement types,
+  i.e. "File" and "Image", but not custom types.  This fixes
+  http://plone.org/products/plone.app.blob/issues/3
+  [witsch]
 
-    - Fix issue where the mime-type registry returned an empty tuple when
-      looking up an unknown mime-type.  This fixes
-      http://plone.org/products/plone.app.blob/issues/1
-      [witsch]
+- Fix issue where the mime-type registry returned an empty tuple when
+  looking up an unknown mime-type.  This fixes
+  http://plone.org/products/plone.app.blob/issues/1
+  [witsch]
 
 
 1.0b2 - 2008-02-29
 ------------------
 
-    - Reverted fix for Windows that closed the file upload object in order
-      to work around a problem with reading from the blob file afterwards.
-      [witsch]
+- Reverted fix for Windows that closed the file upload object in order
+  to work around a problem with reading from the blob file afterwards.
+  [witsch]
 
 
 1.0b1 - 2008-02-28
 ------------------
 
-    - Minor bug fixes and cleanups
-      [witsch]
+- Minor bug fixes and cleanups
+  [witsch]
 
-    - Fix for a problem regarding file uploads on Windows, where renaming
-      the still open temporary file isn't allowed and hence caused an error.
-      Now the file is closed before the call to `consumeFile()`.
-      [rochael]
+- Fix for a problem regarding file uploads on Windows, where renaming
+  the still open temporary file isn't allowed and hence caused an error.
+  Now the file is closed before the call to `consumeFile()`.
+  [rochael]
 
-    - Fix for Windows regarding the generation of the temporary file used for
-      file uploads so that it doesn't get deleted after being moved to the
-      blob storare
-      [rochael]
+- Fix for Windows regarding the generation of the temporary file used for
+  file uploads so that it doesn't get deleted after being moved to the
+  blob storare
+  [rochael]
 
-    - Change file size calculation so as not to need to reopen the file, which
-      broke on Windows
-      [rochael]
+- Change file size calculation so as not to need to reopen the file, which
+  broke on Windows
+  [rochael]
 
-    - Changed the primary field of the blob content types to not to be
-      "searchable" as this causes indexing of the blob content making ram
-      consumption go through the roof
-      [witsch]
+- Changed the primary field of the blob content types to not to be
+  "searchable" as this causes indexing of the blob content making ram
+  consumption go through the roof
+  [witsch]
 
 
 1.0a2 - 2007-12-12
 ------------------
 
-    - Various minor bug fixes regarding migration, content icons etc
-      [witsch]
+- Various minor bug fixes regarding migration, content icons etc
+  [witsch]
 
-    - String value are now wrapped using StringIO to make them adaptable, so
-      that their mime-type can be guessed as well.
-      [naro]
+- String value are now wrapped using StringIO to make them adaptable, so
+  that their mime-type can be guessed as well.
+  [naro]
 
-    - Added alternative GenericSetup profile to allow to replace ATFile
-      as the "File" content type
-      [witsch]
+- Added alternative GenericSetup profile to allow to replace ATFile
+  as the "File" content type
+  [witsch]
 
 
 1.0a1 - 2007-12-07
 ------------------
 
-    - Initial version
-      [witsch]
+- Initial version
+  [witsch]
 
-    - Initial package structure.
-      [zopeskel]
+- Initial package structure.
+  [zopeskel]
