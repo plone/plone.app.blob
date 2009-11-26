@@ -27,14 +27,6 @@ from plone.app.blob.field import BlobMarshaller
 from plone.app.blob.mixins import ImageMixin
 from plone.app.blob.markings import markAs
 
-# test for CMF 2.2
-try:
-    from Products.CMFCore.CMFCatalogAware import WorkflowAware
-    WorkflowAware # satisfy pyflakes
-    HAS_CMF_22 = True
-except ImportError:
-    HAS_CMF_22 = False
-
 ATBlobSchema = ATContentTypeSchema.copy()
 ATBlobSchema['title'].storage = AnnotationStorage()
 # titles not required for blobs, because we'll use the filename if missing
@@ -43,30 +35,30 @@ ATBlobSchema['title'].required = False
 finalizeATCTSchema(ATBlobSchema, folderish=False, moveDiscussion=False)
 ATBlobSchema.registerLayer('marshall', BlobMarshaller())
 
-# CMF 2.2 takes care of raising object events for old-style factories
-if HAS_CMF_22:
-    def addATBlob(container, id, subtype='Blob', **kwargs):
-        """ extended at-constructor copied from ClassGen.py """
-        obj = ATBlob(id)
-        if subtype is not None:
-            markAs(obj, subtype)    # mark with interfaces needed for subtype
-        container._setObject(id, obj, suppress_events=True)
-        obj = container._getOb(id)
-        obj.manage_afterAdd(obj, container)
-        obj.initializeArchetype(**kwargs)
-        return obj.getId()
-else: # CMF <2.2
-    def addATBlob(container, id, subtype='Blob', **kwargs):
-        """ extended at-constructor copied from ClassGen.py """
-        obj = ATBlob(id)
-        if subtype is not None:
-            markAs(obj, subtype)    # mark with interfaces needed for subtype
+
+try:
+    from Products.CMFCore.CMFCatalogAware import WorkflowAware
+    WorkflowAware       # satisfy pyflakes
+    # CMF 2.2 takes care of raising object events for old-style factories
+    hasCMF22 = True
+except ImportError:
+    hasCMF22 = False
+
+def addATBlob(container, id, subtype='Blob', **kwargs):
+    """ extended at-constructor copied from ClassGen.py """
+    obj = ATBlob(id)
+    if subtype is not None:
+        markAs(obj, subtype)    # mark with interfaces needed for subtype
+    if not hasCMF22:
         notify(ObjectCreatedEvent(obj))
-        container._setObject(id, obj)
-        obj = container._getOb(id)
-        obj.initializeArchetype(**kwargs)
+    container._setObject(id, obj, suppress_events=hasCMF22)
+    obj = container._getOb(id)
+    if hasCMF22:
+        obj.manage_afterAdd(obj, container)
+    obj.initializeArchetype(**kwargs)
+    if not hasCMF22:
         notify(ObjectModifiedEvent(obj))
-        return obj.getId()
+    return obj.getId()
 
 def addATBlobFile(container, id, **kwargs):
     return addATBlob(container, id, subtype='File', **kwargs)
