@@ -258,6 +258,15 @@ class BlobField(ObjectField):
         blob = self.get(instance, raw=True)     # TODO: why 'raw'?
         RESPONSE.setHeader('Content-Type', self.getContentType(instance))
         RESPONSE.setHeader("Content-Length", blob.get_size())
+        try:
+            return blob.getIterator()
+        except IOError:
+            # invalidate the blob to relaod it from zeo if it exist there
+            blob.getBlob()._p_deactivate()
+            blob = self.get(instance, raw=True)     # TODO: why 'raw'?            
+            RESPONSE.setHeader('Content-Type', self.getContentType(instance))
+            RESPONSE.setHeader("Content-Length", blob.get_size())
+            
         return blob.getIterator()
 
     security.declarePublic('get_size')

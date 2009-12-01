@@ -26,7 +26,15 @@ class BlobImageScaleHandler(DefaultImageScaleHandler):
             scales = fields.get(field.getName(), {})
             data = scales.get(scale)
         if data is not None:
-            blob = data['blob'].open('r')
+            try:
+                blob = data['blob'].open('r')
+            except IOError:
+                # zope 2.9 doesn't have auto clean of blob cache so manual
+                # cleaning probably removed the blob, lets reload from
+                # zeo
+                data['blob']._p_deactivate()
+                blob = data['blob'].open('r')                
+                
             # `updata_data` & friends (from `OFS`) should support file
             # objects, so we could use something like:
             #   ImageScale(..., data=blob.getIterator(), ...)
