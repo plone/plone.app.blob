@@ -4,6 +4,10 @@ Changelog
 1.0b10 - Unreleased
 -------------------
 
+- Add support for accessing image scales via path expressions like
+  `here/image_thumb` for backward-compatibility.
+  [witsch]
+
 
 1.0b9 - 2009-11-26
 ------------------

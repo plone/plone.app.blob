@@ -21,6 +21,7 @@ from Products.ATContentTypes.content.schemata import ATContentTypeSchema
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from Products.MimetypesRegistry.common import MimeTypeException
 
+from plone.app.imaging.interfaces import IImageScaleHandler
 from plone.app.blob.interfaces import IATBlob, IATBlobFile, IATBlobImage
 from plone.app.blob.config import packageName
 from plone.app.blob.field import BlobMarshaller
@@ -216,6 +217,24 @@ class ATBlob(ATCTFileContent, ImageMixin):
             self.edit(**kwargs)
         else:
             self.reindexObject()
+
+    # compatibility methods when used as ATImage replacement
+
+    def __bobo_traverse__(self, REQUEST, name):
+        """ helper to access image scales the old way during
+            `unrestrictedTraverse` calls """
+        if isinstance(REQUEST, dict):
+            if '_' in name:
+                fieldname, scale = name.split('_', 1)
+            else:
+                fieldname, scale = name, None
+            field = self.getField(fieldname)
+            handler = IImageScaleHandler(field, None)
+            if handler is not None:
+                image = handler.getScale(self, scale)
+                if image is not None:
+                    return image
+        return super(ATBlob, self).__bobo_traverse__(REQUEST, name)
 
 
 registerType(ATBlob, packageName)
