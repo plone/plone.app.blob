@@ -1,0 +1,43 @@
+Testing blob support in 3rd party packages
+==========================================
+
+Blob support is not totally transparent. Class names change and adapters
+and subscribers must be added for plone.app.blob.
+Also some packages that do content introspection, like a number of p4a
+packages, use non public methods of File objects that are not available
+on blob objects.
+In both cases, it makes sense to test your 3rd party package with 
+plone.app.blob
+
+Case 1, no internal api methods are in use
+==========================================
+
+That one is easy, just use one of the Testlayers provided by plone.app.blob.
+Using or basing on the BlobReplacementLayer ensures that both images and
+files will use blob objects
+
+Case 2, internal api methods are in use
+=======================================
+The ZODB that is used in Plone 3 does not have blob support for their
+DemoStorage. But DemoStorage will be used during tests. plone.app.blob
+provides a monkey patch, that must be applied early on.
+
+That monkey patch will modify behaviour for all tests. The patch
+changes set up, so the patch must be loaded before the first tests
+are run. For example, in the head of the test file itself.
+The patch is loaded with a simple import::
+
+    from plone.app.blob.tests import db
+
+But if you use internal methods, you must test the behaviour with 
+blobs and files. Currently the only way to do this, is to use two 
+test runners, where the tests for file like objects do not import 
+the monkey patch.
+
+An Example of how to do that can be seen here:
+http://dev.plone.org/collective/browser/p4a/p4a.ploneaudio/branches/blob_support/buildout.cfg
+
+The code that tests blob functionality is in a file that starts not with
+test. That way, the test runner won't try to load that file, and the monkey
+patch isn't loaded either. By providing a test file pattern for the second
+testrunner, we take care that he runs the blob related tests.

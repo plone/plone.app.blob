@@ -11,6 +11,10 @@ class BlobLayer(PloneSite):
 
     @classmethod
     def setUp(cls):
+        # Please be aware that part of the setup of tests
+        # is the import of db in the __init__ file in
+        # the same module as this class.
+        # For more information, look at testing3rdparty.txt
         # load zcml & install packages
         fiveconfigure.debug_mode = True
         from plone.app.blob import tests
