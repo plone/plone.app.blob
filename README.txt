@@ -225,7 +225,8 @@ the number of available ``ATFile`` or ``ATImage`` instances and then lets you
 convert these to the provided blob content types by clicking a button.
 
 For custom AT-based content types that use FileField(s), see
-`example.blobattype`_ for details.
+`example.blobattype`_ for details of how to enable and migrate them to use
+blobs.
 
   .. _`example.blobattype`: http://pypi.python.org/pypi/example.blobattype
 
@@ -543,18 +544,22 @@ about?
   to be temporary.  At that time the file is already gone though, and the
   above warning is issued.
 
-I have ZEO and ZEO clients running on separate machines. Why do I get blobs stored in my ZEO clients blobstorage directory and not only on my ZEO's blobstorage directory?
+I have a ZEO setup with the server and clients running on separate machines.
+Why do I get blobs stored in my ZEO clients' blobstorage directories and not
+only on the server?
 
   ZEO clients cache blobs the first time they are fetched. Unfortunately the
   cache is not cleaned automatically when the instances are stopped and will
   keep growing. In addition, if you manually delete the files without
-  restarting the zeo clients, the zeo client will still expect to find them. 
-  ZODB 3.9 used in plone 4, introduces a cache size control that alleviates
-  the problem. Sasha Vincic has written a `workaround for plone 2.5.*`_ that
-  refetches the blobs from ZEO if the cache has been deleted.
+  restarting, the zeo client will still expect to find them.  ZODB 3.9, which
+  is used by Plone 4, introduces a cache size control that alleviates the
+  problem.  Plone 3.x and earlier can only be used with ZODB 3.8.x, though.
+  However, Sasha Vincic has written a `workaround for Plone 2.5.x`__ that
+  invalidates the existing reference causing the blob data to be fetched
+  again from the ZEO server should it be missing.
 
-  .. _`workaround for plone 2.5.*`: http://dev.plone.org/plone/changeset/32170/plone.app.blob/branches/svincic-plone-2.5-support
-  
+  .. __: http://dev.plone.org/plone/changeset/32170
+
 .. TODO: answer the following...
 .. <jonstahl> Given the overall clutter and confusion in the
 ..   broader file system storage product space, it might be helpful to expand
