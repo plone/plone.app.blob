@@ -6,6 +6,7 @@ from plone.app.imaging.traverse import DefaultImageScaleHandler, ImageScale
 from plone.app.imaging.interfaces import IImageScaleHandler
 from plone.app.blob.interfaces import IBlobImageField
 from plone.app.blob.config import blobScalesAttr
+from plone.app.blob.utils import openBlob
 
 
 class BlobImageScaleHandler(DefaultImageScaleHandler):
@@ -26,7 +27,7 @@ class BlobImageScaleHandler(DefaultImageScaleHandler):
             scales = fields.get(field.getName(), {})
             data = scales.get(scale)
         if data is not None:
-            blob = data['blob'].open('r')
+            blob = openBlob(data['blob'])
             # `updata_data` & friends (from `OFS`) should support file
             # objects, so we could use something like:
             #   ImageScale(..., data=blob.getIterator(), ...)

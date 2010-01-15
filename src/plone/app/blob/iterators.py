@@ -1,6 +1,7 @@
 from zope.interface import implements
 from zope.interface.interfaces import IInterface
 from ZPublisher.Iterators import IStreamIterator
+from plone.app.blob.utils import openBlob
 from os import fstat
 
 
@@ -13,7 +14,7 @@ class BlobStreamIterator(object):
         __implements__ = (IStreamIterator,)
 
     def __init__(self, blob, mode='r', streamsize=1<<16, start=0, end=None):
-        self.blob = blob.open(mode)
+        self.blob = openBlob(blob, mode)
         self.streamsize = streamsize
         self.start = start
         self.end = end

@@ -26,7 +26,7 @@ from plone.app.blob.interfaces import IBlobbable, IWebDavUpload, IBlobField
 from plone.app.blob.interfaces import IBlobWrapper
 from plone.app.blob.iterators import BlobStreamIterator
 from plone.app.blob.download import handleIfModifiedSince, handleRequestRange
-from plone.app.blob.utils import getImageSize
+from plone.app.blob.utils import getImageSize, openBlob
 
 
 class WebDavUpload(object):
@@ -81,7 +81,7 @@ class BlobWrapper(Implicit, Persistent):
     def get_size(self):
         """ return the size of the blob """
         try:
-            blob = self.blob.open('r')
+            blob = openBlob(self.blob)
             size = fstat(blob.fileno()).st_size
             blob.close()
         except (POSKeyError, IOError):
@@ -98,7 +98,7 @@ class BlobWrapper(Implicit, Persistent):
     def getSize(self):
         """ return image dimensions of the blob """
         # TODO: this should probably be cached...
-        blob = self.blob.open()
+        blob = openBlob(self.blob)
         size = getImageSize(blob)
         blob.close()
         return size
@@ -149,7 +149,7 @@ class BlobWrapper(Implicit, Persistent):
             loads the complete blob content into memory, but the method
             is unfortunately still used here and there... """
         try:
-            return self.blob.open().read()
+            return openBlob(self.blob).read()
         except (IOError, POSKeyError):
             return ''
 

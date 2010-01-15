@@ -35,3 +35,14 @@ def getImageSize(img):
     else:
         data = img.read(32)
         return getImageInfo(data)[1:]
+
+
+def openBlob(blob, mode='r'):
+    """ open a blob taking into consideration that it might need to be
+        invalidated in order to be fetch again via zeo;  please see
+        http://dev.plone.org/plone/changeset/32170/ for more info """
+    try:
+        return blob.open(mode)
+    except IOError:
+        blob._p_deactivate()
+        return blob.open(mode)

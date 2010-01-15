@@ -5,6 +5,7 @@ from Products.Archetypes.Field import ImageField
 from Products.ATContentTypes.lib.imagetransform import ATCTImageTransform
 
 from plone.app.imaging.interfaces import IImageScaleHandler
+from plone.app.blob.utils import openBlob
 
 
 class ImageFieldMixin(ImageField):
@@ -87,4 +88,4 @@ class ImageMixin(ATCTImageTransform):
         if img is None:
             field = self.getField('image')
             img = field.getScale(self, scale)
-        return self.getBlobWrapper().getBlob().open('r')
+        return openBlob(self.getBlobWrapper().getBlob())
