@@ -14,11 +14,11 @@ class BlobbableOFSFile(object):
 
     def feed(self, blob):
         """ see interface ... """
-        blob.open('w').write(str(self.context))   # TODO: use an iterator!!
+        blob.open('w').write(str(self.context.data))    # TODO: use an iterator!!
 
     def filename(self):
         """ see interface ... """
-        return self.context.filename
+        return getattr(self.context, 'filename', '')
 
     def mimetype(self):
         """ see interface ... """

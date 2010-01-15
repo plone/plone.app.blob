@@ -4,6 +4,9 @@ Changelog
 1.0b11 - Unreleased
 -------------------
 
+- Fix issues regarding migration from `OFS.File` and `OFS.Image` content.
+  [optilude, witsch]
+
 - Revert changes to make things more robust in case of missing blob files.
   This refs http://plone.org/products/plone.app.blob/issues/10
   [witsch]
