@@ -4,6 +4,10 @@ Changelog
 1.0b11 - Unreleased
 -------------------
 
+- Revert changes to make things more robust in case of missing blob files.
+  This refs http://plone.org/products/plone.app.blob/issues/10
+  [witsch]
+
 - Try to re-fetch blobs that have been removed from a client-side ZEO cache
   before giving up and raising an error.  This makes it possible to control
   the client blob cache size via external processes (e.g. `cron`) even with

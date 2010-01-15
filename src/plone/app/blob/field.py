@@ -10,7 +10,6 @@ try:
 except ImportError:
     from Globals import InitializeClass
 from ZODB.blob import Blob
-from ZODB.POSException import POSKeyError
 from persistent import Persistent
 from transaction import savepoint
 from webdav.common import rfc1123_date
@@ -80,12 +79,9 @@ class BlobWrapper(Implicit, Persistent):
     security.declareProtected(View, 'get_size')
     def get_size(self):
         """ return the size of the blob """
-        try:
-            blob = openBlob(self.blob)
-            size = fstat(blob.fileno()).st_size
-            blob.close()
-        except (POSKeyError, IOError):
-            size = 0
+        blob = openBlob(self.blob)
+        size = fstat(blob.fileno()).st_size
+        blob.close()
         return size
 
     __len__ = get_size
@@ -148,10 +144,7 @@ class BlobWrapper(Implicit, Persistent):
         """ return data as a string;  this is highly inefficient as it
             loads the complete blob content into memory, but the method
             is unfortunately still used here and there... """
-        try:
-            return openBlob(self.blob).read()
-        except (IOError, POSKeyError):
-            return ''
+        return openBlob(self.blob).read()
 
     data = ComputedAttribute(__str__, 0)
 

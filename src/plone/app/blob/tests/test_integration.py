@@ -4,9 +4,7 @@ from plone.app.blob.tests.base import BlobTestCase, BlobFunctionalTestCase
 from plone.app.blob.utils import guessMimetype
 from plone.app.blob.tests.utils import makeFileUpload, getImage, getData
 from StringIO import StringIO
-from transaction import commit
 from os.path import isfile
-from os import remove
 
 
 largefile_data = ('test' * 2048)
@@ -63,30 +61,6 @@ class IntegrationTests(BlobTestCase):
         # and a large one
         blob.update(file=makeFileUpload(largefile_data, 'test.txt'))
         self.assertEqual(blob.get_size(), len(largefile_data))
-
-    def testSizeWithoutBlobFile(self):
-        self.folder.invokeFactory('Blob', 'blob', title='foo', file=pdf_data)
-        blob = self.folder['blob']
-        commit()
-        self.assertEqual(blob.get_size(), len(pdf_data))
-        # now let's pretend the blob file is missing for some reason...
-        remove(blob.getFile().getBlob().committed())
-        self.assertEqual(blob.get_size(), 0)
-        # things shouldn't break either when the object isn't loaded yet
-        blob.getFile().getBlob()._p_changed = None
-        self.assertEqual(blob.get_size(), 0)
-
-    def testDataWithoutBlobFile(self):
-        self.folder.invokeFactory('Blob', 'blob', title='foo', file=pdf_data)
-        blob = self.folder['blob']
-        commit()
-        self.assertEqual(blob.get_data(), pdf_data)
-        # now let's pretend the blob file is missing for some reason...
-        remove(blob.getFile().getBlob().committed())
-        self.assertEqual(blob.get_data(), '')
-        # things shouldn't break either when the object isn't loaded yet
-        blob.getFile().getBlob()._p_changed = None
-        self.assertEqual(blob.get_data(), '')
 
     def testGetSizeOnFileContent(self):
         self.folder.invokeFactory('Blob', 'blob', title='foo', file=pdf_data)
