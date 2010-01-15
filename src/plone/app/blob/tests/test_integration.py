@@ -191,7 +191,7 @@ class IntegrationTests(BlobTestCase):
         #   to a transaction"
 
         version = repository.retrieve(blob, 0)
-        data = version.object.data      # trigger opening of blob...
+        version.object.data     # trigger opening of blob...
         # self.assertEqual(version.object.data, pdf_data)
         # version = repository.retrieve(blob, 1)
         # self.assertEqual(version.object.data, 'some text...')
