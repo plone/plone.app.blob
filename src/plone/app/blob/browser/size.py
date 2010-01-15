@@ -28,7 +28,6 @@ class FileContentSizeView(BrowserView):
 
     def __call__(self, portal_type=['File', 'Image']):
         context = aq_inner(self.context)
-        request = aq_inner(self.request)
         log = self.mklog()
         log('determining total size for content of type %r\n' % portal_type)
         log('please hang on, this might take a moment...\n')

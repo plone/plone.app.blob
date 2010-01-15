@@ -46,7 +46,6 @@ class FileReplacementTests(ReplacementTestCase):
         request = foo.REQUEST
         response = request.RESPONSE
         self.assertEqual(foo.index_html(request, response).next(), 'plain text')
-        headers = response.headers
         self.assertEqual(response.headers['status'], '200 OK')
         self.assertEqual(response.headers['content-length'], '10')
         self.assertEqual(response.headers['content-type'], 'text/plain')
@@ -169,7 +168,6 @@ class ImageReplacementTests(ReplacementTestCase):
         request = foo.REQUEST
         response = request.RESPONSE
         self.assertEqual(foo.index_html(request, response).next(), gif)
-        headers = response.headers
         self.assertEqual(response.headers['status'], '200 OK')
         self.assertEqual(response.headers['content-length'], '43')
         self.assertEqual(response.headers['content-type'], 'image/gif')

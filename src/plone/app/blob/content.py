@@ -191,7 +191,7 @@ class ATBlob(ATCTFileContent, ImageMixin):
         mtr = getToolByName(self, 'mimetypes_registry', None)
         try:
             mimetypeitem = mtr.lookup(contenttype)
-        except MimeTypeException, msg:
+        except MimeTypeException:
             mimetypeitem = None
         if mimetypeitem is None or mimetypeitem == ():
             return super(ATBlob, self).getIcon(relative_to_portal)

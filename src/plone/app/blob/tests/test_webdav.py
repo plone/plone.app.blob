@@ -27,8 +27,8 @@ class WebDavTests(ReplacementFunctionalTestCase):
     def testWebDavUpdate(self):
         image = StringIO(getImage())
         image.filename = 'original.gif'
-        obj = self.folder[self.folder.invokeFactory('Image', id='foo',
-            title='an image', image=image)]
+        self.folder.invokeFactory('Image', id='foo',
+            title='an image', image=image)
         base = '/'.join(self.folder.getPhysicalPath())
         response = self.publish(base + '/foo', request_method='PUT',
             stdin=image, basic=self.getCredentials(),

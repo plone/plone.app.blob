@@ -127,10 +127,9 @@ class BlobImagePublisherTests(TraverseCounterMixin, ReplacementFunctionalTestCas
 
     def testPublishThumb(self):
         data = getData('image.gif')
-        folder = self.folder
-        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        self.folder.invokeFactory('Image', id='foo', image=data)
         # make sure traversing works as is and with scaling
-        base = '/'.join(folder.getPhysicalPath())
+        base = '/'.join(self.folder.getPhysicalPath())
         credentials = self.getCredentials()
         # first the image itself...
         response = self.publish(base + '/foo', basic=credentials)
@@ -152,13 +151,12 @@ class BlobImagePublisherTests(TraverseCounterMixin, ReplacementFunctionalTestCas
 
     def testPublishCustomSize(self):
         data = getData('image.gif')
-        folder = self.folder
-        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        self.folder.invokeFactory('Image', id='foo', image=data)
         # set custom image sizes
         iprops = self.portal.portal_properties.imaging_properties
         iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
         # make sure traversing works as expected
-        base = '/'.join(folder.getPhysicalPath())
+        base = '/'.join(self.folder.getPhysicalPath())
         credentials = self.getCredentials()
         response = self.publish(base + '/foo/image_foo', basic=credentials)
         self.assertEqual(response.getStatus(), 200)
@@ -222,10 +220,9 @@ class BlobAdapterPublisherTests(ReplacementFunctionalTestCase):
             return original(adapter, instance, scale)
         BlobImageScaleHandler.getScale = getScale
         data = getData('image.gif')
-        folder = self.folder
-        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        self.folder.invokeFactory('Image', id='foo', image=data)
         # make sure traversing works as expected
-        base = '/'.join(folder.getPhysicalPath())
+        base = '/'.join(self.folder.getPhysicalPath())
         credentials = self.getCredentials()
         response = self.publish(base + '/foo/image', basic=credentials)
         self.assertEqual(response.getStatus(), 200)
