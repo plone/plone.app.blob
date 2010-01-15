@@ -570,14 +570,16 @@ only on the server?
   ZEO clients cache blobs the first time they are fetched. Unfortunately the
   cache is not cleaned automatically when the instances are stopped and will
   keep growing. In addition, if you manually delete the files without
-  restarting, the zeo client will still expect to find them.  ZODB 3.9, which
+  restarting, the ZEO client will still expect to find them.  ZODB 3.9, which
   is used by Plone 4, introduces a cache size control that alleviates the
   problem.  Plone 3.x and earlier can only be used with ZODB 3.8.x, though.
   However, Sasha Vincic has written a `workaround for Plone 2.5.x`__ that
   invalidates the existing reference causing the blob data to be fetched
-  again from the ZEO server should it be missing.
+  again from the ZEO server should it be missing.  The patch has been merged_
+  and is available from version 1.0b11.
 
   .. __: http://dev.plone.org/plone/changeset/32170
+  .. _`merged`: http://dev.plone.org/plone/changeset/33100
 
 .. TODO: answer the following...
 .. <jonstahl> Given the overall clutter and confusion in the
