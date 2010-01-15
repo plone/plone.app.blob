@@ -502,7 +502,7 @@ enough.  In the meantime here are the recommended workarounds:
     limit the reindexing to only blob-based content.  The latter should
     usually be quicker, especially for bigger sites.
 
-  .. _`1.0b4`: http://pypi.python.org/pypi/plone.app.blob/1.0b11
+  .. _`1.0b11`: http://pypi.python.org/pypi/plone.app.blob/1.0b11
 
 
 FAQ
