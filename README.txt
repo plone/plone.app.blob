@@ -486,6 +486,25 @@ enough.  In the meantime here are the recommended workarounds:
     needed (the extra migration will create new blobs).
 
 
+**"Image" and/or "File" content doesn't show up as expected after migrating to blobs**
+
+  Symptom
+    After migrating "Image" and/or "File" content to be based on blobs, some
+    of it doesn't show up as expected.  A typical example of this are ATCT's
+    photo album views.
+  Problem
+    All versions before 1.0b11 didn't update the "Type" catalog index
+    correctly during migration.  This could of course result in wrong results
+    for all queries using this index.
+  Solution
+    Manually update the "Type" index using the ZMI or upgrade to at least
+    `1.0b11`_ and use the ``@@blob-maintenance/updateTypeIndex`` view to
+    limit the reindexing to only blob-based content.  The latter should
+    usually be quicker, especially for bigger sites.
+
+  .. _`1.0b4`: http://pypi.python.org/pypi/plone.app.blob/1.0b11
+
+
 FAQ
 ===
 

@@ -67,3 +67,28 @@ class MaintenanceView(BrowserView):
         msg = 'processed %d items in %s.' % (processed, real.next())
         log(msg)
         getLogger('plone.app.blob.maintenance').info(msg)
+
+    def updateTypeIndex(self, batch=1000):
+        """ walk all catalog entries and update the 'Type' index """
+        log = self.mklog()
+        log('updating "Type" index for blob-based content...\n')
+        real = timer()          # real time
+        lap = timer()           # real lap time (for intermediate commits)
+        processed = 0
+        def checkPoint():
+            log('intermediate commit (%d items processed, '
+                'last batch in %s)...\n' % (processed, lap.next()))
+            commit()
+        cpi = checkpointIterator(checkPoint, batch)
+        context = aq_inner(self.context)
+        catalog = getToolByName(context, 'portal_catalog')
+        for brain in catalog(object_provides=IATBlob.__identifier__):
+            obj = brain.getObject()
+            obj.reindexObject(idxs=['Type'])
+            log('updated %r\n' % obj)
+            processed += 1
+            cpi.next()
+        commit()
+        msg = 'processed %d items in %s.' % (processed, real.next())
+        log(msg)
+        getLogger('plone.app.blob.maintenance').info(msg)

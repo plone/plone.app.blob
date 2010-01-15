@@ -30,6 +30,22 @@ class MaintenanceViewTests(ReplacementTestCase):
         self.failUnless(foo.Schema().getField('file'), 'no field "file"?')
         self.failUnless(bar.Schema().getField('image'), 'no field "image"?')
 
+    def testUpdateTypeIndex(self):
+        # conjure up incorrect catalog data...
+        info = self.portal.portal_types.getTypeInfo('File')
+        info.title = 'Foo'
+        foo = self.folder[self.folder.invokeFactory('File', id='foo')]
+        info.title = 'File'
+        # make sure it's actually wrong...
+        catalog = self.portal.portal_catalog
+        self.failIf(catalog(Type='File'))
+        self.failUnless(catalog(Type='Foo'))
+        # fix using the maintenance view & check again...
+        maintenance = self.portal.unrestrictedTraverse('blob-maintenance')
+        maintenance.updateTypeIndex()
+        self.assertEqual([b.getObject() for b in catalog(Type='File')], [foo])
+        self.failIf(catalog(Type='Foo'))
+
 
 def test_suite():
     return defaultTestLoader.loadTestsFromName(__name__)

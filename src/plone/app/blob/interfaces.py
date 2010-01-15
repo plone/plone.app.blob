@@ -71,3 +71,6 @@ class IBlobMaintenanceView(Interface):
 
     def resetSubtypes(batch=1000):
         """ walk all catalog entries and reset sub-type markings """
+
+    def updateTypeIndex(batch=1000):
+        """ walk all catalog entries and update the 'Type' index """
