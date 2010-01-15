@@ -117,6 +117,9 @@ class FileReplacementTests(ReplacementTestCase):
         for key, value in catalog.getMetadataForRID(brain.getRID()).items():
             if not key in okay:
                 self.assertEqual(meta_data[key], value, 'meta: %s' % key)
+        # also make sure the `Type` index has been updated correctly
+        brains = catalog(Type='File')
+        self.assertEqual([foo], [b.getObject() for b in brains])
 
     def testIndexAccessor(self):
         foo = self.folder[self.folder.invokeFactory('File', 'foo',
@@ -239,6 +242,9 @@ class ImageReplacementTests(ReplacementTestCase):
         for key, value in catalog.getMetadataForRID(brain.getRID()).items():
             if not key in okay:
                 self.assertEqual(meta_data[key], value, 'meta: %s' % key)
+        # also make sure the `Type` index has been updated correctly
+        brains = catalog(Type='Image')
+        self.assertEqual([foo], [b.getObject() for b in brains])
 
 
 def test_suite():
