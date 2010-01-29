@@ -49,8 +49,8 @@ Next we add a translation and check it:
   >>> browser.getLink(url='@@translate?newlanguage=de').click()
   >>> browser.getControl('Title').value = 'Flubbie'
   >>> browser.getControl('Save').click()
-  >>> browser.url
-  'http://nohost/plone/.../flubbie/...'
+  >>> '/flubbie/' in browser.url or '/flobby-de/' in browser.url
+  True
   >>> browser.contents
   '...Info...Changes saved...
    ...Flubbie...
@@ -61,7 +61,9 @@ storing the PDF data.  This should be the case, since the field was marked
 to be language-independent:
 
   >>> flobby = self.folder.flobby
-  >>> flubbie = self.folder.flubbie
+  >>> flubbie = flobby.getTranslation('de')
+  >>> flobby is flubbie
+  False
   >>> flobby.getGuide().getBlob() is flubbie.getGuide().getBlob()
   True
 
@@ -79,8 +81,8 @@ Let's also make sure we can edit the new content item:
   >>> control.value = getFile('test.pdf')
   >>> browser.getControl('Save').click()
 
-  >>> browser.url
-  'http://nohost/plone/.../flubbie/...'
+  >>> '/flubbie/' in browser.url or '/flobby-de/' in browser.url
+  True
   >>> browser.contents
   '...Info...Changes saved...
    ...Ein schlauer Fisch...
