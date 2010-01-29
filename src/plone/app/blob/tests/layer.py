@@ -109,10 +109,13 @@ class BlobLinguaLayer(PloneSite):
     def setUp(cls):
         # load zcml
         fiveconfigure.debug_mode = True
+        from plone.app.blob import tests
+        zcml.load_config('testing.zcml', tests)
         from Products import LinguaPlone
         zcml.load_config('configure.zcml', LinguaPlone)
         fiveconfigure.debug_mode = False
-        # install package, import profile...
+        # install packages, import profiles...
+        installPackage('plone.app.blob', quiet=True)
         installProduct('LinguaPlone', quiet=True)
         root = app()
         portal = root.plone
