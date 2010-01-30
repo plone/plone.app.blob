@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b11 - Unreleased
+1.0b11 - 2010-01-30
 -------------------
 
 - Fix issues regarding migration from `OFS.File` and `OFS.Image` content.
