@@ -36,7 +36,6 @@ class SchemaExtender(object):
         ExtensionBlobField('image',
             required = True,
             primary = True,
-            default = '',
             accessor = 'getImage',
             mutator = 'setImage',
             languageIndependent = True,

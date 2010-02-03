@@ -4,6 +4,9 @@ Changelog
 1.0b12 - Unreleased
 -------------------
 
+- Make it possible to delete image content.
+  [witsch]
+
 
 1.0b11 - 2010-01-30
 -------------------

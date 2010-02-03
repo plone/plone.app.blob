@@ -187,7 +187,7 @@ class BlobField(ObjectField):
     def set(self, instance, value, **kwargs):
         """ use input value to populate the blob and set the associated
             file name and mimetype """
-        if value == "DELETE_FILE":
+        if value == 'DELETE_%s' % self.getName().upper():
             super(BlobField, self).unset(instance, **kwargs)
             return
         # create a new blob instead of modifying the old one to

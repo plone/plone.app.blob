@@ -20,7 +20,6 @@ class SchemaExtender(object):
             required = True,
             primary = True,
             searchable = True,
-            default = '',
             accessor = 'getFile',
             mutator = 'setFile',
             index_method = 'getIndexValue',

@@ -45,6 +45,25 @@ Now let's make sure we can also edit it:
   '...Info...Changes saved...
    ...Foobar...foobar.pdf...PDF document,...5Kb...'
 
+It should also be possible to remove the file again.  For this to work the
+field must not be required.  That is not the default in Plone, however, so
+we need to tweak the schema first:
+
+  >>> self.folder.foo.getPrimaryField().required = False
+
+  >>> browser.getLink('Edit').click()
+  >>> browser.getControl('Delete current').selected = True
+  >>> browser.getControl('Save').click()
+  >>> 'Changes saved' in browser.contents
+  True
+  >>> 'PDF document' in browser.contents
+  False
+
+The file content should now be gone:
+
+  >>> self.folder.foo.getFile().data
+  ''
+
 
 Images
 ------
@@ -134,3 +153,22 @@ Let's also check the scaled versions included the un-scaled variant:
   >>> browser.headers['content-type']
   'image/gif'
 
+It should also be possible to remove the image. Again, for this to work the
+field must not be required.  That is not the default in Plone, however, so
+we need to tweak the schema first:
+
+  >>> self.folder.bar.getPrimaryField().required = False
+
+  >>> browser.open(url + '/view')
+  >>> browser.getLink('Edit').click()
+  >>> browser.getControl('Delete current').selected = True
+  >>> browser.getControl('Save').click()
+  >>> 'Changes saved' in browser.contents
+  True
+  >>> 'No image has been uploaded yet' in browser.contents
+  True
+
+The image content should now be gone:
+
+  >>> self.folder.foo.getImage().data
+  ''
