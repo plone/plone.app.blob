@@ -7,58 +7,60 @@
 
 <metal:main fill-slot="main">
 
-<h1 class="documentFirstHeading"
-    i18n:translate="blob_migration_title">Blob Migration</h1>
+    <h1 class="documentFirstHeading"
+        i18n:translate="blob_migration_title">Blob Migration</h1>
+        
+    <div id="content-core">
+        <div tal:condition="exists: options/notinstalled"
+             i18n:translate="blob_not_installed">
+          <p> The integration package for ZODB blob support, `plone.app.blob`,
+              needs to be installed in order for existing content to be migrated. </p>
 
-<div tal:condition="exists: options/notinstalled"
-     i18n:translate="blob_not_installed">
-  <p> The integration package for ZODB blob support, `plone.app.blob`,
-      needs to be installed in order for existing content to be migrated. </p>
+          <p> Please refer to the <a href="#" tal:attributes="href options/installer">
+              Add-on Products</a> section to do so. </p>
+        </div>
 
-  <p> Please refer to the <a href="#" tal:attributes="href options/installer">
-      Add-on Products</a> section to do so. </p>
-</div>
+        <div tal:condition="exists: options/nomigrations"
+             i18n:translate="blob_migration_unavailable">
+          <p> The migration facility is currently unavailable, since the
+              <a href="http://pypi.python.org/pypi/Products.contentmigration/">
+              Products.contentmigration</a> package has not been installed. </p>
 
-<div tal:condition="exists: options/nomigrations"
-     i18n:translate="blob_migration_unavailable">
-  <p> The migration facility is currently unavailable, since the
-      <a href="http://pypi.python.org/pypi/Products.contentmigration/">
-      Products.contentmigration</a> package has not been installed. </p>
+          <p> Please use 
+              <a href="http://peak.telecommunity.com/DevCenter/EasyInstall">
+              Easy Install</a> to do so or download and extract the package
+              into your `Products/` directory. </p>
+        </div>
 
-  <p> Please use 
-      <a href="http://peak.telecommunity.com/DevCenter/EasyInstall">
-      Easy Install</a> to do so or download and extract the package
-      into your `Products/` directory. </p>
-</div>
+        <div tal:condition="exists: options/available">
+          <p i18n:translate="blob_migration_instructions">
+              Clicking the below button will cause all content items based on
+              ATContentTypes' ATFile class to be migrated to use ZODB blobs, i.e.
+              the content data will be managed by the ZODB, but outside of the
+              "Data.fs" file. This process can take a while, especially for sites
+              with many and/or big file content items...
+          </p>
 
-<div tal:condition="exists: options/available">
-  <p i18n:translate="blob_migration_instructions">
-      Clicking the below button will cause all content items based on
-      ATContentTypes' ATFile class to be migrated to use ZODB blobs, i.e.
-      the content data will be managed by the ZODB, but outside of the
-      "Data.fs" file. This process can take a while, especially for sites
-      with many and/or big file content items...
-  </p>
+          <form method="post" action="blob-migration"
+                tal:attributes="action request/URL">
 
-  <form method="post" action="blob-migration"
-        tal:attributes="action request/URL">
+            <input class="destructive" type="submit" name="migrate" value=" Migrate"
+                   tal:attributes="value string:Migrate ${options/available} item(s) " />
 
-    <input class="destructive" type="submit" name="migrate" value=" Migrate"
-           tal:attributes="value string:Migrate ${options/available} item(s) " />
+            <input class="standalone" type="submit" name="cancel" value=" Cancel " />
 
-    <input class="standalone" type="submit" name="cancel" value=" Cancel " />
+          </form>
+        </div>
 
-  </form>
-</div>
+        <div tal:condition="exists: options/output">
+          <p i18n:translate="blob_migration_instructions">
+              Migration finished.  The following list shows all
+              <span tal:replace="options/count" /> migrated items...
+          </p>
 
-<div tal:condition="exists: options/output">
-  <p i18n:translate="blob_migration_instructions">
-      Migration finished.  The following list shows all
-      <span tal:replace="options/count" /> migrated items...
-  </p>
-
-  <pre tal:content="options/output" />
-</div>
+          <pre tal:content="options/output" />
+        </div>
+    </div>
 
 </metal:main>
 

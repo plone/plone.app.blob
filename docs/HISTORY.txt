@@ -4,6 +4,10 @@ Changelog
 1.0b12 - Unreleased
 -------------------
 
+- Updated migration.pt to follow the recent markup conventions.
+  References http://dev.plone.org/plone/ticket/9981
+  [spliter]
+
 - Make it possible to delete image content.
   [witsch]
 
