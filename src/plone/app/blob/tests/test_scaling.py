@@ -100,7 +100,11 @@ class BlobImageScaleTests(ReplacementTestCase):
         atct_tool = getToolByName(self.portal, 'portal_atct')
         atct_tool.recreateImageScales()
         sizes = image.getField('image').getAvailableSizes(image)
-        self.failUnless('thumb' in sizes.keys())
+        self.assertEquals(len(sizes), self.counter)
+        traverse = folder.REQUEST.traverseName
+        thumb = traverse(image, 'image_thumb')
+        blob = getattr(image, blobScalesAttr)['image']['thumb']['blob']
+        self.failUnless(isinstance(blob, Blob), 'no blob?')
 
     def testBlobCreation(self):
         data = getData('image.gif')

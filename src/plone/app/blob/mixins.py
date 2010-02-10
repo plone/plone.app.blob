@@ -40,8 +40,8 @@ class ImageFieldMixin(ImageField):
         sizes = self.getAvailableSizes(instance)
         handler = IImageScaleHandler(self, None)
         if handler is not None:
-            for scale in sizes.values():
-                handler.getScale(instance, scale)
+            for scale, (width, height) in sizes.items():
+                handler.createScale(instance, scale, width, height)
 
 class ImageMixin(ATCTImageTransform):
     """ mixin class for methods needed for image content """
