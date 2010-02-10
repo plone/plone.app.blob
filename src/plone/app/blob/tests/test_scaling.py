@@ -5,6 +5,7 @@ from plone.app.blob.tests.utils import getData
 from plone.app.imaging.traverse import ImageTraverser
 from plone.app.blob.scale import BlobImageScaleHandler
 from plone.app.blob.config import blobScalesAttr
+from Products.CMFCore.utils import getToolByName
 from ZODB.blob import Blob
 from StringIO import StringIO
 from PIL.Image import open
@@ -50,6 +51,7 @@ class BlobImageTraverseTests(TraverseCounterMixin, ReplacementTestCase):
         # make sure the traversal adapter was call in fact
         self.assertEqual(self.counter, 2)
 
+
     def testCustomSizes(self):
         data = getData('image.gif')
         folder = self.folder
@@ -90,6 +92,15 @@ class BlobImageScaleTests(ReplacementTestCase):
 
     def beforeTearDown(self):
         BlobImageScaleHandler.createScale = self.original
+
+    def testImageRecreation(self):
+        data = getData('image.gif')
+        folder = self.folder
+        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        atct_tool = getToolByName(self.portal, 'portal_atct')
+        atct_tool.recreateImageScales()
+        sizes = image.getField('image').getAvailableSizes(image)
+        self.failUnless('thumb' in sizes.keys())
 
     def testBlobCreation(self):
         data = getData('image.gif')
