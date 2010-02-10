@@ -4,6 +4,11 @@ Changelog
 1.0b12 - Unreleased
 -------------------
 
+- Make sure image scales from old AT image fields are removed during
+  migration to blob fields, when using the BlobMigrator.  This closes
+  http://dev.plone.org/plone/ticket/10160
+  [davisagli]
+
 - Updated migration.pt to follow the recent markup conventions.
   References http://dev.plone.org/plone/ticket/9981
   [spliter]

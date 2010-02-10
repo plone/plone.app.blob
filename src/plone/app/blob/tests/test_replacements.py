@@ -2,6 +2,7 @@ from plone.app.blob.tests.base import ReplacementTestCase   # import first!
 
 from unittest import defaultTestLoader
 from zope.interface.interfaces import IInterface
+from Products.Archetypes.atapi import ImageField, AnnotationStorage
 from Products.ATContentTypes.interface import file as atfile
 from Products.ATContentTypes.interface import image as atimage
 from Products.ATContentTypes.interfaces import IATFile as Z2IATFile
@@ -9,6 +10,7 @@ from Products.ATContentTypes.interfaces import IATImage as Z2IATImage
 from Products.ATContentTypes.content.file import ATFile
 from Products.ATContentTypes.content.image import ATImage
 from plone.app.blob.interfaces import IATBlobFile, IATBlobImage
+from plone.app.blob.migrations import migrate
 from plone.app.blob.migrations import migrateATBlobFiles, migrateATBlobImages
 from plone.app.blob.field import BlobField
 from plone.app.blob.content import ATBlob
@@ -244,6 +246,22 @@ class ImageReplacementTests(ReplacementTestCase):
         brains = catalog(Type='Image')
         self.assertEqual([b.getObject() for b in brains], [foo])
 
+    def testOldScalesRemovedDuringInlineImageMigration(self):
+        gif = getImage()
+        foo = self.folder[self.folder.invokeFactory('Image', id='foo',
+            title='an image', image=gif, subject=('foo', 'bar'),
+            contributors=('me'))]
+        # fake an old ImageField in the class schema,
+        # and store scales in AnnotationStorage
+        foo.schema['image'] = field = ImageField('image',
+                                                 storage=AnnotationStorage())
+        field.set(foo, gif)
+        preview_key = 'Archetypes.storage.AnnotationStorage-image_preview'
+        self.failUnless(preview_key in foo.__annotations__.keys())
+        # migrate using inline migrator
+        migrate(self.portal, portal_type='Image', meta_type='ATBlob')
+        # make sure the scale annotation was removed
+        self.failIf(preview_key in foo.__annotations__.keys())
 
 def test_suite():
     return defaultTestLoader.loadTestsFromName(__name__)
