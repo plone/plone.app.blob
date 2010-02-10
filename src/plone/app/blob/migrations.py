@@ -64,6 +64,9 @@ def makeMigrator(context, portal_type, meta_type=None):
             fields = self.getFields(self.obj)
             for name in fields:
                 oldfield = self.obj.schema[name]
+                if hasattr(oldfield, 'removeScales'):
+                    # clean up old image scales
+                    oldfield.removeScales(self.obj)
                 value = oldfield.get(self.obj)
                 field = self.obj.getField(name)
                 field.getMutator(self.obj)(value)
