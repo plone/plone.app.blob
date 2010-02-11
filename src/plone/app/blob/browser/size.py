@@ -41,8 +41,10 @@ class FileContentSizeView(BrowserView):
                 log('%d/%d...', idx, len(brains))
         log('')
         fmt = '%-20s %6s items, %6.1f mb (%d bytes),\t%12.1f avg'
-        for pt, count in counts.items():
-            size = float(sizes[pt])
+        comp = lambda a, b: cmp(b[1], a[1])
+        for pt, size in sorted(sizes.items(), comp):
+            count = counts[pt]
+            size = float(size)
             log(fmt, pt + ':', count, size / 1024**2, size, size / count)
         count = sum(counts.values())
         size = float(sum(sizes.values()))
