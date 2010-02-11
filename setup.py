@@ -45,4 +45,8 @@ setup(name = name,
         'Programming Language :: Python',
         'Topic :: Software Development :: Libraries :: Python Modules',
       ],
+      entry_points = '''
+        [z3c.autoinclude.plugin]
+        target = plone
+      ''',
 )
