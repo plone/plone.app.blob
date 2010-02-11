@@ -4,6 +4,9 @@ Changelog
 1.0b12 - Unreleased
 -------------------
 
+- Update view to analyse approximate content size grouped by type.
+  [witsch]
+
 - Add `z3c.autoinclude` entry point for automatic ZCML loading in Plone 3.3+.
   [witsch]
 

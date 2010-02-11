@@ -32,7 +32,7 @@
 
   <browser:page
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      name="blob-content-size"
+      name="content-size-statistics"
       class=".size.FileContentSizeView"
       permission="cmf.ManagePortal" />
 
