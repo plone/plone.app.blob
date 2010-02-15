@@ -21,6 +21,7 @@ from Products.Archetypes.Registry import registerField
 from Products.Archetypes.utils import contentDispositionHeader
 
 from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
+from plone.i18n.normalizer.interfaces import IUserPreferredURLNormalizer
 from plone.app.blob.interfaces import IBlobbable, IWebDavUpload, IBlobField
 from plone.app.blob.interfaces import IBlobWrapper
 from plone.app.blob.iterators import BlobStreamIterator
@@ -223,7 +224,7 @@ class BlobField(ObjectField):
                     return      # don't rename now if AT should do it from title
             if not isinstance(filename, unicode):
                 filename = unicode(filename, instance.getCharset())
-            filename = IUserPreferredFileNameNormalizer(request).normalize(filename)
+            filename = IUserPreferredURLNormalizer(request).normalize(filename)
             if filename and not filename == instance.getId():
                 # a file name was given, so the instance needs to be renamed...
                 # a subtransaction is applied, since without it renaming

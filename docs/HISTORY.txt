@@ -4,6 +4,9 @@ Changelog
 1.0b12 - Unreleased
 -------------------
 
+- Use URL normalizer when generating content ids based on filename.
+  [terapyon, papago, witsch]
+
 - Update view to analyse approximate content size grouped by type.
   [witsch]
 
