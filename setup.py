@@ -26,7 +26,7 @@ setup(name = name,
       zip_safe = False,
       install_requires=[
         'setuptools',
-        'ZODB3 >=3.8.0',
+        'ZODB3 >=3.8.1',
         'zope.proxy >=3.4',
         'archetypes.schemaextender >=1.0b1',
         'plone.app.imaging >1.0b3',

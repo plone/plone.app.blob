@@ -4,6 +4,10 @@ Changelog
 1.0b12 - Unreleased
 -------------------
 
+- Remove temporary monkey wrapper for `Blob.open` used to work around an
+  issue with `CMFEditions`.  Refs http://dev.plone.org/plone/ticket/10200
+  [witsch]
+
 - Use URL normalizer when generating content ids based on filename.
   [terapyon, papago, witsch]
 
