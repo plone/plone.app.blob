@@ -4,6 +4,10 @@ Changelog
 1.0b12 - Unreleased
 -------------------
 
+- Change test setup to reuse the same directory when setting up blob
+  storages, thereby fixing some BBB test issues.
+  [witsch]
+
 - Remove temporary monkey wrapper for `Blob.open` used to work around an
   issue with `CMFEditions`.  Refs http://dev.plone.org/plone/ticket/10200
   [witsch]
