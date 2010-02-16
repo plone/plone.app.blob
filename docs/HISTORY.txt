@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b12 - Unreleased
+1.0b12 - 2010-02-16
 -------------------
 
 - Change test setup to reuse the same directory when setting up blob
