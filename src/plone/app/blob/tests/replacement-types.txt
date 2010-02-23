@@ -70,17 +70,15 @@ Images
 
 Next a similar test is conducted for an "Image" content item:
 
-  >>> from plone.app.blob.tests.utils import getImage
-  >>> gif = getImage()
+  >>> from plone.app.blob.tests.utils import getFile
   >>> browser.open(self.folder.absolute_url())
-
   >>> browser.getLink(url='createObject?type_name=Image').click()
   >>> browser.url
   'http://nohost/plone/.../portal_factory/Image/image.../edit'
   >>> browser.getControl(name='title').value = 'Bar'
   >>> control = browser.getControl(name='image_file')
   >>> control.filename = 'bar.gif'
-  >>> control.value = StringIO(gif)
+  >>> control.value = getFile('image.png')
   >>> browser.getControl('Save').click()
 
   >>> browser.url
@@ -88,17 +86,22 @@ Next a similar test is conducted for an "Image" content item:
   >>> browser.contents
   '...Info...Changes saved...
    ...Bar...
-   ...<img src="http://.../bar.../image_preview"...title="Bar" height="1" width="1" />...
-   ...Click to view full-size...Size...1 kB...'
+   ...<img src="http://.../bar.../image_preview"...title="Bar"...
+   ...Click to view full-size...Size...3.5 kB...'
 
-Now let's make sure we can also edit it:
+Now let's make sure we can also edit it.  First we store the current image,
+however, so we can check it was actually updated:
+
+  >>> browser.open('image_preview')
+  >>> original = browser.contents
+  >>> browser.goBack()
 
   >>> browser.getLink('Edit').click()
   >>> browser.getControl(name='title').value = 'Foobar'
   >>> browser.getControl('Replace with new image').selected = True
   >>> control = browser.getControl(name='image_file')
   >>> control.filename = 'foobar.gif'
-  >>> control.value = StringIO(gif)
+  >>> control.value = getFile('image.gif')
   >>> browser.getControl('Save').click()
 
   >>> browser.url
@@ -106,12 +109,21 @@ Now let's make sure we can also edit it:
   >>> browser.contents
   '...Info...Changes saved...
    ...Foobar...
-   ...<img src="http://.../bar.../image_preview"...title="Foobar" height="1" width="1" />...
+   ...<img src="http://.../bar.../image_preview"...title="Foobar"...
    ...Click to view full-size...Size...1 kB...'
+
+The actual image should also have been updated, of course:
+
+  >>> browser.open('image_preview')
+  >>> current = browser.contents
+  >>> original == current
+  False
+  >>> browser.goBack()
 
 Viewing an image should also work when browsing its URL directly, i.e.
 without the `/view` action part:
 
+  >>> gif = getFile('image.gif').read()
   >>> url = browser.url.replace('/view', '')
   >>> browser.open(url)
   >>> browser.contents == gif
