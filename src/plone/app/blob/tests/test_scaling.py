@@ -122,6 +122,29 @@ class BlobImageScaleTests(ReplacementTestCase):
         thumb2 = traverse(image, 'image_thumb')
         self.failIf(thumb1.data == thumb2.data, 'thumb not updated?')
 
+    def testCustomSizeChange(self):
+        data = getData('image.gif')
+        folder = self.folder
+        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        # set custom image sizes & view a scale
+        iprops = self.portal.portal_properties.imaging_properties
+        iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
+        traverse = folder.REQUEST.traverseName
+        foo = traverse(image, 'image_foo')
+        self.assertEqual(foo.width, 23)
+        self.assertEqual(foo.height, 23)
+        # now let's update the scale dimensions, after which the scale
+        # should still be the same...
+        iprops.manage_changeProperties(allowed_sizes=['foo 42:42'])
+        foo = traverse(image, 'image_foo')
+        self.assertEqual(foo.width, 23)
+        self.assertEqual(foo.height, 23)
+        # we first need to trigger recreation of all scales...
+        self.portal.portal_atct.recreateImageScales()
+        foo = traverse(image, 'image_foo')
+        self.assertEqual(foo.width, 42)
+        self.assertEqual(foo.height, 42)
+
 
 class BlobImagePublisherTests(TraverseCounterMixin, ReplacementFunctionalTestCase):
 
