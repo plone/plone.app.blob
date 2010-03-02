@@ -35,6 +35,18 @@ class ImageFieldMixin(ImageField):
             return handler.getScale(instance, scale)
         return None
 
+    security.declareProtected(ModifyPortalContent, 'createScales')
+    def createScales(self, instance, value=None):
+        """ creates scales and stores them; largely based on the version from
+            `Archetypes.Field.ImageField` """
+        sizes = self.getAvailableSizes(instance)
+        handler = IImageScaleHandler(self)
+        for name, size in sizes.items():
+            width, height = size
+            data = handler.createScale(instance, name, width, height, data=value)
+            if data is not None:
+                handler.storeScale(instance, name, **data)
+
 
 class ImageMixin(ATCTImageTransform):
     """ mixin class for methods needed for image content """
