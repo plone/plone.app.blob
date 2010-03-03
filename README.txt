@@ -505,6 +505,83 @@ enough.  In the meantime here are the recommended workarounds:
   .. _`1.0b11`: http://pypi.python.org/pypi/plone.app.blob/1.0b11
 
 
+**Blob support for mounted databases**
+
+  Symptom
+    You have mounted a ZODB get an error like this:
+
+       ...
+       Module ZEO.ClientStorage, line 1061, in temporaryDirectory
+       AttributeError: 'NoneType' object has no attribute 'temp_dir
+       
+    or
+
+       ...
+       Module ZODB.blob, line 495, in temp_dir
+       TypeError: Blobs are not supported
+
+  Problem
+    You haven't configured a blobstorage for your(each) database.
+    
+  Solution (added from http://dev.plone.org/plone/ticket/10130 [davisagli])
+    You need to configure blobstorage for each mounted database.
+    
+    Option 1 (non-ZEO): Add to the Zope instance part of your buildout, something like:
+    
+        zope-conf-additional =
+            <zodb_db grak>
+                <filestorage >
+                  path ${buildout:directory}/var/filestorage/grak.fs
+                  blob-dir ${buildout:directory}/var/blobstorage-grak
+                </filestorage>
+                mount-point /grak
+            </zodb_db>
+
+    (If you're already configuring your additional mountpoint this way, the only change is the addition of the blob-dir setting.)
+    
+    Option 2 (with ZEO): Add via zope-conf-additional in the Zope instance part of your buildout:
+    
+        zope-conf-additional =
+            <zodb_db grak>
+              <zeoclient>
+                blob-dir ${buildout:directory}/var/blobstorage-grak
+                shared-blob-dir on
+                server 8100
+                storage grak
+                name grak_zeostorage
+                var ${buildout:directory}/parts/zeoclient1/var
+                cache-size 300MB
+            </zeoclient>
+            mount-point /grak
+        </zodb_db>
+
+    Again, we add blob-dir. The shared-blob-dir setting is also important if you're running ZEO and Zope on the same server and using the same blob directory for both. Also, add to the ZEO part of your buildout (which should use plone.recipe.zeoserver for Plone 4, rather than plone.recipe.zope2zeoserver), something like:
+    
+        zeo-conf-additional =
+            <filestorage grak>
+              path ${buildout:directory}/var/filestorage/grak.fs
+              blob-dir ${buildout:directory}/var/blobstorage-grak
+            </filestorage>
+    
+    The ZEO configuration also gets a new blob-dir setting. Note that with ZODB3 the syntax is different; I recommend just using option 3...
+    
+    Option 3 (works for ZEO or non-ZEO): Use collective.recipe.filestorage. Adjust your buildout with the following:
+    
+        [buildout]
+        ...
+        parts =
+            ...
+            filestorage
+            instance
+        # (it's important that filestorage comes before any parts install Zope or ZEO)
+        
+        [filestorage]
+        recipe = collective.recipe.filestorage
+        blob-storage = var/blobstorage-%(fs_part_name)s
+        parts =
+            grak
+
+
 FAQ
 ===
 
