@@ -537,7 +537,8 @@ enough.  In the meantime here are the recommended workarounds:
                 mount-point /grak
             </zodb_db>
 
-    (If you're already configuring your additional mountpoint this way, the only change is the addition of the blob-dir setting.)
+    (If you're already configuring your additional mountpoint this way, 
+    the only change is the addition of the blob-dir setting.)
     
     Option 2 (with ZEO): Add via zope-conf-additional in the Zope instance part of your buildout:
     
@@ -555,7 +556,10 @@ enough.  In the meantime here are the recommended workarounds:
             mount-point /grak
         </zodb_db>
 
-    Again, we add blob-dir. The shared-blob-dir setting is also important if you're running ZEO and Zope on the same server and using the same blob directory for both. Also, add to the ZEO part of your buildout (which should use plone.recipe.zeoserver for Plone 4, rather than plone.recipe.zope2zeoserver), something like:
+    Again, we add blob-dir. The shared-blob-dir setting is also important if you're running ZEO 
+    and Zope on the same server and using the same blob directory for both. 
+    Also, add to the ZEO part of your buildout (which should use plone.recipe.zeoserver for Plone 4, 
+    rather than plone.recipe.zope2zeoserver), something like:
     
         zeo-conf-additional =
             <filestorage grak>
@@ -563,9 +567,11 @@ enough.  In the meantime here are the recommended workarounds:
               blob-dir ${buildout:directory}/var/blobstorage-grak
             </filestorage>
     
-    The ZEO configuration also gets a new blob-dir setting. Note that with ZODB3 the syntax is different; I recommend just using option 3...
+    The ZEO configuration also gets a new blob-dir setting. Note that with ZODB3 the syntax is different; 
+    I recommend just using option 3...
     
-    Option 3 (works for ZEO or non-ZEO): Use collective.recipe.filestorage. Adjust your buildout with the following:
+    Option 3 (works for ZEO or non-ZEO): Use collective.recipe.filestorage. 
+    Adjust your buildout with the following:
     
         [buildout]
         ...
