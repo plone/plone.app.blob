@@ -4,6 +4,11 @@ Changelog
 1.0b14 - Unreleased
 -------------------
 
+- Revert the change to use the URL normalizer when generating content ids
+  based on filename and reinstate the previous (and expected) behavior.
+  Refs http://dev.plone.org/plone/ticket/8591
+  [witsch]
+
 
 1.0b13 - 2010-03-06
 -------------------
