@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b14 - Unreleased
+1.0b14 - 2010-03-07
 -------------------
 
 - Revert the change to use the URL normalizer when generating content ids
