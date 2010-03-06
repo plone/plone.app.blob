@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b13 - Unreleased
+1.0b13 - 2010-03-06
 -------------------
 
 - Use updated version of `createScales` as monkey-patched in
