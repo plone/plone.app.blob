@@ -66,7 +66,7 @@ class IntegrationTests(BlobTestCase):
         self.folder.invokeFactory('Blob', 'blob', title='foo', file=pdf_data)
         blob = self.folder['blob']
         field = blob.getFile()
-        self.assertEqual(field.getSize(), None)
+        self.assertEqual(field.getSize(), (0, 0))
 
     def testZeroLengthNamedFileIsBooleanTrue(self):
         self.folder.invokeFactory('Blob', 'blob', title='foo', file='')

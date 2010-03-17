@@ -95,7 +95,7 @@ class BlobWrapper(Implicit, Persistent):
         """ return image dimensions of the blob """
         # TODO: this should probably be cached...
         if not self.getContentType().startswith('image/'):
-            return None
+            return 0, 0
         blob = openBlob(self.blob)
         size = getImageSize(blob)
         blob.close()

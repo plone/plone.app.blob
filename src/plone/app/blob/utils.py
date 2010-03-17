@@ -31,7 +31,7 @@ def getImageSize(img):
         try:
             return iopen(img).size
         except IOError:
-            return None
+            return 0, 0
     else:
         data = img.read(32)
         return getImageInfo(data)[1:]
