@@ -6,6 +6,7 @@ Changelog
 
 - Provide base classes for file and image fields to be used in custom
   types not based on `archetypes.schemaextender`.
+  Fixes http://dev.plone.org/plone/ticket/10328
   [witsch]
 
 - Drop workaround for broken index accessor handling, which has been fixed
