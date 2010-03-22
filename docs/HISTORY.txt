@@ -4,6 +4,10 @@ Changelog
 1.0b15 - Unreleased
 -------------------
 
+- Drop workaround for broken index accessor handling, which has been fixed
+  upstream in `archetypes.schemaextender`.
+  [witsch]
+
 - Don't try to determine image dimensions for content other than images.
   Refs http://plone.org/products/cmfeditions/issues/58
   [witsch]

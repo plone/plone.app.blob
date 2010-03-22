@@ -10,11 +10,11 @@ from archetypes.schemaextender.field import ExtensionField
 from plone.app.imaging.utils import getAllowedSizes
 from plone.app.blob.interfaces import IBlobImageField
 from plone.app.blob.config import blobScalesAttr
-from plone.app.blob.field import BlobField, IndexMethodFix
+from plone.app.blob.field import BlobField
 from plone.app.blob.mixins import ImageFieldMixin
 
 
-class ExtensionBlobField(IndexMethodFix, ExtensionField, BlobField, ImageFieldMixin):
+class ExtensionBlobField(ExtensionField, BlobField, ImageFieldMixin):
     """ derivative of blobfield for extending schemas """
     implements(IBlobImageField)
 

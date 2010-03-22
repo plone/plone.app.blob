@@ -5,10 +5,10 @@ from Products.Archetypes.atapi import FileWidget
 from Products.validation import V_REQUIRED
 from archetypes.schemaextender.interfaces import ISchemaExtender
 from archetypes.schemaextender.field import ExtensionField
-from plone.app.blob.field import BlobField, IndexMethodFix
+from plone.app.blob.field import BlobField
 
 
-class ExtensionBlobField(IndexMethodFix, ExtensionField, BlobField):
+class ExtensionBlobField(ExtensionField, BlobField):
     """ derivative of blobfield for extending schemas """
 
     def set(self, instance, value, **kwargs):
