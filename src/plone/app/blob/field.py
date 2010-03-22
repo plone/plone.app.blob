@@ -21,10 +21,13 @@ from Products.Archetypes.Registry import registerField
 from Products.Archetypes.utils import contentDispositionHeader
 
 from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
+from plone.app.imaging.utils import getAllowedSizes
 from plone.app.blob.interfaces import IBlobbable, IWebDavUpload, IBlobField
+from plone.app.blob.interfaces import IBlobImageField
 from plone.app.blob.interfaces import IBlobWrapper
 from plone.app.blob.iterators import BlobStreamIterator
 from plone.app.blob.download import handleIfModifiedSince, handleRequestRange
+from plone.app.blob.mixins import ImageFieldMixin
 from plone.app.blob.utils import getImageSize, openBlob
 
 
@@ -294,3 +297,28 @@ class BlobField(ObjectField):
 
 registerField(BlobField, title='Blob',
               description='Used for storing files in blobs')
+
+
+
+# convenience base classes for blob-aware file & image fields
+
+class FileField(BlobField):
+    """ base class for a blob-based file field """
+
+
+registerField(FileField, title='Blob-aware FileField',
+              description='Used for storing files in blobs')
+
+
+
+class ImageField(BlobField, ImageFieldMixin):
+    """ base class for a blob-based image field """
+    implements(IBlobImageField)
+
+    @property
+    def sizes(self):
+        return getAllowedSizes()
+
+
+registerField(ImageField, title='Blob-aware ImageField',
+              description='Used for storing image in blobs')

@@ -4,6 +4,10 @@ Changelog
 1.0b15 - Unreleased
 -------------------
 
+- Provide base classes for file and image fields to be used in custom
+  types not based on `archetypes.schemaextender`.
+  [witsch]
+
 - Drop workaround for broken index accessor handling, which has been fixed
   upstream in `archetypes.schemaextender`.
   [witsch]
