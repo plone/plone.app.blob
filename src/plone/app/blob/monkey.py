@@ -3,7 +3,6 @@
 # file uploads are not anonymous, but instead provide a file name that
 # can later be used with the blob class' `consumeFile` method...
 
-from ZODB.blob import Blob
 from ZPublisher import HTTPRequest
 from tempfile import mkstemp, _TemporaryFileWrapper as TFW
 from cgi import FieldStorage
