@@ -5,7 +5,8 @@ Changelog
 -------------------
 
 - Restore support for defining per-field image scale sizes.
-  Refs http://dev.plone.org/plone/ticket/10328
+  Refs http://dev.plone.org/plone/ticket/10328 and
+  fixes http://dev.plone.org/plone/ticket/10159
   [witsch]
 
 - Provide base classes for file and image fields to be used in custom

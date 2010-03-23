@@ -24,10 +24,6 @@ class ExtensionBlobField(ExtensionField, BlobField, ImageFieldMixin):
         if hasattr(aq_base(instance), blobScalesAttr):
             delattr(aq_base(instance), blobScalesAttr)
 
-    @property
-    def sizes(self):
-        return getAllowedSizes()
-
 
 class SchemaExtender(object):
     implements(ISchemaExtender)
@@ -38,6 +34,7 @@ class SchemaExtender(object):
             primary = True,
             accessor = 'getImage',
             mutator = 'setImage',
+            sizes= getAllowedSizes,
             languageIndependent = True,
             storage = AnnotationStorage(migrate=True),
             swallowResizeExceptions = zconf.swallowImageResizeExceptions.enable,

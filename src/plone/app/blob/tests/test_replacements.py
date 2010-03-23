@@ -263,6 +263,30 @@ class ImageReplacementTests(ReplacementTestCase):
         # make sure all scale annotations were removed
         self.failIf(filter(isimage, IAnnotations(foo).values()))
 
+    def testImageDefaultSizes(self):
+        image = self.folder[self.folder.invokeFactory('Image', 'foo')]
+        sizes = image.getField('image').getAvailableSizes(image)
+        self.failUnless('mini' in sizes)
+        self.assertEqual(sizes['mini'], (200, 200))
+
+    def testImageGlobalSizes(self):
+        image = self.folder[self.folder.invokeFactory('Image', 'foo')]
+        iprops = self.portal.portal_properties.imaging_properties
+        iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
+        sizes = image.getField('image').getAvailableSizes(image)
+        self.assertEqual(sizes, {'foo': (23, 23)})
+
+    def testImageCustomSizes(self):
+        image = self.folder[self.folder.invokeFactory('Image', 'foo')]
+        field = image.getField('image')
+        # temporarily monkey-patch the field to avoid extensive test setup...
+        original = field.sizes
+        field.sizes = {'tiny': (42, 42)}
+        sizes = image.getField('image').getAvailableSizes(image)
+        self.assertEqual(sizes, {'tiny': (42, 42)})
+        # and clean up again after outselves...
+        field.sizes = original
+
 
 def test_suite():
     return defaultTestLoader.loadTestsFromName(__name__)
