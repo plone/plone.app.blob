@@ -2,7 +2,9 @@ from plone.app.blob.tests.base import ReplacementTestCase   # import first!
 
 from unittest import defaultTestLoader
 from zope.interface.interfaces import IInterface
+from zope.annotation import IAnnotations
 from Products.Archetypes.atapi import ImageField, AnnotationStorage
+from Products.Archetypes.Field import Image
 from Products.ATContentTypes.interface import file as atfile
 from Products.ATContentTypes.interface import image as atimage
 from Products.ATContentTypes.interfaces import IATFile as Z2IATFile
@@ -254,12 +256,12 @@ class ImageReplacementTests(ReplacementTestCase):
         # and store scales in AnnotationStorage
         foo.schema['image'] = ImageField('image', storage=AnnotationStorage())
         foo.schema['image'].set(foo, gif)
-        preview_key = 'Archetypes.storage.AnnotationStorage-image_preview'
-        self.failUnless(preview_key in foo.__annotations__.keys())
+        isimage = lambda i: isinstance(i, Image)
+        self.failUnless(filter(isimage, IAnnotations(foo).values()))
         # migrate using inline migrator
         migrate(self.portal, portal_type='Image', meta_type='ATBlob')
-        # make sure the scale annotation was removed
-        self.failIf(preview_key in foo.__annotations__.keys())
+        # make sure all scale annotations were removed
+        self.failIf(filter(isimage, IAnnotations(foo).values()))
 
 
 def test_suite():
