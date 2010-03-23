@@ -1,4 +1,4 @@
-from plone.app.blob.tests.base import BlobTestCase
+from plone.app.blob.tests.base import ReplacementTestCase
 
 from Products.Archetypes.public import BaseSchema, Schema, BaseContent
 from Products.Archetypes.public import FileWidget, ImageWidget
@@ -18,6 +18,11 @@ SampleSchema = BaseSchema.copy() + Schema((
         name = 'bar',
         widget = ImageWidget(label='Image', description='an image')),
 
+    ImageField(
+        name = 'hmm',
+        sizes = { 'tiny': (42, 42) },
+        widget = ImageWidget(label='Image', description='an image')),
+
 ))
 
 
@@ -32,7 +37,7 @@ registerType(SampleType, packageName)
 
 
 
-class BaseFieldTests(BlobTestCase):
+class BaseFieldTests(ReplacementTestCase):
 
     def create(self, id='foo', **kw):
         container = self.folder
@@ -49,6 +54,24 @@ class BaseFieldTests(BlobTestCase):
         foo = self.create(bar=getFile('image.jpg'))
         self.assertEqual(str(foo.getBar()), getFile('image.jpg').read())
         self.failUnless(foo.getField('bar').tag(foo).startswith('<img src'))
+
+    def testImageDefaultSizes(self):
+        image = self.create()
+        sizes = image.getField('bar').getAvailableSizes(image)
+        self.failUnless('mini' in sizes)
+        self.assertEqual(sizes['mini'], (200, 200))
+
+    def testImageGlobalSizes(self):
+        image = self.create()
+        iprops = self.portal.portal_properties.imaging_properties
+        iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
+        sizes = image.getField('bar').getAvailableSizes(image)
+        self.assertEqual(sizes, {'foo': (23, 23)})
+
+    def testImageCustomSizes(self):
+        image = self.create()
+        sizes = image.getField('hmm').getAvailableSizes(image)
+        self.assertEqual(sizes, {'tiny': (42, 42)})
 
 
 def test_suite():

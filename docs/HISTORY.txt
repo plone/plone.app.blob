@@ -4,6 +4,10 @@ Changelog
 1.0b15 - Unreleased
 -------------------
 
+- Restore support for defining per-field image scale sizes.
+  Refs http://dev.plone.org/plone/ticket/10328
+  [witsch]
+
 - Provide base classes for file and image fields to be used in custom
   types not based on `archetypes.schemaextender`.
   Fixes http://dev.plone.org/plone/ticket/10328

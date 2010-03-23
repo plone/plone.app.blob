@@ -325,7 +325,7 @@ class ImageField(BlobField, ImageFieldMixin):
         'type': 'image',
         'original_size': None,
         'max_size': None,
-        'sizes' : { 'thumb': (80, 80) },
+        'sizes' : getAllowedSizes,
         'swallowResizeExceptions': False,
         'pil_quality': 88,
         'pil_resize_algo': getPILResizeAlgo(),
@@ -333,10 +333,6 @@ class ImageField(BlobField, ImageFieldMixin):
         'allowable_content_types': ('image/gif', 'image/jpeg', 'image/png'),
         'widget': ImageWidget,
     })
-
-    @property
-    def sizes(self):
-        return getAllowedSizes()
 
 
 registerField(ImageField, title='Blob-aware ImageField',
