@@ -37,6 +37,13 @@ def getImageSize(img):
         return getImageInfo(data)[1:]
 
 
+def getPILResizeAlgo():
+    """ determine the resizing algorithm to be used """
+    if hasPIL:
+        from PIL.Image import ANTIALIAS
+        return ANTIALIAS
+
+
 def openBlob(blob, mode='r'):
     """ open a blob taking into consideration that it might need to be
         invalidated in order to be fetch again via zeo;  please see

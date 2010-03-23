@@ -15,7 +15,7 @@ from transaction import savepoint
 from webdav.common import rfc1123_date
 
 from Products.CMFCore.permissions import View
-from Products.Archetypes.atapi import ObjectField, FileWidget
+from Products.Archetypes.atapi import ObjectField, FileWidget, ImageWidget
 from Products.Archetypes.atapi import PrimaryFieldMarshaller
 from Products.Archetypes.Registry import registerField
 from Products.Archetypes.utils import contentDispositionHeader
@@ -28,7 +28,7 @@ from plone.app.blob.interfaces import IBlobWrapper
 from plone.app.blob.iterators import BlobStreamIterator
 from plone.app.blob.download import handleIfModifiedSince, handleRequestRange
 from plone.app.blob.mixins import ImageFieldMixin
-from plone.app.blob.utils import getImageSize, openBlob
+from plone.app.blob.utils import getImageSize, getPILResizeAlgo, openBlob
 
 
 class WebDavUpload(object):
@@ -305,6 +305,11 @@ registerField(BlobField, title='Blob',
 class FileField(BlobField):
     """ base class for a blob-based file field """
 
+    _properties = BlobField._properties.copy()
+    _properties.update({
+        'type': 'file',
+    })
+
 
 registerField(FileField, title='Blob-aware FileField',
               description='Used for storing files in blobs')
@@ -314,6 +319,20 @@ registerField(FileField, title='Blob-aware FileField',
 class ImageField(BlobField, ImageFieldMixin):
     """ base class for a blob-based image field """
     implements(IBlobImageField)
+
+    _properties = BlobField._properties.copy()
+    _properties.update({
+        'type': 'image',
+        'original_size': None,
+        'max_size': None,
+        'sizes' : { 'thumb': (80, 80) },
+        'swallowResizeExceptions': False,
+        'pil_quality': 88,
+        'pil_resize_algo': getPILResizeAlgo(),
+        'default_content_type': 'image/png',
+        'allowable_content_types': ('image/gif', 'image/jpeg', 'image/png'),
+        'widget': ImageWidget,
+    })
 
     @property
     def sizes(self):
