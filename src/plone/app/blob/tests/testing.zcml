@@ -13,6 +13,8 @@
     <five:deprecatedManageAddDelete class=".lingua.BlobelFish" />
   </configure>
 
+  <five:deprecatedManageAddDelete class=".test_base_fields.SampleType" />
+
   <monkey:patch
      class="ZPublisher.HTTPResponse.HTTPResponse"
      original="setBody"
