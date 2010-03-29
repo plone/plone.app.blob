@@ -72,7 +72,13 @@ def makeMigrator(context, portal_type, meta_type=None):
                 field.getMutator(self.obj)(value)
 
         def last_migrate_reindex(self):
-            self.obj.reindexObject()
+            # Manually reindex the object to avoid updating the
+            # modification date.
+            catalogs = self.obj.getCatalogs()
+            url = self.obj._CatalogMultiplex__url()
+            for c in catalogs:
+                if c is not None:
+                    c.catalog_object(self.obj, url)
 
     return BlobMigrator
 
