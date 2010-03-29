@@ -100,6 +100,7 @@ class ATFileToBlobMigrator(BaseMigrator):
 def getATFilesMigrationWalker(self):
     return getMigrationWalker(self, migrator=ATFileToBlobMigrator)
 
+
 def migrateATFiles(self):
     return migrate(self, walker=getATFilesMigrationWalker)
 
@@ -111,6 +112,7 @@ class ATFileToBlobFileMigrator(ATFileToBlobMigrator):
 
 def getATBlobFilesMigrationWalker(self):
     return getMigrationWalker(self, migrator=ATFileToBlobFileMigrator)
+
 
 def migrateATBlobFiles(self):
     return migrate(self, walker=getATBlobFilesMigrationWalker)
@@ -134,6 +136,7 @@ class ATImageToBlobImageMigrator(ATFileToBlobMigrator):
 
 def getATBlobImagesMigrationWalker(self):
     return getMigrationWalker(self, migrator=ATImageToBlobImageMigrator)
+
 
 def migrateATBlobImages(self):
     return migrate(self, walker=getATBlobImagesMigrationWalker)
