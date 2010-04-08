@@ -248,6 +248,17 @@ class ImageReplacementTests(ReplacementTestCase):
         brains = catalog(Type='Image')
         self.assertEqual([b.getObject() for b in brains], [foo])
 
+    def testModificationTimeDuringInlineImageMigration(self):
+        foo = self.folder[self.folder.invokeFactory('Image', id='foo')]
+        foo.schema['image'] = ImageField('image', storage=AnnotationStorage())
+        foo.schema['image'].set(foo, getImage())
+        # record the modification date before migration
+        mod = foo.modified()
+        # migrate using inline migrator
+        migrate(self.portal, portal_type='Image', meta_type='ATBlob')
+        # the modification date isn't changed by migration
+        self.assertEqual(mod, foo.modified())
+
     def testOldScalesRemovedDuringInlineImageMigration(self):
         gif = getImage()
         foo = self.folder[self.folder.invokeFactory('Image', id='foo',
@@ -258,14 +269,10 @@ class ImageReplacementTests(ReplacementTestCase):
         foo.schema['image'].set(foo, gif)
         isimage = lambda i: isinstance(i, Image)
         self.failUnless(filter(isimage, IAnnotations(foo).values()))
-        # Record the modification date before migration
-        mod = foo.modified()
         # migrate using inline migrator
         migrate(self.portal, portal_type='Image', meta_type='ATBlob')
         # make sure all scale annotations were removed
         self.failIf(filter(isimage, IAnnotations(foo).values()))
-        # the modification date isn't changed by migration
-        self.assertEqual(mod, foo.modified())
 
     def testImageDefaultSizes(self):
         image = self.folder[self.folder.invokeFactory('Image', 'foo')]
