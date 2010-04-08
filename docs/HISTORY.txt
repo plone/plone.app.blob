@@ -23,7 +23,7 @@ Changelog
 
 - Don't try to determine image dimensions for content other than images.
   Refs http://plone.org/products/cmfeditions/issues/58
-  [witsch]
+  [witsch, do3cc]
 
 
 1.0b14 - 2010-03-07
