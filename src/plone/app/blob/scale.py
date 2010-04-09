@@ -4,9 +4,11 @@ from Acquisition import aq_base
 from ZODB.blob import Blob
 from plone.app.imaging.traverse import DefaultImageScaleHandler, ImageScale
 from plone.app.imaging.interfaces import IImageScaleHandler
+from plone.app.imaging.interfaces import IImageScaleFactory
 from plone.app.blob.interfaces import IBlobImageField
 from plone.app.blob.config import blobScalesAttr
 from plone.app.blob.utils import openBlob
+from plone.scale.scale import scaleImage
 
 
 class BlobImageScaleHandler(DefaultImageScaleHandler):
@@ -50,3 +52,22 @@ class BlobImageScaleHandler(DefaultImageScaleHandler):
         del data['data']
         scales[scale] = data
         setattr(instance, blobScalesAttr, fields)
+
+
+class BlobImageScaleFactory(object):
+    """ adapter for image fields that allows generating scaled images """
+    implements(IImageScaleFactory)
+    adapts(IBlobImageField)
+
+    def __init__(self, field):
+        self.field = field
+
+    def create(self, context, **parameters):
+        wrapper = self.field.get(context)
+        if wrapper:
+            blob = Blob()
+            result = blob.open('w')
+            _, format, dimensions = scaleImage(wrapper.getBlob().open('r'),
+                result=result, **parameters)
+            result.close()
+            return blob, format, dimensions
