@@ -34,7 +34,7 @@ class SchemaExtender(object):
             primary = True,
             accessor = 'getImage',
             mutator = 'setImage',
-            sizes= getAllowedSizes,
+            sizes = getAllowedSizes,
             languageIndependent = True,
             storage = AnnotationStorage(migrate=True),
             swallowResizeExceptions = zconf.swallowImageResizeExceptions.enable,
@@ -45,7 +45,7 @@ class SchemaExtender(object):
                           ('checkImageMaxSize', V_REQUIRED)),
             widget = ImageWidget(label = _(u'label_image', default=u'Image'),
                                  description=_(u''),
-                                 show_content_type = False,))
+                                 show_content_type = False,)),
     ]
 
     def __init__(self, context):

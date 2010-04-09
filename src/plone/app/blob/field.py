@@ -325,7 +325,7 @@ class ImageField(BlobField, ImageFieldMixin):
         'type': 'image',
         'original_size': None,
         'max_size': None,
-        'sizes' : getAllowedSizes,
+        'sizes': getAllowedSizes,
         'swallowResizeExceptions': False,
         'pil_quality': 88,
         'pil_resize_algo': getPILResizeAlgo(),

@@ -20,7 +20,7 @@ SampleSchema = BaseSchema.copy() + Schema((
 
     ImageField(
         name = 'hmm',
-        sizes = { 'tiny': (42, 42) },
+        sizes = {'tiny': (42, 42)},
         widget = ImageWidget(label='Image', description='an image')),
 
 ))

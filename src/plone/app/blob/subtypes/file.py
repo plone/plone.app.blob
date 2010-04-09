@@ -33,7 +33,7 @@ class SchemaExtender(object):
                           ('checkFileMaxSize', V_REQUIRED)),
             widget = FileWidget(label = _(u'label_file', default=u'File'),
                                 description=_(u''),
-                                show_content_type = False,))
+                                show_content_type = False,)),
     ]
 
     def __init__(self, context):
