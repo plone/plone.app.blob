@@ -29,6 +29,7 @@ from plone.app.blob.iterators import BlobStreamIterator
 from plone.app.blob.download import handleIfModifiedSince, handleRequestRange
 from plone.app.blob.mixins import ImageFieldMixin
 from plone.app.blob.utils import getImageSize, getPILResizeAlgo, openBlob
+from plone.app.blob.config import blobScalesAttr
 
 
 class WebDavUpload(object):
@@ -334,6 +335,10 @@ class ImageField(BlobField, ImageFieldMixin):
         'widget': ImageWidget,
     })
 
+    def set(self, instance, value, **kwargs):
+        super(ImageField, self).set(instance, value, **kwargs)
+        if hasattr(aq_base(instance), blobScalesAttr):
+            delattr(aq_base(instance), blobScalesAttr)
 
 registerField(ImageField, title='Blob-aware ImageField',
               description='Used for storing image in blobs')

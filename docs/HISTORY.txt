@@ -8,6 +8,10 @@ Changelog
   new IImageScaleFactory feature.
   [wichert]
 
+- invalidate blobs for created scales in case a new image gets uploaded
+  to the ImageField
+  Fixes https://dev.plone.org/plone/ticket/10455
+  [fRiSi]
 
 1.0b15 - 2010-04-10
 -------------------
