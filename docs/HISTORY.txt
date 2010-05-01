@@ -1,17 +1,17 @@
 Changelog
 =========
 
-1.0b16 - Unreleased
+1.0b16 - 2010-05-02
 -------------------
+
+- Remove existing image scales when updating blob-aware image fields.
+  Fixes http://dev.plone.org/plone/ticket/10455
+  [frisi]
 
 - Correct dependency on plone.app.imaging to >1.0b9 since we need the
   new IImageScaleFactory feature.
   [wichert]
 
-- invalidate blobs for created scales in case a new image gets uploaded
-  to the ImageField
-  Fixes https://dev.plone.org/plone/ticket/10455
-  [fRiSi]
 
 1.0b15 - 2010-04-10
 -------------------

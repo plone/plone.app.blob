@@ -340,5 +340,6 @@ class ImageField(BlobField, ImageFieldMixin):
         if hasattr(aq_base(instance), blobScalesAttr):
             delattr(aq_base(instance), blobScalesAttr)
 
+
 registerField(ImageField, title='Blob-aware ImageField',
               description='Used for storing image in blobs')
