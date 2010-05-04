@@ -4,6 +4,9 @@ Changelog
 1.0b17 - Unreleased
 -------------------
 
+- Enable "Image" replacement content type by default.
+  [witsch]
+
 - Don't break when image-specific methods are accidentally used on
   "File" content.
   [witsch]

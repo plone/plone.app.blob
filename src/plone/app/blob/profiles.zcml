@@ -5,7 +5,7 @@
 
   <genericsetup:registerProfile
     name="default"
-    title="plone.app.blob: 'File' replacement type"
+    title="plone.app.blob: ZODB Blob support"
     directory="profiles/default"
     description="Extension profile to replace the standard 'File' content type with a compatible one based on ZODB 3.8 blobs"
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
