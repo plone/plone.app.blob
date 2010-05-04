@@ -73,7 +73,9 @@ class ImageMixin(ATCTImageTransform):
     security.declareProtected(View, 'tag')
     def tag(self, **kwargs):
         """ generate image tag using the api of the ImageField """
-        return self.getField('image').tag(self, **kwargs)
+        field = self.getField('image')
+        if field is not None:
+            return field.tag(self, **kwargs)
 
     security.declareProtected(View, 'getSize')
     def getSize(self, scale=None):
@@ -83,11 +85,15 @@ class ImageMixin(ATCTImageTransform):
 
     security.declareProtected(View, 'getWidth')
     def getWidth(self, scale=None):
-        return self.getSize(scale)[0]
+        size = self.getSize(scale)
+        if size:
+            return size[0]
 
     security.declareProtected(View, 'getHeight')
     def getHeight(self, scale=None):
-        return self.getSize(scale)[1]
+        size = self.getSize(scale)
+        if size:
+            return size[1]
 
     width = ComputedAttribute(getWidth, 1)
     height = ComputedAttribute(getHeight, 1)

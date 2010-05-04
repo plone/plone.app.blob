@@ -4,6 +4,10 @@ Changelog
 1.0b17 - Unreleased
 -------------------
 
+- Don't break when image-specific methods are accidentally used on
+  "File" content.
+  [witsch]
+
 
 1.0b16 - 2010-05-02
 -------------------

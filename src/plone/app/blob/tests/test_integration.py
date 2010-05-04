@@ -67,6 +67,14 @@ class IntegrationTests(BlobTestCase):
         blob = self.folder['blob']
         field = blob.getFile()
         self.assertRaises(AttributeError, field.getSize)
+        self.assertEqual(blob.getSize(), None)
+        self.assertEqual(blob.getWidth(), None)
+        self.assertEqual(blob.getHeight(), None)
+
+    def testImageTagOnFileContent(self):
+        self.folder.invokeFactory('Blob', 'blob', title='foo', file=pdf_data)
+        blob = self.folder['blob']
+        self.assertEqual(blob.tag(), None)
 
     def testZeroLengthNamedFileIsBooleanTrue(self):
         self.folder.invokeFactory('Blob', 'blob', title='foo', file='')
