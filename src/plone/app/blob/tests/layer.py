@@ -1,11 +1,9 @@
-from transaction import commit
-from zope.configuration import xmlconfig
-
-from Products.CMFCore.utils import getToolByName
-from Products.Five import fiveconfigure
-from Products.Five import zcml
-from Products.PloneTestCase.layer import PloneSite
 from Testing.ZopeTestCase import app, close, installProduct, installPackage
+from Products.Five import zcml
+from Products.Five import fiveconfigure
+from Products.CMFCore.utils import getToolByName
+from Products.PloneTestCase.layer import PloneSite
+from transaction import commit
 
 
 class BlobLayer(PloneSite):
@@ -21,7 +19,6 @@ class BlobLayer(PloneSite):
         fiveconfigure.debug_mode = True
         from plone.app.blob import tests
         zcml.load_config('testing.zcml', tests)
-        xmlconfig.includeOverrides(zcml._context, 'overrides.zcml', tests)
         fiveconfigure.debug_mode = False
         installPackage('plone.app.blob', quiet=True)
         # import the default profile

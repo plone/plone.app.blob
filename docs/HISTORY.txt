@@ -4,9 +4,6 @@ Changelog
 1.0b17 - Unreleased
 -------------------
 
-- Disable the schema cache for our tests, as they rely on schema changes.
-  [hannosch]
-
 - Migration screen tried to check for installation via quick installer. We
   check the product of the destination portal type instead now. This closes
   http://dev.plone.org/plone/ticket/10365.
