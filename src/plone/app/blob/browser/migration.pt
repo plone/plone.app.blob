@@ -25,11 +25,6 @@
           <p> The migration facility is currently unavailable, since the
               <a href="http://pypi.python.org/pypi/Products.contentmigration/">
               Products.contentmigration</a> package has not been installed. </p>
-
-          <p> Please use 
-              <a href="http://peak.telecommunity.com/DevCenter/EasyInstall">
-              Easy Install</a> to do so or download and extract the package
-              into your `Products/` directory. </p>
         </div>
 
         <div tal:condition="exists: options/available">
