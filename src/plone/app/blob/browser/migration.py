@@ -24,6 +24,7 @@ class BlobMigrationView(BrowserView):
         options = {}
         clicked = request.form.has_key
         walker = self.walker()
+        self.src_portal_type = walker.src_portal_type
         portal_url = getToolByName(context, 'portal_url')()
         ttool = getToolByName(context, 'portal_types')
         fti = ttool.get(walker.dst_portal_type)
