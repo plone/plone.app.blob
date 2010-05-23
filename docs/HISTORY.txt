@@ -4,6 +4,11 @@ Changelog
 1.0b17 - Unreleased
 -------------------
 
+- Migration screen tried to check for installation via quick installer. We
+  check the product of the destination portal type instead now. This closes
+  http://dev.plone.org/plone/ticket/10365.
+  [dunlapm, hannosch]
+
 - Enable "Image" replacement content type by default.
   [witsch]
 

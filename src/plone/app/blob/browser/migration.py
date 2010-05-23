@@ -23,9 +23,11 @@ class BlobMigrationView(BrowserView):
         request = aq_inner(self.request)
         options = {}
         clicked = request.form.has_key
+        walker = self.walker()
         portal_url = getToolByName(context, 'portal_url')()
-        quickinstaller = getToolByName(context, 'portal_quickinstaller')
-        if not quickinstaller.isProductInstalled('plone.app.blob'):
+        ttool = getToolByName(context, 'portal_types')
+        fti = ttool.get(walker.dst_portal_type)
+        if fti and fti.product != 'plone.app.blob':
             url = '%s/prefs_install_products_form' % portal_url
             msg = _(u'Please install `plone.app.blob` to be able to migrate to blobs.')
             IStatusMessage(request).addStatusMessage(msg, type='warning')
@@ -47,7 +49,6 @@ class BlobMigrationView(BrowserView):
             IStatusMessage(request).addStatusMessage(msg, type='info')
             request.RESPONSE.redirect(portal_url)
         else:
-            walker = self.walker()
             options = dict(available=len(list(walker.walk())))
         return self.index(**options)
 
