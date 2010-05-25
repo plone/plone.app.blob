@@ -193,9 +193,10 @@ class BlobField(ObjectField):
     def set(self, instance, value, **kwargs):
         """ use input value to populate the blob and set the associated
             file name and mimetype """
-        if value == 'DELETE_%s' % self.getName().upper():
+        if value in ('DELETE_FILE', 'DELETE_IMAGE'):
             super(BlobField, self).unset(instance, **kwargs)
             return
+    
         # create a new blob instead of modifying the old one to
         # achieve copy-on-write semantics.
         blob = BlobWrapper()
@@ -326,7 +327,7 @@ class ImageField(BlobField, ImageFieldMixin):
         'type': 'image',
         'original_size': None,
         'max_size': None,
-        'sizes': getAllowedSizes,
+        'sizes': None,
         'swallowResizeExceptions': False,
         'pil_quality': 88,
         'pil_resize_algo': getPILResizeAlgo(),
@@ -339,6 +340,30 @@ class ImageField(BlobField, ImageFieldMixin):
         super(ImageField, self).set(instance, value, **kwargs)
         if hasattr(aq_base(instance), blobScalesAttr):
             delattr(aq_base(instance), blobScalesAttr)
+
+    def getAvailableSizes(self, instance):
+        """Get sizes
+
+        Supports:
+            self.sizes as dict
+            A method in instance called like sizes that returns dict
+            A callable
+        """
+        sizes = self.sizes
+        if isinstance(sizes, dict):
+            return sizes
+        elif isinstance(sizes, basestring):
+            assert(shasattr(instance, sizes))
+            method = getattr(instance, sizes)
+            data = method()
+            assert(isinstance(data, dict))
+            return data
+        elif callable(sizes):
+            return sizes()
+        elif sizes is None:
+            return getAllowedSizes()
+        else:
+            raise TypeError, 'Wrong self.sizes has wrong type: %s' % type(sizes)
 
 
 registerField(ImageField, title='Blob-aware ImageField',
