@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b17 - Unreleased
+1.0b17 - 2010-06-03
 -------------------
 
 - Migration screen tried to check for installation via quick installer. We
