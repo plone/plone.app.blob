@@ -1,8 +1,14 @@
 from Testing.ZopeTestCase import Sandboxed
-from Products.Five.testbrowser import Browser
 from Products.PloneTestCase import PloneTestCase
 from plone.app.blob.tests.layer import BlobLayer, BlobReplacementLayer
 from plone.app.blob.tests.layer import BlobLinguaLayer
+
+# BBB Zope 2.12
+try:
+    from Testing.testbrowser import Browser
+    Browser # pyflakes
+except ImportError:
+    from Products.Five.testbrowser import Browser
 
 try:
     # try to import the sample type for testing LinguaPlone

@@ -141,7 +141,13 @@ Finally the correct creation of blob-based content "through the web" is tested
 using a testbrowser:
 
   >>> self.setRoles('Editor')
-  >>> from Products.Five.testbrowser import Browser
+
+  # BBB Zope 2.12
+  >>> try:
+  ...     from Testing.testbrowser import Browser
+  ... except ImportError:
+  ...     from Products.Five.testbrowser import Browser
+
   >>> from Products.PloneTestCase import PloneTestCase as ptc
   >>> user, pwd = ptc.default_user, ptc.default_password
   >>> browser = Browser()

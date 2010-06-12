@@ -4,6 +4,9 @@ Changelog
 1.0b18 - Unreleased
 -------------------
 
+- Avoid deprecation warnings under Zope 2.13.
+  [hannosch]
+
 - Test fix: Use the API to look at request headers.
   [hannosch]
 

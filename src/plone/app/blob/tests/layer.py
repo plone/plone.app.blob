@@ -1,9 +1,17 @@
 from Testing.ZopeTestCase import app, close, installProduct, installPackage
-from Products.Five import zcml
-from Products.Five import fiveconfigure
 from Products.CMFCore.utils import getToolByName
 from Products.PloneTestCase.layer import PloneSite
 from transaction import commit
+
+# BBB Zope 2.12
+try:
+    from Zope2.App import zcml
+    from OFS import metaconfigure
+    zcml # pyflakes
+    metaconfigure
+except ImportError:
+    from Products.Five import zcml
+    from Products.Five import fiveconfigure as metaconfigure
 
 
 class BlobLayer(PloneSite):
@@ -16,10 +24,10 @@ class BlobLayer(PloneSite):
         # the same module as this class.
         # For more information, look at testing3rdparty.txt
         # load zcml & install packages
-        fiveconfigure.debug_mode = True
+        metaconfigure.debug_mode = True
         from plone.app.blob import tests
         zcml.load_config('testing.zcml', tests)
-        fiveconfigure.debug_mode = False
+        metaconfigure.debug_mode = False
         installPackage('plone.app.blob', quiet=True)
         # import the default profile
         root = app()
@@ -45,10 +53,10 @@ class BlobFileReplacementLayer(BlobLayer):
     @classmethod
     def setUp(cls):
         # load zcml & install packages
-        fiveconfigure.debug_mode = True
+        metaconfigure.debug_mode = True
         from plone.app import imaging
         zcml.load_config('configure.zcml', imaging)
-        fiveconfigure.debug_mode = False
+        metaconfigure.debug_mode = False
         # import replacement profiles
         root = app()
         portal = root.plone
@@ -75,10 +83,10 @@ class BlobReplacementLayer(BlobLayer):
     @classmethod
     def setUp(cls):
         # load zcml & install packages
-        fiveconfigure.debug_mode = True
+        metaconfigure.debug_mode = True
         from plone.app import imaging
         zcml.load_config('configure.zcml', imaging)
-        fiveconfigure.debug_mode = False
+        metaconfigure.debug_mode = False
         installPackage('plone.app.imaging', quiet=True)
         # import replacement profiles
         root = app()
@@ -108,12 +116,12 @@ class BlobLinguaLayer(PloneSite):
     @classmethod
     def setUp(cls):
         # load zcml
-        fiveconfigure.debug_mode = True
+        metaconfigure.debug_mode = True
         from plone.app.blob import tests
         zcml.load_config('testing.zcml', tests)
         from Products import LinguaPlone
         zcml.load_config('configure.zcml', LinguaPlone)
-        fiveconfigure.debug_mode = False
+        metaconfigure.debug_mode = False
         # install packages, import profiles...
         installPackage('plone.app.blob', quiet=True)
         installProduct('LinguaPlone', quiet=True)

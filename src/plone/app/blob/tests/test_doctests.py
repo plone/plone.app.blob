@@ -1,5 +1,6 @@
+import doctest
 from unittest import TestSuite
-from zope.testing import doctest
+
 from Testing.ZopeTestCase import ZopeDocFileSuite
 from plone.app.blob.tests.base import BlobFunctionalTestCase
 from plone.app.blob.tests.base import ReplacementFunctionalTestCase
@@ -7,8 +8,7 @@ from plone.app.blob.tests.base import BlobLinguaFunctionalTestCase
 from plone.app.blob.tests.utils import hasLinguaPlone
 
 
-optionflags = (doctest.REPORT_ONLY_FIRST_FAILURE |
-               doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
+optionflags = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 
 
 def test_suite():
