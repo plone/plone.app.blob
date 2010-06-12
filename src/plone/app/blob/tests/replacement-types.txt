@@ -128,11 +128,11 @@ without the `/view` action part:
   >>> browser.open(url)
   >>> browser.contents == gif
   True
-  >>> browser.headers['status'].upper()
+  >>> browser.headers.getheader('status').upper()
   '200 OK'
-  >>> browser.headers['content-type']
+  >>> browser.headers.getheader('content-type')
   'image/gif'
-  >>> browser.headers['content-disposition']
+  >>> browser.headers.getheader('content-disposition')
   'inline; filename="foobar.gif"'
 
 Appending `/index_html` should be the same:
@@ -140,11 +140,11 @@ Appending `/index_html` should be the same:
   >>> browser.open(url + '/index_html')
   >>> browser.contents == gif
   True
-  >>> browser.headers['status'].upper()
+  >>> browser.headers.getheader('status').upper()
   '200 OK'
-  >>> browser.headers['content-type']
+  >>> browser.headers.getheader('content-type')
   'image/gif'
-  >>> browser.headers['content-disposition']
+  >>> browser.headers.getheader('content-disposition')
   'inline; filename="foobar.gif"'
 
 Let's also check the scaled versions included the un-scaled variant:
@@ -152,17 +152,17 @@ Let's also check the scaled versions included the un-scaled variant:
   >>> browser.open(url + '/image_thumb')
   >>> browser.contents
   '\x89PNG...'
-  >>> browser.headers['status'].upper()
+  >>> browser.headers.getheader('status').upper()
   '200 OK'
-  >>> browser.headers['content-type']
+  >>> browser.headers.getheader('content-type')
   'image/png'
 
   >>> browser.open(url + '/image')
   >>> browser.contents
   'GIF89a...'
-  >>> browser.headers['status'].upper()
+  >>> browser.headers.getheader('status').upper()
   '200 OK'
-  >>> browser.headers['content-type']
+  >>> browser.headers.getheader('content-type')
   'image/gif'
 
 It should also be possible to remove the image. Again, for this to work the

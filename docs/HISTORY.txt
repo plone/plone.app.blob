@@ -4,6 +4,9 @@ Changelog
 1.0b18 - Unreleased
 -------------------
 
+- Test fix: Use the API to look at request headers.
+  [hannosch]
+
 1.0b17 - 2010-06-03
 -------------------
 
