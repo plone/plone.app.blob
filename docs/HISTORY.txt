@@ -1,8 +1,12 @@
 Changelog
 =========
 
-1.0b19 - unreleased
--------------------
+1.0 - unreleased
+----------------
+
+- Correct blob migration count to ignore unrelated messages. This closes
+  http://dev.plone.org/plone/ticket/10114.
+  [hannosch]
 
 - Update license to GPL version 2 only.
   [hannosch]

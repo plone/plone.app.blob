@@ -39,7 +39,9 @@ class BlobMigrationView(BrowserView):
             options = dict(nomigrations=42)
         elif clicked('migrate'):
             output = self.migration()
-            count = len(output.split('\n')) - 1
+            # Only count actual migration lines
+            lines = output.split('\n')
+            count = len([l for l in lines if l.startswith('Migrating')])
             msg = _(u'blob_migration_info',
                 default=u'Blob migration performed for ${count} item(s).',
                 mapping={'count': count})
