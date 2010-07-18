@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0 - unreleased
+1.0 - 2010-07-18
 ----------------
 
 - Correct blob migration count to ignore unrelated messages. This closes
@@ -10,7 +10,6 @@ Changelog
 
 - Update license to GPL version 2 only.
   [hannosch]
-
 
 1.0b18 - 2010-07-01
 -------------------
