@@ -191,25 +191,29 @@ class BlobField(ObjectField):
 
     security.declarePrivate('set')
     def set(self, instance, value, **kwargs):
-        """ use input value to populate the blob and set the associated
-            file name and mimetype """
+        """ Populate the blob, set associated filename and mimetype.
+
+        Keyword arguments:
+        mimetype: (optional) sets the MIME type explicitly
+
+        """
         if value in ('DELETE_FILE', 'DELETE_IMAGE'):
             super(BlobField, self).unset(instance, **kwargs)
             return
-    
-        # create a new blob instead of modifying the old one to
-        # achieve copy-on-write semantics.
+
+        # create a new blob instead of modifying the old one,
+        # this achieves copy-on-write semantics
         blob = BlobWrapper()
         if isinstance(value, basestring):
-            # make StringIO from string, because StringIO may be adapted to Blobabble
+            # make StringIO from string, because it may be adapted to Blobbable
             value = StringIO(value)
         if value is not None:
             blobbable = IBlobbable(value)
             try:
                 blobbable.feed(blob.getBlob())
-            except ReuseBlob, exception:
-                blob.setBlob(exception.args[0])     # reuse the given blob
-            blob.setContentType(blobbable.mimetype())
+            except ReuseBlob as exception:
+                blob.setBlob(exception.args[0]) # reuse the given blob
+            blob.setContentType(kwargs.get('mimetype', blobbable.mimetype()))
             blob.setFilename(blobbable.filename())
         super(BlobField, self).set(instance, blob, **kwargs)
 
