@@ -211,7 +211,7 @@ class BlobField(ObjectField):
             blobbable = IBlobbable(value)
             try:
                 blobbable.feed(blob.getBlob())
-            except ReuseBlob as exception:
+            except ReuseBlob, exception:
                 blob.setBlob(exception.args[0]) # reuse the given blob
             blob.setContentType(kwargs.get('mimetype', blobbable.mimetype()))
             blob.setFilename(blobbable.filename())
