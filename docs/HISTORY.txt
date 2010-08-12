@@ -18,6 +18,7 @@ Changelog
 - Update license to GPL version 2 only.
   [hannosch]
 
+
 1.0b18 - 2010-07-01
 -------------------
 
@@ -26,6 +27,7 @@ Changelog
 
 - Test fix: Use the API to look at request headers.
   [hannosch]
+
 
 1.0b17 - 2010-06-03
 -------------------
@@ -41,12 +43,14 @@ Changelog
 - Don't break when image-specific methods are accidentally used on
   "File" content.
   [witsch]
-  
-- The DELETE_* handling now works even if the field is not called 'file' or 
-  'image'. [regebro]
-  
-- The ImageField could not be copied, which broke the standard way of 
-  subclassing archetypes schemas. [regebro]
+
+- The `DELETE_*` handling now works even if the field is not called 'file'
+  or 'image'.
+  [regebro]
+
+- The `ImageField` could not be copied, which broke the standard way of
+  subclassing archetypes schemas.
+  [regebro]
 
 
 1.0b16 - 2010-05-02
