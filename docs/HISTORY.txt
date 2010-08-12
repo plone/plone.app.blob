@@ -4,6 +4,9 @@ Changelog
 1.1 - Unreleased
 ----------------
 
+- Allow explicitly setting a mimetype via a keyword passed to the mutator.
+  [davidblewett, kleist, witsch]
+
 - Don't raise `AttributeError` when calling `getSize` on empty images.
   [ggozad, witsch]
 

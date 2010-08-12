@@ -185,6 +185,12 @@ class IntegrationTests(BlobTestCase):
         blob = self.folder.blob
         self.failIf(blob.Schema()['title'].required)
 
+    def testUpdateData(self):
+        blob = self.folder[self.folder.invokeFactory('Blob', 'blob')]
+        blob.getFile().update_data(pdf_data, 'foo/bar', len(pdf_data))
+        self.assertEqual(str(blob.getFile()), pdf_data)
+        self.assertEqual(blob.getContentType(), 'foo/bar')
+
 
 class FunctionalIntegrationTests(BlobFunctionalTestCase):
 
