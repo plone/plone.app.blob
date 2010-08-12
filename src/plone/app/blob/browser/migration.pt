@@ -31,11 +31,11 @@
           <p i18n:translate="blob_migration_instructions">
               Clicking the below button will cause all content items based on
               ATContentTypes'
-              <tal:type i18n:name="type" tal:replace="view/src_portal_type" />
+              <tal:type i18n:name="type" tal:replace="options/target_type" />
               class to be migrated to use ZODB blobs, i.e. the content data
               will be managed by the ZODB, but outside of the "Data.fs" file.
               This process can take a while, especially for sites with many
-              and/or big file content items.
+              and/or big content items.
           </p>
 
           <form method="post" action="blob-migration"
