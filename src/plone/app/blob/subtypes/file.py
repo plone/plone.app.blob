@@ -21,6 +21,7 @@ class SchemaExtender(object):
 
     fields = [
         ExtensionBlobField('file',
+            type = 'file',
             required = True,
             primary = True,
             searchable = True,
@@ -29,6 +30,7 @@ class SchemaExtender(object):
             index_method = 'getIndexValue',
             languageIndependent = True,
             storage = AnnotationStorage(migrate=True),
+            default_content_type = 'application/octet-stream',
             validators = (('isNonEmptyFile', V_REQUIRED),
                           ('checkFileMaxSize', V_REQUIRED)),
             widget = FileWidget(label = _(u'label_file', default=u'File'),

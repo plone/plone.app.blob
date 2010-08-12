@@ -30,6 +30,7 @@ class SchemaExtender(object):
 
     fields = [
         ExtensionBlobField('image',
+            type = 'image',
             required = True,
             primary = True,
             accessor = 'getImage',
@@ -40,7 +41,10 @@ class SchemaExtender(object):
             swallowResizeExceptions = zconf.swallowImageResizeExceptions.enable,
             pil_quality = zconf.pil_config.quality,
             pil_resize_algo = zconf.pil_config.resize_algo,
+            original_size = None,
             max_size = zconf.ATImage.max_image_dimension,
+            default_content_type = 'image/png',
+            allowable_content_types = ('image/gif', 'image/jpeg', 'image/png'),
             validators = (('isNonEmptyFile', V_REQUIRED),
                           ('checkImageMaxSize', V_REQUIRED)),
             widget = ImageWidget(label = _(u'label_image', default=u'Image'),

@@ -4,6 +4,9 @@ Changelog
 1.1 - Unreleased
 ----------------
 
+- Don't raise `AttributeError` when calling `getSize` on empty images.
+  [ggozad, witsch]
+
 
 1.0 - 2010-07-18
 ----------------

@@ -60,9 +60,9 @@ class BlobWrapper(Implicit, Persistent):
 
     security = ClassSecurityInfo()
 
-    def __init__(self):
+    def __init__(self, content_type=None):
         self.blob = Blob()
-        self.content_type = 'application/octet-stream'
+        self.content_type = content_type
         self.filename = None
 
     security.declarePrivate('setBlob')
@@ -203,7 +203,7 @@ class BlobField(ObjectField):
 
         # create a new blob instead of modifying the old one,
         # this achieves copy-on-write semantics
-        blob = BlobWrapper()
+        blob = BlobWrapper(self.default_content_type)
         if isinstance(value, basestring):
             # make StringIO from string, because it may be adapted to Blobbable
             value = StringIO(value)
