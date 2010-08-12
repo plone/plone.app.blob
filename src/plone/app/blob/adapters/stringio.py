@@ -19,7 +19,9 @@ class BlobbableStringIO(object):
         """ see interface ... """
         pos = self.context.tell()
         self.context.seek(0)
-        blob.open('w').writelines(self.context)
+        blobfile = blob.open('w')
+        blobfile.writelines(self.context)
+        blobfile.close()
         self.context.seek(pos)
 
     def filename(self):

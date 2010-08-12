@@ -39,7 +39,9 @@ class BlobbableFileUpload(object):
             blob.consumeFile(filename)
         else:   # the cgi module only creates a tempfile for 1000+ bytes
             self.context.seek(0)    # just to be sure we copy everything...
-            blob.open('w').write(self.context.read())
+            blobfile = blob.open('w')
+            blobfile.write(self.context.read())
+            blobfile.close()
 
     def filename(self):
         """ see interface ... """

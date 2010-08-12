@@ -18,7 +18,9 @@ class BlobbableWebDavUpload(object):
         """ see interface ... """
         pos = self.context.file.tell()
         self.context.file.seek(0)
-        blob.open('w').writelines(self.context.file)
+        blobfile = blob.open('w')
+        blobfile.writelines(self.context.file)
+        blobfile.close()
         self.context.file.seek(pos)
 
     def filename(self):

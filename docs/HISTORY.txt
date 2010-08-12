@@ -4,6 +4,11 @@ Changelog
 1.1 - Unreleased
 ----------------
 
+- Properly close written blobs in all `IBlobbable` adapters in order to
+  avoid `POSKeyErrors`.
+  This fixes http://plone.org/products/plone.app.blob/issues/43
+  [jbaach, witsch]
+
 - Allow explicitly setting a mimetype via a keyword passed to the mutator.
   [davidblewett, kleist, witsch]
 

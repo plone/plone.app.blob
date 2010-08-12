@@ -14,7 +14,9 @@ class BlobbableOFSFile(object):
 
     def feed(self, blob):
         """ see interface ... """
-        blob.open('w').write(str(self.context.data))    # TODO: use an iterator!!
+        blobfile = blob.open('w')
+        blobfile.write(str(self.context.data))  # TODO: use an iterator!!
+        blobfile.close()
 
     def filename(self):
         """ see interface ... """
