@@ -49,7 +49,7 @@ def hasLinguaPlone():
     """ test if LinguaPlone is available """
     try:
         from Products import LinguaPlone
-        LinguaPlone     # make pyflakes happy
+        LinguaPlone     # make pyflakes happy...
         return True
     except ImportError:
         msg = 'WARNING: LinguaPlone not found. Skipping tests.'

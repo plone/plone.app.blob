@@ -10,7 +10,7 @@ from Products.Archetypes.atapi import AnnotationStorage
 from Products.Archetypes.atapi import ATFieldProperty
 try:
     from Products.LinguaPlone.public import registerType
-    registerType        # keep pyflakes happy
+    registerType        # make pyflakes happy...
 except ImportError:
     from Products.Archetypes.atapi import registerType
 from Products.CMFCore.permissions import View, ModifyPortalContent
@@ -39,7 +39,7 @@ ATBlobSchema.registerLayer('marshall', BlobMarshaller())
 
 try:
     from Products.CMFCore.CMFCatalogAware import WorkflowAware
-    WorkflowAware       # satisfy pyflakes
+    WorkflowAware       # make pyflakes happy...
     # CMF 2.2 takes care of raising object events for old-style factories
     hasCMF22 = True
 except ImportError:

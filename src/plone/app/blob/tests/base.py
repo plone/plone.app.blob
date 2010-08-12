@@ -6,14 +6,14 @@ from plone.app.blob.tests.layer import BlobLinguaLayer
 # BBB Zope 2.12
 try:
     from Testing.testbrowser import Browser
-    Browser # pyflakes
+    Browser     # make pyflakes happy...
 except ImportError:
     from Products.Five.testbrowser import Browser
 
 try:
     # try to import the sample type for testing LinguaPlone
     from plone.app.blob.tests import lingua
-    lingua      # make pyflakes happy
+    lingua      # make pyflakes happy...
 except ImportError:
     pass
 

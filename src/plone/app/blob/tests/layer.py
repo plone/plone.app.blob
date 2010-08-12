@@ -7,7 +7,7 @@ from transaction import commit
 try:
     from Zope2.App import zcml
     from OFS import metaconfigure
-    zcml # pyflakes
+    zcml, metaconfigure     # make pyflakes happy...
     metaconfigure
 except ImportError:
     from Products.Five import zcml
