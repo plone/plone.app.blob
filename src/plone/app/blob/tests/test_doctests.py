@@ -1,5 +1,5 @@
-import doctest
 from unittest import TestSuite
+from doctest import ELLIPSIS, NORMALIZE_WHITESPACE
 
 from Testing.ZopeTestCase import ZopeDocFileSuite
 from plone.app.blob.tests.base import BlobFunctionalTestCase
@@ -8,10 +8,8 @@ from plone.app.blob.tests.base import BlobLinguaFunctionalTestCase
 from plone.app.blob.tests.utils import hasLinguaPlone
 
 
-optionflags = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
-
-
 def test_suite():
+    optionflags = (ELLIPSIS | NORMALIZE_WHITESPACE)
     suite = TestSuite((
         ZopeDocFileSuite(
            'README.txt', package='plone.app.blob',
