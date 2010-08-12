@@ -32,6 +32,14 @@ Changelog
 1.0b17 - 2010-06-03
 -------------------
 
+- Fix deletion of blob-based content even if the field is not called 'file'
+  or 'image'.
+  [regebro]
+
+- The `ImageField` could not be copied, which broke the standard way of
+  subclassing archetypes schemas.
+  [regebro]
+
 - Migration screen tried to check for installation via quick installer. We
   check the product of the destination portal type instead now. This closes
   http://dev.plone.org/plone/ticket/10365.
@@ -43,14 +51,6 @@ Changelog
 - Don't break when image-specific methods are accidentally used on
   "File" content.
   [witsch]
-
-- The `DELETE_*` handling now works even if the field is not called 'file'
-  or 'image'.
-  [regebro]
-
-- The `ImageField` could not be copied, which broke the standard way of
-  subclassing archetypes schemas.
-  [regebro]
 
 
 1.0b16 - 2010-05-02

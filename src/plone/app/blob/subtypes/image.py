@@ -7,7 +7,6 @@ from Products.ATContentTypes.configuration import zconf
 from Products.validation import V_REQUIRED
 from archetypes.schemaextender.interfaces import ISchemaExtender
 from archetypes.schemaextender.field import ExtensionField
-from plone.app.imaging.utils import getAllowedSizes
 from plone.app.blob.interfaces import IBlobImageField
 from plone.app.blob.config import blobScalesAttr
 from plone.app.blob.field import BlobField
@@ -35,7 +34,7 @@ class SchemaExtender(object):
             primary = True,
             accessor = 'getImage',
             mutator = 'setImage',
-            sizes = getAllowedSizes,
+            sizes = None,
             languageIndependent = True,
             storage = AnnotationStorage(migrate=True),
             swallowResizeExceptions = zconf.swallowImageResizeExceptions.enable,

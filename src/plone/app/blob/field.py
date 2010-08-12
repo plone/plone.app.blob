@@ -21,7 +21,6 @@ from Products.Archetypes.Registry import registerField
 from Products.Archetypes.utils import contentDispositionHeader
 
 from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
-from plone.app.imaging.utils import getAllowedSizes
 from plone.app.blob.interfaces import IBlobbable, IWebDavUpload, IBlobField
 from plone.app.blob.interfaces import IBlobImageField
 from plone.app.blob.interfaces import IBlobWrapper
@@ -200,7 +199,6 @@ class BlobField(ObjectField):
         if value in ('DELETE_FILE', 'DELETE_IMAGE'):
             super(BlobField, self).unset(instance, **kwargs)
             return
-
         # create a new blob instead of modifying the old one,
         # this achieves copy-on-write semantics
         blob = BlobWrapper(self.default_content_type)
@@ -344,30 +342,6 @@ class ImageField(BlobField, ImageFieldMixin):
         super(ImageField, self).set(instance, value, **kwargs)
         if hasattr(aq_base(instance), blobScalesAttr):
             delattr(aq_base(instance), blobScalesAttr)
-
-    def getAvailableSizes(self, instance):
-        """Get sizes
-
-        Supports:
-            self.sizes as dict
-            A method in instance called like sizes that returns dict
-            A callable
-        """
-        sizes = self.sizes
-        if isinstance(sizes, dict):
-            return sizes
-        elif isinstance(sizes, basestring):
-            assert(shasattr(instance, sizes))
-            method = getattr(instance, sizes)
-            data = method()
-            assert(isinstance(data, dict))
-            return data
-        elif callable(sizes):
-            return sizes()
-        elif sizes is None:
-            return getAllowedSizes()
-        else:
-            raise TypeError, 'Wrong self.sizes has wrong type: %s' % type(sizes)
 
 
 registerField(ImageField, title='Blob-aware ImageField',
