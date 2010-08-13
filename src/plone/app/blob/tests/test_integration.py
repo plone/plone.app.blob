@@ -65,8 +65,8 @@ class IntegrationTests(BlobTestCase):
     def testGetSizeOnFileContent(self):
         self.folder.invokeFactory('Blob', 'blob', title='foo', file=pdf_data)
         blob = self.folder['blob']
-        field = blob.getFile()
-        self.assertRaises(AttributeError, field.getSize)
+        field = blob.getField('file')
+        self.assertRaises(AttributeError, getattr, field, 'getSize')
         self.assertEqual(blob.getSize(), None)
         self.assertEqual(blob.getWidth(), None)
         self.assertEqual(blob.getHeight(), None)

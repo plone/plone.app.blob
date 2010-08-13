@@ -73,6 +73,16 @@ class BaseFieldTests(ReplacementTestCase):
         sizes = image.getField('hmm').getAvailableSizes(image)
         self.assertEqual(sizes, {'tiny': (42, 42)})
 
+    def testGetSize(self):
+        item = self.create(foo=getFile('test.pdf'), bar=getFile('image.jpg'))
+        field = item.getField('foo')
+        self.assertRaises(AttributeError, getattr, field, 'getSize')
+        field = item.getField('bar')
+        self.assertEqual(field.getSize(item), (500, 200))
+        # empty images should return (0, 0)
+        field = item.getField('hmm')
+        self.assertEqual(field.getSize(item), (0, 0))
+
 
 def test_suite():
     from unittest import defaultTestLoader

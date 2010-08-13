@@ -59,7 +59,7 @@ class BlobWrapper(Implicit, Persistent):
 
     security = ClassSecurityInfo()
 
-    def __init__(self, content_type=None):
+    def __init__(self, content_type):
         self.blob = Blob()
         self.content_type = content_type
         self.filename = None
@@ -97,8 +97,6 @@ class BlobWrapper(Implicit, Persistent):
     def getSize(self):
         """ return image dimensions of the blob """
         # TODO: this should probably be cached...
-        if not self.getContentType().startswith('image/'):
-            raise AttributeError('getSize')
         blob = openBlob(self.blob)
         size = getImageSize(blob)
         blob.close()
