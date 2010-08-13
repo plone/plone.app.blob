@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1 - Unreleased
+1.1 - 2010-08-13
 ----------------
 
 - Properly close written blobs in all `IBlobbable` adapters in order to
