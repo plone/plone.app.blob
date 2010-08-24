@@ -31,11 +31,12 @@ class BlobMigrationView(BrowserView):
             url = '%s/prefs_install_products_form' % portal_url
             msg = _(u'Please install `plone.app.blob` to be able to migrate to blobs.')
             IStatusMessage(request).addStatusMessage(msg, type='warning')
-            options = dict(notinstalled=42, installer=url)
+            options['notinstalled'] = 42
+            options['installer'] = url
         elif not haveContentMigrations:
             msg = _(u'Please install contentmigrations to be able to migrate to blobs.')
             IStatusMessage(request).addStatusMessage(msg, type='warning')
-            options = dict(nomigrations=42)
+            options['nomigrations'] = 42
         elif clicked('migrate'):
             output = self.migration()
             # Only count actual migration lines
@@ -45,13 +46,15 @@ class BlobMigrationView(BrowserView):
                 default=u'Blob migration performed for ${count} item(s).',
                 mapping={'count': count})
             IStatusMessage(request).addStatusMessage(msg, type='info')
-            options = dict(count=count, output=output)
+            options['count'] = count
+            options['output'] = output
         elif clicked('cancel'):
             msg = _(u'Blob migration cancelled.')
             IStatusMessage(request).addStatusMessage(msg, type='info')
             request.RESPONSE.redirect(portal_url)
         else:
-            options = dict(available=len(list(walker.walk())))
+            options['available'] = len(list(walker.walk()))
+
         return self.index(**options)
 
 
