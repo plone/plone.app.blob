@@ -4,8 +4,12 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Fix the ``type`` of blob-based fields so they are distinguishable as
+  blob fields.
+  [davisagli]
+
 - Fix broken migration-forms.
- [WouterVH]
+  [WouterVH]
 
 
 1.1 - 2010-08-13

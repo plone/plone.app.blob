@@ -21,7 +21,6 @@ class SchemaExtender(object):
 
     fields = [
         ExtensionBlobField('file',
-            type = 'file',
             required = True,
             primary = True,
             searchable = True,

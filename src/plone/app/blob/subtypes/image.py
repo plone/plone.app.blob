@@ -29,7 +29,6 @@ class SchemaExtender(object):
 
     fields = [
         ExtensionBlobField('image',
-            type = 'image',
             required = True,
             primary = True,
             accessor = 'getImage',
