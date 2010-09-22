@@ -54,7 +54,6 @@ class BlobMigrationView(BrowserView):
             request.RESPONSE.redirect(portal_url)
         else:
             options['available'] = len(list(walker.walk()))
-
         return self.index(**options)
 
 
