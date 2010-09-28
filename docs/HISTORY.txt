@@ -4,6 +4,9 @@ Changelog
 1.3 - Unreleased
 ----------------
 
+- Adjust tests to the fixed spelling of 'kB'.
+  [witsch]
+
 
 1.2 - 2010-09-22
 ----------------

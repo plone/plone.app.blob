@@ -166,5 +166,5 @@ using a testbrowser:
   'http://nohost/plone/.../foo-bar/view'
   >>> browser.contents
   '...Info...Changes saved...
-   ...Foo bar...foo.pdf...PDF document,...2Kb...'
+   ...Foo bar...foo.pdf...PDF document...'
 

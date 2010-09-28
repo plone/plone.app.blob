@@ -27,7 +27,7 @@ Let's start with creating a "File" content item:
   'http://nohost/plone/.../foo.../view'
   >>> browser.contents
   '...Info...Changes saved...
-   ...Foo...foo.pdf...PDF document,...2Kb...'
+   ...Foo...foo.pdf...PDF document...'
 
 Now let's make sure we can also edit it:
 
@@ -43,7 +43,7 @@ Now let's make sure we can also edit it:
   'http://nohost/plone/.../foo.../view'
   >>> browser.contents
   '...Info...Changes saved...
-   ...Foobar...foobar.pdf...PDF document,...5Kb...'
+   ...Foobar...foobar.pdf...PDF document...'
 
 It should also be possible to remove the file again.  For this to work the
 field must not be required.  That is not the default in Plone, however, so
