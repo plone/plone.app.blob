@@ -1,3 +1,4 @@
+from logging import getLogger
 from zope.component import adapts
 from zope.interface import implements
 from Acquisition import aq_base
@@ -8,7 +9,12 @@ from plone.app.imaging.interfaces import IImageScaleFactory
 from plone.app.blob.interfaces import IBlobImageField
 from plone.app.blob.config import blobScalesAttr
 from plone.app.blob.utils import openBlob
-from plone.scale.scale import scaleImage
+try:
+    from plone.scale.scale import scaleImage
+except ImportError:
+    logger = getLogger('plone.app.blob')
+    logger.warn("Warning: no Python Imaging Libraries (PIL) found. "
+                "Can't scale images.")
 
 
 class BlobImageScaleHandler(DefaultImageScaleHandler):

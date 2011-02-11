@@ -4,6 +4,8 @@ Changelog
 1.4 - Unreleased
 ----------------
 
+- Avoid breaking on startup if PIL is not present.
+  [davisagli]
 
 1.3 - 2010-09-28
 ----------------
