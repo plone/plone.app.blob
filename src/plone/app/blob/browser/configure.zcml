@@ -30,4 +30,19 @@
       allowed_interface="..interfaces.IBlobMaintenanceView"
       permission="cmf.ManagePortal" />
 
+  <browser:page
+      for="Products.ATContentTypes.interface.IATImage"
+      name="migrate-image"
+      template="migration.pt"
+      class=".migration.SingleImageMigrationView"
+      permission="cmf.ManagePortal" />
+
+  <browser:page
+      for="Products.ATContentTypes.interface.IATFile"
+      name="migrate-file"
+      template="migration.pt"
+      class=".migration.SingleFileMigrationView"
+      permission="cmf.ManagePortal" />
+
+
 </configure>

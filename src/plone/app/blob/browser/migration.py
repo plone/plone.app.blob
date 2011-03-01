@@ -4,13 +4,18 @@ from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 
-from plone.app.blob.migrations import haveContentMigrations
-from plone.app.blob.migrations import migrateATFiles
-from plone.app.blob.migrations import getATFilesMigrationWalker
-from plone.app.blob.migrations import migrateATBlobFiles
+from plone.app.blob.migrations import ATFileToBlobFileMigrator
+from plone.app.blob.migrations import ATImageToBlobImageMigrator
 from plone.app.blob.migrations import getATBlobFilesMigrationWalker
-from plone.app.blob.migrations import migrateATBlobImages
 from plone.app.blob.migrations import getATBlobImagesMigrationWalker
+from plone.app.blob.migrations import getATFilesMigrationWalker
+from plone.app.blob.migrations import haveContentMigrations
+from plone.app.blob.migrations import migrate
+from plone.app.blob.migrations import migrateATBlobFiles
+from plone.app.blob.migrations import migrateATBlobImages
+from plone.app.blob.migrations import migrateATFiles
+
+from Products.contentmigration.basemigrator.walker import Walker
 
 
 class BlobMigrationView(BrowserView):
@@ -55,4 +60,50 @@ class ImageMigrationView(BlobMigrationView):
 
     migration = migrateATBlobImages
     walker = getATBlobImagesMigrationWalker
+
+
+class ContextWalker(Walker):
+    """Walker for a predetermined piece of content"""
+
+    obj = None
+
+    def __init__(self, portal, migrator, src_portal_type=None, dst_portal_type=None,
+            **kwargs):
+        Walker.__init__(self, portal, migrator, src_portal_type=None, 
+                dst_portal_type=None, **kwargs)
+        self.obj = kwargs['obj']
+
+    def walk(self):
+        yield self.obj
+        raise StopIteration
+
+
+class SingleContextMigrationView(BrowserView):
+
+    def __call__(self):
+        context = aq_inner(self.context)
+        request = aq_inner(self.request)
+        options = {}
+        output = self.migration()
+        return "Migrated"
+
+
+class SingleImageMigrationView(SingleContextMigrationView):
+    """Migrate just one piece of image"""
+
+    def migration(self):
+        context = self.context
+        portal = getToolByName(context, 'portal_url').getPortalObject()
+        walker = ContextWalker(portal, migrator=ATImageToBlobImageMigrator, obj=context)
+        return 
+
+
+class SingleFileMigrationView(SingleContextMigrationView):
+    """Migrate just one file"""
+
+    def migration(self):
+        context = self.context
+        portal = getToolByName(context, 'portal_url').getPortalObject()
+        walker = ContextWalker(portal, migrator=ATFileToBlobFileMigrator, obj=context)
+        return 
 
