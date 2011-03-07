@@ -76,6 +76,9 @@ class ATImageToBlobImageMigrator(ATFileToBlobMigrator):
     }
 
     def migrate_data(self):
+        field = self.old.getField('image')
+        if not field.getRaw(self.old):
+            return
         self.new.getField('image').getMutator(self.new)(self.old)
 
 
@@ -84,4 +87,3 @@ def getATBlobImagesMigrationWalker(self):
 
 def migrateATBlobImages(self):
     return migrate(self, walker=getATBlobImagesMigrationWalker)
-
