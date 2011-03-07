@@ -9,6 +9,8 @@ except ImportError:
 
 from Products.CMFCore.utils import getToolByName
 from transaction import savepoint
+from zope.interface import providedBy, alsoProvides
+from Products.ATContentTypes.content.image import ATImage
 
 
 def getMigrationWalker(context, migrator):
@@ -38,10 +40,18 @@ class ATFileToBlobMigrator(BaseMigrator):
     }
 
     def migrate_data(self):
+        field = self.old.getField('file')
+        if not field.getRaw(self.old):
+            return
         self.new.getField('file').getMutator(self.new)(self.old)
 
     def last_migrate_reindex(self):
         self.new.reindexObject(idxs=['object_provides', 'portal_type', 'UID'])
+
+    def last_migrate_interfaces(self):
+        provides = set(list(providedBy(self.old)))
+        diff = list(provides.difference(set(providedBy(self.new))))
+        alsoProvides(self.new, *diff)
 
 
 def getATFilesMigrationWalker(self):

@@ -3,6 +3,12 @@ Changelog
 
     (name of developer listed in brackets)
 
+plone.app.blob - unreleased
+
+    - Added migration of custom applied interfaces for images and files [afd]
+    - Don't fail migration if an image or file hasn't been uploaded [afd]
+
+
 plone.app.blob - 1.0b6 Unreleased
 
     - Store image scales in blobs.
