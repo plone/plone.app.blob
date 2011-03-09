@@ -61,6 +61,13 @@ class BlobWrapper(Implicit, Persistent):
     security.declarePublic('content_type') 
     security.declarePublic('filename')
 
+    security.declarePublic('absolute_url')
+    def absolute_url(self):
+        instance = self._v_aq
+        fieldname = self._v_fieldname
+        url = instance.absolute_url() + "/" + fieldname
+        return url
+
     security.declarePrivate('setBlob')
     def setBlob(self, blob):
         """ set the contained blob object """
@@ -182,7 +189,10 @@ class BlobField(ObjectField):
         storage = self.getStorage(instance)
         try:
             kwargs['field'] = self
-            return storage.get(self.getName(), instance, **kwargs)
+            bw = storage.get(self.getName(), instance, **kwargs)
+            bw._v_aq = instance
+            bw._v_fieldname = self.getName()
+            return bw
         except AttributeError:
             # happens if new Atts are added and not yet stored in the instance
             default = self.getDefault(instance)

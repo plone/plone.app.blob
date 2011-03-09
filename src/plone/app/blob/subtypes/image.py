@@ -1,17 +1,18 @@
-from zope.interface import implements
 from Acquisition import Implicit, aq_base
-from Products.CMFPlone import PloneMessageFactory as _
+from Products.ATContentTypes.configuration import zconf
 from Products.Archetypes.atapi import AnnotationStorage
 from Products.Archetypes.atapi import ImageWidget
-from Products.ATContentTypes.configuration import zconf
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.validation import V_REQUIRED
-from archetypes.schemaextender.interfaces import ISchemaExtender
 from archetypes.schemaextender.field import ExtensionField
-from plone.app.imaging.utils import getAllowedSizes
-from plone.app.blob.interfaces import IBlobImageField
+from archetypes.schemaextender.interfaces import ISchemaExtender
 from plone.app.blob.config import blobScalesAttr
 from plone.app.blob.field import BlobField, IndexMethodFix
+from plone.app.blob.interfaces import IBlobImageField
 from plone.app.blob.mixins import ImageFieldMixin
+from plone.app.imaging.utils import getAllowedSizes
+from zope.app.component.hooks import getSite
+from zope.interface import implements
 
 
 class ExtensionBlobField(IndexMethodFix, ExtensionField, BlobField, ImageFieldMixin):
@@ -26,7 +27,8 @@ class ExtensionBlobField(IndexMethodFix, ExtensionField, BlobField, ImageFieldMi
 
     @property
     def sizes(self):
-        return getAllowedSizes()
+        site = getSite()
+        return getAllowedSizes(site)
 
 
 class SchemaExtender(object):
