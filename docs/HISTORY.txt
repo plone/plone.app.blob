@@ -3,11 +3,12 @@ Changelog
 
     (name of developer listed in brackets)
 
-plone.app.blob - unreleased
+plone.app.blob - 1.0b6_1 Unreleased
 
-    - Added migration of custom applied interfaces for images and files [afd]
-    - Don't fail migration if an image or file hasn't been uploaded [afd]
-
+    - Compatibility fixes for Plone 2.5
+    - Added migration of custom applied interfaces for images and files 
+    - Don't fail migration if an image or file hasn't been uploaded 
+      [afd]
 
 plone.app.blob - 1.0b6 Unreleased
 
