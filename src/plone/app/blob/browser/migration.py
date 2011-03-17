@@ -70,12 +70,11 @@ class SingleImageMigrationView(BrowserView):
         migrator.migrate()
         return "Done"
 
-
 class SingleFileMigrationView(BrowserView):
     """Migrate just one file"""
 
     def __call__(self):
-        migrator = ATImageToBlobImageMigrator(self.context)
+        migrator = ATFileToBlobFileMigrator(self.context)
         migrator.migrate()
         return "Done"
 

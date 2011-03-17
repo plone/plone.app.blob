@@ -39,6 +39,10 @@ class ATFileToBlobMigrator(BaseMigrator):
         'file': None,
     }
 
+#    map = {
+#        '__annotations__':'__annotations__',
+#    }
+
     def migrate_data(self):
         field = self.old.getField('file')
         if not field.getRaw(self.old):

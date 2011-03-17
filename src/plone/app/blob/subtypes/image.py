@@ -27,6 +27,19 @@ class ExtensionBlobField(IndexMethodFix, ExtensionField, BlobField, ImageFieldMi
 
     @property
     def sizes(self):
+        return {
+            'large'   : (768, 768),
+            'preview' : (400, 400),
+            'mini'    : (180, 135),
+            'thumb'   : (128, 128),
+            'wide'    : (325, 183),
+            'tile'    :  (64, 64),
+            'icon'    :  (32, 32),
+            'listing' :  (16, 16),
+        }
+
+
+        #hardcoded sizes
         site = getSite()
         return getAllowedSizes(site)
 

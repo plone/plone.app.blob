@@ -189,6 +189,8 @@ class BlobField(ObjectField):
         storage = self.getStorage(instance)
         try:
             kwargs['field'] = self
+            #return storage.get(self.getName(), instance, **kwargs) 
+            #XXX: need this for absolute_url
             bw = storage.get(self.getName(), instance, **kwargs)
             bw._v_aq = instance
             bw._v_fieldname = self.getName()

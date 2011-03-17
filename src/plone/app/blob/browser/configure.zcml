@@ -36,7 +36,7 @@
       template="migration.pt"
       class=".migration.SingleImageMigrationView"
       permission="cmf.ManagePortal" />
-
+      
   <browser:page
       for="Products.ATContentTypes.interface.IATFile"
       name="migrate-file"
