@@ -17,7 +17,8 @@ from Products.ATContentTypes.content.image import ATImage
 def getMigrationWalker(context, migrator):
     """ set up migration walker using the given item migrator """
     portal = getToolByName(context, 'portal_url').getPortalObject()
-    return CustomQueryWalker(portal, migrator, use_savepoint=True)
+    return CustomQueryWalker(portal, migrator, 
+            use_savepoint=False, transaction_size=5, full_transaction=True)
 
 
 def migrate(context, walker):
