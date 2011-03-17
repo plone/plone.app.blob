@@ -3,8 +3,9 @@ from Products.CMFPlone import PloneMessageFactory as _
 from Products.Archetypes.atapi import AnnotationStorage
 from Products.Archetypes.atapi import FileWidget
 from Products.validation import V_REQUIRED
-from archetypes.schemaextender.interfaces import ISchemaExtender
+from archetypes.schemaextender.interfaces import ISchemaExtender, IOrderableSchemaExtender
 from archetypes.schemaextender.field import ExtensionField
+from Products.Archetypes.utils import OrderedDict
 from plone.app.blob.field import BlobField, IndexMethodFix
 
 
@@ -42,3 +43,17 @@ class SchemaExtender(object):
 
     def getFields(self):
         return self.fields
+
+    def getOrder(self, original):
+        d = OrderedDict(dict=original)
+        keys = d['default']
+        posi = keys.index('file')
+        posr = keys.index('relatedItems')
+
+        if posi > posr:
+            keys[posr] = 'file'
+            keys[posi] = 'relatedItems'
+
+            d['default'] = keys
+
+        return d

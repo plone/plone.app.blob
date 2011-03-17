@@ -2,10 +2,11 @@ from Acquisition import Implicit, aq_base
 from Products.ATContentTypes.configuration import zconf
 from Products.Archetypes.atapi import AnnotationStorage
 from Products.Archetypes.atapi import ImageWidget
+from Products.Archetypes.utils import OrderedDict
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.validation import V_REQUIRED
 from archetypes.schemaextender.field import ExtensionField
-from archetypes.schemaextender.interfaces import ISchemaExtender
+from archetypes.schemaextender.interfaces import ISchemaExtender, IOrderableSchemaExtender
 from plone.app.blob.config import blobScalesAttr
 from plone.app.blob.field import BlobField, IndexMethodFix
 from plone.app.blob.interfaces import IBlobImageField
@@ -45,7 +46,7 @@ class ExtensionBlobField(IndexMethodFix, ExtensionField, BlobField, ImageFieldMi
 
 
 class SchemaExtender(object):
-    implements(ISchemaExtender)
+    implements(IOrderableSchemaExtender)
 
     fields = [
         ExtensionBlobField('image',
@@ -72,3 +73,17 @@ class SchemaExtender(object):
 
     def getFields(self):
         return self.fields
+
+    def getOrder(self, original):
+        d = OrderedDict(dict=original)
+        keys = d['default']
+        posi = keys.index('image')
+        posr = keys.index('relatedItems')
+
+        if posi > posr:
+            keys[posr] = 'image'
+            keys[posi] = 'relatedItems'
+
+            d['default'] = keys
+
+        return d
