@@ -1,3 +1,4 @@
+from Products.Archetypes.utils import shasattr
 try:
     from Products.contentmigration.archetypes import InplaceATItemMigrator
     from Products.contentmigration.walker import CustomQueryWalker
@@ -39,10 +40,6 @@ class ATFileToBlobMigrator(BaseMigrator):
         'file': None,
     }
 
-#    map = {
-#        '__annotations__':'__annotations__',
-#    }
-
     def migrate_data(self):
         field = self.old.getField('file')
         if not field.getRaw(self.old):
@@ -56,6 +53,17 @@ class ATFileToBlobMigrator(BaseMigrator):
         provides = set(list(providedBy(self.old)))
         diff = list(provides.difference(set(providedBy(self.new))))
         alsoProvides(self.new, *diff)
+
+    def last_migrate_annotations(self):
+        old = self.old.aq_inner
+        annot = getattr(old, "__annotations__")
+        if not annot:
+            return
+
+        for k,v in annot.items():
+            if k.startswith('Archetypes.storage.AnnotationStorage-file'):
+                continue
+            self.new.__annotations__[k] = v
 
 
 def getATFilesMigrationWalker(self):
@@ -94,6 +102,17 @@ class ATImageToBlobImageMigrator(ATFileToBlobMigrator):
         if not field.getRaw(self.old):
             return
         self.new.getField('image').getMutator(self.new)(self.old)
+
+    def last_migrate_annotations(self):
+        old = self.old.aq_inner
+        annot = getattr(old, "__annotations__")
+        if not annot:
+            return
+
+        for k,v in annot.items():
+            if k.startswith('Archetypes.storage.AnnotationStorage-image'):
+                continue
+            self.new.__annotations__[k] = v
 
 
 def getATBlobImagesMigrationWalker(self):
