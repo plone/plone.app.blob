@@ -7,7 +7,6 @@ from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
 from ZODB.POSException import ConflictError
 from Products.Archetypes.atapi import AnnotationStorage
-from Products.Archetypes.atapi import registerType
 from Products.CMFCore.permissions import View, ModifyPortalContent
 from Products.CMFCore.utils import getToolByName
 from Products.ATContentTypes.content.base import ATCTFileContent
@@ -21,6 +20,11 @@ from plone.app.blob.config import packageName
 from plone.app.blob.field import BlobMarshaller
 from plone.app.blob.mixins import ImageMixin
 from plone.app.blob.markings import markAs
+
+try: 
+    from Products.LinguaPlone.public import registerType 
+except ImportError: 
+    from Products.Archetypes.atapi import registerType
 
 
 ATBlobSchema = ATContentTypeSchema.copy()

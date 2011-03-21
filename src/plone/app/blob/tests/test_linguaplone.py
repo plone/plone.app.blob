@@ -1,3 +1,4 @@
+from DateTime import DateTime 
 from unittest import TestSuite, defaultTestLoader
 from plone.app.blob.tests.base import BlobLinguaTestCase
 
@@ -70,6 +71,24 @@ class LinguaTests(BlobLinguaTestCase):
         self.assertEqual(str(fish.getGuide()), test)
         self.assertEqual(str(fisch.getGuide()), test)
 
+    def testTranslatedBlobelFishField(self): 
+        fish = self.folder[self.folder.invokeFactory('BlobelFish', 'flobby')] 
+        fish.update(title='Me fish.', teststr='testing string', language='en') 
+        fisch = fish.addTranslation('de', title='Ich Fisch.') 
+        # language independent have to be set in translated versions too 
+        self.assertEqual(fish.getTeststr(), fisch.getTeststr()) 
+        fish.update(teststr='more testing') 
+        self.assertEqual(fish.getTeststr(), fisch.getTeststr()) 
+ 
+    def testTranslatedBlobField(self): 
+        blob = self.folder[self.folder.invokeFactory('Blob', 'blob')] 
+        blob.update(title='Me blob.', language='en') 
+        blob_de = blob.addTranslation('de', title='Ich Blob.') 
+        self.assertNotEqual(blob.Title(), blob_de.Title()) 
+        # language independent have to be set in translated versions too 
+        self.assertEqual(blob.effective(), blob_de.effective()) 
+        blob.setEffectiveDate(DateTime('2009/10/30')) 
+        self.assertEqual(blob.effective(), blob_de.effective()) 
 
 def test_suite():
     if hasLinguaPlone():

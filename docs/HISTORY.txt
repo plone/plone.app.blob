@@ -9,6 +9,9 @@ plone.app.blob - 1.0b6_1 Unreleased
     - Added migration of custom applied interfaces for images and files 
     - Don't fail migration if an image or file hasn't been uploaded 
       [afd]
+    - Update basic blob content type to be LinguaPlone-aware.  This fixes 
+      http://plone.org/products/plone.app.blob/issues/24 
+      [witsch]      
 
 plone.app.blob - 1.0b6 Unreleased
 
