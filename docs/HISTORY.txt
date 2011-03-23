@@ -7,6 +7,7 @@ plone.app.blob - 1.0b6_1 Unreleased
 
     - Compatibility fixes for Plone 2.5
     - Added migration of custom applied interfaces for images and files 
+    - Fully update objects after migration
     - Don't fail migration if an image or file hasn't been uploaded 
       [afd]
     - Update basic blob content type to be LinguaPlone-aware.  This fixes 

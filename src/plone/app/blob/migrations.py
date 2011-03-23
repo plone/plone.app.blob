@@ -48,7 +48,8 @@ class ATFileToBlobMigrator(BaseMigrator):
         self.new.getField('file').getMutator(self.new)(self.old)
 
     def last_migrate_reindex(self):
-        self.new.reindexObject(idxs=['object_provides', 'portal_type', 'UID'])
+        #self.new.reindexObject(idxs=['object_provides', 'portal_type', 'UID'])
+        self.new.reindexObject()
 
     def last_migrate_interfaces(self):
         provides = set(list(providedBy(self.old)))
