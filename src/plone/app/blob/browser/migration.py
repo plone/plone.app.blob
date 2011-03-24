@@ -17,6 +17,10 @@ from plone.app.blob.migrations import migrateATFiles
 
 from Products.contentmigration.basemigrator.walker import Walker
 
+import logging
+
+logger = logging.getLogger("plone.app.blob")
+
 
 class BlobMigrationView(BrowserView):
 
@@ -47,6 +51,7 @@ class BlobMigrationView(BrowserView):
         else:
             walker = self.walker()
             options = { 'available': len(list(walker.walk())) }
+        logger.info("Blob migration complete")
         return self.index(**options)
 
 
