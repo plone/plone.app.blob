@@ -17,8 +17,8 @@ from Products.ATContentTypes.content.image import ATImage
 def getMigrationWalker(context, migrator):
     """ set up migration walker using the given item migrator """
     portal = getToolByName(context, 'portal_url').getPortalObject()
-    return CustomQueryWalker(portal, migrator, 
-            use_savepoint=False, transaction_size=5, full_transaction=True)
+    return CustomQueryWalker(portal, migrator, use_savepoint=False, 
+                             full_transaction=True, transaction_size=5)
 
 
 def migrate(context, walker):
@@ -66,6 +66,11 @@ class ATFileToBlobMigrator(BaseMigrator):
             if k.startswith('Archetypes.storage.AnnotationStorage-file'):
                 continue
             self.new.__annotations__[k] = v
+
+    def last_migrate_cleanup_related(self):
+        uids = self.new.getField('relatedItems').getRaw(self.new)
+        if uids:
+            self.new.setRelatedItems(list(set(uids)))
 
 
 def getATFilesMigrationWalker(self):
