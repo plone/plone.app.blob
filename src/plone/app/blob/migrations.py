@@ -13,12 +13,24 @@ from transaction import savepoint
 from zope.interface import providedBy, alsoProvides
 from Products.ATContentTypes.content.image import ATImage
 
+import unicodedata
+
 
 def getMigrationWalker(context, migrator):
     """ set up migration walker using the given item migrator """
     portal = getToolByName(context, 'portal_url').getPortalObject()
     return CustomQueryWalker(portal, migrator, use_savepoint=False, 
                              full_transaction=True, transaction_size=5)
+
+
+def remove_nonascii_letters(s):
+    try:
+        s = s.decode('utf-8')
+    except UnicodeDecodeError:
+        pass
+    nkfd_form = unicodedata.normalize('NFKD', unicode(s))
+    only_ascii = nkfd_form.encode('ASCII', 'ignore')
+    return only_ascii
 
 
 def migrate(context, walker):
@@ -45,7 +57,10 @@ class ATFileToBlobMigrator(BaseMigrator):
         field = self.old.getField('file')
         if not field.getRaw(self.old):
             return
-        self.new.getField('file').getMutator(self.new)(self.old)
+        newfield = self.new.getField('file')
+        newfield.getMutator(self.new)(self.old)
+        bw = newfield.getRaw(self.new)
+        bw.filename = remove_nonascii_letters(bw.filename)
 
     def last_migrate_reindex(self):
         #self.new.reindexObject(idxs=['object_provides', 'portal_type', 'UID'])
@@ -108,7 +123,10 @@ class ATImageToBlobImageMigrator(ATFileToBlobMigrator):
         field = self.old.getField('image')
         if not field.getRaw(self.old):
             return
-        self.new.getField('image').getMutator(self.new)(self.old)
+        newfield = self.new.getField('image')
+        newfield.getMutator(self.new)(self.old)
+        bw = newfield.getRaw(self.new)
+        bw.filename = remove_nonascii_letters(bw.filename)
 
     def last_migrate_annotations(self):
         old = self.old.aq_inner

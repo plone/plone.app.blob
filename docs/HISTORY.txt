@@ -3,7 +3,11 @@ Changelog
 
     (name of developer listed in brackets)
 
-plone.app.blob - 1.0b6_1 Unreleased
+plone.app.blob - 1.0b6_2 Unreleased
+    - Change filename to unicode to avoid indexing errors 
+      [afd]
+
+plone.app.blob - 1.0b6_1 Released March, 28, 2011
 
     - Compatibility fixes for Plone 2.5
     - Added migration of custom applied interfaces for images and files 
