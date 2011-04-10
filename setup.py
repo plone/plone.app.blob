@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
-#version = '1.5'
+version = '1.5'
 
 long_description = (
     read('README.txt')
@@ -13,12 +13,6 @@ long_description = (
     read('CHANGES.txt')
     + '\n'
     )
-
-#name = 'plone.app.blob'
-path = ['src'] + name.split('.') + ['version.txt']
-version = open(join(*path)).read().strip()
-#readme = open('README.txt').read()
-#history = open(join('docs', 'HISTORY.txt')).read()
 
 tests_require = [
     'collective.monkeypatcher',
