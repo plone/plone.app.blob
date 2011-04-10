@@ -1,18 +1,35 @@
+import os
 from setuptools import setup, find_packages
-from os.path import join
 
-name = 'plone.app.blob'
+
+def read(*rnames):
+    return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
+
+#version = '1.5'
+
+long_description = (
+    read('README.txt')
+    + '\n' +
+    read('CHANGES.txt')
+    + '\n'
+    )
+
+#name = 'plone.app.blob'
 path = ['src'] + name.split('.') + ['version.txt']
 version = open(join(*path)).read().strip()
-readme = open('README.txt').read()
-history = open(join('docs', 'HISTORY.txt')).read()
-tests_require = ['collective.monkeypatcher',
-    'Products.contentmigration', 'plone.app.imaging [test]']
+#readme = open('README.txt').read()
+#history = open(join('docs', 'HISTORY.txt')).read()
 
-setup(name = name,
+tests_require = [
+    'collective.monkeypatcher',
+    'Products.contentmigration',
+    'plone.app.imaging [test]']
+
+setup(name = 'plone.app.blob',
       version = version,
       description = 'ZODB 3.8 blob support for Plone 3.x',
-      long_description = readme[readme.find('\n\n'):] + '\n' + history,
+      #long_description = readme[readme.find('\n\n'):] + '\n' + history,
+      long_description = long_description,
       keywords = 'zodb blob support plone integration',
       author = 'Plone Foundation',
       author_email = 'plone-developers@lists.sourceforge.net',
