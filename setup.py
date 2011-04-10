@@ -10,6 +10,8 @@ version = '1.5'
 long_description = (
     read('README.txt')
     + '\n' +
+    read('src', 'plone', 'app', 'blob', 'README.txt')
+    + '\n' +
     read('CHANGES.txt')
     + '\n'
     )
