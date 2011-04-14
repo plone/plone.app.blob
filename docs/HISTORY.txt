@@ -3,7 +3,11 @@ Changelog
 
     (name of developer listed in brackets)
 
-plone.app.blob - 1.0b6_2 Unreleased
+plone.app.blob - 1.0b6_3 Released April, 14, 2011
+    - Return 0 size for images that are empty blobs
+      [afd]
+
+plone.app.blob - 1.0b6_2 Released April, 4, 2011
     - Change filename to unicode to avoid indexing errors 
       [afd]
 

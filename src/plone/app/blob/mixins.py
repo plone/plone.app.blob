@@ -16,7 +16,10 @@ class ImageFieldMixin(ImageField):
     def getSize(self, instance, scale=None):
         """ get size of scale or original """
         if scale is None:
-            return self.getUnwrapped(instance).getSize()
+            size = self.getUnwrapped(instance).getSize()
+            if size is None:
+                return (0, 0)
+            return size
         handler = IImageScaleHandler(self, None)
         if handler is not None:
             image = handler.getScale(instance, scale)
