@@ -5,8 +5,8 @@ plone.app.blob
 Overview
 ========
 
-This package aims to be an add-on for Plone 3.x integrating ZODB 3.8's blob
-support, which allows large binary data to be managed by the ZODB, but
+This package aims to be an add-on for Plone (>= 3.x) integrating ZODB (>=3.8)
+blob support, which allows large binary data to be managed by the ZODB, but
 separately from your usual ``FileStorage`` database, i.e. ``Data.fs``.  This
 has several advantages, most importantly a much smaller ``Data.fs`` and better
 performance both cpu- as well as memory-wise.
