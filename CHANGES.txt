@@ -4,6 +4,9 @@ Changelog
 1.5.1 - Unreleased
 ------------------
 
+- ATImage adapter should take care of cases where no image was uploaded.
+  [gotcha]
+
 1.5 - 2011-04-21
 ----------------
 

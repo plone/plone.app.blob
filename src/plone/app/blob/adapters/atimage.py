@@ -11,6 +11,8 @@ class BlobbableATImage(BlobbableATFile):
     def feed(self, blob):
         """ see interface ... """
         data = self.context.getImageAsFile()
+        if data is None:
+            return
         blobfile = blob.open('w')
         blobfile.write(data.read())     # TODO: use copy or an iterator!!
         blobfile.close()
