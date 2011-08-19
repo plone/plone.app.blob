@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5.1 (Unreleased)
+1.5.1 (2011-08-19)
 ------------------
 
 - ATImage adapter should take care of cases where no image was uploaded.
