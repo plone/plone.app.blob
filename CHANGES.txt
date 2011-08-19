@@ -1,32 +1,32 @@
 Changelog
 =========
 
-1.5.1 - Unreleased
+1.5.1 (Unreleased)
 ------------------
 
 - ATImage adapter should take care of cases where no image was uploaded.
   [gotcha]
 
-1.5 - 2011-04-21
+1.5 (2011-04-21)
 ----------------
 
 - Test fixes.
   [davisagli]
 
-1.4 - 2011-02-14
+1.4 (2011-02-14)
 ----------------
 
 - Avoid breaking on startup if PIL is not present.
   [davisagli]
 
-1.3 - 2010-09-28
+1.3 (2010-09-28)
 ----------------
 
 - Adjust tests to the fixed spelling of 'kB'.
   [witsch]
 
 
-1.2 - 2010-09-22
+1.2 (2010-09-22)
 ----------------
 
 - Fix the ``type`` of blob-based fields so they are distinguishable as
@@ -37,7 +37,7 @@ Changelog
   [WouterVH]
 
 
-1.1 - 2010-08-13
+1.1 (2010-08-13)
 ----------------
 
 - Properly close written blobs in all `IBlobbable` adapters in order to
@@ -52,7 +52,7 @@ Changelog
   [ggozad, witsch]
 
 
-1.0 - 2010-07-18
+1.0 (2010-07-18)
 ----------------
 
 - Correct blob migration count to ignore unrelated messages. This closes
@@ -63,7 +63,7 @@ Changelog
   [hannosch]
 
 
-1.0b18 - 2010-07-01
+1.0b18 (2010-07-01)
 -------------------
 
 - Avoid deprecation warnings under Zope 2.13.
@@ -73,7 +73,7 @@ Changelog
   [hannosch]
 
 
-1.0b17 - 2010-06-03
+1.0b17 (2010-06-03)
 -------------------
 
 - Fix deletion of blob-based content even if the field is not called 'file'
@@ -97,7 +97,7 @@ Changelog
   [witsch]
 
 
-1.0b16 - 2010-05-02
+1.0b16 (2010-05-02)
 -------------------
 
 - Remove existing image scales when updating blob-aware image fields.
@@ -109,7 +109,7 @@ Changelog
   [wichert]
 
 
-1.0b15 - 2010-04-10
+1.0b15 (2010-04-10)
 -------------------
 
 - Provide blob-aware factory for new-style image scales.
@@ -137,7 +137,7 @@ Changelog
   [witsch, do3cc]
 
 
-1.0b14 - 2010-03-07
+1.0b14 (2010-03-07)
 -------------------
 
 - Revert the change to use the URL normalizer when generating content ids
@@ -146,7 +146,7 @@ Changelog
   [witsch]
 
 
-1.0b13 - 2010-03-06
+1.0b13 (2010-03-06)
 -------------------
 
 - Use updated version of `createScales` as monkey-patched in
@@ -154,7 +154,7 @@ Changelog
   [witsch]
 
 
-1.0b12 - 2010-02-16
+1.0b12 (2010-02-16)
 -------------------
 
 - Change test setup to reuse the same directory when setting up blob
@@ -187,7 +187,7 @@ Changelog
   [witsch]
 
 
-1.0b11 - 2010-01-30
+1.0b11 (2010-01-30)
 -------------------
 
 - Fix issues regarding migration from `OFS.File` and `OFS.Image` content.
@@ -207,7 +207,7 @@ Changelog
   [yomatters, witsch]
 
 
-1.0b10 - 2009-12-03
+1.0b10 (2009-12-03)
 -------------------
 
 - Add support for accessing image scales via path expressions like
@@ -215,7 +215,7 @@ Changelog
   [witsch]
 
 
-1.0b9 - 2009-11-26
+1.0b9 (2009-11-26)
 ------------------
 
 - Unify the ATBlob factories (for CMF>=2.2 and CMF<2.2) while still
@@ -238,7 +238,7 @@ Changelog
   [davisagli]
 
 
-1.0b8 - 2009-11-17
+1.0b8 (2009-11-17)
 ------------------
 
 - Added a modified version of the customized ATBlob factory for use with
@@ -270,7 +270,7 @@ Changelog
   [witsch]
 
 
-1.0b7 - 2009-11-06
+1.0b7 (2009-11-06)
 ------------------
 
 - Fix regression in setup for running bbb tests against Plone 3.x.
@@ -303,7 +303,7 @@ Changelog
   [witsch]
 
 
-1.0b6 - 2009-10-10
+1.0b6 (2009-10-10)
 ------------------
 
 - Minor fixes and test updates for compatibility with Plone 4.0.
@@ -328,7 +328,7 @@ Changelog
   [witsch]
 
 
-1.0b5 - 2009-08-26
+1.0b5 (2009-08-26)
 ------------------
 
 - Fix compatibility issue with `repoze.zope2`.
@@ -347,7 +347,7 @@ Changelog
   [witsch]
 
 
-1.0b4 - 2009-11-19
+1.0b4 (2009-11-19)
 ------------------
 
 - Provide maintenance view for (re)setting blob sub-types, which can also
@@ -356,7 +356,7 @@ Changelog
   [witsch]
 
 
-1.0b3 - 2009-11-15
+1.0b3 (2009-11-15)
 ------------------
 
 - Clean up GenericSetup profiles to allow separate installation of
@@ -407,7 +407,7 @@ Changelog
   [witsch]
 
 
-1.0b2 - 2008-02-29
+1.0b2 (2008-02-29)
 ------------------
 
 - Reverted fix for Windows that closed the file upload object in order
@@ -415,7 +415,7 @@ Changelog
   [witsch]
 
 
-1.0b1 - 2008-02-28
+1.0b1 (2008-02-28)
 ------------------
 
 - Minor bug fixes and cleanups
@@ -441,7 +441,7 @@ Changelog
   [witsch]
 
 
-1.0a2 - 2007-12-12
+1.0a2 (2007-12-12)
 ------------------
 
 - Various minor bug fixes regarding migration, content icons etc
@@ -456,7 +456,7 @@ Changelog
   [witsch]
 
 
-1.0a1 - 2007-12-07
+1.0a1 (2007-12-07)
 ------------------
 
 - Initial version
