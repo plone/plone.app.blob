@@ -10,5 +10,6 @@
   <adapter factory=".file.BlobbableFile" />
   <adapter factory=".pdata.BlobbablePdata" />
   <adapter factory=".webdav.BlobbableWebDavUpload" />
+  <adapter factory=".xmlrpc.BlobbableBinary" />
 
 </configure>
