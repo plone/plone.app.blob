@@ -7,6 +7,7 @@ from plone.app.blob.interfaces import IBlobbable
 from plone.app.blob.tests.base import BlobTestCase
 from plone.app.blob.tests.utils import getFile, getImage
 from StringIO import StringIO
+from xmlrpclib import Binary
 
 
 class AdapterTests(BlobTestCase):
@@ -55,6 +56,8 @@ class AdapterTests(BlobTestCase):
         target = Blob()
         blobbable.feed(target)
 
+    def testBlobbableBinaryFile(self):
+        self.assertEquals(True, False)
 
 def test_suite():
     return defaultTestLoader.loadTestsFromName(__name__)
