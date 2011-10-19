@@ -26,4 +26,4 @@ class BlobbableBinary(object):
 
     def mimetype(self):
         """ see interface ... """
-        return 'binary'
+        return 'application/octet-stream'
