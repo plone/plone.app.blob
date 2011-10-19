@@ -20,6 +20,10 @@ class BlobbableBinary(object):
         blobfile.writelines(self.context.data)
         blobfile.close()
 
+    def filename(self):
+        """ see interface ... """
+        return None
+
     def mimetype(self):
         """ see interface ... """
         return 'application/octet-stream'
