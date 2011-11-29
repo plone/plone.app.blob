@@ -70,6 +70,27 @@ class ImageTraverseTests(ReplacementTestCase, ImagingTestCaseMixin):
         self.assertEqual(height, 42)
         self.assertNotEqual(uid1, uid2, 'scale not updated?')
 
+    def testDefaultPublish(self):
+        request = self.folder.REQUEST
+        view = self.image.unrestrictedTraverse('@@images')
+        image = view.publishTraverse(request, 'image')
+        size = image.get_size()
+
+        # Rewrap image scale to leave out the image class
+        # implementation. We do this to test the situation where we do
+        # not have class-supported publishing (e.g. with schema
+        # extension).
+        image = image.aq_base.__of__(self.folder)
+
+        from ZPublisher.BaseRequest import DefaultPublishTraverse
+        adapter = DefaultPublishTraverse(image, request)
+        ob2 = adapter.publishTraverse(request, 'index_html')
+        document = ob2()
+        content_type = request.RESPONSE.getHeader('content-type')
+        content_length = request.RESPONSE.getHeader('content-length')
+        self.assertEqual(content_type, 'image/gif')
+        self.assertEqual(content_length, str(size))
+
 
 class ImagePublisherTests(ReplacementFunctionalTestCase, ImagingTestCaseMixin):
 

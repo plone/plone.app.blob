@@ -64,6 +64,38 @@ class BlobWrapper(Implicit, Persistent):
         self.content_type = content_type
         self.filename = None
 
+    security.declareProtected(View, 'index_html')
+    def index_html(self, REQUEST=None, RESPONSE=None, charset='utf-8', disposition='inline'):
+        """ make it directly viewable when entering the objects URL """
+
+        if REQUEST is None:
+            REQUEST = self.REQUEST
+
+        if RESPONSE is None:
+            RESPONSE = REQUEST.RESPONSE
+
+        RESPONSE.setHeader('Last-Modified', rfc1123_date(self._p_mtime))
+        RESPONSE.setHeader('Content-Type', self.getContentType())
+        RESPONSE.setHeader('Accept-Ranges', 'bytes')
+
+        if handleIfModifiedSince(self, REQUEST, RESPONSE):
+            return ''
+
+        length = self.get_size()
+        RESPONSE.setHeader('Content-Length', length)
+
+        filename = self.getFilename()
+        if filename is not None:
+            filename = IUserPreferredFileNameNormalizer(REQUEST).normalize(
+                unicode(filename, charset))
+            header_value = contentDispositionHeader(
+                disposition=disposition,
+                filename=filename)
+            RESPONSE.setHeader("Content-disposition", header_value)
+
+        request_range = handleRequestRange(self, length, REQUEST, RESPONSE)
+        return self.getIterator(**request_range)
+
     security.declarePrivate('setBlob')
     def setBlob(self, blob):
         """ set the contained blob object """
@@ -240,30 +272,14 @@ class BlobField(ObjectField):
         return self.index_html(instance, REQUEST, RESPONSE, disposition='attachment')
 
     security.declareProtected(View, 'index_html')
-    def index_html(self, instance, REQUEST=None, RESPONSE=None, disposition='inline'):
+    def index_html(self, instance, REQUEST=None, RESPONSE=None, **kwargs):
         """ make it directly viewable when entering the objects URL """
-        if REQUEST is None:
-            REQUEST = instance.REQUEST
-        if RESPONSE is None:
-            RESPONSE = REQUEST.RESPONSE
         blob = self.getUnwrapped(instance, raw=True)    # TODO: why 'raw'?
-        RESPONSE.setHeader('Last-Modified', rfc1123_date(instance._p_mtime))
-        RESPONSE.setHeader('Content-Type', self.getContentType(instance))
-        RESPONSE.setHeader('Accept-Ranges', 'bytes')
-        if handleIfModifiedSince(instance, REQUEST, RESPONSE):
-            return ''
-        length = blob.get_size()
-        RESPONSE.setHeader('Content-Length', length)
-        filename = self.getFilename(instance)
-        if filename is not None:
-            filename = IUserPreferredFileNameNormalizer(REQUEST).normalize(
-                unicode(filename, instance.getCharset()))
-            header_value = contentDispositionHeader(
-                disposition=disposition,
-                filename=filename)
-            RESPONSE.setHeader("Content-disposition", header_value)
-        range = handleRequestRange(instance, length, REQUEST, RESPONSE)
-        return blob.getIterator(**range)
+        charset = instance.getCharset()
+        return blob.index_html(
+            REQUEST=REQUEST, RESPONSE=RESPONSE,
+            charset=charset, **kwargs
+            )
 
     security.declarePublic('get_size')
     def get_size(self, instance):

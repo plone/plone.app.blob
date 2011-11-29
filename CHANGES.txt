@@ -4,8 +4,19 @@ Changelog
 1.5.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Move download implementation (the ``index_html`` method) to the blob
+  wrapper class. The wrapper object is now directly viewable via the
+  Zope 2 publisher.
 
+  This change adds support for publishing of the original image data
+  for any image field via the scaling view (even for fields that have
+  been added via schema extension).
+
+  Previously, if the blob wrapper was published for a content object
+  that did not derive from the provided image class, Plone's default
+  ``index_html`` template would be used, rendering an HTML page
+  instead of the image.
+  [malthe]
 
 1.5.1 (2011-08-19)
 ------------------
