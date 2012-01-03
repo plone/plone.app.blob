@@ -9,7 +9,7 @@
 
     <h1 class="documentFirstHeading"
         i18n:translate="blob_migration_title">Blob Migration</h1>
-        
+
     <div id="content-core">
         <div tal:condition="exists: options/notinstalled"
              i18n:translate="blob_not_installed">
