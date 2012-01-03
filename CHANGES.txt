@@ -4,6 +4,10 @@ Changelog
 1.5.2 (unreleased)
 ------------------
 
+- Keep the acquisition context of the blob in index_html, as otherwise
+  we cannot get the http__etag method.
+  [maurits]
+
 - Move download implementation (the ``index_html`` method) to the blob
   wrapper class. The wrapper object is now directly viewable via the
   Zope 2 publisher.

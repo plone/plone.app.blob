@@ -274,7 +274,7 @@ class BlobField(ObjectField):
     security.declareProtected(View, 'index_html')
     def index_html(self, instance, REQUEST=None, RESPONSE=None, **kwargs):
         """ make it directly viewable when entering the objects URL """
-        blob = self.getUnwrapped(instance, raw=True)    # TODO: why 'raw'?
+        blob = self.get(instance, raw=True)    # TODO: why 'raw'?
         charset = instance.getCharset()
         return blob.index_html(
             REQUEST=REQUEST, RESPONSE=RESPONSE,
