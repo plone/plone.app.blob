@@ -151,7 +151,7 @@ Let's also check the scaled versions included the un-scaled variant:
 
   >>> browser.open(url + '/image_thumb')
   >>> browser.contents
-  'GIF89a...'
+  'GIF87a...'
   >>> browser.headers.getheader('status').upper()
   '200 OK'
   >>> browser.headers.getheader('content-type')

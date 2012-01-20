@@ -37,7 +37,7 @@ class BlobImageTraverseTests(TraverseCounterMixin, ReplacementTestCase):
         self.failUnless('thumb' in sizes.keys())
         thumb = traverse(image, 'image_thumb')
         self.assertEqual(thumb.getContentType(), 'image/gif')
-        self.assertEqual(thumb.data[:6], 'GIF89a')
+        self.assertEqual(thumb.data[:6], 'GIF87a')
         width, height = sizes['thumb']
         self.assertEqual(thumb.width, width)
         self.assertEqual(thumb.height, height)
@@ -61,7 +61,7 @@ class BlobImageTraverseTests(TraverseCounterMixin, ReplacementTestCase):
         traverse = folder.REQUEST.traverseName
         foo = traverse(image, 'image_foo')
         self.assertEqual(foo.getContentType(), 'image/gif')
-        self.assertEqual(foo.data[:6], 'GIF89a')
+        self.assertEqual(foo.data[:6], 'GIF87a')
         self.assertEqual(foo.width, 23)
         self.assertEqual(foo.height, 23)
         # also check the generated tag
@@ -167,7 +167,7 @@ class BlobImagePublisherTests(TraverseCounterMixin, ReplacementFunctionalTestCas
         # and last a scaled version
         response = self.publish(base + '/foo/image_thumb', basic=credentials)
         self.assertEqual(response.getStatus(), 200)
-        self.assertEqual(response.getBody()[:6], 'GIF89a')
+        self.assertEqual(response.getBody()[:6], 'GIF87a')
         self.assertEqual(response.getHeader('Content-Type'), 'image/gif')
         # make sure the traversal adapter was call in fact
         self.assertEqual(self.counter, 9)
@@ -205,7 +205,7 @@ class BlobAdapterTests(ReplacementTestCase):
         foo = self.handler.createScale(self.image, 'foo', 100, 80)
         self.assertEqual(foo['id'], 'image_foo')
         self.assertEqual(foo['content_type'], 'image/gif')
-        self.assertEqual(foo['data'][:6], 'GIF89a')
+        self.assertEqual(foo['data'][:6], 'GIF87a')
 
     def testCreateScaleWithZeroWidth(self):
         foo = self.handler.createScale(self.image, 'foo', 100, 0)
@@ -223,7 +223,7 @@ class BlobAdapterTests(ReplacementTestCase):
         foo = self.handler.getScale(self.image, 'foo')
         self.assertEqual(foo.getId(), 'image_foo')
         self.assertEqual(foo.getContentType(), 'image/gif')
-        self.assertEqual(foo.data[:6], 'GIF89a')
+        self.assertEqual(foo.data[:6], 'GIF87a')
         self.assertEqual(foo.width, 60)
         self.assertEqual(foo.height, 60)
 
