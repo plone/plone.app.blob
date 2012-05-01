@@ -19,6 +19,7 @@ from Products.Archetypes.atapi import ObjectField, FileWidget, ImageWidget
 from Products.Archetypes.atapi import PrimaryFieldMarshaller
 from Products.Archetypes.Registry import registerField
 from Products.Archetypes.utils import contentDispositionHeader
+from Products.ATContentTypes.configuration import zconf
 
 from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
 from plone.app.blob.interfaces import IBlobbable, IWebDavUpload, IBlobField
@@ -344,7 +345,7 @@ class ImageField(BlobField, ImageFieldMixin):
         'max_size': None,
         'sizes': None,
         'swallowResizeExceptions': False,
-        'pil_quality': 88,
+        'pil_quality': zconf.pil_config.quality,
         'pil_resize_algo': getPILResizeAlgo(),
         'default_content_type': 'image/png',
         'allowable_content_types': ('image/gif', 'image/jpeg', 'image/png'),

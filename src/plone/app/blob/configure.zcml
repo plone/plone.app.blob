@@ -37,6 +37,12 @@
     for="plone.app.blob.interfaces.IATBlobImage"
     factory=".subtypes.image.SchemaExtender" />
 
+  <!-- same name as subtypes.image, in this way we override basic extender -->
+  <adapter
+    name="plone.app.blob.subtypes.image"
+    for="plone.app.blob.interfaces.IATBlobNewsItem"
+    factory=".subtypes.newsitem.SchemaExtender" />
+
   <adapter
     factory=".scale.BlobImageScaleHandler" />
 

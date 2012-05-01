@@ -1,11 +1,14 @@
 Changelog
 =========
 
-1.5.5 (unreleased)
+1.6.0 (unreleased)
 ------------------
 
 - Fix BLOB migration when LinguaPlone is installed.
   [rpatterson]
+
+- a working support for blobbed news
+  [keul]
 
 
 1.5.4 (2012-10-15)

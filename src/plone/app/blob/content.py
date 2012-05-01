@@ -22,7 +22,7 @@ from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from Products.MimetypesRegistry.common import MimeTypeException
 
 from plone.app.imaging.interfaces import IImageScaleHandler
-from plone.app.blob.interfaces import IATBlob, IATBlobFile, IATBlobImage
+from plone.app.blob.interfaces import IATBlob, IATBlobFile, IATBlobImage, IATBlobNewsItem
 from plone.app.blob.config import packageName
 from plone.app.blob.field import BlobMarshaller
 from plone.app.blob.mixins import ImageMixin
@@ -45,9 +45,12 @@ try:
 except ImportError:
     hasCMF22 = False
 
-def addATBlob(container, id, subtype='Blob', **kwargs):
+def addATBlob(container, id, subtype='Blob', filish_type=True, **kwargs):
     """ extended at-constructor copied from ClassGen.py """
-    obj = ATBlob(id)
+    if filish_type:
+        obj = ATBlob(id)
+    else:
+        obj = ATBlobContent(id)
     if subtype is not None:
         markAs(obj, subtype)    # mark with interfaces needed for subtype
     if not hasCMF22:
@@ -66,6 +69,9 @@ def addATBlobFile(container, id, **kwargs):
 
 def addATBlobImage(container, id, **kwargs):
     return addATBlob(container, id, subtype='Image', **kwargs)
+
+def addATBlobNewsItem(container, id, **kwargs):
+    return addATBlob(container, id, subtype='News Item', filish_type=False, **kwargs)
 
 
 class ATBlob(ATCTFileContent, ImageMixin):
@@ -170,6 +176,8 @@ class ATBlob(ATCTFileContent, ImageMixin):
         res = super(ATBlob, self).__repr__()
         if IATBlobFile.providedBy(self):
             res = res.replace(ATBlob.__name__, 'ATFile', 1)
+        elif IATBlobNewsItem.providedBy(self):
+            res = res.replace(ATBlob.__name__, 'ATNewsItem', 1)        
         elif IATBlobImage.providedBy(self):
             res = res.replace(ATBlob.__name__, 'ATImage', 1)
         return res
@@ -236,5 +244,35 @@ class ATBlob(ATCTFileContent, ImageMixin):
                     return image
         return super(ATBlob, self).__bobo_traverse__(REQUEST, name)
 
-
 registerType(ATBlob, packageName)
+
+
+class ATBlobContent(ATBlob):
+    """ blob based content, but for normal content (not file based) """
+    security = ClassSecurityInfo()
+
+    portal_type = 'BlobContent'
+
+    security.declarePublic('getIcon')
+    def getIcon(self, relative_to_portal=False):
+        """ calculate an icon based on mime-type """
+        return False
+
+    def _should_set_id_to_filename(self, filename, title):
+        """ If title is blank, have the caller set my ID to the
+            uploaded file's name. """
+        return False
+
+    security.declareProtected(View, 'getText')
+    def getText(self):
+        return self.getField('text').get(self)
+
+    security.declareProtected(View, 'CookedBody')
+    def CookedBody(self, stx_level='ignored'):
+        """CMF compatibility method
+        """
+        return self.getText()
+
+    index_html = None # setting index_html to None forces the usage of __call__
+
+registerType(ATBlobContent, packageName)

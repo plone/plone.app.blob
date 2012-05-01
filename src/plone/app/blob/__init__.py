@@ -15,7 +15,7 @@ def initialize(context):
     from Products.CMFCore import utils
     from Products.Archetypes import atapi
     from Products.ATContentTypes import permission as atct
-
+    
     content_types, constructors, ftis = atapi.process_types(
         atapi.listTypes(packageName), packageName)
     for atype, constructor in zip(content_types, constructors):
@@ -28,6 +28,7 @@ def initialize(context):
     replacement_types = (
         ('File', content.addATBlobFile),
         ('Image', content.addATBlobImage),
+        ('News Item', content.addATBlobNewsItem),
     )
     for name, constructor in replacement_types:
         utils.ContentInit("%s: %s" % (packageName, name),
