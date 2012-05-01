@@ -2,16 +2,22 @@
 
 from zope.interface import implements
 
+from Acquisition import aq_base
+
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Archetypes.atapi import AnnotationStorage
 from Products.Archetypes.atapi import ImageWidget, RichWidget
-from Products.Archetypes.atapi import StringWidget
+from Products.Archetypes.atapi import StringWidget, TextAreaWidget
 from Products.Archetypes.atapi import StringField, TextField
 from Products.ATContentTypes.configuration import zconf
 from Products.validation import V_REQUIRED
 from archetypes.schemaextender.interfaces import ISchemaExtender
 from archetypes.schemaextender.field import ExtensionField
 
+from plone.app.blob.interfaces import IBlobImageField
+from plone.app.blob.config import blobScalesAttr
+from plone.app.blob.field import BlobField
+from plone.app.blob.mixins import ImageFieldMixin
 from plone.app.blob.subtypes.image import ExtensionBlobField
 
 class ExtensionTextField(ExtensionField, TextField):
