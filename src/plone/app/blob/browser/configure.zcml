@@ -24,6 +24,13 @@
       permission="cmf.ManagePortal" />
 
   <browser:page
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="blob-newsitem-migration"
+      template="migration.pt"
+      class=".migration.NewsItemMigrationView"
+      permission="cmf.ManagePortal" />
+
+  <browser:page
       for="*"
       name="blob-maintenance"
       class=".maintenance.MaintenanceView"
