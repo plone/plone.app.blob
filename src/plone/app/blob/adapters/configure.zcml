@@ -5,6 +5,7 @@
   <adapter factory=".fileupload.BlobbableFileUpload" />
   <adapter factory=".ofsfile.BlobbableOFSFile" />
   <adapter factory=".atfile.BlobbableATFile" />
+  <adapter factory=".atnewsitem.BlobbableATNewsItem" />
   <adapter factory=".atimage.BlobbableATImage" />
   <adapter factory=".stringio.BlobbableStringIO" />
   <adapter factory=".file.BlobbableFile" />

@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5.2 (unreleased)
+1.6.0 (unreleased)
 ------------------
 
 - Keep the acquisition context of the blob in index_html, as otherwise
