@@ -171,7 +171,6 @@ class ATNewsItemToBlobNewsItemMigrator(ATImageToBlobImageMigrator):
             image.filename = self.old.getFilename('image')
             self.new.getField('image').getMutator(self.new)(image)
 
-
 def getATBlobNewsItemsMigrationWalker(self):
     return getMigrationWalker(self, migrator=ATNewsItemToBlobNewsItemMigrator)
 
