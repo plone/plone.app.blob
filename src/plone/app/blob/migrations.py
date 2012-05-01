@@ -146,3 +146,18 @@ def getATBlobImagesMigrationWalker(self):
 
 def migrateATBlobImages(self):
     return migrate(self, walker=getATBlobImagesMigrationWalker)
+
+
+# migration of news item content to news item replacement content type
+class ATNewsItemToBlobNewsItemMigrator(ATImageToBlobImageMigrator):
+    src_portal_type = 'News Item'
+    src_meta_type = 'ATNewsItem'
+    dst_portal_type = 'News Item'
+    dst_meta_type = 'ATBlobContent'
+
+
+def getATBlobNewsItemsMigrationWalker(self):
+    return getMigrationWalker(self, migrator=ATNewsItemToBlobNewsItemMigrator)
+
+def migrateATBlobNewsItems(self):
+    return migrate(self, walker=getATBlobNewsItemsMigrationWalker)
