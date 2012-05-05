@@ -10,11 +10,12 @@ except ImportError:
     InlineMigrator = object
     haveContentMigrations = False
 
+from StringIO import StringIO
+
 from transaction import savepoint
 from Products.CMFCore.utils import getToolByName
 from Products.Archetypes.interfaces import ISchema
 from plone.app.blob.interfaces import IBlobField
-
 
 def getMigrationWalker(context, migrator):
     """ set up migration walker using the given item migrator """
@@ -100,7 +101,7 @@ class ATFileToBlobMigrator(BaseMigrator):
 
     def last_migrate_reindex(self):
         self.new.reindexObject(idxs=['object_provides', 'portal_type',
-            'Type', 'UID'])
+            'Type', 'UID', 'review_state'])
 
 
 def getATFilesMigrationWalker(self):
@@ -131,7 +132,6 @@ class ATImageToBlobImageMigrator(ATFileToBlobMigrator):
     dst_portal_type = 'Image'
     dst_meta_type = 'ATBlob'
 
-    # migrate all fields except 'image', which needs special handling...
     fields_map = {
         'image': None,
     }
@@ -154,6 +154,21 @@ class ATNewsItemToBlobNewsItemMigrator(ATImageToBlobImageMigrator):
     src_meta_type = 'ATNewsItem'
     dst_portal_type = 'News Item'
     dst_meta_type = 'ATBlobContent'
+
+    fields_map = {
+        'image': None,
+        'text': None,
+        'imageCaption': None,
+    }
+
+    def migrate_data(self):
+        self.new.getField('text').getMutator(self.new)(self.old.getText())
+        self.new.getField('imageCaption').getMutator(self.new)(self.old.getImageCaption())
+        data = self.old.getField('image').getAccessor(self.old)()
+        if data:
+            image = StringIO(data.data.data)
+            image.filename = self.old.getFilename('image')
+            self.new.getField('image').getMutator(self.new)(image)
 
 
 def getATBlobNewsItemsMigrationWalker(self):
