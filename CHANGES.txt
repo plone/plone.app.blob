@@ -4,6 +4,9 @@ Changelog
 1.5.2 (unreleased)
 ------------------
 
+- Deprecated aliases were replaced on tests.
+  [hvelarde]
+
 - Keep the acquisition context of the blob in index_html, as otherwise
   we cannot get the http__etag method.
   [maurits]

@@ -40,8 +40,8 @@ class FileReplacementTests(ReplacementTestCase):
         self.assertEqual(foo.getContentType(), 'text/plain')
         self.assertEqual(str(foo.getFile()), 'plain text')
         # also make sure we're using blobs
-        self.failUnless(isinstance(foo, ATBlob), 'no atblob?')
-        self.failUnless(isinstance(foo.getField('file'), BlobField), 'no blob?')
+        self.assertTrue(isinstance(foo, ATBlob), 'no atblob?')
+        self.assertTrue(isinstance(foo.getField('file'), BlobField), 'no blob?')
         blob = foo.getFile().getBlob().open('r')
         self.assertEqual(blob.read(), 'plain text')
         # let's also check the `get_size` and `index_html` methods, the
@@ -56,12 +56,12 @@ class FileReplacementTests(ReplacementTestCase):
 
     def testFileBlobInterfaces(self):
         foo = self.folder[self.folder.invokeFactory('File', 'foo')]
-        self.failUnless(atfile.IATFile.providedBy(foo), 'no IATFile?')
-        self.failUnless(atfile.IFileContent.providedBy(foo), 'no IFileContent?')
-        self.failUnless(IATBlobFile.providedBy(foo), 'no IATBlobFile?')
+        self.assertTrue(atfile.IATFile.providedBy(foo), 'no IATFile?')
+        self.assertTrue(atfile.IFileContent.providedBy(foo), 'no IFileContent?')
+        self.assertTrue(IATBlobFile.providedBy(foo), 'no IATBlobFile?')
         if not IInterface.providedBy(Z2IATFile):    # this is zope < 2.12
-            self.failUnless(Z2IATFile.isImplementedBy(foo), 'no zope2 IATFile?')
-            self.failIf(Z2IATImage.isImplementedBy(foo), 'zope2 IATImage?')
+            self.assertTrue(Z2IATFile.isImplementedBy(foo), 'no zope2 IATFile?')
+            self.assertFalse(Z2IATImage.isImplementedBy(foo), 'zope2 IATImage?')
 
     def testFileMigration(self):
         foo = self.folder[self.folder.invokeFactory('ATFile', id='foo',
@@ -71,7 +71,7 @@ class FileReplacementTests(ReplacementTestCase):
         foo._setPortalTypeName('File')
         foo.reindexObject(idxs=('portal_type',))
         # check to be migrated content
-        self.failUnless(isinstance(foo, ATFile), 'not a file?')
+        self.assertTrue(isinstance(foo, ATFile), 'not a file?')
         self.assertEqual(foo.Title(), 'a file')
         self.assertEqual(foo.getContentType(), 'text/plain')
         self.assertEqual(foo.getPortalTypeName(), 'File')
@@ -81,8 +81,8 @@ class FileReplacementTests(ReplacementTestCase):
         self.assertEqual(migrateATBlobFiles(self.portal),
             'Migrating /plone/Members/test_user_1_/foo (File -> File)\n')
         foo = self.folder['foo']
-        self.failUnless(isinstance(foo, ATBlob), 'not a blob?')
-        self.failUnless(isinstance(foo.getField('file'), BlobField), 'no blob?')
+        self.assertTrue(isinstance(foo, ATBlob), 'not a blob?')
+        self.assertTrue(isinstance(foo.getField('file'), BlobField), 'no blob?')
         self.assertEqual(foo.Title(), 'a file')
         self.assertEqual(foo.getContentType(), 'text/plain')
         self.assertEqual(foo.getPortalTypeName(), 'File')
@@ -131,16 +131,16 @@ class FileReplacementTests(ReplacementTestCase):
         accessor = field.getIndexAccessor(foo)
         self.assertEqual(field.index_method, accessor.func_name)
         data = accessor()
-        self.failUnless('Plone' in data, 'pdftohtml not installed?')
-        self.failIf('PDF' in data)
+        self.assertTrue('Plone' in data, 'pdftohtml not installed?')
+        self.assertFalse('PDF' in data)
 
     def testSearchableText(self):
         foo = self.folder[self.folder.invokeFactory('File', 'foo',
             title='foo', file=getData('plone.pdf'))]
         data = foo.SearchableText()
-        self.failUnless('foo' in data)
-        self.failUnless('Plone' in data, 'pdftohtml not installed?')
-        self.failIf('PDF' in data)
+        self.assertTrue('foo' in data)
+        self.assertTrue('Plone' in data, 'pdftohtml not installed?')
+        self.assertFalse('PDF' in data)
 
 
 class ImageReplacementTests(ReplacementTestCase):
@@ -158,8 +158,8 @@ class ImageReplacementTests(ReplacementTestCase):
         self.assertEqual(foo.getContentType(), 'image/gif')
         self.assertEqual(str(foo.getImage()), gif)
         # also make sure we're using blobs
-        self.failUnless(isinstance(foo, ATBlob), 'no atblob?')
-        self.failUnless(isinstance(foo.getField('image'), BlobField), 'no blob?')
+        self.assertTrue(isinstance(foo, ATBlob), 'no atblob?')
+        self.assertTrue(isinstance(foo.getField('image'), BlobField), 'no blob?')
         blob = foo.getImage().getBlob().open('r')
         self.assertEqual(blob.read(), gif)
         # let's also check the `getSize`, `tag` and `index_html` methods
@@ -167,7 +167,7 @@ class ImageReplacementTests(ReplacementTestCase):
         self.assertEqual(foo.getSize(), (1, 1))
         self.assertEqual(foo.width, 1)
         self.assertEqual(foo.height, 1)
-        self.failUnless('/foo/image"' in foo.tag())
+        self.assertTrue('/foo/image"' in foo.tag())
         # `index_html` should return a stream-iterator
         request = foo.REQUEST
         response = request.RESPONSE
@@ -178,12 +178,12 @@ class ImageReplacementTests(ReplacementTestCase):
 
     def testImageBlobInterfaces(self):
         foo = self.folder[self.folder.invokeFactory('Image', 'foo')]
-        self.failUnless(atimage.IATImage.providedBy(foo), 'no IATImage?')
-        self.failUnless(atimage.IImageContent.providedBy(foo), 'no IImageContent?')
-        self.failUnless(IATBlobImage.providedBy(foo), 'no IATBlobImage?')
+        self.assertTrue(atimage.IATImage.providedBy(foo), 'no IATImage?')
+        self.assertTrue(atimage.IImageContent.providedBy(foo), 'no IImageContent?')
+        self.assertTrue(IATBlobImage.providedBy(foo), 'no IATBlobImage?')
         if not IInterface.providedBy(Z2IATFile):    # this is zope < 2.12
-            self.failUnless(Z2IATImage.isImplementedBy(foo), 'no zope2 IATImage?')
-            self.failIf(Z2IATFile.isImplementedBy(foo), 'zope2 IATFile?')
+            self.assertTrue(Z2IATImage.isImplementedBy(foo), 'no zope2 IATImage?')
+            self.assertFalse(Z2IATFile.isImplementedBy(foo), 'zope2 IATFile?')
 
     def testImageMigration(self):
         gif = getImage()
@@ -194,7 +194,7 @@ class ImageReplacementTests(ReplacementTestCase):
         foo._setPortalTypeName('Image')
         foo.reindexObject(idxs=('portal_type',))
         # check to be migrated content
-        self.failUnless(isinstance(foo, ATImage), 'not an image?')
+        self.assertTrue(isinstance(foo, ATImage), 'not an image?')
         self.assertEqual(foo.Title(), 'an image')
         self.assertEqual(foo.getContentType(), 'image/gif')
         self.assertEqual(foo.getPortalTypeName(), 'Image')
@@ -204,8 +204,8 @@ class ImageReplacementTests(ReplacementTestCase):
         self.assertEqual(migrateATBlobImages(self.portal),
             'Migrating /plone/Members/test_user_1_/foo (Image -> Image)\n')
         foo = self.folder['foo']
-        self.failUnless(isinstance(foo, ATBlob), 'not a blob?')
-        self.failUnless(isinstance(foo.getField('image'), BlobField), 'no blob?')
+        self.assertTrue(isinstance(foo, ATBlob), 'not a blob?')
+        self.assertTrue(isinstance(foo.getField('image'), BlobField), 'no blob?')
         self.assertEqual(foo.Title(), 'an image')
         self.assertEqual(foo.getContentType(), 'image/gif')
         self.assertEqual(foo.getPortalTypeName(), 'Image')
@@ -268,16 +268,16 @@ class ImageReplacementTests(ReplacementTestCase):
         foo.schema['image'] = ImageField('image', storage=AnnotationStorage())
         foo.schema['image'].set(foo, gif)
         isimage = lambda i: isinstance(i, Image)
-        self.failUnless(filter(isimage, IAnnotations(foo).values()))
+        self.assertTrue(filter(isimage, IAnnotations(foo).values()))
         # migrate using inline migrator
         migrate(self.portal, portal_type='Image', meta_type='ATBlob')
         # make sure all scale annotations were removed
-        self.failIf(filter(isimage, IAnnotations(foo).values()))
+        self.assertFalse(filter(isimage, IAnnotations(foo).values()))
 
     def testImageDefaultSizes(self):
         image = self.folder[self.folder.invokeFactory('Image', 'foo')]
         sizes = image.getField('image').getAvailableSizes(image)
-        self.failUnless('mini' in sizes)
+        self.assertTrue('mini' in sizes)
         self.assertEqual(sizes['mini'], (200, 200))
 
     def testImageGlobalSizes(self):

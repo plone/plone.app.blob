@@ -18,17 +18,17 @@ class MaintenanceViewTests(ReplacementTestCase):
         # try to re-create the state of blob content created with pre-beta3
         unmarkAs(foo, 'File')
         unmarkAs(bar, 'Image')
-        self.failIf(atfile.IFileContent.providedBy(foo), 'already IFileContent?')
-        self.failIf(atimage.IImageContent.providedBy(bar), 'already IImageContent?')
-        self.failIf(foo.Schema().getField('file'), 'has field "file"?')
-        self.failIf(bar.Schema().getField('image'), 'has field "image"?')
+        self.assertFalse(atfile.IFileContent.providedBy(foo), 'already IFileContent?')
+        self.assertFalse(atimage.IImageContent.providedBy(bar), 'already IImageContent?')
+        self.assertFalse(foo.Schema().getField('file'), 'has field "file"?')
+        self.assertFalse(bar.Schema().getField('image'), 'has field "image"?')
         # then fix again using the respective view...
         maintenance = self.portal.unrestrictedTraverse('blob-maintenance')
         maintenance.resetSubtypes()
-        self.failUnless(atfile.IFileContent.providedBy(foo), 'no IFileContent?')
-        self.failUnless(atimage.IImageContent.providedBy(bar), 'no IImageContent?')
-        self.failUnless(foo.Schema().getField('file'), 'no field "file"?')
-        self.failUnless(bar.Schema().getField('image'), 'no field "image"?')
+        self.assertTrue(atfile.IFileContent.providedBy(foo), 'no IFileContent?')
+        self.assertTrue(atimage.IImageContent.providedBy(bar), 'no IImageContent?')
+        self.assertTrue(foo.Schema().getField('file'), 'no field "file"?')
+        self.assertTrue(bar.Schema().getField('image'), 'no field "image"?')
 
     def testUpdateTypeIndex(self):
         # conjure up incorrect catalog data...
@@ -38,13 +38,13 @@ class MaintenanceViewTests(ReplacementTestCase):
         info.title = 'File'
         # make sure it's actually wrong...
         catalog = self.portal.portal_catalog
-        self.failIf(catalog(Type='File'))
-        self.failUnless(catalog(Type='Foo'))
+        self.assertFalse(catalog(Type='File'))
+        self.assertTrue(catalog(Type='Foo'))
         # fix using the maintenance view & check again...
         maintenance = self.portal.unrestrictedTraverse('blob-maintenance')
         maintenance.updateTypeIndex()
         self.assertEqual([b.getObject() for b in catalog(Type='File')], [foo])
-        self.failIf(catalog(Type='Foo'))
+        self.assertFalse(catalog(Type='Foo'))
 
 
 def test_suite():

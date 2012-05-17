@@ -53,12 +53,12 @@ class BaseFieldTests(ReplacementTestCase):
     def testImageField(self):
         foo = self.create(bar=getFile('image.jpg'))
         self.assertEqual(str(foo.getBar()), getFile('image.jpg').read())
-        self.failUnless(foo.getField('bar').tag(foo).startswith('<img src'))
+        self.assertTrue(foo.getField('bar').tag(foo).startswith('<img src'))
 
     def testImageDefaultSizes(self):
         image = self.create()
         sizes = image.getField('bar').getAvailableSizes(image)
-        self.failUnless('mini' in sizes)
+        self.assertTrue('mini' in sizes)
         self.assertEqual(sizes['mini'], (200, 200))
 
     def testImageGlobalSizes(self):

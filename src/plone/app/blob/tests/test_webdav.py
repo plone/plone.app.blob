@@ -15,10 +15,10 @@ class WebDavTests(ReplacementFunctionalTestCase):
             stdin=image, basic=self.getCredentials(),
             env={'CONTENT_TYPE': 'image/gif'})
         self.assertEqual(response.getStatus(), 201)
-        self.failUnless('image' in self.folder.objectIds())
+        self.assertTrue('image' in self.folder.objectIds())
         obj = self.folder.image
         self.assertEqual(obj.getPortalTypeName(), 'Image')
-        self.failUnless(IATBlobImage.providedBy(obj), 'no blob?')
+        self.assertTrue(IATBlobImage.providedBy(obj), 'no blob?')
         self.assertEqual(str(obj.getField('image').get(obj)), image.getvalue())
         # on initial (webdav) upload no filename is set by the client,
         # so it should end up being equal to the last path/url component...
@@ -34,7 +34,7 @@ class WebDavTests(ReplacementFunctionalTestCase):
             stdin=image, basic=self.getCredentials(),
             env={'CONTENT_TYPE': 'image/gif'})
         self.assertEqual(response.getStatus(), 204)
-        self.failUnless('foo' in self.folder.objectIds())
+        self.assertTrue('foo' in self.folder.objectIds())
         self.assertEqual(self.folder.foo.getId(), 'foo')
         self.assertEqual(self.folder.foo.Title(), 'an image')
         # as opposed to during file upload, editing a file via webdav (e.g.
