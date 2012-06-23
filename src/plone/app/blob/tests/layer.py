@@ -92,7 +92,7 @@ class BlobReplacementLayer(BlobLayer):
         root = app()
         portal = root.plone
         tool = getToolByName(portal, 'portal_setup')
-        for name in 'file-replacement', 'image-replacement':
+        for name in 'file-replacement', 'image-replacement', 'newsitem-replacement':
             profile = 'profile-plone.app.blob:%s' % name
             tool.runAllImportStepsFromProfile(profile, purge_old=False)
         # make sure it's loaded...
@@ -101,6 +101,7 @@ class BlobReplacementLayer(BlobLayer):
         # allow creating the replaced types
         types.getTypeInfo('ATFile').global_allow = True
         types.getTypeInfo('ATImage').global_allow = True
+        types.getTypeInfo('ATNewsItem').global_allow = True
         # and commit the changes
         commit()
         close(root)

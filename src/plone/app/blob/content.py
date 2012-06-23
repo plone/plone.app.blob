@@ -45,9 +45,9 @@ try:
 except ImportError:
     hasCMF22 = False
 
-def addATBlob(container, id, subtype='Blob', filish_type=True, **kwargs):
+def addATBlob(container, id, subtype='Blob', fileish_type=True, **kwargs):
     """ extended at-constructor copied from ClassGen.py """
-    if filish_type:
+    if fileish_type:
         obj = ATBlob(id)
     else:
         obj = ATBlobContent(id)
@@ -71,7 +71,7 @@ def addATBlobImage(container, id, **kwargs):
     return addATBlob(container, id, subtype='Image', **kwargs)
 
 def addATBlobNewsItem(container, id, **kwargs):
-    return addATBlob(container, id, subtype='News Item', filish_type=False, **kwargs)
+    return addATBlob(container, id, subtype='News Item', fileish_type=False, **kwargs)
 
 
 class ATBlob(ATCTFileContent, ImageMixin):

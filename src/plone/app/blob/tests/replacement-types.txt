@@ -1,8 +1,8 @@
-ATFile/ATImage Replacement Types
-================================
+ATFile/ATImage/ATNewsItems Replacement Types
+============================================
 
 This test tries to make sure the new, blob-based replacement types for
-`ATFile` and `ATImage` can be properly created and edited.
+`ATFile`, `ATImage` and `ATNewsItem` can be properly created and edited.
 
 
 Files
@@ -184,3 +184,57 @@ The image content should now be gone:
 
   >>> self.folder.foo.getImage().data
   ''
+
+
+News Item
+---------
+
+Yet another test is conducted for the "News Item" content item:
+
+  >>> browser.open(self.folder.absolute_url())
+  >>> browser.getLink(url='createObject?type_name=News+Item').click()
+  >>> browser.url
+  'http://nohost/plone/.../portal_factory/News%20Item/news_item.../edit'
+  >>> browser.getControl(name='title').value = 'A real news'
+  >>> browser.getControl(name='text').value = 'Lorem ipsum...'
+  >>> control = browser.getControl(name='image_file')
+  >>> control.filename = 'news.png'
+  >>> control.value = getFile('image.png')
+  >>> browser.getControl('Save').click()
+
+  >>> browser.url
+  'http://nohost/plone/.../a-real-news'
+  >>> browser.contents
+  '...Info...Changes saved...
+   ...A real news...
+   ...<img src="http://.../a-real-news/image_mini"...alt="A real news"...class="newsImage"...'
+
+Now let's make sure we can also edit it.  First we store the current image,
+however, so we can check it was actually updated:
+
+  >>> browser.open(browser.url + '/image_mini')
+  >>> original = browser.contents
+  >>> browser.goBack()
+
+  >>> browser.getLink('Edit').click()
+  >>> browser.getControl(name='title').value = 'Same news'
+  >>> browser.getControl('Replace with new image').selected = True
+  >>> control = browser.getControl(name='image_file')
+  >>> control.filename = 'news.gif'
+  >>> control.value = getFile('image.gif')
+  >>> browser.getControl('Save').click()
+
+  >>> browser.url
+  'http://nohost/plone/.../a-real-news'
+  >>> browser.contents
+  '...Info...Changes saved...
+   ...Same news...
+   ...<img src="http://.../a-real-news/image_mini"...alt="Same news"...class="newsImage"...'
+
+The actual image should also have been updated, of course:
+
+  >>> browser.open(browser.url + '/image_mini')
+  >>> current = browser.contents
+  >>> original == current
+  False
+

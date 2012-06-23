@@ -28,7 +28,6 @@ def initialize(context):
     replacement_types = (
         ('File', content.addATBlobFile),
         ('Image', content.addATBlobImage),
-        ('News Item', content.addATBlobNewsItem),
     )
     for name, constructor in replacement_types:
         utils.ContentInit("%s: %s" % (packageName, name),
@@ -36,3 +35,14 @@ def initialize(context):
             permission = atct.permissions.get(name),
             extra_constructors = (constructor,),
             ).initialize(context)
+
+    replacement_types = (
+        ('News Item', content.addATBlobNewsItem),
+    )
+    for name, constructor in replacement_types:
+        utils.ContentInit("%s: %s" % (packageName, name),
+            content_types = (content.ATBlobContent,),
+            permission = atct.permissions.get(name),
+            extra_constructors = (constructor,),
+            ).initialize(context)
+    
