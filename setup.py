@@ -19,6 +19,7 @@ long_description = (
 tests_require = [
     'collective.monkeypatcher',
     'Products.contentmigration',
+#    'Products.LinguaPlone',
     'plone.app.imaging [test]']
 
 setup(name='plone.app.blob',
