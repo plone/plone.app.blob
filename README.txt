@@ -19,30 +19,6 @@ Contents
 
 .. contents:: |__|
 
-
-Status
-======
-
-At the moment the integration for "File" content should be stable, but still
-needs more field testing.  It is being successfully used in several production
-deployments, though.  The provided blob-based content type should safely
-usable as a drop-in replacement for ``ATFile``.  As such it has been
-successfully tested against all ``CMFPlone`` and ``ATContentTypes`` tests.
-Please use the provided ``test-compatibility.sh`` script to run these tests
-for yourself.
-
-Image support is still in an alpha stadium and not enabled by default. It can
-be activated by applying the respective profile via the portal setup tool.
-
-More detailed information about the integration and the current status can be
-found in the corresponding `Plone enhancement`_ and `Plone 4 PLIP`_ tickets.
-
-  .. _`Plone enhancement`: http://dev.plone.org/plone/ticket/6805
-  .. _`Plone 4 PLIP`: http://dev.plone.org/plone/ticket/7822
-  .. |--| unicode:: U+2013   .. en dash
-  .. |---| unicode:: U+2014  .. em dash
-
-
 Requirements
 ============
 
