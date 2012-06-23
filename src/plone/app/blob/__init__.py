@@ -28,7 +28,6 @@ def initialize(context):
     replacement_types = (
         ('File', content.addATBlobFile),
         ('Image', content.addATBlobImage),
-        ('News Item', content.addATBlobNewsItem),
     )
     for name, constructor in replacement_types:
         utils.ContentInit("%s: %s" % (packageName, name),

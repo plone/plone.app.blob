@@ -11,7 +11,7 @@ Changelog
 - Fix BLOB migration when LinguaPlone is installed.
   [rpatterson]
 
-- a working support for blobbed news
+- Added support for News Item contents.
   [keul]
 
 
@@ -56,7 +56,6 @@ Changelog
   ``index_html`` template would be used, rendering an HTML page
   instead of the image.
   [malthe]
-
 
 1.5.1 (2011-08-19)
 ------------------
