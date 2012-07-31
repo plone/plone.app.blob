@@ -4,7 +4,8 @@ Changelog
 1.5.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- check for unicode filename first in index_html
+  [vangheem]
 
 
 1.5.2 (2012-05-25)

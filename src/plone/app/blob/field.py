@@ -86,8 +86,10 @@ class BlobWrapper(Implicit, Persistent):
 
         filename = self.getFilename()
         if filename is not None:
+            if not isinstance(filename, unicode):
+                unicode(filename, charset)
             filename = IUserPreferredFileNameNormalizer(REQUEST).normalize(
-                unicode(filename, charset))
+                filename)
             header_value = contentDispositionHeader(
                 disposition=disposition,
                 filename=filename)
