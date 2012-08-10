@@ -4,6 +4,9 @@ Changelog
 1.5.3 (unreleased)
 ------------------
 
+- update mutator to take care of filename in keyword args
+  [gotcha]
+
 - check for unicode filename first in index_html
   [vangheem]
 
