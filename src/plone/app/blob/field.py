@@ -240,7 +240,7 @@ class BlobField(ObjectField):
             except ReuseBlob, exception:
                 blob.setBlob(exception.args[0])     # reuse the given blob
             blob.setContentType(kwargs.get('mimetype', blobbable.mimetype()))
-            blob.setFilename(blobbable.filename())
+            blob.setFilename(kwargs.get('filename', blobbable.filename()))
         super(BlobField, self).set(instance, blob, **kwargs)
 
     security.declarePrivate('fixAutoId')
