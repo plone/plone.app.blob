@@ -11,3 +11,5 @@ include/
 lib/
 parts/
 var/
+.mr.developer.cfg
+extras/
