@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5.3 (unreleased)
+1.5.3 (2012-09-20)
 ------------------
 
 - update mutator to take care of filename in keyword args
