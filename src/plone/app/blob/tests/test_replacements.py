@@ -17,7 +17,7 @@ from plone.app.blob.migrations import migrateATBlobFiles, migrateATBlobImages
 from plone.app.blob.field import BlobField
 from plone.app.blob.content import ATBlob
 from plone.app.blob.tests.utils import getImage, getData
-
+from ZODB.blob import SAVEPOINT_SUFFIX
 
 def permissionsFor(name, product):
     from Products import meta_types
@@ -141,6 +141,15 @@ class FileReplacementTests(ReplacementTestCase):
         self.assertTrue('foo' in data)
         self.assertTrue('Plone' in data, 'pdftohtml not installed?')
         self.assertFalse('PDF' in data)
+
+    def testBlobPath(self):
+        foo = self.folder[self.folder.invokeFactory('File', 'foo',
+            title='foo', file=getData('plone.pdf'))]
+        field = foo.getField('file')
+        blobfile = field.get(foo).blob._p_blob_committed
+        tempdir = self.app._p_jar._storage.temporaryDirectory()
+        self.assertTrue(blobfile.endswith(SAVEPOINT_SUFFIX))
+        self.assertTrue(blobfile.startswith(tempdir))
 
 
 class ImageReplacementTests(ReplacementTestCase):
