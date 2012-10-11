@@ -242,6 +242,9 @@ class BlobField(ObjectField):
             blob.setContentType(kwargs.get('mimetype', blobbable.mimetype()))
             blob.setFilename(kwargs.get('filename', blobbable.filename()))
         super(BlobField, self).set(instance, blob, **kwargs)
+        # a transaction savepoint is created after setting the blob's value
+        # in order to make it available at its temporary path (e.g. to index
+        # pdfs etc using solr & tika within the same transaction)
         savepoint(optimistic=True)
 
     security.declarePrivate('fixAutoId')
