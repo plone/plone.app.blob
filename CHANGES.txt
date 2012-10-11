@@ -16,6 +16,9 @@ Changelog
 - check for unicode filename first in index_html
   [vangheem]
 
+- create a transaction savepoint in BlobField to have a correct temporary
+  path (eg for indexing in the same transaction)
+  [tomgross]
 
 1.5.2 (2012-05-25)
 ------------------

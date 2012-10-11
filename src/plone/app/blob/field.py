@@ -242,6 +242,7 @@ class BlobField(ObjectField):
             blob.setContentType(kwargs.get('mimetype', blobbable.mimetype()))
             blob.setFilename(kwargs.get('filename', blobbable.filename()))
         super(BlobField, self).set(instance, blob, **kwargs)
+        savepoint(optimistic=True)
 
     security.declarePrivate('fixAutoId')
     def fixAutoId(self, instance):
