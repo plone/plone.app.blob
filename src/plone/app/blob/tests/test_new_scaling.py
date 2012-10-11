@@ -85,7 +85,7 @@ class ImageTraverseTests(ReplacementTestCase, ImagingTestCaseMixin):
         from ZPublisher.BaseRequest import DefaultPublishTraverse
         adapter = DefaultPublishTraverse(image, request)
         ob2 = adapter.publishTraverse(request, 'index_html')
-        document = ob2()
+        ob2()
         content_type = request.RESPONSE.getHeader('content-type')
         content_length = request.RESPONSE.getHeader('content-length')
         self.assertEqual(content_type, 'image/gif')
