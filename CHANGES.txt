@@ -4,7 +4,9 @@ Changelog
 1.5.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Create a transaction savepoint after setting a blob's value in order to
+  make it available at its temporary path (within the same transaction).
+  [tomgross]
 
 
 1.5.3 (2012-09-20)
@@ -15,10 +17,6 @@ Changelog
 
 - Check for unicode filename first in ``index_html``.
   [vangheem]
-
-- Create a transaction savepoint after setting a blob's value in order to
-  make it available at its temporary path (within the same transaction).
-  [tomgross]
 
 
 1.5.2 (2012-05-25)
