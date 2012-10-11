@@ -267,9 +267,6 @@ class BlobField(ObjectField):
             filename = IUserPreferredFileNameNormalizer(request).normalize(filename)
             if filename and not filename == instance.getId():
                 # a file name was given, so the instance needs to be renamed...
-                # a subtransaction is applied, since without it renaming
-                # fails when the type is created using portal_factory
-                savepoint(optimistic=True)
                 instance.setId(filename)
 
     security.declareProtected(View, 'download')
