@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5.4 (unreleased)
+1.5.4 (2012-10-15)
 ------------------
 
 - Create a transaction savepoint after setting a blob's value in order to
