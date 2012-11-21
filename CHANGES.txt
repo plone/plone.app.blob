@@ -4,7 +4,8 @@ Changelog
 1.5.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix BLOB migration when LinguaPlone is installed.
+  [rpatterson]
 
 
 1.5.4 (2012-10-15)

@@ -137,7 +137,8 @@ class ATImageToBlobImageMigrator(ATFileToBlobMigrator):
     }
 
     def migrate_data(self):
-        self.new.getField('image').getMutator(self.new)(self.old)
+        value = self.old.getField('image').getAccessor(self.old)()
+        self.new.getField('image').getMutator(self.new)(value)
 
 
 def getATBlobImagesMigrationWalker(self):
