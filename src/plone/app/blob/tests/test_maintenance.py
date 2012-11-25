@@ -26,12 +26,6 @@ class MaintenanceViewTests(ReplacementTestCase):
         self.assertFalse(foo.Schema().getField('file'), 'has field "file"?')
         self.assertFalse(bar.Schema().getField('image'), 'has field "image"?')
         self.assertFalse(baz.Schema().getField('image'), 'has field "image"?')
-        self.failIf(atfile.IFileContent.providedBy(foo), 'already IFileContent?')
-        self.failIf(atimage.IImageContent.providedBy(bar), 'already IImageContent?')
-        self.failIf(atimage.IImageContent.providedBy(baz), 'already IImageContent?')
-        self.failIf(foo.Schema().getField('file'), 'has field "file"?')
-        self.failIf(bar.Schema().getField('image'), 'has field "image"?')
-        self.failIf(baz.Schema().getField('image'), 'has field "image"?')
         # then fix again using the respective view...
         maintenance = self.portal.unrestrictedTraverse('blob-maintenance')
         maintenance.resetSubtypes()

@@ -53,6 +53,10 @@ Changelog
   instead of the image.
   [malthe]
 
+  Added support for blob News Items through the new ATBlobContent
+  (that is like ATBlob, but for not-file-like contents)
+  [keul]
+
 1.5.1 (2011-08-19)
 ------------------
 
