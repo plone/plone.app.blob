@@ -4,6 +4,7 @@ from zope.component import adapts
 from xmlrpclib import Binary
 
 from plone.app.blob.interfaces import IBlobbable
+from plone.app.blob.utils import guessMimetype
 
 
 class BlobbableBinary(object):
@@ -22,8 +23,8 @@ class BlobbableBinary(object):
 
     def filename(self):
         """ see interface ... """
-        return None
+        return getattr(self.context, 'filename', None)
 
     def mimetype(self):
         """ see interface ... """
-        return 'application/octet-stream'
+        return guessMimetype(self.context.data, self.filename())

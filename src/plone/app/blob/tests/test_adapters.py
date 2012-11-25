@@ -1,3 +1,4 @@
+import os
 from unittest import defaultTestLoader
 from ZODB.blob import Blob
 from OFS.Image import File, Image
@@ -57,7 +58,21 @@ class AdapterTests(BlobTestCase):
         blobbable.feed(target)
 
     def testBlobbableBinaryFile(self):
-        self.assertEquals(True, False)
+        _file = os.path.join(os.path.dirname(__file__), 'data', 'image.gif')
+        f = open(_file, 'rb')
+        try:
+            obj = Binary(f)
+            obj.filename = 'image.gif'
+            blobbable = IBlobbable(obj)
+            target = Blob()
+            blobbable.feed(target)
+            self.assertEqual(target.open('r').read(),
+                             getFile('image.gif').read())
+            self.assertEquals(blobbable.filename(), 'image.gif')
+            self.assertEquals(blobbable.mimetype(), 'image/gif')
+        finally:
+            f.close()
+
 
 def test_suite():
     return defaultTestLoader.loadTestsFromName(__name__)
