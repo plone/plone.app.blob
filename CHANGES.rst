@@ -4,6 +4,10 @@ Changelog
 1.5.5 (unreleased)
 ------------------
 
+- Added adapter for data wrapped in xmlrpclib.Binary
+  https://github.com/plone/plone.app.blob/pull/1
+  [aclark, garbas]
+
 - Fix BLOB migration when LinguaPlone is installed.
   [rpatterson]
 
