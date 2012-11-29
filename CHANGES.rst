@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5.5 (unreleased)
+1.5.5 (2012-11-29)
 ------------------
 
 - Added adapter for data wrapped in xmlrpclib.Binary
