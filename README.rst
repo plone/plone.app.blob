@@ -12,7 +12,8 @@ has several advantages, most importantly a much smaller ``Data.fs`` and better
 performance both cpu- as well as memory-wise.
 
   .. |__| unicode:: U+20  .. space
-
+  .. |--| unicode:: U+2013   .. en dash
+  .. |---| unicode:: U+2014  .. em dash
 
 Contents
 ========
@@ -529,7 +530,6 @@ enough.  In the meantime here are the recommended workarounds:
   .. __: http://dev.plone.org/plone/ticket/10130#comment:5
   .. __: http://pypi.python.org/pypi/collective.recipe.filestorage
   .. __: http://pypi.python.org/pypi/collective.recipe.filestorage
-
 
 FAQ
 ===
