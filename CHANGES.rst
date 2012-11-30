@@ -11,10 +11,6 @@ Changelog
 - Fix BLOB migration when LinguaPlone is installed.
   [rpatterson]
 
-  Added support for blob News Items through the new ATBlobContent
-  (that is like ATBlob, but for not-file-like contents)
-  [keul]
-
 
 1.5.4 (2012-10-15)
 ------------------

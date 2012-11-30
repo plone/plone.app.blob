@@ -57,4 +57,14 @@
     provides="Products.GenericSetup.interfaces.EXTENSION"
     />
 
+  <genericsetup:upgradeStep
+        title="Upgrade to plone.app.blob 1.6"
+        description="Migrates plone.app.blob to profile 2"
+        source="1"
+        destination="2"
+        handler=".setuphandlers.migrateTo2"
+        sortkey="1"
+        profile="plone.app.blob:default"
+    />
+
 </configure>
