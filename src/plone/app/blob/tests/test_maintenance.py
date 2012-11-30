@@ -15,13 +15,17 @@ class MaintenanceViewTests(ReplacementTestCase):
     def testResetSubtypes(self):
         foo = self.folder[self.folder.invokeFactory('File', 'foo')]
         bar = self.folder[self.folder.invokeFactory('Image', 'bar')]
+        baz = self.folder[self.folder.invokeFactory('News Item', 'baz')]
         # try to re-create the state of blob content created with pre-beta3
         unmarkAs(foo, 'File')
         unmarkAs(bar, 'Image')
+        unmarkAs(baz, 'News Item')
         self.assertFalse(atfile.IFileContent.providedBy(foo), 'already IFileContent?')
         self.assertFalse(atimage.IImageContent.providedBy(bar), 'already IImageContent?')
+        self.assertFalse(atimage.IImageContent.providedBy(baz), 'already IImageContent?')
         self.assertFalse(foo.Schema().getField('file'), 'has field "file"?')
         self.assertFalse(bar.Schema().getField('image'), 'has field "image"?')
+        self.assertFalse(baz.Schema().getField('image'), 'has field "image"?')
         # then fix again using the respective view...
         maintenance = self.portal.unrestrictedTraverse('blob-maintenance')
         maintenance.resetSubtypes()

@@ -1,10 +1,12 @@
 Changelog
 =========
 
-1.5.6 (unreleased)
-------------------
+1.6 (unreleased)
+----------------
 
-- Nothing changed yet.
+- Added support for blob News Items through the new ATBlobContent
+  (that is like ATBlob, but for not-file-like contents)
+  [keul]
 
 
 1.5.5 (2012-11-29)
@@ -59,7 +61,6 @@ Changelog
   ``index_html`` template would be used, rendering an HTML page
   instead of the image.
   [malthe]
-
 
 1.5.1 (2011-08-19)
 ------------------

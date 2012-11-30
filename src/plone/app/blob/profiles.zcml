@@ -31,6 +31,15 @@
     />
 
   <genericsetup:registerProfile
+    name="newsitem-replacement"
+    title="plone.app.blob: 'News Item' replacement type"
+    directory="profiles/newsitem-replacement"
+    description="Extension profile to replace the standard 'News Item' content type with a compatible one based on ZODB 3.8 blobs"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    provides="Products.GenericSetup.interfaces.EXTENSION"
+    />
+
+  <genericsetup:registerProfile
     name="sample-type"
     title="plone.app.blob: Sample 'Blob' content type"
     directory="profiles/sample"
@@ -46,6 +55,16 @@
     description="Extension profile for testing LinguaPlone compatibility"
     for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
     provides="Products.GenericSetup.interfaces.EXTENSION"
+    />
+
+  <genericsetup:upgradeStep
+        title="Upgrade to plone.app.blob 1.6"
+        description="Migrates plone.app.blob to profile 2"
+        source="1"
+        destination="2"
+        handler=".setuphandlers.migrateTo2"
+        sortkey="1"
+        profile="plone.app.blob:default"
     />
 
 </configure>

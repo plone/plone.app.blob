@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
-version = '1.5.6.dev0'
+version = '1.6dev'
 
 long_description = (
     read('README.rst')
@@ -19,6 +19,7 @@ long_description = (
 tests_require = [
     'collective.monkeypatcher',
     'Products.contentmigration',
+#    'Products.LinguaPlone',
     'plone.app.imaging [test]']
 
 setup(name='plone.app.blob',

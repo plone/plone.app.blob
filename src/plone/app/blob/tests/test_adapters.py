@@ -4,6 +4,7 @@ from ZODB.blob import Blob
 from OFS.Image import File, Image
 from Products.ATContentTypes.content.image import ATImage
 from Products.ATContentTypes.content.file import ATFile
+from Products.ATContentTypes.content.newsitem import ATNewsItem
 from plone.app.blob.interfaces import IBlobbable
 from plone.app.blob.tests.base import BlobTestCase
 from plone.app.blob.tests.utils import getFile, getImage
@@ -72,6 +73,12 @@ class AdapterTests(BlobTestCase):
             self.assertEquals(blobbable.mimetype(), 'image/gif')
         finally:
             f.close()
+
+    def testBlobbableEmptyATNewsItem(self):
+        obj = ATNewsItem('foo')
+        blobbable = IBlobbable(obj)
+        target = Blob()
+        blobbable.feed(target)
 
 
 def test_suite():

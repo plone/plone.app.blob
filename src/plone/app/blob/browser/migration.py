@@ -11,6 +11,8 @@ from plone.app.blob.migrations import migrateATBlobFiles
 from plone.app.blob.migrations import getATBlobFilesMigrationWalker
 from plone.app.blob.migrations import migrateATBlobImages
 from plone.app.blob.migrations import getATBlobImagesMigrationWalker
+from plone.app.blob.migrations import migrateATBlobNewsItems
+from plone.app.blob.migrations import getATBlobNewsItemsMigrationWalker
 
 
 class BlobMigrationView(BrowserView):
@@ -67,3 +69,9 @@ class ImageMigrationView(BlobMigrationView):
 
     migration = migrateATBlobImages
     walker = getATBlobImagesMigrationWalker
+
+
+class NewsItemMigrationView(BlobMigrationView):
+    
+    migration = migrateATBlobNewsItems
+    walker = getATBlobNewsItemsMigrationWalker

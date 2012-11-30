@@ -3,9 +3,9 @@ Detailed Documentation
 
 This package integrates ZODB 3.8's blob support into Plone 3.0.  To do this a
 new content type `Blob` is provided, which can be used instead of the existing
-`File` and `Image` types.  Their behaviour is mimicked by `sub-typing`_, which
-in this case means dynamically changing views and schema of the underlying
-`Blob` type as well as adapting it to add functionality.
+`File`, `Image` and `News Item` types.  Their behaviour is mimicked by
+`sub-typing`_, which in this case means dynamically changing views and schema
+of the underlying `Blob` type as well as adapting it to add functionality.
 
   .. _`sub-typing`: http://www.serverzen.com/training/subtyping-unleashed
 
