@@ -4,7 +4,8 @@ Changelog
 1.5.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Don't fail on obsucure chars in filename
+  [tomgross]
 
 
 1.5.5 (2012-11-29)
