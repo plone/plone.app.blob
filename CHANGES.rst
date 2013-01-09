@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5.6 (unreleased)
+1.5.6 (2013-01-09)
 ------------------
 
 - Fix BLOB migration when LinguaPlone is installed.
