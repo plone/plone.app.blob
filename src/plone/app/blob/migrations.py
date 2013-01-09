@@ -96,7 +96,8 @@ class ATFileToBlobMigrator(BaseMigrator):
     }
 
     def migrate_data(self):
-        self.new.getField('file').getMutator(self.new)(self.old)
+        value = self.old.getField('file').getAccessor(self.old)()
+        self.new.getField('file').getMutator(self.new)(value)
 
     def last_migrate_reindex(self):
         self.new.reindexObject(idxs=['object_provides', 'portal_type',
