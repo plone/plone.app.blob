@@ -4,7 +4,9 @@ Changelog
 1.5.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Only set the instance id from the name of an uploaded file
+  if the file field is primary.
+  [davisagli]
 
 
 1.5.6 (2013-01-09)
