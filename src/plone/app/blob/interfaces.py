@@ -74,3 +74,17 @@ class IBlobMaintenanceView(Interface):
 
     def updateTypeIndex(batch=1000):
         """ walk all catalog entries and update the 'Type' index """
+
+class IBlobDownloadPolicy(Interface):
+    """ Settings in the registery which determine download behaviour for ATBlob when default view is used
+    """
+    inline_mimetypes = schema.List(value_type=schema.ASCII(title=u"Mimetype"),
+                                   unique=True,
+                                   title=u"Mimetypes which will have 'Disposition: inline' set for Files",
+                                   default=['application/msword',
+                                                           'application/x-msexcel',  # ?
+                                                           'application/vnd.ms-excel',
+                                                           'application/vnd.ms-powerpoint',
+                                                           'application/pdf',
+                                                           'application/x-shockwave-flash',]
+                                   )

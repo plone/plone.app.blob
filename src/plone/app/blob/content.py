@@ -8,6 +8,9 @@ from ComputedAttribute import ComputedAttribute
 from ZODB.POSException import ConflictError
 from Products.Archetypes.atapi import AnnotationStorage
 from Products.Archetypes.atapi import ATFieldProperty
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
+
 try:
     from Products.LinguaPlone.public import registerType
     registerType        # make pyflakes happy...
@@ -22,7 +25,7 @@ from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from Products.MimetypesRegistry.common import MimeTypeException
 
 from plone.app.imaging.interfaces import IImageScaleHandler
-from plone.app.blob.interfaces import IATBlob, IATBlobFile, IATBlobImage
+from plone.app.blob.interfaces import IATBlob, IATBlobFile, IATBlobImage, IBlobDownloadPolicy
 from plone.app.blob.config import packageName
 from plone.app.blob.field import BlobMarshaller
 from plone.app.blob.mixins import ImageMixin
@@ -85,10 +88,16 @@ class ATBlob(ATCTFileContent, ImageMixin):
     security.declareProtected(View, 'index_html')
     def index_html(self, REQUEST, RESPONSE):
         """ download the file inline or as an attachment """
+        registry = getUtility(IRegistry)
+        policySettings = registry.forInterface(IBlobDownloadPolicy, check=False)
+        if policySettings.inline_mimetypes is not None:
+            inline_mimetypes = policySettings.inline_mimetypes
+        else:
+            inline_mimetypes = ATFile.inlineMimetypes
         field = self.getPrimaryField()
         if IATBlobImage.providedBy(self):
             return field.index_html(self, REQUEST, RESPONSE)
-        elif field.getContentType(self) in ATFile.inlineMimetypes:
+        elif field.getContentType(self) in inline_mimetypes:
             return field.index_html(self, REQUEST, RESPONSE)
         else:
             return field.download(self, REQUEST, RESPONSE)
