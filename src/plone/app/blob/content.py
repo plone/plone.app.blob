@@ -2,6 +2,7 @@ from logging import getLogger
 from zope.interface import implements
 from zope.lifecycleevent import ObjectCreatedEvent, ObjectModifiedEvent
 from zope.event import notify
+from Acquisition import aq_inner
 
 from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
@@ -90,14 +91,23 @@ class ATBlob(ATCTFileContent, ImageMixin):
         """ download the file inline or as an attachment """
         registry = getUtility(IRegistry)
         policySettings = registry.forInterface(IBlobDownloadPolicy, check=False)
-        if policySettings.inline_mimetypes is not None:
-            inline_mimetypes = policySettings.inline_mimetypes
-        else:
-            inline_mimetypes = ATFile.inlineMimetypes
+
         field = self.getPrimaryField()
+        mimetype = field.getContentType(self)
+        import pdb; pdb.set_trace()
         if IATBlobImage.providedBy(self):
             return field.index_html(self, REQUEST, RESPONSE)
-        elif field.getContentType(self) in inline_mimetypes:
+        elif policySettings.file_mimetype_behaviour is not None:
+            behaviour = policySettings.file_mimetype_behaviour.get(mimetype, None)
+            if behaviour is None:
+                behaviour = policySettings.file_mimetype_behaviour('','attachment')
+            if behaviour == 'view':
+                return self.restrictedTraverse(self.getLayout())()
+            elif behaviour == 'inline':
+                return field.index_html(self, REQUEST, RESPONSE)
+            elif behaviour == 'attachment':
+                return field.download(self, REQUEST, RESPONSE)
+        elif mimetype in ATFile.inlineMimetypes:
             return field.index_html(self, REQUEST, RESPONSE)
         else:
             return field.download(self, REQUEST, RESPONSE)

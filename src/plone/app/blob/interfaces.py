@@ -1,6 +1,7 @@
 from zope.interface import Interface
 from zope import schema
 from Products.CMFPlone import PloneMessageFactory as _
+from zope.schema.vocabulary import SimpleVocabulary
 
 
 class IATBlob(Interface):
@@ -75,16 +76,27 @@ class IBlobMaintenanceView(Interface):
     def updateTypeIndex(batch=1000):
         """ walk all catalog entries and update the 'Type' index """
 
+# download_behaviour = SimpleVocabulary.fromItems((
+#     (u"Attempt to view inline", "inline"),
+#     (u"Force download", "attachment"),
+#     (u"Use default view", "view")
+# ))
+
 class IBlobDownloadPolicy(Interface):
     """ Settings in the registery which determine download behaviour for ATBlob when default view is used
     """
-    inline_mimetypes = schema.List(value_type=schema.ASCII(title=u"Mimetype"),
-                                   unique=True,
-                                   title=u"Mimetypes which will have 'Disposition: inline' set for Files",
-                                   default=['application/msword',
-                                                           'application/x-msexcel',  # ?
-                                                           'application/vnd.ms-excel',
-                                                           'application/vnd.ms-powerpoint',
-                                                           'application/pdf',
-                                                           'application/x-shockwave-flash',]
-                                   )
+    file_mimetype_behaviour = schema.Dict(
+        title=u"Behaviour of mimetypes in File objects when accessed by default view",
+        key_type=schema.ASCII(title=u"Mimetype"),
+        value_type=schema.Choice(
+            values=("inline","attachment","view"),
+            title=u"Behaviour when file accessed via naked url",
+            ),
+        default={'application/msword':'inline',
+                 'application/x-msexcel':'inline',
+                 'application/vnd.ms-excel':'inline',
+                 'application/vnd.ms-powerpoint':'inline',
+                 'application/pdf':'inline',
+                 'application/x-shockwave-flash':'inline',
+                 '':'attachment'}
+    )
