@@ -10,6 +10,7 @@ from ZODB.POSException import ConflictError
 from Products.Archetypes.atapi import AnnotationStorage
 from Products.Archetypes.atapi import ATFieldProperty
 from zope.component import getUtility
+from plone.app.content.interfaces import ISiteContentSettings
 from plone.registry.interfaces import IRegistry
 
 try:
@@ -26,7 +27,7 @@ from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from Products.MimetypesRegistry.common import MimeTypeException
 
 from plone.app.imaging.interfaces import IImageScaleHandler
-from plone.app.blob.interfaces import IATBlob, IATBlobFile, IATBlobImage, IBlobDownloadPolicy
+from plone.app.blob.interfaces import IATBlob, IATBlobFile, IATBlobImage
 from plone.app.blob.config import packageName
 from plone.app.blob.field import BlobMarshaller
 from plone.app.blob.mixins import ImageMixin
@@ -90,11 +91,10 @@ class ATBlob(ATCTFileContent, ImageMixin):
     def index_html(self, REQUEST, RESPONSE):
         """ download the file inline or as an attachment """
         registry = getUtility(IRegistry)
-        policySettings = registry.forInterface(IBlobDownloadPolicy, check=False)
+        policySettings = registry.forInterface(ISiteContentSettings, check=False)
 
         field = self.getPrimaryField()
         mimetype = field.getContentType(self)
-        import pdb; pdb.set_trace()
         if IATBlobImage.providedBy(self):
             return field.index_html(self, REQUEST, RESPONSE)
         elif policySettings.file_mimetype_behaviour is not None:

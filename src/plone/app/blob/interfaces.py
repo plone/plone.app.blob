@@ -81,22 +81,3 @@ class IBlobMaintenanceView(Interface):
 #     (u"Force download", "attachment"),
 #     (u"Use default view", "view")
 # ))
-
-class IBlobDownloadPolicy(Interface):
-    """ Settings in the registery which determine download behaviour for ATBlob when default view is used
-    """
-    file_mimetype_behaviour = schema.Dict(
-        title=u"Behaviour of mimetypes in File objects when accessed by default view",
-        key_type=schema.ASCII(title=u"Mimetype"),
-        value_type=schema.Choice(
-            values=("inline","attachment","view"),
-            title=u"Behaviour when file accessed via naked url",
-            ),
-        default={'application/msword':'inline',
-                 'application/x-msexcel':'inline',
-                 'application/vnd.ms-excel':'inline',
-                 'application/vnd.ms-powerpoint':'inline',
-                 'application/pdf':'inline',
-                 'application/x-shockwave-flash':'inline',
-                 '':'attachment'}
-    )
