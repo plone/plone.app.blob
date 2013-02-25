@@ -12,6 +12,7 @@ from Products.Archetypes.atapi import ATFieldProperty
 from zope.component import getUtility
 from plone.app.content.interfaces import ISiteContentSettings
 from plone.registry.interfaces import IRegistry
+from fnmatch import fnmatch
 
 try:
     from Products.LinguaPlone.public import registerType
@@ -98,15 +99,20 @@ class ATBlob(ATCTFileContent, ImageMixin):
         if IATBlobImage.providedBy(self):
             return field.index_html(self, REQUEST, RESPONSE)
         elif policySettings.file_mimetype_behaviour is not None:
-            behaviour = policySettings.file_mimetype_behaviour.get(mimetype, None)
-            if behaviour is None:
-                behaviour = policySettings.file_mimetype_behaviour('','attachment')
-            if behaviour == 'view':
+            matches = [(pattern, behaviour) for pattern, behaviour in  policySettings.file_mimetype_behaviour.items() \
+                       if fnmatch(mimetype, pattern)]
+            # pick the longest pattern that matches ie between */* and application/* the latter will win
+            matches.sort(key=lambda kv: len(kv[0]))
+            behaviour = matches[-1][1] if matches else None
+            if behaviour == 'view' and self.getLayout():
                 return self.restrictedTraverse(self.getLayout())()
             elif behaviour == 'inline':
                 return field.index_html(self, REQUEST, RESPONSE)
             elif behaviour == 'attachment':
                 return field.download(self, REQUEST, RESPONSE)
+            else:
+                return field.download(self, REQUEST, RESPONSE)
+
         elif mimetype in ATFile.inlineMimetypes:
             return field.index_html(self, REQUEST, RESPONSE)
         else:
