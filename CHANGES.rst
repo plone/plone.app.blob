@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5.7 (unreleased)
+1.5.7 (2013-03-05)
 ------------------
 
 - Only set the instance id from the name of an uploaded file
