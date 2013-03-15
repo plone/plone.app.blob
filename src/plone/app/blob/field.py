@@ -1,4 +1,5 @@
 from os import fstat
+from zope.container.interfaces import INameChooser
 from zope.interface import implements
 from StringIO import StringIO
 from Acquisition import Implicit, aq_base
@@ -269,6 +270,7 @@ class BlobField(ObjectField):
             filename = IUserPreferredFileNameNormalizer(request).normalize(filename)
             if filename and not filename == instance.getId():
                 # a file name was given, so the instance needs to be renamed...
+                filename = INameChooser(instance.__parent__).chooseName(filename, instance)
                 instance.setId(filename)
 
     security.declareProtected(View, 'download')

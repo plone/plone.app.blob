@@ -4,7 +4,8 @@ Changelog
 1.5.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make sure the id is safe before setting the filename as id
+  [pbauer]
 
 
 1.5.7 (2013-03-05)
@@ -21,8 +22,8 @@ Changelog
 - Fix BLOB migration when LinguaPlone is installed.
   Also for ATFile.
 
-  CAUTION: when the fix was discussed with witsch, 
-  he pointed to the fact that the files would be 
+  CAUTION: when the fix was discussed with witsch,
+  he pointed to the fact that the files would be
   entirely loaded in memory during migration.
   This could potentially eat too much memory.
   [gotcha]
