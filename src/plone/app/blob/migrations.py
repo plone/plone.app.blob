@@ -63,7 +63,7 @@ def makeMigrator(context, portal_type, meta_type=None):
         def migrate_data(self):
             fields = self.getFields(self.obj)
             for name in fields:
-                oldfield = self.obj.schema[name]
+                oldfield = self.obj.Schema()[name]
                 if hasattr(oldfield, 'removeScales'):
                     # clean up old image scales
                     oldfield.removeScales(self.obj)
