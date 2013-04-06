@@ -4,7 +4,8 @@ Changelog
 1.5.8 (2013-04-06)
 ------------------
 
-- Nothing changed yet.
+- Use obj.Schema() instead of obj.schema in the migration process.
+  [gbastien]
 
 
 1.5.7 (2013-03-05)
