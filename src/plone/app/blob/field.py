@@ -234,13 +234,18 @@ class BlobField(ObjectField):
         blob = BlobWrapper(self.default_content_type)
         if isinstance(value, basestring):
             value = StringIO(value)     # simple strings cannot be adapted...
+            setattr(value, 'filename', kwargs.get('filename', None))
         if value is not None:
             blobbable = IBlobbable(value)
             try:
                 blobbable.feed(blob.getBlob())
             except ReuseBlob, exception:
                 blob.setBlob(exception.args[0])     # reuse the given blob
-            blob.setContentType(kwargs.get('mimetype', blobbable.mimetype()))
+            mimetype = kwargs.get('mimetype', None)
+            if not mimetype:
+                mimetype = blobbable.mimetype()
+            if mimetype and mimetype != 'None':
+                blob.setContentType(mimetype)
             blob.setFilename(kwargs.get('filename', blobbable.filename()))
         super(BlobField, self).set(instance, blob, **kwargs)
         # a transaction savepoint is created after setting the blob's value

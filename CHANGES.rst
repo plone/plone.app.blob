@@ -4,6 +4,9 @@ Changelog
 1.5.9 (unreleased)
 ------------------
 
+- Make sure mimetype is not None and use use filename for detection if available.
+  [tschanzt]
+
 - Make sure the id is safe before setting the filename as id
   [pbauer]
 

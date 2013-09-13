@@ -7,7 +7,6 @@ from plone.app.blob.config import packageName, permissions
 from plone.app.blob.field import FileField, ImageField
 from plone.app.blob.tests.utils import getFile
 
-
 SampleSchema = BaseSchema.copy() + Schema((
 
     FileField(
@@ -83,6 +82,20 @@ class BaseFieldTests(ReplacementTestCase):
         field = item.getField('hmm')
         self.assertEqual(field.getSize(item), (0, 0))
 
+    def testSetFieldDefaultMime(self):
+        item = self.create()
+        file_ = getFile('test.pdf')
+        item.setFoo(file_, filename='file.blubb', mimetype=None)
+        self.assertEqual('application/pdf', item.getFoo().getContentType())
+
+    def testStringDataRespectsFilename(self):
+        item = self.create()
+        file_ = getFile('test.pdf')
+        item.setFoo(file_.read(), filename='file.xls', mimetype=None)
+        self.assertEqual(
+            'application/vnd.ms-excel',
+            item.getFoo().getContentType()
+            )
 
 def test_suite():
     from unittest import defaultTestLoader
