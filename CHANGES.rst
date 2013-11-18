@@ -7,9 +7,6 @@ Changelog
 - Make sure mimetype is not None and use use filename for detection if available.
   [tschanzt]
 
-- Make sure the id is safe before setting the filename as id
-  [pbauer]
-
 
 1.5.8 (2013-04-06)
 ------------------
@@ -32,8 +29,8 @@ Changelog
 - Fix BLOB migration when LinguaPlone is installed.
   Also for ATFile.
 
-  CAUTION: when the fix was discussed with witsch,
-  he pointed to the fact that the files would be
+  CAUTION: when the fix was discussed with witsch, 
+  he pointed to the fact that the files would be 
   entirely loaded in memory during migration.
   This could potentially eat too much memory.
   [gotcha]
