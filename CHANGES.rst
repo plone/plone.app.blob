@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5.9 (unreleased)
+1.5.9 (2014-01-28)
 ------------------
 
 - Make sure mimetype is not None and use use filename for detection if available.
