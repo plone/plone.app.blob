@@ -28,8 +28,7 @@ Let's also check a custom scale size:
 We use a testbrowser to rotate the image:
 
   >>> browser = self.getBrowser()
-  >>> browser.open('http://nohost/plone')
-  >>> browser.getLink('Foo').click()
+  >>> browser.open('http://nohost/plone/foo/view')
   >>> browser.getLink('Transform').click()
   >>> browser.getControl(name='method').displayValue = ['Rotate 90 clockwise']
   >>> browser.getControl('Execute').click()
