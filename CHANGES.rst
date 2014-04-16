@@ -4,7 +4,8 @@ Changelog
 1.5.10 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix tests to work with barceloneta theme.
+  [vangheem]
 
 
 1.5.9 (2014-01-28)
@@ -35,8 +36,8 @@ Changelog
 - Fix BLOB migration when LinguaPlone is installed.
   Also for ATFile.
 
-  CAUTION: when the fix was discussed with witsch, 
-  he pointed to the fact that the files would be 
+  CAUTION: when the fix was discussed with witsch,
+  he pointed to the fact that the files would be
   entirely loaded in memory during migration.
   This could potentially eat too much memory.
   [gotcha]
