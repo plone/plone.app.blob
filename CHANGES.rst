@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5.10 (unreleased)
+1.5.10 (2014-04-16)
 -------------------
 
 - Fix tests to work with barceloneta theme.
