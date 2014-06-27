@@ -1,12 +1,14 @@
-from unittest import TestSuite, makeSuite
 from plone.app.blob.tests.base import ReplacementTestCase
 from plone.app.blob.tests.base import ReplacementFunctionalTestCase
-from plone.app.imaging.tests.base import ImagingTestCaseMixin
+from plone.app.blob.tests.base import BlobReplacementLayer
+from plone.app.imaging.tests.base import ImagingTestCase
 from plone.app.imaging.scaling import ImageScaling
 from re import match
 
 
-class ImageTraverseTests(ReplacementTestCase, ImagingTestCaseMixin):
+class ImageTraverseTests(ReplacementTestCase, ImagingTestCase):
+
+    layer = BlobReplacementLayer
 
     def afterSetUp(self):
         self.data = self.getImage()
@@ -92,7 +94,9 @@ class ImageTraverseTests(ReplacementTestCase, ImagingTestCaseMixin):
         self.assertEqual(content_length, str(size))
 
 
-class ImagePublisherTests(ReplacementFunctionalTestCase, ImagingTestCaseMixin):
+class ImagePublisherTests(ReplacementFunctionalTestCase, ImagingTestCase):
+
+    layer = BlobReplacementLayer
 
     def afterSetUp(self):
         data = self.getImage()
@@ -157,7 +161,7 @@ class ImagePublisherTests(ReplacementFunctionalTestCase, ImagingTestCaseMixin):
         self.assertImage(response.getBody(), 'JPEG', (23, 23))
 
 
-class ScalesAdapterTests(ReplacementTestCase, ImagingTestCaseMixin):
+class ScalesAdapterTests(ReplacementTestCase, ImagingTestCase):
 
     def afterSetUp(self):
         data = self.getImage()
@@ -224,11 +228,3 @@ class ScalesAdapterTests(ReplacementTestCase, ImagingTestCaseMixin):
         field.swallowResizeExceptions = True
         self.assertEqual(self.adapter.scale('image',
                                             direction='keep', width=42), None)
-
-
-def test_suite():
-    return TestSuite([
-        makeSuite(ImageTraverseTests),
-        makeSuite(ImagePublisherTests),
-        makeSuite(ScalesAdapterTests),
-    ])

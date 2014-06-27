@@ -1,142 +1,121 @@
-from Testing.ZopeTestCase import app, close, installProduct, installPackage
+from plone.app.testing.bbb import PloneTestCaseFixture
+from plone.testing import z2
+from plone.app import testing
+
 from Products.CMFCore.utils import getToolByName
-from Products.PloneTestCase.layer import PloneSite
-from transaction import commit
-
-# BBB Zope 2.12
-try:
-    from Zope2.App import zcml
-    from OFS import metaconfigure
-    zcml, metaconfigure     # make pyflakes happy...
-    metaconfigure
-except ImportError:
-    from Products.Five import zcml
-    from Products.Five import fiveconfigure as metaconfigure
 
 
-class BlobLayer(PloneSite):
+class BlobFixture(PloneTestCaseFixture):
     """ layer for integration tests using blob types """
 
-    @classmethod
-    def setUp(cls):
-        # Please be aware that part of the setup of tests
-        # is the import of db in the __init__ file in
-        # the same module as this class.
-        # For more information, look at testing3rdparty.txt
-        # load zcml & install packages
-        metaconfigure.debug_mode = True
+    def setUpZope(self, app, configurationContext):
+        super(BlobFixture, self).setUpZope(app, configurationContext)
         from plone.app.blob import tests
-        zcml.load_config('testing.zcml', tests)
-        metaconfigure.debug_mode = False
-        installPackage('plone.app.blob', quiet=True)
-        # import the default profile
-        root = app()
-        portal = root.plone
-        tool = getToolByName(portal, 'portal_setup')
-        profile = 'profile-plone.app.blob:sample-type'
-        tool.runAllImportStepsFromProfile(profile, purge_old=False)
-        # make sure it's loaded...
+        self.loadZCML(package=tests, name="testing.zcml")
+        z2.installProduct(app, 'plone.app.blob')
+
+    def setUpPloneSite(self, portal):
+        super(BlobFixture, self).setUpPloneSite(portal)
+        # install cmfeditions
+        testing.applyProfile(portal, 'profile-plone.app.blob:sample-type')
         types = getToolByName(portal, 'portal_types')
         assert types.getTypeInfo('Blob').product == 'plone.app.blob'
-        # and commit the changes
-        commit()
-        close(root)
 
-    @classmethod
-    def tearDown(cls):
-        pass
+    def tearDownZope(self, app):
+        super(BlobFixture, self).tearDownZope(app)
+        z2.uninstallProduct(app, 'plone.app.blob')
 
 
-class BlobFileReplacementLayer(BlobLayer):
+BLOB_FIXTURE = BlobFixture()
+BlobLayer = testing.FunctionalTesting(bases=(BLOB_FIXTURE,), name="Blob:Functional")
+
+
+class BlobFileReplacementFixture(PloneTestCaseFixture):
     """ layer for integration tests using the file replacement type """
 
-    @classmethod
-    def setUp(cls):
-        # load zcml & install packages
-        metaconfigure.debug_mode = True
+    def setUpZope(self, app, configurationContext):
+        super(BlobFileReplacementFixture, self).setUpZope(app, configurationContext)
         from plone.app import imaging
-        zcml.load_config('configure.zcml', imaging)
-        metaconfigure.debug_mode = False
-        # import replacement profiles
-        root = app()
-        portal = root.plone
-        tool = getToolByName(portal, 'portal_setup')
-        profile = 'profile-plone.app.blob:file-replacement'
-        tool.runAllImportStepsFromProfile(profile, purge_old=False)
-        # make sure it's loaded...
+        self.loadZCML(package=imaging)
+        z2.installProduct(app, 'plone.app.blob')
+
+    def setUpPloneSite(self, portal):
+        super(BlobFileReplacementFixture, self).setUpPloneSite(portal)
+        # install cmfeditions
+        testing.applyProfile(portal, 'profile-plone.app.blob:file-replacement',
+                             purge_old=False)
         types = getToolByName(portal, 'portal_types')
-        assert types.getTypeInfo('File').product == 'plone.app.blob'
-        # allow creating the replaced types
+        assert types.getTypeInfo('Blob').product == 'plone.app.blob'
         types.getTypeInfo('ATFile').global_allow = True
-        # and commit the changes
-        commit()
-        close(root)
 
-    @classmethod
-    def tearDown(cls):
-        pass
+    def tearDownZope(self, app):
+        super(BlobFileReplacementFixture, self).tearDownZope(app)
+        z2.uninstallProduct(app, 'plone.app.blob')
 
 
-class BlobReplacementLayer(BlobLayer):
+BLOB_FILE_REPLACEMENT_FIXTURE = BlobFileReplacementFixture()
+BlobFileReplacementLayer = testing.FunctionalTesting(
+    bases=(BLOB_FILE_REPLACEMENT_FIXTURE,), name="Blob File Replacement:Functional")
+
+
+class BlobReplacementFixture(PloneTestCaseFixture):
     """ layer for integration tests using replacement types """
 
-    @classmethod
-    def setUp(cls):
-        # load zcml & install packages
-        metaconfigure.debug_mode = True
+    def setUpZope(self, app, configurationContext):
+        super(BlobReplacementFixture, self).setUpZope(app, configurationContext)
         from plone.app import imaging
-        zcml.load_config('configure.zcml', imaging)
-        metaconfigure.debug_mode = False
-        installPackage('plone.app.imaging', quiet=True)
-        # import replacement profiles
-        root = app()
-        portal = root.plone
-        tool = getToolByName(portal, 'portal_setup')
+        self.loadZCML(package=imaging)
+        z2.installProduct(app, 'plone.app.blob')
+        z2.installProduct(app, 'plone.app.imaging')
+
+    def setUpPloneSite(self, portal):
+        super(BlobReplacementFixture, self).setUpPloneSite(portal)
         for name in 'file-replacement', 'image-replacement':
             profile = 'profile-plone.app.blob:%s' % name
-            tool.runAllImportStepsFromProfile(profile, purge_old=False)
-        # make sure it's loaded...
+            testing.applyProfile(portal, profile, purge_old=False)
         types = getToolByName(portal, 'portal_types')
-        assert types.getTypeInfo('File').product == 'plone.app.blob'
-        # allow creating the replaced types
+        assert types.getTypeInfo('Blob').product == 'plone.app.blob'
         types.getTypeInfo('ATFile').global_allow = True
         types.getTypeInfo('ATImage').global_allow = True
-        # and commit the changes
-        commit()
-        close(root)
 
-    @classmethod
-    def tearDown(cls):
-        pass
+    def tearDownZope(self, app):
+        super(BlobReplacementFixture, self).tearDownZope(app)
+        z2.uninstallProduct(app, 'plone.app.blob')
+        z2.uninstallProduct(app, 'plone.app.imaging')
 
 
-class BlobLinguaLayer(PloneSite):
+BLOB_REPLACEMENT_FIXTURE = BlobReplacementFixture()
+BlobReplacementLayer = testing.FunctionalTesting(
+    bases=(BLOB_REPLACEMENT_FIXTURE,), name="Blob Replacement:Functional")
+
+
+class BlobLinguaFixture(PloneTestCaseFixture):
     """ layer for integration tests with LinguaPlone """
 
-    @classmethod
-    def setUp(cls):
-        # load zcml
-        metaconfigure.debug_mode = True
+    def setUpZope(self, app, configurationContext):
+        super(BlobLinguaFixture, self).setUpZope(app, configurationContext)
+        from plone.app import imaging
+        self.loadZCML(package=imaging)
         from plone.app.blob import tests
-        zcml.load_config('testing.zcml', tests)
+        self.loadZCML(name='testing.zcml', package=tests)
         from Products import LinguaPlone
-        zcml.load_config('configure.zcml', LinguaPlone)
-        metaconfigure.debug_mode = False
-        # install packages, import profiles...
-        installPackage('plone.app.blob', quiet=True)
-        installProduct('LinguaPlone', quiet=True)
-        root = app()
-        portal = root.plone
+        self.loadZCML(package=LinguaPlone)
+        z2.installProduct(app, 'plone.app.blob')
+        z2.installProduct(app, 'Products.LinguaPlone')
+
+    def setUpPloneSite(self, portal):
+        super(BlobLinguaFixture, self).setUpPloneSite(portal)
         profile = 'profile-plone.app.blob:testing-lingua'
-        tool = getToolByName(portal, 'portal_setup')
-        tool.runAllImportStepsFromProfile(profile, purge_old=False)
-        # make sure it's loaded...
+        self.applyProfile(profile, purge_old=False)
         types = getToolByName(portal, 'portal_types')
         assert types.getTypeInfo('BlobelFish')
-        # and commit the changes
-        commit()
-        close(root)
 
-    @classmethod
-    def tearDown(cls):
-        pass
+    def tearDownZope(self, app):
+        super(BlobLinguaFixture, self).tearDownZope(app)
+        z2.uninstallProduct(app, 'plone.app.blob')
+        z2.uninstallProduct(app, 'Products.LinguaPlone')
+
+
+BLOB_LINGUA_FIXTURE = BlobLinguaFixture()
+BlobLinguaLayer = testing.FunctionalTesting(
+    bases=(BLOB_LINGUA_FIXTURE,), name="Blob Lingua:Functional")

@@ -1,15 +1,6 @@
-from Testing.ZopeTestCase import Sandboxed
-from Products.PloneTestCase import PloneTestCase
+import unittest
 from plone.app.blob.tests.layer import BlobLayer, BlobReplacementLayer
 from plone.app.blob.tests.layer import BlobLinguaLayer
-
-# BBB Zope 2.12
-try:
-    from Testing.testbrowser import Browser
-    Browser     # make pyflakes happy...
-except ImportError:
-    from Products.Five.testbrowser import Browser
-
 try:
     # try to import the sample type for testing LinguaPlone
     from plone.app.blob.tests import lingua
@@ -18,52 +9,39 @@ except ImportError:
     pass
 
 
-PloneTestCase.setupPloneSite()
 
 
-class BlobTestCase(Sandboxed, PloneTestCase.PloneTestCase):
+class BlobTestCase(unittest.TestCase):
     """ base class for integration tests """
 
     layer = BlobLayer
 
 
-class BlobFunctionalTestCase(PloneTestCase.FunctionalTestCase):
+class BlobFunctionalTestCase(unittest.TestCase):
     """ base class for functional tests """
 
     layer = BlobLayer
 
-    def getCredentials(self):
-        return '%s:%s' % (PloneTestCase.default_user,
-            PloneTestCase.default_password)
 
-    def getBrowser(self, loggedIn=True):
-        """ instantiate and return a testbrowser for convenience """
-        browser = Browser()
-        if loggedIn:
-            auth = 'Basic %s' % self.getCredentials()
-            browser.addHeader('Authorization', auth)
-        return browser
-
-
-class ReplacementTestCase(Sandboxed, PloneTestCase.PloneTestCase):
+class ReplacementTestCase(unittest.TestCase):
     """ base class for integration tests using replacement types """
 
     layer = BlobReplacementLayer
 
 
-class ReplacementFunctionalTestCase(BlobFunctionalTestCase):
+class ReplacementFunctionalTestCase(unittest.TestCase):
     """ base class for functional tests """
 
     layer = BlobReplacementLayer
 
 
-class BlobLinguaTestCase(BlobTestCase):
+class BlobLinguaTestCase(unittest.TestCase):
     """ base class for functional tests """
 
     layer = BlobLinguaLayer
 
 
-class BlobLinguaFunctionalTestCase(BlobFunctionalTestCase):
+class BlobLinguaFunctionalTestCase(unittest.TestCase):
     """ base class for functional tests """
 
     layer = BlobLinguaLayer
