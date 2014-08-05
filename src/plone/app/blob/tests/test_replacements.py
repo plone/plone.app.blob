@@ -228,27 +228,43 @@ class ImageReplacementTests(ReplacementTestCase):
         foo = self.folder[self.folder.invokeFactory('ATImage', id='foo',
             title='an image', image=gif, subject=('foo', 'bar'),
             contributors=('me'))]
+
         # fake old content from before applying the replacement profile
         foo._setPortalTypeName('Image')
         foo.reindexObject(idxs=('portal_type',))
+
         # remember the catalog data so it can be checked
         catalog = self.portal.portal_catalog
         rid = catalog(id='foo')[0].getRID()
         index_data = catalog.getIndexDataForRID(rid)
         meta_data = catalog.getMetadataForRID(rid)
-        # migrate & check migrated content item
+
+        # migrate
         self.assertEqual(migrateATBlobImages(self.portal),
             'Migrating /plone/Members/test_user_1_/foo (Image -> Image)\n')
         foo = self.folder['foo']
+
+        # Re-index date based indexes. It seems they're not properly re-indexed
+        # after the migration is executed. Without this the tests may fail
+        # due to to timing issues. Remember DateTimeIndex have resolution of
+        # 1 minute.
+        foo.reindexObject(idxs=('Date', 'created', 'modified', 'effective'))
+
+        # check migrated content item
         brain = catalog(id='foo')[0]
         self.assertEqual(foo.UID(), brain.UID)
         self.assertEqual(foo.getObjSize(), brain.getObjSize)
         self.assertEqual(foo.getPortalTypeName(), brain.Type)
+
         # compare pre-migration and current catalog data...
         okay = ('meta_type', 'Type', 'object_provides', 'Language')
         for key, value in catalog.getIndexDataForRID(brain.getRID()).items():
             if not key in okay:
-                self.assertEqual(index_data[key], value, 'index: %s' % key)
+                self.assertEqual(
+                    index_data[key],
+                    value,
+                    'index: %s, old: %s, new: %s' % (key, index_data[key], value)
+                )
         okay = ('meta_type', 'getIcon')
         for key, value in catalog.getMetadataForRID(brain.getRID()).items():
             if not key in okay:

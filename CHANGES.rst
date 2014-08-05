@@ -4,7 +4,8 @@ Changelog
 1.5.11 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix some testes.
+  [rafaelbco]
 
 
 1.5.10 (2014-04-16)
