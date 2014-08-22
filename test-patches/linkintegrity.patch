@@ -7,7 +7,7 @@ Index: extras/plone.app.linkintegrity/plone/app/linkintegrity/tests/layer.py
  from Testing.ZopeTestCase import installPackage
  from Products.Five import zcml, fiveconfigure
 @@ -54,3 +55,3 @@
- 
- 
+
+
 -integrity = PloneLinkintegrity(bases=[ptc_layer])
 +integrity = PloneLinkintegrity(bases=[ptc_layer, bbb.plone])

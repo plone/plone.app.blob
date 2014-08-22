@@ -65,7 +65,7 @@ Since no data has been written to it, the blob file should still be empty:
 
 Feeding it with some image data should result in a correctly set mime-type
 and a now non-empty blob file:
-  
+
   >>> from StringIO import StringIO
   >>> from base64 import decodestring
   >>> gif = 'R0lGODlhAQABAPAAAPj8+AAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='

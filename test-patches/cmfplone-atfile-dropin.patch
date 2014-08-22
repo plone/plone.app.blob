@@ -4,13 +4,13 @@ Index: extras/Plone/Products/CMFPlone/tests/PloneTestCase.py
 +++ extras/Plone/Products/CMFPlone/tests/PloneTestCase.py	(working copy)
 @@ -5,4 +5,5 @@
  # $Id$
- 
+
 +from plone.app.blob.tests import bbb
  from Products.PloneTestCase.ptc import *
- 
+
 @@ -24,4 +25,6 @@
      """
- 
+
 +    layer = bbb.plone
 +
      def setRequestMethod(self, method):
