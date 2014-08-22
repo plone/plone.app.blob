@@ -10,10 +10,10 @@ Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_install
 +        ids = ('Document', 'Favorite',
 +            'Folder', 'Large Plone Folder', 'Link',
              'News Item', 'Topic', 'Event')
- 
+
 @@ -67,4 +67,10 @@
              self.failUnless(tinfo.product == 'ATContentTypes', tinfo.product)
- 
+
 +        tinfo = ttool['File']
 +        self.failUnless(tinfo.product == 'plone.app.blob', tinfo.product)
 +
@@ -28,13 +28,13 @@ Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_atfile.
 +++ extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_atfile.py	(working copy)
 @@ -36,4 +36,5 @@
  import StringIO
- 
+
 +from plone.app.blob.content import ATBlob
  from Products.ATContentTypes.content.file import ATFile
  from Products.ATContentTypes.interfaces import IATFile
 @@ -59,5 +60,5 @@
  class TestSiteATFile(atcttestcase.ATCTTypeTestCase):
- 
+
 -    klass = ATFile
 +    klass = ATBlob
      portal_type = 'File'
@@ -44,7 +44,7 @@ Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_atfile.
          atcttestcase.ATCTFieldTestCase.afterSetUp(self)
 -        self._dummy = self.createDummy(klass=ATFile)
 +        self._dummy = self.createDummy(klass=ATBlob, subtype='File')
- 
+
      def test_fileField(self):
 @@ -215,5 +216,5 @@
                          'Value is %s' % field.generateMode)
@@ -59,13 +59,13 @@ Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_atimage
 +++ extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_atimage.py	(working copy)
 @@ -40,4 +40,5 @@
  from Products.ATContentTypes.tests.utils import dcEdit, PACKAGE_HOME
- 
+
 +from plone.app.blob.content import ATBlob
  from Products.ATContentTypes.content.image import ATImage
  from Products.ATContentTypes.interfaces import IImageContent
 @@ -81,5 +82,5 @@
  class TestSiteATImage(atcttestcase.ATCTTypeTestCase):
- 
+
 -    klass = ATImage
 +    klass = ATBlob
      portal_type = 'Image'
@@ -75,7 +75,7 @@ Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/test_atimage
          atcttestcase.ATCTFieldTestCase.afterSetUp(self)
 -        self._dummy = self.createDummy(klass=ATImage)
 +        self._dummy = self.createDummy(klass=ATBlob, subtype='Image')
- 
+
      def test_imageField(self):
 @@ -261,5 +262,5 @@
                          'Value is %s' % field.generateMode)
@@ -121,23 +121,23 @@ Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/atcttestcase
 +from plone.app.blob.markings import markAs
 +from plone.app.blob.tests import bbb
  PloneTestCase.setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture'])
- 
+
 @@ -68,8 +71,10 @@
- 
+
  class ATCTSiteTestCase(PloneTestCase.PloneTestCase):
 -    pass
 +
 +    layer = bbb.plone
- 
+
  class ATCTFunctionalSiteTestCase(PloneTestCase.FunctionalTestCase):
 -    pass
 +
 +    layer = bbb.plone
- 
+
  class ATCTTypeTestCase(ATCTSiteTestCase):
 @@ -79,4 +84,6 @@
      """
- 
+
 +    layer = bbb.plone
 +
      klass = None
@@ -148,11 +148,11 @@ Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/atcttestcase
 -        self.failUnlessEqual(ti.Metatype(), self.meta_type)
 +        # the following yields 'ATFile' vs 'ATBlob', but that's okay...
 +        # self.failUnlessEqual(ti.Metatype(), self.meta_type)
- 
+
      def test_doesImplementDC(self):
 @@ -241,7 +249,8 @@
          self.setRoles(['Manager',])
- 
+
 -    def createDummy(self, klass, id='dummy'):
 +    def createDummy(self, klass, id='dummy', subtype=None):
          portal = self.portal
@@ -166,7 +166,7 @@ Index: extras/Products.ATContentTypes/Products/ATContentTypes/content/file.py
 +++ extras/Products.ATContentTypes/Products/ATContentTypes/content/file.py	(working copy)
 @@ -105,4 +105,7 @@
      security       = ClassSecurityInfo()
- 
+
 +    def __init__(self, *args, **kwargs):
 +        raise 'WeDidntWannaUseThisThingAnymoreException!'
 +
@@ -178,7 +178,7 @@ Index: extras/Products.ATContentTypes/Products/ATContentTypes/content/image.py
 +++ extras/Products.ATContentTypes/Products/ATContentTypes/content/image.py	(working copy)
 @@ -108,4 +108,7 @@
      security       = ClassSecurityInfo()
- 
+
 +    def __init__(self, *args, **kwargs):
 +        raise 'WeDidntWannaUseThisThingAnymoreException!'
 +

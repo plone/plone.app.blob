@@ -530,7 +530,7 @@ enough.  In the meantime here are the recommended workarounds:
     additional mount-points.  The recommended way to accomplish this both
     for ZEO and non-ZEO setups is to use `collective.recipe.filestorage`__
     and adjust your buildout with the following::
-    
+
       [buildout]
       ...
       parts =

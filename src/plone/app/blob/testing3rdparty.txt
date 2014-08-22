@@ -6,7 +6,7 @@ and subscribers must be added for plone.app.blob.
 Also some packages that do content introspection, like a number of p4a
 packages, use non public methods of File objects that are not available
 on blob objects.
-In both cases, it makes sense to test your 3rd party package with 
+In both cases, it makes sense to test your 3rd party package with
 plone.app.blob
 
 Case 1, no internal api methods are in use
@@ -29,9 +29,9 @@ The patch is loaded with a simple import::
 
     from plone.app.blob.tests import db
 
-But if you use internal methods, you must test the behaviour with 
-blobs and files. Currently the only way to do this, is to use two 
-test runners, where the tests for file like objects do not import 
+But if you use internal methods, you must test the behaviour with
+blobs and files. Currently the only way to do this, is to use two
+test runners, where the tests for file like objects do not import
 the monkey patch.
 
 An Example of how to do that can be seen here:
