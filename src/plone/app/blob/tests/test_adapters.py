@@ -72,7 +72,3 @@ class AdapterTests(BlobTestCase):
             self.assertEquals(blobbable.mimetype(), 'image/gif')
         finally:
             f.close()
-
-
-def test_suite():
-    return defaultTestLoader.loadTestsFromName(__name__)

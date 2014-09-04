@@ -327,7 +327,3 @@ class ImageReplacementTests(ReplacementTestCase):
         image = self.folder[self.folder.invokeFactory('Image', 'foo')]
         field = image.getField('image')
         self.assertEqual(field.getSize(image), (0, 0))
-
-
-def test_suite():
-    return defaultTestLoader.loadTestsFromName(__name__)

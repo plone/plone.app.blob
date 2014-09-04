@@ -96,7 +96,3 @@ class BaseFieldTests(ReplacementTestCase):
             'application/vnd.ms-excel',
             item.getFoo().getContentType()
             )
-
-def test_suite():
-    from unittest import defaultTestLoader
-    return defaultTestLoader.loadTestsFromName(__name__)

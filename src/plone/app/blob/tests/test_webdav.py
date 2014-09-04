@@ -40,9 +40,3 @@ class WebDavTests(ReplacementFunctionalTestCase):
         # as opposed to during file upload, editing a file via webdav (e.g.
         # using the "external editor" feature) should not change the filename
         self.assertEqual(self.folder.foo.getFilename(), 'original.gif')
-
-
-def test_suite():
-    return TestSuite([
-        makeSuite(WebDavTests),
-    ])

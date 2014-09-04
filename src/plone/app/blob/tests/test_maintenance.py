@@ -45,7 +45,3 @@ class MaintenanceViewTests(ReplacementTestCase):
         maintenance.updateTypeIndex()
         self.assertEqual([b.getObject() for b in catalog(Type='File')], [foo])
         self.assertFalse(catalog(Type='Foo'))
-
-
-def test_suite():
-    return defaultTestLoader.loadTestsFromName(__name__)

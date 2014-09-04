@@ -20,7 +20,3 @@ class UtilityTests(TestCase):
         # the fallback method cannot handle jpegs properly
         self.assertEqual(getImageSize(getFile('image.jpg')), (-1, -1))
         utils.hasPIL = hasPIL
-
-
-def test_suite():
-    return defaultTestLoader.loadTestsFromName(__name__)

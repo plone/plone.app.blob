@@ -254,13 +254,3 @@ class BlobAdapterPublisherTests(ReplacementFunctionalTestCase):
         BlobImageScaleHandler.getScale = original
         # and make sure the traversal adapter was call in fact
         self.assertEqual(self.counter, 1)
-
-
-def test_suite():
-    return TestSuite([
-        makeSuite(BlobImageTraverseTests),
-        makeSuite(BlobImageScaleTests),
-        makeSuite(BlobImagePublisherTests),
-        makeSuite(BlobAdapterTests),
-        makeSuite(BlobAdapterPublisherTests),
-    ])
