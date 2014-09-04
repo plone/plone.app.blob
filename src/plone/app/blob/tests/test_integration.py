@@ -223,10 +223,3 @@ class FunctionalIntegrationTests(BlobFunctionalTestCase):
             'attachment; filename="foo.txt"')
         self.assertEqual(disposition('application/octet-stream', 'foo.exe'),
             'attachment; filename="foo.exe"')
-
-
-def test_suite():
-    return TestSuite([
-        makeSuite(IntegrationTests),
-        makeSuite(FunctionalIntegrationTests),
-    ])
