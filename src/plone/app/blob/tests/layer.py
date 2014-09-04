@@ -18,7 +18,7 @@ class BlobFixture(PloneTestCaseFixture):
     def setUpPloneSite(self, portal):
         super(BlobFixture, self).setUpPloneSite(portal)
         # install cmfeditions
-        testing.applyProfile(portal, 'profile-plone.app.blob:sample-type')
+        testing.applyProfile(portal, 'plone.app.blob:sample-type')
         types = getToolByName(portal, 'portal_types')
         assert types.getTypeInfo('Blob').product == 'plone.app.blob'
 
@@ -43,7 +43,7 @@ class BlobFileReplacementFixture(PloneTestCaseFixture):
     def setUpPloneSite(self, portal):
         super(BlobFileReplacementFixture, self).setUpPloneSite(portal)
         # install cmfeditions
-        testing.applyProfile(portal, 'profile-plone.app.blob:file-replacement',
+        testing.applyProfile(portal, 'plone.app.blob:file-replacement',
                              purge_old=False)
         types = getToolByName(portal, 'portal_types')
         assert types.getTypeInfo('Blob').product == 'plone.app.blob'
@@ -102,7 +102,7 @@ class BlobLinguaFixture(PloneTestCaseFixture):
 
     def setUpPloneSite(self, portal):
         super(BlobLinguaFixture, self).setUpPloneSite(portal)
-        profile = 'profile-plone.app.blob:testing-lingua'
+        profile = 'plone.app.blob:testing-lingua'
         self.applyProfile(profile, purge_old=False)
         types = getToolByName(portal, 'portal_types')
         assert types.getTypeInfo('BlobelFish')
