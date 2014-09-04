@@ -1,6 +1,5 @@
 from plone.app.blob.tests.base import ReplacementTestCase   # import first!
 
-from unittest import defaultTestLoader
 from zope.interface.interfaces import IInterface
 from zope.annotation import IAnnotations
 from Products.Archetypes.atapi import ImageField, AnnotationStorage

@@ -1,3 +1,4 @@
+from Products.CMFCore.utils import getToolByName
 from plone.app.testing.bbb import PloneTestCaseFixture
 from plone.testing import z2
 from plone.app import testing
@@ -69,13 +70,9 @@ class BlobReplacementFixture(PloneTestCaseFixture):
         z2.installProduct(app, 'plone.app.imaging')
 
     def setUpPloneSite(self, portal):
-        super(BlobReplacementFixture, self).setUpPloneSite(portal)
-        for name in 'file-replacement', 'image-replacement':
-            profile = 'profile-plone.app.blob:%s' % name
-            testing.applyProfile(portal, profile, purge_old=False)
+        applyProfile(portal, 'plone.app.blob:image-replacement')
+        # allow creating the replaced types
         types = getToolByName(portal, 'portal_types')
-        assert types.getTypeInfo('Blob').product == 'plone.app.blob'
-        types.getTypeInfo('ATFile').global_allow = True
         types.getTypeInfo('ATImage').global_allow = True
 
     def tearDownZope(self, app):

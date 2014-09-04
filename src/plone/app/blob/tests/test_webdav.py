@@ -1,4 +1,3 @@
-from unittest import TestSuite, makeSuite
 from plone.app.blob.tests.base import ReplacementFunctionalTestCase
 from plone.app.blob.tests.utils import getImage
 from plone.app.blob.interfaces import IATBlobImage

@@ -1,4 +1,3 @@
-from unittest import TestSuite, makeSuite
 from plone.app.blob.tests.base import BlobTestCase, BlobFunctionalTestCase
 
 from plone.app.blob.utils import guessMimetype

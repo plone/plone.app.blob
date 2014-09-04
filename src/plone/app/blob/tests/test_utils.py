@@ -1,4 +1,4 @@
-from unittest import TestCase, defaultTestLoader
+from unittest import TestCase
 
 from plone.app.blob.tests.utils import getFile
 from plone.app.blob.utils import getImageSize

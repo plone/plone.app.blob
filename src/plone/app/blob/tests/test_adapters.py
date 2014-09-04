@@ -1,5 +1,4 @@
 import os
-from unittest import defaultTestLoader
 from ZODB.blob import Blob
 from OFS.Image import File, Image
 from Products.ATContentTypes.content.image import ATImage

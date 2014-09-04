@@ -1,6 +1,5 @@
 from plone.app.blob.tests.base import ReplacementTestCase   # import first!
 
-from unittest import defaultTestLoader
 from Products.ATContentTypes.interface import file as atfile
 from Products.ATContentTypes.interface import image as atimage
 from plone.app.blob.markings import unmarkAs
