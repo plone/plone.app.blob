@@ -224,6 +224,8 @@ class FunctionalIntegrationTests(BlobFunctionalTestCase):
         self.assertEqual(disposition('application/octet-stream', 'foo.exe'),
             'attachment; filename="foo.exe"')
 
+        #TODO test registry based policy for disposition
+
 
 def test_suite():
     return TestSuite([

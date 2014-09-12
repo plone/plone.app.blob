@@ -2,12 +2,18 @@ from logging import getLogger
 from zope.interface import implements
 from zope.lifecycleevent import ObjectCreatedEvent, ObjectModifiedEvent
 from zope.event import notify
+from Acquisition import aq_inner
 
 from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
 from ZODB.POSException import ConflictError
 from Products.Archetypes.atapi import AnnotationStorage
 from Products.Archetypes.atapi import ATFieldProperty
+from zope.component import getUtility
+from plone.app.content.interfaces import ISiteContentSettings
+from plone.registry.interfaces import IRegistry
+from fnmatch import fnmatch
+
 try:
     from Products.LinguaPlone.public import registerType
     registerType        # make pyflakes happy...
@@ -85,10 +91,29 @@ class ATBlob(ATCTFileContent, ImageMixin):
     security.declareProtected(View, 'index_html')
     def index_html(self, REQUEST, RESPONSE):
         """ download the file inline or as an attachment """
+        registry = getUtility(IRegistry)
+        policySettings = registry.forInterface(ISiteContentSettings, check=False)
+
         field = self.getPrimaryField()
+        mimetype = field.getContentType(self)
         if IATBlobImage.providedBy(self):
             return field.index_html(self, REQUEST, RESPONSE)
-        elif field.getContentType(self) in ATFile.inlineMimetypes:
+        elif policySettings.file_mimetype_behaviour is not None:
+            matches = [(pattern, behaviour) for pattern, behaviour in  policySettings.file_mimetype_behaviour.items() \
+                       if fnmatch(mimetype, pattern)]
+            # pick the longest pattern that matches ie between */* and application/* the latter will win
+            matches.sort(key=lambda kv: len(kv[0]))
+            behaviour = matches[-1][1] if matches else None
+            if behaviour == 'view' and self.getLayout():
+                return self.restrictedTraverse(self.getLayout())()
+            elif behaviour == 'inline':
+                return field.index_html(self, REQUEST, RESPONSE)
+            elif behaviour == 'attachment':
+                return field.download(self, REQUEST, RESPONSE)
+            else:
+                return field.download(self, REQUEST, RESPONSE)
+
+        elif mimetype in ATFile.inlineMimetypes:
             return field.index_html(self, REQUEST, RESPONSE)
         else:
             return field.download(self, REQUEST, RESPONSE)
