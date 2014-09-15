@@ -1,7 +1,6 @@
 from zope.interface import Interface
 from zope import schema
 from Products.CMFPlone import PloneMessageFactory as _
-from zope.schema.vocabulary import SimpleVocabulary
 
 
 class IATBlob(Interface):
@@ -75,9 +74,3 @@ class IBlobMaintenanceView(Interface):
 
     def updateTypeIndex(batch=1000):
         """ walk all catalog entries and update the 'Type' index """
-
-# download_behaviour = SimpleVocabulary.fromItems((
-#     (u"Attempt to view inline", "inline"),
-#     (u"Force download", "attachment"),
-#     (u"Use default view", "view")
-# ))
