@@ -40,7 +40,6 @@ class BlobReplacementFixture(PloneTestCaseFixture):
     def setUpZope(self, app, configurationContext):
         from plone.app import imaging
         self.loadZCML(package=imaging)
-        z2.installProduct(app, 'plone.app.blob')
         z2.installProduct(app, 'plone.app.imaging')
 
     def setUpPloneSite(self, portal):
@@ -52,8 +51,16 @@ class BlobReplacementFixture(PloneTestCaseFixture):
         types.getTypeInfo('ATFile').global_allow = True
         types.getTypeInfo('ATImage').global_allow = True
 
+        from plone.app.testing import setRoles, TEST_USER_ID
+        setRoles(portal, TEST_USER_ID, ['Manager'])
+        folder = portal.portal_membership.getHomeFolder(TEST_USER_ID)
+
+        from StringIO import StringIO
+        image = StringIO('')
+        image.filename = 'original.gif'
+        folder.invokeFactory('Image', id='foo', title='an image', image=image)
+
     def tearDownZope(self, app):
-        z2.uninstallProduct(app, 'plone.app.blob')
         z2.uninstallProduct(app, 'plone.app.imaging')
 
 
