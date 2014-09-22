@@ -27,6 +27,7 @@ Let's also check a custom scale size:
   >>> iprops = portal.portal_properties.imaging_properties
   >>> iprops.manage_changeProperties(allowed_sizes=
   ...   ['mini 200:200', 'foo 100:100'])
+  >>> commit()
   >>> scale = traverse(image, 'image_foo')
   >>> scale.width, scale.height
   (100, 40)

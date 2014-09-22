@@ -1,4 +1,3 @@
-import transaction
 from plone.app.blob.tests.base import ReplacementTestCase
 from plone.app.blob.tests.utils import getImage
 from plone.app.blob.interfaces import IATBlobImage
@@ -28,13 +27,14 @@ class WebDavTests(ReplacementTestCase):
         image = StringIO(getImage())
         image.filename = 'original.gif'
         base = '/'.join(self.folder.getPhysicalPath())
-        response = self.publish(base + '/foo', request_method='PUT',
+        response = self.publish(base + '/foo-image', request_method='PUT',
             stdin=image, basic=self.getCredentials(),
             env={'CONTENT_TYPE': 'image/gif'})
         self.assertEqual(response.getStatus(), 204)
-        self.assertTrue('foo' in self.folder.objectIds())
-        self.assertEqual(self.folder.foo.getId(), 'foo')
-        self.assertEqual(self.folder.foo.Title(), 'an image')
+        self.assertTrue('foo-image' in self.folder.objectIds())
+        fooimage = self.folder['foo-image']
+        self.assertEqual(fooimage.getId(), 'foo-image')
+        self.assertEqual(fooimage.Title(), 'an image')
         # as opposed to during file upload, editing a file via webdav (e.g.
         # using the "external editor" feature) should not change the filename
-        self.assertEqual(self.folder.foo.getFilename(), 'original.gif')
+        self.assertEqual(fooimage.getFilename(), 'original.gif')

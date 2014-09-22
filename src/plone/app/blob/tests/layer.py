@@ -6,8 +6,6 @@ from plone.testing import z2
 from plone.app import testing
 from plone.app.blob.tests.utils import getData
 
-from Products.CMFCore.utils import getToolByName
-
 
 class BlobFixture(PloneTestCaseFixture):
     """ layer for integration tests using blob types """
@@ -57,11 +55,11 @@ class BlobReplacementFixture(PloneTestCaseFixture):
 
         image = StringIO(getData('image.gif'))
         image.filename = 'original.gif'
-        folder.invokeFactory('Image', id='foo', title='an image', image=image)
+        folder.invokeFactory('Image', id='foo-image', title='an image', image=image)
 
     def tearDownPloneSite(self, portal):
         folder = portal.portal_membership.getHomeFolder(testing.TEST_USER_ID)
-        del folder['foo']
+        del folder['foo-image']
 
     def tearDownZope(self, app):
         z2.uninstallProduct(app, 'plone.app.imaging')

@@ -1,12 +1,9 @@
 import unittest
-from unittest import TestSuite
 import doctest
 
-from Testing.ZopeTestCase import ZopeDocFileSuite
 from plone.app.blob.tests.layer import BlobLayer, BlobReplacementLayer, BlobLinguaLayer
 from plone.app.blob.tests.utils import hasLinguaPlone
 
-from plone.app.testing.bbb import PTC_FUNCTIONAL_TESTING
 from plone.testing import layered
 
 

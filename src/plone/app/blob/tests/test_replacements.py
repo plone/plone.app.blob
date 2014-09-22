@@ -153,6 +153,10 @@ class FileReplacementTests(ReplacementTestCase):
 
 class ImageReplacementTests(ReplacementTestCase):
 
+    def afterSetUp(self):
+        # don't interfere with catalog checks
+        del self.folder['foo-image']
+
     def testAddImagePermission(self):
         permissions = list(permissionsFor('Image', 'plone.app.blob'))
         self.assertEqual(permissions, ['ATContentTypes: Add Image'])
