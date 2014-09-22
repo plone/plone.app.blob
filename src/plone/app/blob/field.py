@@ -13,6 +13,7 @@ from ZODB.blob import Blob
 from persistent import Persistent
 from transaction import savepoint
 from webdav.common import rfc1123_date
+from urllib import quote as url_quote
 
 from Products.CMFCore.permissions import View
 from Products.Archetypes.atapi import ObjectField, FileWidget, ImageWidget
@@ -88,11 +89,14 @@ class BlobWrapper(Implicit, Persistent):
         if filename is not None:
             if not isinstance(filename, unicode):
                 filename = unicode(filename, charset, errors="ignore")
+            quoted_filename = url_quote(filename.encode("utf8"))
             filename = IUserPreferredFileNameNormalizer(REQUEST).normalize(
                 filename)
             header_value = contentDispositionHeader(
                 disposition=disposition,
                 filename=filename)
+            # Add original filename in utf-8, ref to rfc2231
+            header_value = header_value + "; filename*=UTF-8''" + quoted_filename
             RESPONSE.setHeader("Content-disposition", header_value)
 
         request_range = handleRequestRange(self, length, REQUEST, RESPONSE)
