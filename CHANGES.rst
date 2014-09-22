@@ -21,15 +21,7 @@ Changelog
 - Make sure mimetype is not None and use use filename for detection if available.
   [tschanzt]
 
-- Enable user to save file with original name 
 
-  A file uploaded into Plone was saved as a normalized name,
-  when user try to download the file, they got a normalized
-  name, but the original name is prefered.
-
-  The safe way to do this is add url-encoded file name in UTF-8
-  in to the content header.
-  [yangh]
 
 
 1.5.8 (2013-04-06)
