@@ -11,6 +11,9 @@ the dimensions of the image itself and one of the scales:
   >>> portal.invokeFactory('Image', id='foo', title='Foo', image=data)
   'foo'
 
+  >>> from transaction import commit
+  >>> commit()
+
   >>> image = portal['foo']
   >>> image.width, image.height
   (500, 200)
@@ -32,6 +35,9 @@ We use a testbrowser to rotate the image:
 
   >>> from plone.testing.z2 import Browser
   >>> browser = Browser(layer['app'])
+  >>> from plone.app.testing import TEST_USER_NAME, TEST_USER_PASSWORD
+  >>> browser.addHeader('Authorization',
+  ...                   'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD))
   >>> browser.open(portal.absolute_url() + '/foo/view')
   >>> browser.getLink('Transform').click()
   >>> browser.getControl(name='method').displayValue = ['Rotate 90 clockwise']

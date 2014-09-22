@@ -13,6 +13,10 @@ Let's start with creating a "File" content item:
   >>> from StringIO import StringIO
   >>> from plone.testing.z2 import Browser
   >>> browser = Browser(layer['app'])
+  >>> from plone.app.testing import TEST_USER_NAME, TEST_USER_PASSWORD
+  >>> browser.addHeader('Authorization',
+  ...                   'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD))
+
   >>> from plone.app.testing import TEST_USER_ID
   >>> folder = layer['portal'].portal_membership.getHomeFolder(TEST_USER_ID)
   >>> browser.open(folder.absolute_url())

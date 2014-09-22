@@ -1,11 +1,12 @@
+from StringIO import StringIO
 from Products.CMFCore.utils import getToolByName
 from plone.app.testing.bbb import PloneTestCaseFixture
 from plone.app.testing.bbb import PTC_FIXTURE
 from plone.testing import z2
 from plone.app import testing
+from plone.app.blob.tests.utils import getData
 
 from Products.CMFCore.utils import getToolByName
-from transaction import commit
 
 
 class BlobFixture(PloneTestCaseFixture):
@@ -51,14 +52,16 @@ class BlobReplacementFixture(PloneTestCaseFixture):
         types.getTypeInfo('ATFile').global_allow = True
         types.getTypeInfo('ATImage').global_allow = True
 
-        from plone.app.testing import setRoles, TEST_USER_ID
-        setRoles(portal, TEST_USER_ID, ['Manager'])
-        folder = portal.portal_membership.getHomeFolder(TEST_USER_ID)
+        testing.setRoles(portal, testing.TEST_USER_ID, ['Manager'])
+        folder = portal.portal_membership.getHomeFolder(testing.TEST_USER_ID)
 
-        from StringIO import StringIO
-        image = StringIO('')
+        image = StringIO(getData('image.gif'))
         image.filename = 'original.gif'
         folder.invokeFactory('Image', id='foo', title='an image', image=image)
+
+    def tearDownPloneSite(self, portal):
+        folder = portal.portal_membership.getHomeFolder(testing.TEST_USER_ID)
+        del folder['foo']
 
     def tearDownZope(self, app):
         z2.uninstallProduct(app, 'plone.app.imaging')

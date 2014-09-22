@@ -38,7 +38,7 @@ registerType(SampleType, packageName)
 
 class BaseFieldTests(ReplacementTestCase):
 
-    def create(self, id='foo', **kw):
+    def create(self, id='foo2', **kw):
         container = self.folder
         obj = SampleType(id)
         obj = container[container._setObject(id, obj)]
