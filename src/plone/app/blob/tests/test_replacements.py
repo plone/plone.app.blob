@@ -286,6 +286,8 @@ class ImageReplacementTests(ReplacementTestCase):
         migrate(self.portal, portal_type='Image', meta_type='ATBlob')
         # the modification date isn't changed by migration
         self.assertEqual(mod, foo.modified())
+        # cleanup
+        del foo.schema['image']
 
     def testOldScalesRemovedDuringInlineImageMigration(self):
         gif = getImage()
@@ -301,6 +303,8 @@ class ImageReplacementTests(ReplacementTestCase):
         migrate(self.portal, portal_type='Image', meta_type='ATBlob')
         # make sure all scale annotations were removed
         self.assertFalse(filter(isimage, IAnnotations(foo).values()))
+        # cleanup
+        del foo.schema['image']
 
     def testImageDefaultSizes(self):
         image = self.folder[self.folder.invokeFactory('Image', 'foo')]
