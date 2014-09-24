@@ -1,42 +1,46 @@
-from os import fstat
-from zope.interface import implements
-from StringIO import StringIO
-from Acquisition import Implicit, aq_base
+# -*- coding: utf-8 -*-
 from AccessControl import ClassSecurityInfo
+from AccessControl.class_init import InitializeClass
+from Acquisition import Implicit
+from Acquisition import aq_base
 from ComputedAttribute import ComputedAttribute
-try:
-    from App.class_init import InitializeClass
-    InitializeClass     # keep pyflakes happy...
-except ImportError:
-    from Globals import InitializeClass
-from ZODB.blob import Blob
-from persistent import Persistent
-from transaction import savepoint
-from webdav.common import rfc1123_date
-
-from Products.CMFCore.permissions import View
-from Products.Archetypes.atapi import ObjectField, FileWidget, ImageWidget
-from Products.Archetypes.atapi import PrimaryFieldMarshaller
 from Products.Archetypes.Registry import registerField
+from Products.Archetypes.atapi import FileWidget
+from Products.Archetypes.atapi import ImageWidget
+from Products.Archetypes.atapi import ObjectField
+from Products.Archetypes.atapi import PrimaryFieldMarshaller
 from Products.Archetypes.utils import contentDispositionHeader
-
-from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
-from plone.app.blob.interfaces import IBlobbable, IWebDavUpload, IBlobField
+from Products.CMFCore.permissions import View
+from StringIO import StringIO
+from ZODB.blob import Blob
+from os import fstat
+from persistent import Persistent
+from plone.app.blob.config import blobScalesAttr
+from plone.app.blob.download import handleIfModifiedSince
+from plone.app.blob.download import handleRequestRange
+from plone.app.blob.interfaces import IBlobField
 from plone.app.blob.interfaces import IBlobImageField
 from plone.app.blob.interfaces import IBlobWrapper
+from plone.app.blob.interfaces import IBlobbable
+from plone.app.blob.interfaces import IWebDavUpload
 from plone.app.blob.iterators import BlobStreamIterator
-from plone.app.blob.download import handleIfModifiedSince, handleRequestRange
 from plone.app.blob.mixins import ImageFieldMixin
-from plone.app.blob.utils import getImageSize, getPILResizeAlgo, openBlob
-from plone.app.blob.config import blobScalesAttr
+from plone.app.blob.utils import getImageSize
+from plone.app.blob.utils import getPILResizeAlgo
+from plone.app.blob.utils import openBlob
+from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
+from transaction import savepoint
+from webdav.common import rfc1123_date
+from zope.interface import implementer
 
 
+@implementer(IWebDavUpload)
 class WebDavUpload(object):
     """ helper class when handling webdav uploads;  the class is needed
         to be able to provide an adapter for this way of creating a blob """
-    implements(IWebDavUpload)
 
-    def __init__(self, file, filename=None, mimetype=None, context=None, **kwargs):
+    def __init__(self, file, filename=None, mimetype=None, context=None,
+                 **kwargs):
         self.file = file
         if hasattr(aq_base(context), 'getFilename'):
             filename = context.getFilename() or filename
@@ -53,9 +57,9 @@ class BlobMarshaller(PrimaryFieldMarshaller):
         mutator(WebDavUpload(**kwargs))
 
 
+@implementer(IBlobWrapper)
 class BlobWrapper(Implicit, Persistent):
     """ persistent wrapper for a zodb blob, also holding some metadata """
-    implements(IBlobWrapper)
 
     security = ClassSecurityInfo()
 
@@ -64,9 +68,9 @@ class BlobWrapper(Implicit, Persistent):
         self.content_type = content_type
         self.filename = None
 
-    security.declareProtected(View, 'index_html')
-
-    def index_html(self, REQUEST=None, RESPONSE=None, charset='utf-8', disposition='inline'):
+    @security.protected(View)
+    def index_html(self, REQUEST=None, RESPONSE=None, charset='utf-8',
+                   disposition='inline'):
         """ make it directly viewable when entering the objects URL """
 
         if REQUEST is None:
@@ -89,36 +93,37 @@ class BlobWrapper(Implicit, Persistent):
         if filename is not None:
             if not isinstance(filename, unicode):
                 filename = unicode(filename, charset, errors="ignore")
-            filename = IUserPreferredFileNameNormalizer(REQUEST).normalize(
-                filename)
+            filename = IUserPreferredFileNameNormalizer(
+                REQUEST
+            ).normalize(
+                filename
+            )
             header_value = contentDispositionHeader(
                 disposition=disposition,
-                filename=filename)
+                filename=filename,
+            )
+            # Add original filename in utf-8, ref to rfc2231
             RESPONSE.setHeader("Content-disposition", header_value)
 
         request_range = handleRequestRange(self, length, REQUEST, RESPONSE)
         return self.getIterator(**request_range)
 
-    security.declarePrivate('setBlob')
-
+    @security.private
     def setBlob(self, blob):
         """ set the contained blob object """
         self.blob = blob
 
-    security.declarePrivate('getBlob')
-
+    @security.private
     def getBlob(self):
         """ return the contained blob object """
         return self.blob
 
-    security.declarePrivate('getIterator')
-
+    @security.private
     def getIterator(self, **kw):
         """ return a filestream iterator object from the blob """
         return BlobStreamIterator(self.blob, **kw)
 
-    security.declareProtected(View, 'get_size')
-
+    @security.private
     def get_size(self):
         """ return the size of the blob """
         blob = openBlob(self.blob)
@@ -132,8 +137,7 @@ class BlobWrapper(Implicit, Persistent):
         # count as having a value unless we lack both data and a filename
         return bool(self.filename or len(self))
 
-    security.declareProtected(View, 'getSize')
-
+    @security.protected(View)
     def getSize(self):
         """ return image dimensions of the blob """
         # TODO: this should probably be cached...
@@ -142,37 +146,33 @@ class BlobWrapper(Implicit, Persistent):
         blob.close()
         return size
 
-    security.declareProtected(View, 'width')
-
     @property
+    @security.protected(View)
     def width(self):
         """ provide the image width as an attribute """
         width, height = self.getSize()
         return width
 
-    security.declareProtected(View, 'height')
-
     @property
+    @security.protected(View)
     def height(self):
         """ provide the image height as an attribute """
         width, height = self.getSize()
         return height
 
-    security.declarePrivate('setContentType')
-
+    @security.private
     def setContentType(self, value):
         """ set mimetype for this blob """
-        value = str(value).split(';')[0].strip()    # might be like: text/plain; charset='utf-8'
+        # might be like: text/plain; charset='utf-8'
+        value = str(value).split(';')[0].strip()
         self.content_type = value
 
-    security.declarePublic('getContentType')
-
+    @security.public
     def getContentType(self):
         """ return mimetype for this blob """
         return self.content_type
 
-    security.declarePrivate('setFilename')
-
+    @security.private
     def setFilename(self, value):
         """ set filename for this blob """
         if isinstance(value, basestring):
@@ -181,11 +181,11 @@ class BlobWrapper(Implicit, Persistent):
                               value.rfind(':')) + 1:]
         self.filename = value
 
-    security.declarePrivate('getFilename')
-
+    @security.private
     def getFilename(self):
         """ return filename for this blob """
         return self.filename
+
     # compatibility methods
 
     def __str__(self):
@@ -196,6 +196,7 @@ class BlobWrapper(Implicit, Persistent):
 
     data = ComputedAttribute(__str__, 0)
 
+
 InitializeClass(BlobWrapper)
 
 
@@ -203,9 +204,9 @@ class ReuseBlob(Exception):
     """ exception indicating that a blob should be reused """
 
 
+@implementer(IBlobField)
 class BlobField(ObjectField):
     """ file field implementation based on zodb blobs """
-    implements(IBlobField)
 
     _properties = ObjectField._properties.copy()
     _properties.update({
@@ -218,13 +219,11 @@ class BlobField(ObjectField):
 
     security = ClassSecurityInfo()
 
-    security.declarePrivate('getUnwrapped')
-
+    @security.private
     def getUnwrapped(self, instance, **kwargs):
         return super(BlobField, self).get(instance, **kwargs)
 
-    security.declarePrivate('get')
-
+    @security.private
     def get(self, instance, **kwargs):
         value = super(BlobField, self).get(instance, **kwargs)
         if getattr(value, '__of__', None) is not None:
@@ -232,8 +231,7 @@ class BlobField(ObjectField):
         else:
             return value
 
-    security.declarePrivate('set')
-
+    @security.private
     def set(self, instance, value, **kwargs):
         """ use input value to populate the blob and set the associated
             file name and mimetype.  the latter can be overridden by an
@@ -265,8 +263,7 @@ class BlobField(ObjectField):
         # pdfs etc using solr & tika within the same transaction)
         savepoint(optimistic=True)
 
-    security.declarePrivate('fixAutoId')
-
+    @security.private
     def fixAutoId(self, instance):
         """ if an explicit id was given and the instance still has the
             auto-generated one it should be renamed;  also see
@@ -274,30 +271,41 @@ class BlobField(ObjectField):
         if not self.primary:
             return
         filename = self.getFilename(instance)
-        if filename is not None and instance._isIDAutoGenerated(instance.getId()):
+        if filename is not None \
+           and instance._isIDAutoGenerated(instance.getId()):
             request = instance.REQUEST
             req_id = request.form.get('id')
             if req_id and not instance._isIDAutoGenerated(req_id):
                 return      # don't rename if an explicit id was given
             if hasattr(aq_base(instance), '_should_set_id_to_filename'):
                 # ^^ BBB for ATContentTypes <2.0
-                if not instance._should_set_id_to_filename(filename, request.form.get('title')):
-                    return      # don't rename now if AT should do it from title
+                if not instance._should_set_id_to_filename(
+                    filename,
+                    request.form.get('title')
+                ):
+                    return  # don't rename now if AT should do it from title
             if not isinstance(filename, unicode):
                 filename = unicode(filename, instance.getCharset())
-            filename = IUserPreferredFileNameNormalizer(request).normalize(filename)
+            filename = IUserPreferredFileNameNormalizer(
+                request
+            ).normalize(
+                filename
+            )
             if filename and not filename == instance.getId():
                 # a file name was given, so the instance needs to be renamed...
                 instance.setId(filename)
 
-    security.declareProtected(View, 'download')
-
+    @security.private
     def download(self, instance, REQUEST=None, RESPONSE=None):
         """ download the file (use default index_html) """
-        return self.index_html(instance, REQUEST, RESPONSE, disposition='attachment')
+        return self.index_html(
+            instance,
+            REQUEST,
+            RESPONSE,
+            disposition='attachment'
+        )
 
-    security.declareProtected(View, 'index_html')
-
+    @security.protected(View)
     def index_html(self, instance, REQUEST=None, RESPONSE=None, **kwargs):
         """ make it directly viewable when entering the objects URL """
         blob = self.get(instance, raw=True)    # TODO: why 'raw'?
@@ -307,8 +315,7 @@ class BlobField(ObjectField):
             charset=charset, **kwargs
             )
 
-    security.declarePublic('get_size')
-
+    @security.public
     def get_size(self, instance):
         """ return the size of the blob used for get_size in BaseObject """
         blob = self.getUnwrapped(instance)
@@ -317,8 +324,7 @@ class BlobField(ObjectField):
         else:
             return 0
 
-    security.declarePublic('getContentType')
-
+    @security.public
     def getContentType(self, instance, fromBaseUnit=True):
         """ return the mimetype associated with the blob data """
         blob = self.getUnwrapped(instance)
@@ -327,8 +333,7 @@ class BlobField(ObjectField):
         else:
             return 'application/octet-stream'
 
-    security.declarePrivate('getFilename')
-
+    @security.private
     def getFilename(self, instance, fromBaseUnit=True):
         """ return the file name associated with the blob data """
         blob = self.getUnwrapped(instance)
@@ -337,10 +342,15 @@ class BlobField(ObjectField):
         else:
             return None
 
-registerField(BlobField, title='Blob',
-              description='Used for storing files in blobs')
+
+registerField(
+    BlobField,
+    title='Blob',
+    description='Used for storing files in blobs'
+)
 
 # convenience base classes for blob-aware file & image fields
+
 
 class FileField(BlobField):
     """ base class for a blob-based file field """
@@ -350,13 +360,17 @@ class FileField(BlobField):
         'type': 'file',
     })
 
-registerField(FileField, title='Blob-aware FileField',
-              description='Used for storing files in blobs')
+
+registerField(
+    FileField,
+    title='Blob-aware FileField',
+    description='Used for storing files in blobs'
+)
 
 
+@implementer(IBlobImageField)
 class ImageField(BlobField, ImageFieldMixin):
     """ base class for a blob-based image field """
-    implements(IBlobImageField)
 
     _properties = BlobField._properties.copy()
     _properties.update({
@@ -377,5 +391,9 @@ class ImageField(BlobField, ImageFieldMixin):
         if hasattr(aq_base(instance), blobScalesAttr):
             delattr(aq_base(instance), blobScalesAttr)
 
-registerField(ImageField, title='Blob-aware ImageField',
-              description='Used for storing image in blobs')
+
+registerField(
+    ImageField,
+    title='Blob-aware ImageField',
+    description='Used for storing image in blobs'
+)

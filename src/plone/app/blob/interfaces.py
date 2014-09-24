@@ -1,6 +1,7 @@
-from zope.interface import Interface
-from zope import schema
+# -*- coding: utf-8 -*-
 from Products.CMFPlone import PloneMessageFactory as _
+from zope import schema
+from zope.interface import Interface
 
 
 class IATBlob(Interface):
@@ -8,9 +9,11 @@ class IATBlob(Interface):
 
     title = schema.TextLine(title=_(u"Title"))
 
-    blob = schema.Field(title=_(u"Blob"),
+    blob = schema.Field(
+        title=_(u"Blob"),
         description=_(u"Binary data, similar to a file in the filesystem"),
-        required=True)
+        required=True
+    )
 
 
 class IBlobbable(Interface):
