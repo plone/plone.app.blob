@@ -14,6 +14,7 @@ class TraverseCounterMixin:
     def afterSetUp(self):
         self.counter = 0        # wrap `publishTraverse` with a counter
         self.original = ImageTraverser.publishTraverse
+
         def publishTraverse(adapter, request, name):
             self.counter += 1
             return self.original(adapter, request, name)
@@ -79,6 +80,7 @@ class BlobImageScaleTests(ReplacementTestCase):
     def afterSetUp(self):
         self.counter = 0        # wrap `createScale` with a counter
         self.original = BlobImageScaleHandler.createScale
+
         def createScale(*args, **kw):
             self.counter += 1
             return self.original(*args, **kw)
@@ -220,6 +222,7 @@ class BlobAdapterPublisherTests(ReplacementTestCase):
 
     def afterSetUp(self):
         self.original = BlobImageScaleHandler.getScale
+
         def getScale(adapter, instance, scale):
             self.counter += 1
             return self.original(adapter, instance, scale)

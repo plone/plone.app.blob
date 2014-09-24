@@ -31,7 +31,6 @@ class ReplacementTestCase(BlobTestCase):
 
     layer = BlobReplacementLayer
 
-
 ReplacementFunctionalTestCase = ReplacementTestCase
 
 

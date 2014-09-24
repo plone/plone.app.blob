@@ -5,7 +5,6 @@ from plone.app.blob.tests.utils import makeFileUpload, getImage, getData
 from StringIO import StringIO
 from os.path import isfile
 
-
 largefile_data = ('test' * 2048)
 pdf_data = '%PDF-1.4 fake pdf...'
 
@@ -135,13 +134,13 @@ class IntegrationTests(BlobTestCase):
         request = self.folder.REQUEST
         request.environ['HTTP_RANGE'] = 'bytes=2-10'
         iterator = blob.download(request)
-        self.assertEqual(data[2:10+1], iterator.next())
+        self.assertEqual(data[2:10 + 1], iterator.next())
         # ranges should also work with multiple chunks read from the blob
         request.environ['HTTP_RANGE'] = 'bytes=2-10'
         iterator = blob.download(request)
         iterator.streamsize = 5
-        self.assertEqual(data[2:2+5], iterator.next())
-        self.assertEqual(data[2+5:10+1], iterator.next())
+        self.assertEqual(data[2:2 + 5], iterator.next())
+        self.assertEqual(data[2 + 5:10 + 1], iterator.next())
         # open and suffix ranges also have to work
         request.environ['HTTP_RANGE'] = 'bytes=2-'
         iterator = blob.download(request)
@@ -171,7 +170,6 @@ class IntegrationTests(BlobTestCase):
         repository.applyVersionControl(blob, comment='version 1')
         blob.edit(file='some text...')
         repository.save(blob, comment='version 2')
-
         # blob-based file/image content isn't versionable yet, so the
         # remaining tests are skipped for the time being...
         # note: the `revert` needs to stay or else `tearDown` will break
@@ -210,6 +208,7 @@ class FunctionalIntegrationTests(BlobFunctionalTestCase):
 
     def testInlineMimetypes(self):
         obj = self.folder[self.folder.invokeFactory('Blob', 'blob')]
+
         def disposition(mimetype, filename):
             obj.setFormat(mimetype)
             obj.setFilename(filename)

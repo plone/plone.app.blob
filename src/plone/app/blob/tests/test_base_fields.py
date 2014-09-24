@@ -10,17 +10,17 @@ from plone.app.blob.tests.utils import getFile
 SampleSchema = BaseSchema.copy() + Schema((
 
     FileField(
-        name = 'foo',
-        widget = FileWidget(label='File', description='a file')),
+        name='foo',
+        widget=FileWidget(label='File', description='a file')),
 
     ImageField(
-        name = 'bar',
-        widget = ImageWidget(label='Image', description='an image')),
+        name='bar',
+        widget=ImageWidget(label='Image', description='an image')),
 
     ImageField(
-        name = 'hmm',
-        sizes = {'tiny': (42, 42)},
-        widget = ImageWidget(label='Image', description='an image')),
+        name='hmm',
+        sizes={'tiny': (42, 42)},
+        widget=ImageWidget(label='Image', description='an image')),
 
 ))
 
@@ -30,10 +30,8 @@ class SampleType(BaseContent):
     portal_type = 'SampleType'
     schema = SampleSchema
 
-
 permissions['SampleType'] = packageName + ': SampleType'
 registerType(SampleType, packageName)
-
 
 
 class BaseFieldTests(ReplacementTestCase):

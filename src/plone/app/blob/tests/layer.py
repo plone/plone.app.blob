@@ -26,9 +26,8 @@ class BlobFixture(PloneTestCaseFixture):
     def tearDownZope(self, app):
         z2.uninstallProduct(app, 'plone.app.blob')
 
-
 BLOB_FIXTURE = BlobFixture()
-BlobLayer = testing.FunctionalTesting(bases=(BLOB_FIXTURE,), name="Blob:Functional")
+BlobLayer = testing.FunctionalTesting(bases=(BLOB_FIXTURE, ), name="Blob:Functional")
 
 
 class BlobReplacementFixture(PloneTestCaseFixture):
@@ -64,13 +63,13 @@ class BlobReplacementFixture(PloneTestCaseFixture):
     def tearDownZope(self, app):
         z2.uninstallProduct(app, 'plone.app.imaging')
 
-
 BLOB_REPLACEMENT_FIXTURE = BlobReplacementFixture()
 BlobReplacementLayer = testing.FunctionalTesting(
-    bases=(BLOB_REPLACEMENT_FIXTURE,), name="Blob Replacement:Functional")
+    bases=(BLOB_REPLACEMENT_FIXTURE, ), name="Blob Replacement:Functional")
 
 # BBB
 BlobFileReplacementLayer = BlobReplacementLayer
+
 
 class BlobLinguaFixture(PloneTestCaseFixture):
     """ layer for integration tests with LinguaPlone """
@@ -97,7 +96,6 @@ class BlobLinguaFixture(PloneTestCaseFixture):
         z2.uninstallProduct(app, 'plone.app.blob')
         z2.uninstallProduct(app, 'Products.LinguaPlone')
 
-
 BLOB_LINGUA_FIXTURE = BlobLinguaFixture()
 BlobLinguaLayer = testing.FunctionalTesting(
-    bases=(BLOB_LINGUA_FIXTURE,), name="Blob Lingua:Functional")
+    bases=(BLOB_LINGUA_FIXTURE, ), name="Blob Lingua:Functional")

@@ -18,6 +18,7 @@ from plone.app.blob.content import ATBlob
 from plone.app.blob.tests.utils import getImage, getData
 from ZODB.blob import SAVEPOINT_SUFFIX
 
+
 def permissionsFor(name, product):
     from Products import meta_types
     for mt in meta_types:
@@ -68,14 +69,14 @@ class FileReplacementTests(ReplacementTestCase):
             contributors=('me'))]
         # fake old content from before applying the replacement profile
         foo._setPortalTypeName('File')
-        foo.reindexObject(idxs=('portal_type',))
+        foo.reindexObject(idxs=('portal_type', ))
         # check to be migrated content
         self.assertTrue(isinstance(foo, ATFile), 'not a file?')
         self.assertEqual(foo.Title(), 'a file')
         self.assertEqual(foo.getContentType(), 'text/plain')
         self.assertEqual(foo.getPortalTypeName(), 'File')
         self.assertEqual(foo.Subject(), ('foo', 'bar'))
-        self.assertEqual(foo.Contributors(), ('me',))
+        self.assertEqual(foo.Contributors(), ('me', ))
         # migrate & check migrated content item
         self.assertEqual(migrateATBlobFiles(self.portal),
             'Migrating /plone/Members/test_user_1_/foo (File -> File)\n')
@@ -86,7 +87,7 @@ class FileReplacementTests(ReplacementTestCase):
         self.assertEqual(foo.getContentType(), 'text/plain')
         self.assertEqual(foo.getPortalTypeName(), 'File')
         self.assertEqual(foo.Subject(), ('foo', 'bar'))
-        self.assertEqual(foo.Contributors(), ('me',))
+        self.assertEqual(foo.Contributors(), ('me', ))
         blob = foo.getImage().getBlob().open('r')
         self.assertEqual(blob.read(), 'plain text')
 
@@ -96,7 +97,7 @@ class FileReplacementTests(ReplacementTestCase):
             contributors=('me'))]
         # fake old content from before applying the replacement profile
         foo._setPortalTypeName('File')
-        foo.reindexObject(idxs=('portal_type',))
+        foo.reindexObject(idxs=('portal_type', ))
         # remember the catalog data so it can be checked
         catalog = self.portal.portal_catalog
         rid = catalog(id='foo')[0].getRID()
@@ -115,7 +116,7 @@ class FileReplacementTests(ReplacementTestCase):
         for key, value in catalog.getIndexDataForRID(brain.getRID()).items():
             if not key in okay:
                 self.assertEqual(index_data[key], value, 'index: %s' % key)
-        okay = ('meta_type',)
+        okay = ('meta_type', )
         for key, value in catalog.getMetadataForRID(brain.getRID()).items():
             if not key in okay:
                 self.assertEqual(meta_data[key], value, 'meta: %s' % key)
@@ -204,14 +205,14 @@ class ImageReplacementTests(ReplacementTestCase):
             contributors=('me'))]
         # fake old content from before applying the replacement profile
         foo._setPortalTypeName('Image')
-        foo.reindexObject(idxs=('portal_type',))
+        foo.reindexObject(idxs=('portal_type', ))
         # check to be migrated content
         self.assertTrue(isinstance(foo, ATImage), 'not an image?')
         self.assertEqual(foo.Title(), 'an image')
         self.assertEqual(foo.getContentType(), 'image/gif')
         self.assertEqual(foo.getPortalTypeName(), 'Image')
         self.assertEqual(foo.Subject(), ('foo', 'bar'))
-        self.assertEqual(foo.Contributors(), ('me',))
+        self.assertEqual(foo.Contributors(), ('me', ))
         # migrate & check migrated content item
         self.assertEqual(migrateATBlobImages(self.portal),
             'Migrating /plone/Members/test_user_1_/foo (Image -> Image)\n')
@@ -222,7 +223,7 @@ class ImageReplacementTests(ReplacementTestCase):
         self.assertEqual(foo.getContentType(), 'image/gif')
         self.assertEqual(foo.getPortalTypeName(), 'Image')
         self.assertEqual(foo.Subject(), ('foo', 'bar'))
-        self.assertEqual(foo.Contributors(), ('me',))
+        self.assertEqual(foo.Contributors(), ('me', ))
         blob = foo.getImage().getBlob().open('r')
         self.assertEqual(blob.read(), gif)
 
@@ -234,7 +235,7 @@ class ImageReplacementTests(ReplacementTestCase):
 
         # fake old content from before applying the replacement profile
         foo._setPortalTypeName('Image')
-        foo.reindexObject(idxs=('portal_type',))
+        foo.reindexObject(idxs=('portal_type', ))
 
         # remember the catalog data so it can be checked
         catalog = self.portal.portal_catalog

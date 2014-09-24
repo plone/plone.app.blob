@@ -65,6 +65,7 @@ class BlobWrapper(Implicit, Persistent):
         self.filename = None
 
     security.declareProtected(View, 'index_html')
+
     def index_html(self, REQUEST=None, RESPONSE=None, charset='utf-8', disposition='inline'):
         """ make it directly viewable when entering the objects URL """
 
@@ -99,21 +100,25 @@ class BlobWrapper(Implicit, Persistent):
         return self.getIterator(**request_range)
 
     security.declarePrivate('setBlob')
+
     def setBlob(self, blob):
         """ set the contained blob object """
         self.blob = blob
 
     security.declarePrivate('getBlob')
+
     def getBlob(self):
         """ return the contained blob object """
         return self.blob
 
     security.declarePrivate('getIterator')
+
     def getIterator(self, **kw):
         """ return a filestream iterator object from the blob """
         return BlobStreamIterator(self.blob, **kw)
 
     security.declareProtected(View, 'get_size')
+
     def get_size(self):
         """ return the size of the blob """
         blob = openBlob(self.blob)
@@ -128,6 +133,7 @@ class BlobWrapper(Implicit, Persistent):
         return bool(self.filename or len(self))
 
     security.declareProtected(View, 'getSize')
+
     def getSize(self):
         """ return image dimensions of the blob """
         # TODO: this should probably be cached...
@@ -137,6 +143,7 @@ class BlobWrapper(Implicit, Persistent):
         return size
 
     security.declareProtected(View, 'width')
+
     @property
     def width(self):
         """ provide the image width as an attribute """
@@ -144,6 +151,7 @@ class BlobWrapper(Implicit, Persistent):
         return width
 
     security.declareProtected(View, 'height')
+
     @property
     def height(self):
         """ provide the image height as an attribute """
@@ -151,17 +159,20 @@ class BlobWrapper(Implicit, Persistent):
         return height
 
     security.declarePrivate('setContentType')
+
     def setContentType(self, value):
         """ set mimetype for this blob """
         value = str(value).split(';')[0].strip()    # might be like: text/plain; charset='utf-8'
         self.content_type = value
 
     security.declarePublic('getContentType')
+
     def getContentType(self):
         """ return mimetype for this blob """
         return self.content_type
 
     security.declarePrivate('setFilename')
+
     def setFilename(self, value):
         """ set filename for this blob """
         if isinstance(value, basestring):
@@ -171,10 +182,10 @@ class BlobWrapper(Implicit, Persistent):
         self.filename = value
 
     security.declarePrivate('getFilename')
+
     def getFilename(self):
         """ return filename for this blob """
         return self.filename
-
     # compatibility methods
 
     def __str__(self):
@@ -184,7 +195,6 @@ class BlobWrapper(Implicit, Persistent):
         return openBlob(self.blob).read()
 
     data = ComputedAttribute(__str__, 0)
-
 
 InitializeClass(BlobWrapper)
 
@@ -209,10 +219,12 @@ class BlobField(ObjectField):
     security = ClassSecurityInfo()
 
     security.declarePrivate('getUnwrapped')
+
     def getUnwrapped(self, instance, **kwargs):
         return super(BlobField, self).get(instance, **kwargs)
 
     security.declarePrivate('get')
+
     def get(self, instance, **kwargs):
         value = super(BlobField, self).get(instance, **kwargs)
         if getattr(value, '__of__', None) is not None:
@@ -221,6 +233,7 @@ class BlobField(ObjectField):
             return value
 
     security.declarePrivate('set')
+
     def set(self, instance, value, **kwargs):
         """ use input value to populate the blob and set the associated
             file name and mimetype.  the latter can be overridden by an
@@ -253,6 +266,7 @@ class BlobField(ObjectField):
         savepoint(optimistic=True)
 
     security.declarePrivate('fixAutoId')
+
     def fixAutoId(self, instance):
         """ if an explicit id was given and the instance still has the
             auto-generated one it should be renamed;  also see
@@ -277,11 +291,13 @@ class BlobField(ObjectField):
                 instance.setId(filename)
 
     security.declareProtected(View, 'download')
+
     def download(self, instance, REQUEST=None, RESPONSE=None):
         """ download the file (use default index_html) """
         return self.index_html(instance, REQUEST, RESPONSE, disposition='attachment')
 
     security.declareProtected(View, 'index_html')
+
     def index_html(self, instance, REQUEST=None, RESPONSE=None, **kwargs):
         """ make it directly viewable when entering the objects URL """
         blob = self.get(instance, raw=True)    # TODO: why 'raw'?
@@ -292,6 +308,7 @@ class BlobField(ObjectField):
             )
 
     security.declarePublic('get_size')
+
     def get_size(self, instance):
         """ return the size of the blob used for get_size in BaseObject """
         blob = self.getUnwrapped(instance)
@@ -301,6 +318,7 @@ class BlobField(ObjectField):
             return 0
 
     security.declarePublic('getContentType')
+
     def getContentType(self, instance, fromBaseUnit=True):
         """ return the mimetype associated with the blob data """
         blob = self.getUnwrapped(instance)
@@ -310,6 +328,7 @@ class BlobField(ObjectField):
             return 'application/octet-stream'
 
     security.declarePrivate('getFilename')
+
     def getFilename(self, instance, fromBaseUnit=True):
         """ return the file name associated with the blob data """
         blob = self.getUnwrapped(instance)
@@ -318,11 +337,8 @@ class BlobField(ObjectField):
         else:
             return None
 
-
 registerField(BlobField, title='Blob',
               description='Used for storing files in blobs')
-
-
 
 # convenience base classes for blob-aware file & image fields
 
@@ -334,10 +350,8 @@ class FileField(BlobField):
         'type': 'file',
     })
 
-
 registerField(FileField, title='Blob-aware FileField',
               description='Used for storing files in blobs')
-
 
 
 class ImageField(BlobField, ImageFieldMixin):
@@ -362,7 +376,6 @@ class ImageField(BlobField, ImageFieldMixin):
         super(ImageField, self).set(instance, value, **kwargs)
         if hasattr(aq_base(instance), blobScalesAttr):
             delattr(aq_base(instance), blobScalesAttr)
-
 
 registerField(ImageField, title='Blob-aware ImageField',
               description='Used for storing image in blobs')

@@ -10,7 +10,6 @@ from plone.app.blob.interfaces import IATBlobBlob, IATBlobFile, IATBlobImage
 from Products.ATContentTypes.interfaces import IATFile as Z2IATFile
 from Products.ATContentTypes.interfaces import IATImage as Z2IATImage
 
-
 interfaces = {
     'Blob': [IATBlobBlob, atfile.IATFile, atfile.IFileContent],
     'File': [IATBlobFile, atfile.IATFile, atfile.IFileContent],
