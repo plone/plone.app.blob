@@ -1,4 +1,3 @@
-from unittest import TestSuite, makeSuite
 from plone.app.blob.tests.base import ReplacementTestCase
 from plone.app.blob.tests.base import ReplacementFunctionalTestCase
 from plone.app.blob.tests.utils import getData
@@ -15,6 +14,7 @@ class TraverseCounterMixin:
     def afterSetUp(self):
         self.counter = 0        # wrap `publishTraverse` with a counter
         self.original = ImageTraverser.publishTraverse
+
         def publishTraverse(adapter, request, name):
             self.counter += 1
             return self.original(adapter, request, name)
@@ -28,10 +28,9 @@ class BlobImageTraverseTests(TraverseCounterMixin, ReplacementTestCase):
 
     def testImageThumb(self):
         data = getData('image.gif')
-        folder = self.folder
-        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        image = self.folder['foo-image']
         # make sure traversing works as is and with scaling
-        traverse = folder.REQUEST.traverseName
+        traverse = self.layer['request'].traverseName
         self.assertEqual(traverse(image, 'image').data, data)
         sizes = image.getField('image').getAvailableSizes(image)
         self.assertTrue('thumb' in sizes.keys())
@@ -43,7 +42,7 @@ class BlobImageTraverseTests(TraverseCounterMixin, ReplacementTestCase):
         self.assertEqual(thumb.height, height)
         # also check the generated tag
         url = image.absolute_url() + '/image_thumb'
-        tag = '<img src="%s" alt="foo" title="foo" height="%d" width="%d" />'
+        tag = '<img src="%s" alt="an image" title="an image" height="%d" width="%d" />'
         self.assertEqual(thumb.tag(), tag % (url, height, width))
         # calling str(...) on the scale should return the tag
         self.assertEqual(str(thumb), thumb.tag())
@@ -51,14 +50,12 @@ class BlobImageTraverseTests(TraverseCounterMixin, ReplacementTestCase):
         self.assertEqual(self.counter, 2)
 
     def testCustomSizes(self):
-        data = getData('image.gif')
-        folder = self.folder
-        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        image = self.folder['foo-image']
         # set custom image sizes
         iprops = self.portal.portal_properties.imaging_properties
         iprops.manage_changeProperties(allowed_sizes=['foo 23:23', 'bar 6:8'])
         # make sure traversing works with the new sizes
-        traverse = folder.REQUEST.traverseName
+        traverse = self.layer['request'].traverseName
         foo = traverse(image, 'image_foo')
         self.assertEqual(foo.getContentType(), 'image/gif')
         self.assertEqual(foo.data[:6], 'GIF87a')
@@ -66,7 +63,7 @@ class BlobImageTraverseTests(TraverseCounterMixin, ReplacementTestCase):
         self.assertEqual(foo.height, 23)
         # also check the generated tag
         url = image.absolute_url() + '/image_foo'
-        tag = '<img src="%s" alt="foo" title="foo" height="23" width="23" />'
+        tag = '<img src="%s" alt="an image" title="an image" height="23" width="23" />'
         self.assertEqual(foo.tag(), tag % url)
         # and the other specified size
         bar = traverse(image, 'image_bar')
@@ -83,6 +80,7 @@ class BlobImageScaleTests(ReplacementTestCase):
     def afterSetUp(self):
         self.counter = 0        # wrap `createScale` with a counter
         self.original = BlobImageScaleHandler.createScale
+
         def createScale(*args, **kw):
             self.counter += 1
             return self.original(*args, **kw)
@@ -92,13 +90,11 @@ class BlobImageScaleTests(ReplacementTestCase):
         BlobImageScaleHandler.createScale = self.original
 
     def testBlobCreation(self):
-        data = getData('image.gif')
-        folder = self.folder
-        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        image = self.folder['foo-image']
         # make sure the scaled version is actually stored in a blob; we
         # also count invocations of `createScale`, which should be 0 still
         self.assertEqual(self.counter, 0)
-        traverse = folder.REQUEST.traverseName
+        traverse = self.layer['request'].traverseName
         thumb = traverse(image, 'image_thumb')
         blob = getattr(image, blobScalesAttr)['image']['thumb']['blob']
         self.assertTrue(isinstance(blob, Blob), 'no blob?')
@@ -110,26 +106,21 @@ class BlobImageScaleTests(ReplacementTestCase):
         self.assertEqual(self.counter, 1)
 
     def testScaleInvalidation(self):
-        data = getData('image.gif')
-        folder = self.folder
-        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        image = self.folder['foo-image']
         # first view the thumbnail of the original image
-        traverse = folder.REQUEST.traverseName
+        traverse = self.layer['request'].traverseName
         thumb1 = traverse(image, 'image_thumb')
         # now upload a new one and make sure the thumbnail has changed
         image.update(image=getData('image.jpg'))
-        traverse = folder.REQUEST.traverseName
         thumb2 = traverse(image, 'image_thumb')
         self.assertFalse(thumb1.data == thumb2.data, 'thumb not updated?')
 
     def testCustomSizeChange(self):
-        data = getData('image.gif')
-        folder = self.folder
-        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        image = self.folder['foo-image']
         # set custom image sizes & view a scale
         iprops = self.portal.portal_properties.imaging_properties
         iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
-        traverse = folder.REQUEST.traverseName
+        traverse = self.layer['request'].traverseName
         foo = traverse(image, 'image_foo')
         self.assertEqual(foo.width, 23)
         self.assertEqual(foo.height, 23)
@@ -150,22 +141,21 @@ class BlobImagePublisherTests(TraverseCounterMixin, ReplacementFunctionalTestCas
 
     def testPublishThumb(self):
         data = getData('image.gif')
-        self.folder.invokeFactory('Image', id='foo', image=data)
         # make sure traversing works as is and with scaling
         base = '/'.join(self.folder.getPhysicalPath())
         credentials = self.getCredentials()
         # first the image itself...
-        response = self.publish(base + '/foo', basic=credentials)
+        response = self.publish(base + '/foo-image', basic=credentials)
         self.assertEqual(response.getStatus(), 200)
         self.assertEqual(response.getBody(), data)
         self.assertEqual(response.getHeader('Content-Type'), 'image/gif')
         # then the field without a scale name
-        response = self.publish(base + '/foo/image', basic=credentials)
+        response = self.publish(base + '/foo-image/image', basic=credentials)
         self.assertEqual(response.getStatus(), 200)
         self.assertEqual(response.getBody(), data)
         self.assertEqual(response.getHeader('Content-Type'), 'image/gif')
         # and last a scaled version
-        response = self.publish(base + '/foo/image_thumb', basic=credentials)
+        response = self.publish(base + '/foo-image/image_thumb', basic=credentials)
         self.assertEqual(response.getStatus(), 200)
         self.assertEqual(response.getBody()[:6], 'GIF87a')
         self.assertEqual(response.getHeader('Content-Type'), 'image/gif')
@@ -173,15 +163,13 @@ class BlobImagePublisherTests(TraverseCounterMixin, ReplacementFunctionalTestCas
         self.assertEqual(self.counter, 9)
 
     def testPublishCustomSize(self):
-        data = getData('image.gif')
-        self.folder.invokeFactory('Image', id='foo', image=data)
         # set custom image sizes
         iprops = self.portal.portal_properties.imaging_properties
         iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
         # make sure traversing works as expected
         base = '/'.join(self.folder.getPhysicalPath())
         credentials = self.getCredentials()
-        response = self.publish(base + '/foo/image_foo', basic=credentials)
+        response = self.publish(base + '/foo-image/image_foo', basic=credentials)
         self.assertEqual(response.getStatus(), 200)
         foo = open(StringIO(response.getBody()))
         self.assertEqual(foo.format, 'GIF')
@@ -193,9 +181,7 @@ class BlobImagePublisherTests(TraverseCounterMixin, ReplacementFunctionalTestCas
 class BlobAdapterTests(ReplacementTestCase):
 
     def afterSetUp(self):
-        data = getData('image.gif')
-        folder = self.folder
-        self.image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        self.image = self.folder['foo-image']
         self.field = self.image.getField('image')
         self.handler = BlobImageScaleHandler(self.field)
         iprops = self.portal.portal_properties.imaging_properties
@@ -232,35 +218,29 @@ class BlobAdapterTests(ReplacementTestCase):
         self.assertEqual(foo, None)
 
 
-class BlobAdapterPublisherTests(ReplacementFunctionalTestCase):
+class BlobAdapterPublisherTests(ReplacementTestCase):
+
+    def afterSetUp(self):
+        self.original = BlobImageScaleHandler.getScale
+
+        def getScale(adapter, instance, scale):
+            self.counter += 1
+            return self.original(adapter, instance, scale)
+        BlobImageScaleHandler.getScale = getScale
+
+    def beforeTearDown(self):
+        # undo the evil monkey patching...
+        # and make sure the traversal adapter was call in fact
+        BlobImageScaleHandler.getScale = self.original
 
     def testScalingViaBlobAdapter(self):
         # make sure `getScale` of the blob-specific scale handler is called
         self.counter = 0
-        original = BlobImageScaleHandler.getScale
-        def getScale(adapter, instance, scale):
-            self.counter += 1
-            return original(adapter, instance, scale)
-        BlobImageScaleHandler.getScale = getScale
         data = getData('image.gif')
-        self.folder.invokeFactory('Image', id='foo', image=data)
         # make sure traversing works as expected
         base = '/'.join(self.folder.getPhysicalPath())
         credentials = self.getCredentials()
-        response = self.publish(base + '/foo/image', basic=credentials)
+        response = self.publish(base + '/foo-image/image', basic=credentials)
         self.assertEqual(response.getStatus(), 200)
         self.assertEqual(response.getBody(), data)
-        # undo the evil monkey patching...
-        BlobImageScaleHandler.getScale = original
-        # and make sure the traversal adapter was call in fact
         self.assertEqual(self.counter, 1)
-
-
-def test_suite():
-    return TestSuite([
-        makeSuite(BlobImageTraverseTests),
-        makeSuite(BlobImageScaleTests),
-        makeSuite(BlobImagePublisherTests),
-        makeSuite(BlobAdapterTests),
-        makeSuite(BlobAdapterPublisherTests),
-    ])

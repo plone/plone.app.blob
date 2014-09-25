@@ -45,6 +45,7 @@ try:
 except ImportError:
     hasCMF22 = False
 
+
 def addATBlob(container, id, subtype='Blob', **kwargs):
     """ extended at-constructor copied from ClassGen.py """
     obj = ATBlob(id)
@@ -61,8 +62,10 @@ def addATBlob(container, id, subtype='Blob', **kwargs):
         notify(ObjectModifiedEvent(obj))
     return obj.getId()
 
+
 def addATBlobFile(container, id, **kwargs):
     return addATBlob(container, id, subtype='File', **kwargs)
+
 
 def addATBlobImage(container, id, **kwargs):
     return addATBlob(container, id, subtype='Image', **kwargs)
@@ -80,9 +83,10 @@ class ATBlob(ATCTFileContent, ImageMixin):
     summary = ATFieldProperty('description')
 
     security = ClassSecurityInfo()
-    cmf_edit_kws = ('file',)
+    cmf_edit_kws = ('file', )
 
     security.declareProtected(View, 'index_html')
+
     def index_html(self, REQUEST, RESPONSE):
         """ download the file inline or as an attachment """
         field = self.getPrimaryField()
@@ -92,22 +96,24 @@ class ATBlob(ATCTFileContent, ImageMixin):
             return field.index_html(self, REQUEST, RESPONSE)
         else:
             return field.download(self, REQUEST, RESPONSE)
-
     # helper & explicit accessor and mutator methods
 
     security.declarePrivate('getBlobWrapper')
+
     def getBlobWrapper(self):
         """ return wrapper class containing the actual blob """
         accessor = self.getPrimaryField().getAccessor(self)
         return accessor()
 
     security.declareProtected(View, 'getFile')
+
     def getFile(self, **kwargs):
         """ archetypes.schemaextender (wisely) doesn't mess with classes,
             so we have to provide our own accessor """
         return self.getBlobWrapper()
 
     security.declareProtected(ModifyPortalContent, 'setFile')
+
     def setFile(self, value, **kwargs):
         """ set the file contents and possibly also the id """
         mutator = self.getField('file').getMutator(self)
@@ -118,10 +124,10 @@ class ATBlob(ATCTFileContent, ImageMixin):
             uploaded file's name. """
         # When the title is blank, sometimes the filename is returned
         return filename == title or not title
-
     # index accessor using portal transforms to provide index data
 
     security.declarePrivate('getIndexValue')
+
     def getIndexValue(self, mimetype='text/plain'):
         """ an accessor method used for indexing the field's value
             XXX: the implementation is mostly based on archetype's
@@ -143,10 +149,10 @@ class ATBlob(ATCTFileContent, ImageMixin):
         except:
             getLogger(__name__).exception('exception while trying to convert '
                'blob contents to "text/plain" for %r', self)
-
     # compatibility methods when used as ATFile replacement
 
     security.declareProtected(View, 'get_data')
+
     def get_data(self):
         """ return data as a string;  this is highly inefficient as it
             loads the complete blob content into memory, but the method
@@ -175,16 +181,19 @@ class ATBlob(ATCTFileContent, ImageMixin):
         return res
 
     security.declareProtected(ModifyPortalContent, 'setFilename')
+
     def setFilename(self, value, key=None):
         """ convenience method to set the file name on the field """
         self.getBlobWrapper().setFilename(value)
 
     security.declareProtected(ModifyPortalContent, 'setFormat')
+
     def setFormat(self, value):
         """ convenience method to set the mime-type """
         self.getBlobWrapper().setContentType(value)
 
     security.declarePublic('getIcon')
+
     def getIcon(self, relative_to_portal=False):
         """ calculate an icon based on mime-type """
         contenttype = self.getBlobWrapper().getContentType()
@@ -204,6 +213,7 @@ class ATBlob(ATCTFileContent, ImageMixin):
         return icon
 
     security.declarePrivate('cmf_edit')
+
     def cmf_edit(self, precondition='', file=None, title=None, **kwargs):
         # implement cmf_edit for image and file distinctly
         primary_field_name = self.getPrimaryField().getName()
@@ -217,7 +227,6 @@ class ATBlob(ATCTFileContent, ImageMixin):
             self.edit(**kwargs)
         else:
             self.reindexObject()
-
     # compatibility methods when used as ATImage replacement
 
     def __bobo_traverse__(self, REQUEST, name):
@@ -235,6 +244,5 @@ class ATBlob(ATCTFileContent, ImageMixin):
                 if image is not None:
                     return image
         return super(ATBlob, self).__bobo_traverse__(REQUEST, name)
-
 
 registerType(ATBlob, packageName)

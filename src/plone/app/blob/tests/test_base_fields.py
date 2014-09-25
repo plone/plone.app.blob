@@ -10,17 +10,17 @@ from plone.app.blob.tests.utils import getFile
 SampleSchema = BaseSchema.copy() + Schema((
 
     FileField(
-        name = 'foo',
-        widget = FileWidget(label='File', description='a file')),
+        name='foo',
+        widget=FileWidget(label='File', description='a file')),
 
     ImageField(
-        name = 'bar',
-        widget = ImageWidget(label='Image', description='an image')),
+        name='bar',
+        widget=ImageWidget(label='Image', description='an image')),
 
     ImageField(
-        name = 'hmm',
-        sizes = {'tiny': (42, 42)},
-        widget = ImageWidget(label='Image', description='an image')),
+        name='hmm',
+        sizes={'tiny': (42, 42)},
+        widget=ImageWidget(label='Image', description='an image')),
 
 ))
 
@@ -30,15 +30,13 @@ class SampleType(BaseContent):
     portal_type = 'SampleType'
     schema = SampleSchema
 
-
 permissions['SampleType'] = packageName + ': SampleType'
 registerType(SampleType, packageName)
 
 
-
 class BaseFieldTests(ReplacementTestCase):
 
-    def create(self, id='foo', **kw):
+    def create(self, id='foo2', **kw):
         container = self.folder
         obj = SampleType(id)
         obj = container[container._setObject(id, obj)]
@@ -96,7 +94,3 @@ class BaseFieldTests(ReplacementTestCase):
             'application/vnd.ms-excel',
             item.getFoo().getContentType()
             )
-
-def test_suite():
-    from unittest import defaultTestLoader
-    return defaultTestLoader.loadTestsFromName(__name__)
