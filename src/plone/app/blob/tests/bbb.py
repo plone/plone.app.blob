@@ -5,6 +5,7 @@ from Testing.ZopeTestCase import installProduct
 from plone.app.blob.tests import db     # set up a blob-aware zodb first
 from plone.app.blob.tests.layer import BlobReplacementLayer
 
+
 installProduct('GenericSetup', quiet=True)
 installProduct('Marshall', quiet=True)
 

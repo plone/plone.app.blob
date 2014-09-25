@@ -11,7 +11,6 @@ from plone.app.blob.markings import markAs
 
 def timer(func=time):
     """ set up a generator returning the elapsed time since the last call """
-
     def gen(last=func()):
         while True:
             elapsed = func() - last
@@ -36,7 +35,6 @@ class MaintenanceView(BrowserView):
     def mklog(self):
         """ helper to prepend a time stamp to the output """
         write = self.request.RESPONSE.write
-
         def log(msg, timestamp=True):
             if timestamp:
                 msg = strftime('%Y/%m/%d-%H:%M:%S ') + msg
@@ -50,7 +48,6 @@ class MaintenanceView(BrowserView):
         real = timer()          # real time
         lap = timer()           # real lap time (for intermediate commits)
         processed = 0
-
         def checkPoint():
             log('intermediate commit (%d items processed, '
                 'last batch in %s)...\n' % (processed, lap.next()))
@@ -78,7 +75,6 @@ class MaintenanceView(BrowserView):
         real = timer()          # real time
         lap = timer()           # real lap time (for intermediate commits)
         processed = 0
-
         def checkPoint():
             log('intermediate commit (%d items processed, '
                 'last batch in %s)...\n' % (processed, lap.next()))
