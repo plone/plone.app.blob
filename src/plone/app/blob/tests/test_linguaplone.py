@@ -10,7 +10,7 @@ from plone.app.blob.tests.utils import makeFileUpload
 class LinguaTests(BlobLinguaTestCase):
 
     def afterSetUp(self):
-        self.setRoles(('Manager',))
+        self.setRoles(('Manager', ))
         ltool = getToolByName(self.portal, 'portal_languages')
         ltool.manage_setLanguageSettings(defaultLanguage='en',
             supportedLanguages=('en', 'de'))
