@@ -1,5 +1,6 @@
 from plone.app.blob.tests.base import ReplacementTestCase   # import first!
 
+from unittest import defaultTestLoader
 from Products.ATContentTypes.interface import file as atfile
 from Products.ATContentTypes.interface import image as atimage
 from plone.app.blob.markings import unmarkAs
@@ -44,3 +45,7 @@ class MaintenanceViewTests(ReplacementTestCase):
         maintenance.updateTypeIndex()
         self.assertEqual([b.getObject() for b in catalog(Type='File')], [foo])
         self.assertFalse(catalog(Type='Foo'))
+
+
+def test_suite():
+    return defaultTestLoader.loadTestsFromName(__name__)

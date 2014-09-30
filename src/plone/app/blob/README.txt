@@ -30,13 +30,10 @@ In any way, the setup should make the new content type available as well as
 instantiable:
 
   >>> from Products.CMFCore.utils import getToolByName
-  >>> portal = layer['portal']
   >>> portal_types = getToolByName(portal, 'portal_types')
   >>> portal_types.getTypeInfo('Blob')
   <DynamicViewTypeInformation at /plone/portal_types/Blob>
 
-  >>> from plone.app.testing import TEST_USER_ID
-  >>> folder = portal.portal_membership.getHomeFolder(TEST_USER_ID)
   >>> folder.invokeFactory('Blob', id='blob', title='a Blob')
   'blob'
   >>> blob = folder.blob
@@ -80,8 +77,7 @@ and a now non-empty blob file:
   'image/gif'
   >>> len(blob.getFile().getBlob().open().read())
   43
-  >>> str(blob) == gif.getvalue()
-  True
+  >>> self.assertEqual(str(blob), gif.getvalue())
 
 Migration from existing file content, i.e. `ATFile` instances, is also
 provided.  The payload data as well as all other fields should be properly
@@ -128,8 +124,7 @@ migrated:
   ('me',)
   >>> folder.foo.getFile().getBlob()
   <ZODB.blob.Blob object at ...>
-  >>> str(folder.foo) == gif.getvalue()
-  True
+  >>> self.assertEqual(str(folder.foo), gif.getvalue())
   >>> folder.foo.getFile().getBlob().open().read()
   'GIF89a...'
 
@@ -138,26 +133,26 @@ or wrong data from showing up in some views, i.e. folder listing:
 
   >>> catalog = getToolByName(portal, 'portal_catalog')
   >>> brain = catalog(id = 'foo')[0]
-  >>> folder.foo.UID() == brain.UID
-  True
-
-  >>> folder.foo.getObjSize() == brain.getObjSize
-  True
+  >>> self.assertEqual(folder.foo.UID(), brain.UID)
+  >>> self.assertEqual(folder.foo.getObjSize(), brain.getObjSize)
 
 Finally the correct creation of blob-based content "through the web" is tested
 using a testbrowser:
 
-  >>> from plone.app.testing import setRoles
-  >>> setRoles(portal, TEST_USER_ID, ['Editor'])
+  >>> self.setRoles('Editor')
 
-  >>> from plone.testing.z2 import Browser
+  # BBB Zope 2.12
+  >>> try:
+  ...     from Testing.testbrowser import Browser
+  ... except ImportError:
+  ...     from Products.Five.testbrowser import Browser
 
-  >>> from plone.app.testing import TEST_USER_NAME, TEST_USER_PASSWORD
-  >>> browser = Browser(layer['app'])
-  >>> browser.addHeader('Authorization', 'Basic %s:%s' % (
-  ...     TEST_USER_NAME, TEST_USER_PASSWORD))
+  >>> from Products.PloneTestCase import PloneTestCase as ptc
+  >>> user, pwd = ptc.default_user, ptc.default_password
+  >>> browser = Browser()
+  >>> browser.addHeader('Authorization', 'Basic %s:%s' % (user, pwd))
 
-  >>> browser.open(folder.absolute_url())
+  >>> browser.open('http://nohost/plone/Members/%s' % user)
   >>> browser.getLink(url='createObject?type_name=Blob').click()
   >>> browser.url
   'http://nohost/plone/.../portal_factory/Blob/blob.../edit'
