@@ -7,9 +7,9 @@ def bytesize(size):
     if size.endswith('kB'):
         size = float(size[:-2]) * 1024
     elif size.endswith('MB'):
-        size = float(size[:-2]) * 1024 ** 2
+        size = float(size[:-2]) * 1024**2
     elif size.endswith('GB'):
-        size = float(size[:-2]) * 1024 ** 3
+        size = float(size[:-2]) * 1024**3
     else:
         size = float(size)
     return long(size)
@@ -24,7 +24,6 @@ class FileContentSizeView(BrowserView):
         if '-C' in query:
             del query['-C']
         write = self.request.RESPONSE.write
-
         def log(msg, *args):
             write(msg % args + '\n')
         log('Analysing content size (parameters %r)', query)
@@ -46,7 +45,7 @@ class FileContentSizeView(BrowserView):
         for pt, size in sorted(sizes.items(), comp):
             count = counts[pt]
             size = float(size)
-            log(fmt, pt + ':', count, size / 1024 ** 2, size, size / count)
+            log(fmt, pt + ':', count, size / 1024**2, size, size / count)
         count = sum(counts.values())
         size = float(sum(sizes.values()))
-        log(fmt, 'Totals', count, size / 1024 ** 2, size, size / count)
+        log(fmt, 'Totals', count, size / 1024**2, size, size / count)
