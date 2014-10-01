@@ -11,8 +11,15 @@ Files
 Let's start with creating a "File" content item:
 
   >>> from StringIO import StringIO
-  >>> browser = self.getBrowser()
-  >>> browser.open(self.folder.absolute_url())
+  >>> from plone.testing.z2 import Browser
+  >>> browser = Browser(layer['app'])
+  >>> from plone.app.testing import TEST_USER_NAME, TEST_USER_PASSWORD
+  >>> browser.addHeader('Authorization',
+  ...                   'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD))
+
+  >>> from plone.app.testing import TEST_USER_ID
+  >>> folder = layer['portal'].portal_membership.getHomeFolder(TEST_USER_ID)
+  >>> browser.open(folder.absolute_url())
 
   >>> browser.getLink(url='createObject?type_name=File').click()
   >>> browser.url
@@ -49,7 +56,7 @@ It should also be possible to remove the file again.  For this to work the
 field must not be required.  That is not the default in Plone, however, so
 we need to tweak the schema first:
 
-  >>> self.folder.foo.getPrimaryField().required = False
+  >>> folder.foo.getPrimaryField().required = False
 
   >>> browser.getLink('Edit').click()
   >>> browser.getControl('Delete current').selected = True
@@ -61,7 +68,7 @@ we need to tweak the schema first:
 
 The file content should now be gone:
 
-  >>> self.folder.foo.getFile().data
+  >>> folder.foo.getFile().data
   ''
 
 
@@ -71,7 +78,7 @@ Images
 Next a similar test is conducted for an "Image" content item:
 
   >>> from plone.app.blob.tests.utils import getFile
-  >>> browser.open(self.folder.absolute_url())
+  >>> browser.open(folder.absolute_url())
   >>> browser.getLink(url='createObject?type_name=Image').click()
   >>> browser.url
   'http://nohost/plone/.../portal_factory/Image/image.../edit'
@@ -169,7 +176,7 @@ It should also be possible to remove the image. Again, for this to work the
 field must not be required.  That is not the default in Plone, however, so
 we need to tweak the schema first:
 
-  >>> self.folder.bar.getPrimaryField().required = False
+  >>> folder.bar.getPrimaryField().required = False
 
   >>> browser.open(url + '/view')
   >>> browser.getLink('Edit').click()
@@ -182,5 +189,5 @@ we need to tweak the schema first:
 
 The image content should now be gone:
 
-  >>> self.folder.foo.getImage().data
+  >>> folder.foo.getImage().data
   ''
