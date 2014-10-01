@@ -1,9 +1,30 @@
 from unittest import TestSuite, makeSuite
 from plone.app.blob.tests.base import ReplacementTestCase
 from plone.app.blob.tests.base import ReplacementFunctionalTestCase
-from plone.app.imaging.tests.base import ImagingTestCaseMixin
 from plone.app.imaging.scaling import ImageScaling
 from re import match
+from os.path import dirname, join
+from plone.app.imaging import tests
+from StringIO import StringIO
+
+
+def getData(filename):
+    """ return contents of the file with the given name """
+    filename = join(dirname(tests.__file__), filename)
+    return open(filename, 'r').read()
+
+
+class ImagingTestCaseMixin:
+    """ mixin for integration and functional tests """
+
+    def getImage(self, name='image.gif'):
+        return getData(name)
+
+    def assertImage(self, data, format, size):
+        import PIL.Image
+        image = PIL.Image.open(StringIO(data))
+        self.assertEqual(image.format, format)
+        self.assertEqual(image.size, size)
 
 
 class ImageTraverseTests(ReplacementTestCase, ImagingTestCaseMixin):
