@@ -52,6 +52,7 @@ setup(name='plone.app.blob',
       classifiers=[
         'Environment :: Web Environment',
         'Framework :: Plone',
+        'Framework :: Plone :: 4.3',
         'Framework :: Plone :: 5.0',
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',
