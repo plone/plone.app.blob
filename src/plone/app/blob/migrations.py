@@ -10,10 +10,12 @@ except ImportError:
     InlineMigrator = object
     haveContentMigrations = False
 
-from transaction import savepoint
-from Products.CMFCore.utils import getToolByName
+from Acquisition import aq_base
 from Products.Archetypes.interfaces import ISchema
+from Products.CMFCore.utils import getToolByName
+from plone.app.blob.field import BlobWrapper
 from plone.app.blob.interfaces import IBlobField
+from transaction import savepoint
 
 
 def getMigrationWalker(context, migrator):
@@ -22,10 +24,12 @@ def getMigrationWalker(context, migrator):
     return CustomQueryWalker(portal, migrator, use_savepoint=True)
 
 
-def migrate(context, portal_type=None, meta_type=None, walker=None):
+def migrate(context, portal_type=None, meta_type=None, walker=None,
+            remove_old_value=False):
     """ migrate instances using the given walker """
     if walker is None:
-        migrator = makeMigrator(context, portal_type, meta_type)
+        migrator = makeMigrator(context, portal_type, meta_type,
+                                remove_old_value)
         walker = CustomQueryWalker(context, migrator, full_transaction=True)
     else:
         walker = walker(context)
@@ -35,12 +39,21 @@ def migrate(context, portal_type=None, meta_type=None, walker=None):
 
 
 # helper to build custom blob migrators for the given type
-def makeMigrator(context, portal_type, meta_type=None):
+def makeMigrator(context, portal_type, meta_type=None, remove_old_value=False):
     """ generate a migrator for the given at-based portal type """
     if meta_type is None:
         meta_type = portal_type
 
     class BlobMigrator(InlineMigrator):
+        """in-place migrator for archetypes based content that copies
+        file/image data from old non-blob fields to new fields with the same
+        name  provided by archetypes.schemaextender.
+
+        see `plone3 to 4 migration guide`__
+
+        .. __: https://plone.org/documentation/manual/upgrade-guide/version/upgrading-plone-3-x-to-4.0/updating-add-on-products-for-plone-4.0/use-plone.app.blob-based-blob-storage
+        """
+
         src_portal_type = portal_type
         src_meta_type = meta_type
         dst_portal_type = portal_type
@@ -63,13 +76,36 @@ def makeMigrator(context, portal_type, meta_type=None):
         def migrate_data(self):
             fields = self.getFields(self.obj)
             for name in fields:
-                oldfield = self.obj.Schema()[name]
+                # access old field by not using schemaextender
+                oldfield = self.obj.schema[name]
+                is_imagefield = False
                 if hasattr(oldfield, 'removeScales'):
                     # clean up old image scales
+                    is_imagefield = True
                     oldfield.removeScales(self.obj)
                 value = oldfield.get(self.obj)
+
+                if not value:
+                    # no image/file data: don't copy it over to blob field
+                    # this way it's save to run migration multiple times w/o
+                    # overwriting existing data
+                    continue
+
+                if isinstance(aq_base(value), BlobWrapper):
+                    # already a blob field, no need to migrate it
+                    continue
+
+                # access new field via schemaextender
                 field = self.obj.getField(name)
                 field.getMutator(self.obj)(value)
+
+                if remove_old_value:
+                    # Remove data from old field to not end up with data
+                    # stored twice - in ZODB and blobstorage
+                    if is_imagefield:
+                        oldfield.set(self.obj, 'DELETE_IMAGE')
+                    else:
+                        oldfield.set(self.obj, 'DELETE_FILE')
 
         def last_migrate_reindex(self):
             # prevent update of modification date during reindexing without
@@ -101,7 +137,7 @@ class ATFileToBlobMigrator(BaseMigrator):
 
     def last_migrate_reindex(self):
         self.new.reindexObject(idxs=['object_provides', 'portal_type',
-            'Type', 'UID'])
+                                     'Type', 'UID'])
 
 
 def getATFilesMigrationWalker(self):
