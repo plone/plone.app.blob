@@ -1,5 +1,4 @@
 import os
-from unittest import defaultTestLoader
 from ZODB.blob import Blob
 from OFS.Image import File, Image
 from Products.ATContentTypes.content.image import ATImage
@@ -59,8 +58,7 @@ class AdapterTests(BlobTestCase):
 
     def testBlobbableBinaryFile(self):
         _file = os.path.join(os.path.dirname(__file__), 'data', 'image.gif')
-        f = open(_file, 'rb')
-        try:
+        with open(_file, 'rb') as f:
             obj = Binary(f)
             obj.filename = 'image.gif'
             blobbable = IBlobbable(obj)
@@ -70,9 +68,3 @@ class AdapterTests(BlobTestCase):
                              getFile('image.gif').read())
             self.assertEquals(blobbable.filename(), 'image.gif')
             self.assertEquals(blobbable.mimetype(), 'image/gif')
-        finally:
-            f.close()
-
-
-def test_suite():
-    return defaultTestLoader.loadTestsFromName(__name__)

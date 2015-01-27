@@ -2,11 +2,17 @@ A simple test the make sure image transformations work as expected (also see
 http://dev.plone.org/plone/ticket/8506).  First we create an image and check
 the dimensions of the image itself and one of the scales:
 
-  >>> self.setRoles(('Manager',))
+  >>> from plone.app.testing import setRoles
+  >>> from plone.app.testing import TEST_USER_ID
+  >>> portal = layer['portal']
+  >>> setRoles(portal, TEST_USER_ID, ['Manager'])
   >>> from plone.app.blob.tests.utils import getData
   >>> data = getData('image.jpg')
   >>> portal.invokeFactory('Image', id='foo', title='Foo', image=data)
   'foo'
+
+  >>> from transaction import commit
+  >>> commit()
 
   >>> image = portal['foo']
   >>> image.width, image.height
@@ -21,14 +27,19 @@ Let's also check a custom scale size:
   >>> iprops = portal.portal_properties.imaging_properties
   >>> iprops.manage_changeProperties(allowed_sizes=
   ...   ['mini 200:200', 'foo 100:100'])
+  >>> commit()
   >>> scale = traverse(image, 'image_foo')
   >>> scale.width, scale.height
   (100, 40)
 
 We use a testbrowser to rotate the image:
 
-  >>> browser = self.getBrowser()
-  >>> browser.open('http://nohost/plone/foo/view')
+  >>> from plone.testing.z2 import Browser
+  >>> browser = Browser(layer['app'])
+  >>> from plone.app.testing import TEST_USER_NAME, TEST_USER_PASSWORD
+  >>> browser.addHeader('Authorization',
+  ...                   'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD))
+  >>> browser.open(portal.absolute_url() + '/foo/view')
   >>> browser.getLink('Transform').click()
   >>> browser.getControl(name='method').displayValue = ['Rotate 90 clockwise']
   >>> browser.getControl('Execute').click()

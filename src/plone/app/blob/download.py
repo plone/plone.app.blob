@@ -77,6 +77,6 @@ def handleRequestRange(instance, length, REQUEST, RESPONSE):
             RESPONSE.setHeader(
                 'Content-Range',
                 'bytes %d-%d/%d' % (start, end - 1, length))
-            RESPONSE.setStatus(206) # Partial content
+            RESPONSE.setStatus(206)  # Partial content
             return dict(start=start, end=end)
     return {}
