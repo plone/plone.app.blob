@@ -4,6 +4,7 @@ from base64 import decodestring
 from os.path import dirname, join
 from plone.app.blob import tests
 
+
 test_environment = {
     'CONTENT_TYPE': 'multipart/form-data; boundary=12345',
     'REQUEST_METHOD': 'POST',
@@ -20,7 +21,6 @@ Content-Length: %d
 %s
 
 '''
-
 
 def makeFileUpload(data, filename):
     request_data = upload_request % (filename, len(data), data)

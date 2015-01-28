@@ -7,8 +7,6 @@ Changelog
 - Fix some testes.
   [rafaelbco]
 
-- ported tests to plone.app.testing
-  [tomgross]
 
 1.5.10 (2014-04-16)
 -------------------

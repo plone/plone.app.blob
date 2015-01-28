@@ -185,6 +185,7 @@ class BlobWrapper(Implicit, Persistent):
     def getFilename(self):
         """ return filename for this blob """
         return self.filename
+
     # compatibility methods
 
     def __str__(self):
@@ -194,6 +195,7 @@ class BlobWrapper(Implicit, Persistent):
         return openBlob(self.blob).read()
 
     data = ComputedAttribute(__str__, 0)
+
 
 InitializeClass(BlobWrapper)
 
@@ -340,6 +342,7 @@ class BlobField(ObjectField):
         else:
             return None
 
+
 registerField(
     BlobField,
     title='Blob',
@@ -348,6 +351,7 @@ registerField(
 
 # convenience base classes for blob-aware file & image fields
 
+
 class FileField(BlobField):
     """ base class for a blob-based file field """
 
@@ -355,6 +359,7 @@ class FileField(BlobField):
     _properties.update({
         'type': 'file',
     })
+
 
 registerField(
     FileField,
@@ -385,6 +390,7 @@ class ImageField(BlobField, ImageFieldMixin):
         super(ImageField, self).set(instance, value, **kwargs)
         if hasattr(aq_base(instance), blobScalesAttr):
             delattr(aq_base(instance), blobScalesAttr)
+
 
 registerField(
     ImageField,

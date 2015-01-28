@@ -21,20 +21,20 @@ class SchemaExtender(object):
 
     fields = [
         ExtensionBlobField('file',
-            required=True,
-            primary=True,
-            searchable=True,
-            accessor='getFile',
-            mutator='setFile',
-            index_method='getIndexValue',
-            languageIndependent=True,
-            storage=AnnotationStorage(migrate=True),
-            default_content_type='application/octet-stream',
-            validators=(('isNonEmptyFile', V_REQUIRED),
+            required = True,
+            primary = True,
+            searchable = True,
+            accessor = 'getFile',
+            mutator = 'setFile',
+            index_method = 'getIndexValue',
+            languageIndependent = True,
+            storage = AnnotationStorage(migrate=True),
+            default_content_type = 'application/octet-stream',
+            validators = (('isNonEmptyFile', V_REQUIRED),
                           ('checkFileMaxSize', V_REQUIRED)),
-            widget=FileWidget(label=_(u'label_file', default=u'File'),
+            widget = FileWidget(label = _(u'label_file', default=u'File'),
                                 description=_(u''),
-                                show_content_type=False, )),
+                                show_content_type = False,)),
     ]
 
     def __init__(self, context):
