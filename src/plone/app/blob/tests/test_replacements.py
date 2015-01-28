@@ -1,5 +1,6 @@
 from plone.app.blob.tests.base import ReplacementTestCase   # import first!
 
+from unittest import defaultTestLoader
 from zope.interface.interfaces import IInterface
 from zope.annotation import IAnnotations
 from Products.Archetypes.atapi import ImageField, AnnotationStorage
@@ -17,7 +18,6 @@ from plone.app.blob.field import BlobField
 from plone.app.blob.content import ATBlob
 from plone.app.blob.tests.utils import getImage, getData
 from ZODB.blob import SAVEPOINT_SUFFIX
-
 
 def permissionsFor(name, product):
     from Products import meta_types
@@ -69,14 +69,14 @@ class FileReplacementTests(ReplacementTestCase):
             contributors=('me'))]
         # fake old content from before applying the replacement profile
         foo._setPortalTypeName('File')
-        foo.reindexObject(idxs=('portal_type', ))
+        foo.reindexObject(idxs=('portal_type',))
         # check to be migrated content
         self.assertTrue(isinstance(foo, ATFile), 'not a file?')
         self.assertEqual(foo.Title(), 'a file')
         self.assertEqual(foo.getContentType(), 'text/plain')
         self.assertEqual(foo.getPortalTypeName(), 'File')
         self.assertEqual(foo.Subject(), ('foo', 'bar'))
-        self.assertEqual(foo.Contributors(), ('me', ))
+        self.assertEqual(foo.Contributors(), ('me',))
         # migrate & check migrated content item
         self.assertEqual(migrateATBlobFiles(self.portal),
             'Migrating /plone/Members/test_user_1_/foo (File -> File)\n')
@@ -87,7 +87,7 @@ class FileReplacementTests(ReplacementTestCase):
         self.assertEqual(foo.getContentType(), 'text/plain')
         self.assertEqual(foo.getPortalTypeName(), 'File')
         self.assertEqual(foo.Subject(), ('foo', 'bar'))
-        self.assertEqual(foo.Contributors(), ('me', ))
+        self.assertEqual(foo.Contributors(), ('me',))
         blob = foo.getImage().getBlob().open('r')
         self.assertEqual(blob.read(), 'plain text')
 
@@ -97,7 +97,7 @@ class FileReplacementTests(ReplacementTestCase):
             contributors=('me'))]
         # fake old content from before applying the replacement profile
         foo._setPortalTypeName('File')
-        foo.reindexObject(idxs=('portal_type', ))
+        foo.reindexObject(idxs=('portal_type',))
         # remember the catalog data so it can be checked
         catalog = self.portal.portal_catalog
         rid = catalog(id='foo')[0].getRID()
@@ -116,7 +116,7 @@ class FileReplacementTests(ReplacementTestCase):
         for key, value in catalog.getIndexDataForRID(brain.getRID()).items():
             if not key in okay:
                 self.assertEqual(index_data[key], value, 'index: %s' % key)
-        okay = ('meta_type', )
+        okay = ('meta_type',)
         for key, value in catalog.getMetadataForRID(brain.getRID()).items():
             if not key in okay:
                 self.assertEqual(meta_data[key], value, 'meta: %s' % key)
@@ -153,10 +153,6 @@ class FileReplacementTests(ReplacementTestCase):
 
 
 class ImageReplacementTests(ReplacementTestCase):
-
-    def afterSetUp(self):
-        # don't interfere with catalog checks
-        del self.folder['foo-image']
 
     def testAddImagePermission(self):
         permissions = list(permissionsFor('Image', 'plone.app.blob'))
@@ -205,14 +201,14 @@ class ImageReplacementTests(ReplacementTestCase):
             contributors=('me'))]
         # fake old content from before applying the replacement profile
         foo._setPortalTypeName('Image')
-        foo.reindexObject(idxs=('portal_type', ))
+        foo.reindexObject(idxs=('portal_type',))
         # check to be migrated content
         self.assertTrue(isinstance(foo, ATImage), 'not an image?')
         self.assertEqual(foo.Title(), 'an image')
         self.assertEqual(foo.getContentType(), 'image/gif')
         self.assertEqual(foo.getPortalTypeName(), 'Image')
         self.assertEqual(foo.Subject(), ('foo', 'bar'))
-        self.assertEqual(foo.Contributors(), ('me', ))
+        self.assertEqual(foo.Contributors(), ('me',))
         # migrate & check migrated content item
         self.assertEqual(migrateATBlobImages(self.portal),
             'Migrating /plone/Members/test_user_1_/foo (Image -> Image)\n')
@@ -223,7 +219,7 @@ class ImageReplacementTests(ReplacementTestCase):
         self.assertEqual(foo.getContentType(), 'image/gif')
         self.assertEqual(foo.getPortalTypeName(), 'Image')
         self.assertEqual(foo.Subject(), ('foo', 'bar'))
-        self.assertEqual(foo.Contributors(), ('me', ))
+        self.assertEqual(foo.Contributors(), ('me',))
         blob = foo.getImage().getBlob().open('r')
         self.assertEqual(blob.read(), gif)
 
@@ -235,7 +231,7 @@ class ImageReplacementTests(ReplacementTestCase):
 
         # fake old content from before applying the replacement profile
         foo._setPortalTypeName('Image')
-        foo.reindexObject(idxs=('portal_type', ))
+        foo.reindexObject(idxs=('portal_type',))
 
         # remember the catalog data so it can be checked
         catalog = self.portal.portal_catalog
@@ -287,8 +283,6 @@ class ImageReplacementTests(ReplacementTestCase):
         migrate(self.portal, portal_type='Image', meta_type='ATBlob')
         # the modification date isn't changed by migration
         self.assertEqual(mod, foo.modified())
-        # cleanup
-        del foo.schema['image']
 
     def testOldScalesRemovedDuringInlineImageMigration(self):
         gif = getImage()
@@ -304,8 +298,6 @@ class ImageReplacementTests(ReplacementTestCase):
         migrate(self.portal, portal_type='Image', meta_type='ATBlob')
         # make sure all scale annotations were removed
         self.assertFalse(filter(isimage, IAnnotations(foo).values()))
-        # cleanup
-        del foo.schema['image']
 
     def testImageDefaultSizes(self):
         image = self.folder[self.folder.invokeFactory('Image', 'foo')]
@@ -335,3 +327,7 @@ class ImageReplacementTests(ReplacementTestCase):
         image = self.folder[self.folder.invokeFactory('Image', 'foo')]
         field = image.getField('image')
         self.assertEqual(field.getSize(image), (0, 0))
+
+
+def test_suite():
+    return defaultTestLoader.loadTestsFromName(__name__)

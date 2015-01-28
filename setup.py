@@ -19,8 +19,7 @@ long_description = (
 tests_require = [
     'collective.monkeypatcher',
     'Products.contentmigration',
-    'plone.app.imaging',
-    'plone.app.testing',]
+    'plone.app.imaging [test]']
 
 setup(name='plone.app.blob',
       version=version,
@@ -52,15 +51,12 @@ setup(name='plone.app.blob',
       classifiers=[
         'Environment :: Web Environment',
         'Framework :: Plone',
-        'Framework :: Plone :: 4.3',
-        'Framework :: Plone :: 5.0',
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',
         'Intended Audience :: Other Audience',
         'License :: OSI Approved :: GNU General Public License (GPL)',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
       ],
       entry_points='''
         [z3c.autoinclude.plugin]
