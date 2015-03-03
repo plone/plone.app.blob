@@ -23,9 +23,6 @@ Changelog
 - Make sure mimetype is not None and use use filename for detection if available.
   [tschanzt]
 
-
-
-
 1.5.8 (2013-04-06)
 ------------------
 
