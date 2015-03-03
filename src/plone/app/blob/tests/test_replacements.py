@@ -19,6 +19,7 @@ from plone.app.blob.content import ATBlob
 from plone.app.blob.tests.utils import getImage, getData
 from ZODB.blob import SAVEPOINT_SUFFIX
 
+
 def permissionsFor(name, product):
     from Products import meta_types
     for mt in meta_types:
@@ -29,8 +30,8 @@ def permissionsFor(name, product):
 class FileReplacementTests(ReplacementTestCase):
 
     def testAddFilePermission(self):
-        permissions = list(permissionsFor('File', 'plone.app.blob'))
-        self.assertEqual(permissions, ['ATContentTypes: Add File'])
+        permissions = permissionsFor('File', 'plone.app.blob')
+        self.assertTrue('ATContentTypes: Add File' in permissions)
 
     def testCreateFileBlob(self):
         foo = self.folder[self.folder.invokeFactory('File', 'foo')]
@@ -155,8 +156,8 @@ class FileReplacementTests(ReplacementTestCase):
 class ImageReplacementTests(ReplacementTestCase):
 
     def testAddImagePermission(self):
-        permissions = list(permissionsFor('Image', 'plone.app.blob'))
-        self.assertEqual(permissions, ['ATContentTypes: Add Image'])
+        permissions = permissionsFor('Image', 'plone.app.blob')
+        self.assertTrue('ATContentTypes: Add Image' in permissions)
 
     def testCreateImageBlob(self):
         gif = getImage()
