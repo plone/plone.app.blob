@@ -11,9 +11,9 @@ class BlobStreamIterator(object):
     if IInterface.providedBy(IStreamIterator):  # is this zope 2.12?
         implements(IStreamIterator)
     else:
-        __implements__ = (IStreamIterator,)
+        __implements__ = (IStreamIterator, )
 
-    def __init__(self, blob, mode='r', streamsize=1<<16, start=0, end=None):
+    def __init__(self, blob, mode='r', streamsize=1 << 16, start=0, end=None):
         self.blob = openBlob(blob, mode)
         self.streamsize = streamsize
         self.start = start
@@ -37,7 +37,6 @@ class BlobStreamIterator(object):
 
     def __iter__(self):
         return self
-
     # bbb methods to pretend we're a file-like object
 
     def close(self):

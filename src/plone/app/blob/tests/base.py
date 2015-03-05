@@ -1,69 +1,46 @@
-from Testing.ZopeTestCase import Sandboxed
-from Products.PloneTestCase import PloneTestCase
+from plone.app.testing.bbb import PloneTestCase
 from plone.app.blob.tests.layer import BlobLayer, BlobReplacementLayer
 from plone.app.blob.tests.layer import BlobLinguaLayer
+from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import TEST_USER_PASSWORD
 
-# BBB Zope 2.12
-try:
-    from Testing.testbrowser import Browser
-    Browser     # make pyflakes happy...
-except ImportError:
-    from Products.Five.testbrowser import Browser
-
-try:
-    # try to import the sample type for testing LinguaPlone
-    from plone.app.blob.tests import lingua
-    lingua      # make pyflakes happy...
-except ImportError:
-    pass
+from plone.testing.z2 import Browser
 
 
-PloneTestCase.setupPloneSite()
-
-
-class BlobTestCase(Sandboxed, PloneTestCase.PloneTestCase):
+class BlobTestCase(PloneTestCase):
     """ base class for integration tests """
 
     layer = BlobLayer
 
-
-class BlobFunctionalTestCase(PloneTestCase.FunctionalTestCase):
-    """ base class for functional tests """
-
-    layer = BlobLayer
-
     def getCredentials(self):
-        return '%s:%s' % (PloneTestCase.default_user,
-            PloneTestCase.default_password)
+        return '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD)
 
     def getBrowser(self, loggedIn=True):
         """ instantiate and return a testbrowser for convenience """
-        browser = Browser()
+        browser = Browser(self.layer['app'])
         if loggedIn:
             auth = 'Basic %s' % self.getCredentials()
             browser.addHeader('Authorization', auth)
         return browser
 
+BlobFunctionalTestCase = BlobTestCase
 
-class ReplacementTestCase(Sandboxed, PloneTestCase.PloneTestCase):
+
+class ReplacementTestCase(BlobTestCase):
     """ base class for integration tests using replacement types """
 
     layer = BlobReplacementLayer
 
-
-class ReplacementFunctionalTestCase(BlobFunctionalTestCase):
-    """ base class for functional tests """
-
-    layer = BlobReplacementLayer
+ReplacementFunctionalTestCase = ReplacementTestCase
 
 
-class BlobLinguaTestCase(BlobTestCase):
+class BlobLinguaTestCase(PloneTestCase):
     """ base class for functional tests """
 
     layer = BlobLinguaLayer
 
 
-class BlobLinguaFunctionalTestCase(BlobFunctionalTestCase):
+class BlobLinguaFunctionalTestCase(PloneTestCase):
     """ base class for functional tests """
 
     layer = BlobLinguaLayer
