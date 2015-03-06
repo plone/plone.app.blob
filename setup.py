@@ -42,6 +42,7 @@ setup(
     platforms='Any',
     zip_safe=False,
     install_requires=[
+        'Products.MimetypesRegistry',
         'ZODB3 >=3.8.1',
         'archetypes.schemaextender >=1.6',
         'plone.app.imaging >1.0b9',
