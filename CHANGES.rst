@@ -4,6 +4,9 @@ Changelog
 1.5.11 (unreleased)
 -------------------
 
+- Fix: Products.MimetypesRegistry used in p.a.blob.utils but no dependency
+  [jensens]
+
 - Fix some testes.
   [rafaelbco]
 
