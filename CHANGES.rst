@@ -7,7 +7,7 @@ Changelog
 - Fix: Products.MimetypesRegistry used in p.a.blob.utils but no dependency
   [jensens]
 
-- Fix some testes.
+- Fix some tests.
   [rafaelbco]
 
 - ported tests to plone.app.testing
