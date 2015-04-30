@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5.12 (unreleased)
+1.5.12 (2015-04-30)
 -------------------
 
 - Rerelease for clarity because of double release of 1.5.11.
