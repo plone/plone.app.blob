@@ -4,7 +4,8 @@ Changelog
 1.5.12 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Rerelease for clarity because of double release of 1.5.11.
+  [maurits]
 
 
 1.5.11 (2015-04-30)
