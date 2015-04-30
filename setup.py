@@ -6,7 +6,7 @@ import os
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
-version = '1.5.12'
+version = '1.5.13.dev0'
 
 long_description = (
     read('README.rst')
