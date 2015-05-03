@@ -160,7 +160,7 @@ using a testbrowser:
   >>> browser.open(folder.absolute_url())
   >>> browser.getLink(url='createObject?type_name=Blob').click()
   >>> browser.url
-  'http://nohost/plone/.../portal_factory/Blob/blob.../edit'
+  'http://nohost/plone/.../portal_factory/Blob/blob.../edit...'
   >>> browser.getControl(name='title').value = 'Foo bar'
   >>> control = browser.getControl(name='file_file')
   >>> control.filename = 'foo.pdf'

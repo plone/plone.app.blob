@@ -23,7 +23,7 @@ Let's start with creating a "File" content item:
 
   >>> browser.getLink(url='createObject?type_name=File').click()
   >>> browser.url
-  'http://nohost/plone/.../portal_factory/File/file.../edit'
+  'http://nohost/plone/.../portal_factory/File/file.../edit...'
   >>> browser.getControl(name='title').value = 'Foo'
   >>> control = browser.getControl(name='file_file')
   >>> control.filename = 'foo.pdf'
@@ -81,7 +81,7 @@ Next a similar test is conducted for an "Image" content item:
   >>> browser.open(folder.absolute_url())
   >>> browser.getLink(url='createObject?type_name=Image').click()
   >>> browser.url
-  'http://nohost/plone/.../portal_factory/Image/image.../edit'
+  'http://nohost/plone/.../portal_factory/Image/image.../edit...'
   >>> browser.getControl(name='title').value = 'Bar'
   >>> control = browser.getControl(name='image_file')
   >>> control.filename = 'bar.gif'
