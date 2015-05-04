@@ -4,7 +4,8 @@ Changelog
 1.5.13 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix tests from authenticator issues.
+  [vangheem]
 
 
 1.5.12 (2015-04-30)
