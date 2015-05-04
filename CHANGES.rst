@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5.13 (unreleased)
+1.5.13 (2015-05-05)
 -------------------
 
 - Fix tests from authenticator issues.
