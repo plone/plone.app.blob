@@ -4,7 +4,7 @@ Changelog
 1.5.14 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- fix tests for latest plone.app.imaging changes for Plone 5
 
 
 1.5.13 (2015-05-05)

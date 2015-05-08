@@ -6,6 +6,8 @@ from Products.Archetypes.public import registerType
 from plone.app.blob.config import packageName, permissions
 from plone.app.blob.field import FileField, ImageField
 from plone.app.blob.tests.utils import getFile
+from plone.app.blob.tests.base import changeAllowedSizes
+
 
 SampleSchema = BaseSchema.copy() + Schema((
 
@@ -60,8 +62,7 @@ class BaseFieldTests(ReplacementTestCase):
 
     def testImageGlobalSizes(self):
         image = self.create()
-        iprops = self.portal.portal_properties.imaging_properties
-        iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
+        changeAllowedSizes(self.portal, [u'foo 23:23'])
         sizes = image.getField('bar').getAvailableSizes(image)
         self.assertEqual(sizes, {'foo': (23, 23)})
 

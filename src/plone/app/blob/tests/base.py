@@ -3,6 +3,8 @@ from plone.app.blob.tests.layer import BlobLayer, BlobReplacementLayer
 from plone.app.blob.tests.layer import BlobLinguaLayer
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
+from zope.component import queryUtility
+from plone.registry.interfaces import IRegistry
 
 from plone.testing.z2 import Browser
 
@@ -44,3 +46,15 @@ class BlobLinguaFunctionalTestCase(PloneTestCase):
     """ base class for functional tests """
 
     layer = BlobLinguaLayer
+
+
+def changeAllowedSizes(portal, sizes):
+    try:
+        iprops = portal.portal_properties.imaging_properties
+        iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
+    except AttributeError:
+        # Plone 5, no longer stored here
+        registry = queryUtility(IRegistry)
+        from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
+        settings = registry.forInterface(IImagingSchema, prefix="plone", check=False)
+        settings.allowed_sizes = sizes
