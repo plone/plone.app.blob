@@ -7,6 +7,7 @@ from plone.app.blob.config import blobScalesAttr
 from ZODB.blob import Blob
 from StringIO import StringIO
 from PIL.Image import open
+from plone.app.blob.tests.base import changeAllowedSizes
 
 
 class TraverseCounterMixin:
@@ -52,8 +53,7 @@ class BlobImageTraverseTests(TraverseCounterMixin, ReplacementTestCase):
     def testCustomSizes(self):
         image = self.folder['foo-image']
         # set custom image sizes
-        iprops = self.portal.portal_properties.imaging_properties
-        iprops.manage_changeProperties(allowed_sizes=['foo 23:23', 'bar 6:8'])
+        changeAllowedSizes(self.portal, [u'foo 23:23', u'bar 6:8'])
         # make sure traversing works with the new sizes
         traverse = self.layer['request'].traverseName
         foo = traverse(image, 'image_foo')
@@ -118,15 +118,14 @@ class BlobImageScaleTests(ReplacementTestCase):
     def testCustomSizeChange(self):
         image = self.folder['foo-image']
         # set custom image sizes & view a scale
-        iprops = self.portal.portal_properties.imaging_properties
-        iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
+        changeAllowedSizes(self.portal, [u'foo 23:23'])
         traverse = self.layer['request'].traverseName
         foo = traverse(image, 'image_foo')
         self.assertEqual(foo.width, 23)
         self.assertEqual(foo.height, 23)
         # now let's update the scale dimensions, after which the scale
         # should still be the same...
-        iprops.manage_changeProperties(allowed_sizes=['foo 42:42'])
+        changeAllowedSizes(self.portal, [u'foo 42:42'])
         foo = traverse(image, 'image_foo')
         self.assertEqual(foo.width, 23)
         self.assertEqual(foo.height, 23)
@@ -164,8 +163,7 @@ class BlobImagePublisherTests(TraverseCounterMixin, ReplacementFunctionalTestCas
 
     def testPublishCustomSize(self):
         # set custom image sizes
-        iprops = self.portal.portal_properties.imaging_properties
-        iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
+        changeAllowedSizes(self.portal, [u'foo 23:23'])
         # make sure traversing works as expected
         base = '/'.join(self.folder.getPhysicalPath())
         credentials = self.getCredentials()
@@ -184,8 +182,7 @@ class BlobAdapterTests(ReplacementTestCase):
         self.image = self.folder['foo-image']
         self.field = self.image.getField('image')
         self.handler = BlobImageScaleHandler(self.field)
-        iprops = self.portal.portal_properties.imaging_properties
-        iprops.manage_changeProperties(allowed_sizes=['foo 60:60'])
+        changeAllowedSizes(self.portal, [u'foo 60:60'])
 
     def testCreateScale(self):
         foo = self.handler.createScale(self.image, 'foo', 100, 80)

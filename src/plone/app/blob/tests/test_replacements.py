@@ -17,6 +17,7 @@ from plone.app.blob.field import BlobField
 from plone.app.blob.content import ATBlob
 from plone.app.blob.tests.utils import getImage, getData
 from ZODB.blob import SAVEPOINT_SUFFIX
+from plone.app.blob.tests.base import changeAllowedSizes
 
 
 def permissionsFor(name, product):
@@ -315,8 +316,7 @@ class ImageReplacementTests(ReplacementTestCase):
 
     def testImageGlobalSizes(self):
         image = self.folder[self.folder.invokeFactory('Image', 'foo')]
-        iprops = self.portal.portal_properties.imaging_properties
-        iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
+        changeAllowedSizes(self.portal, [u'foo 23:23'])
         sizes = image.getField('image').getAvailableSizes(image)
         self.assertEqual(sizes, {'foo': (23, 23)})
 
