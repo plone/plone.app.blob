@@ -293,7 +293,7 @@ class BlobField(ObjectField):
                 # a file name was given, so the instance needs to be renamed...
                 instance.setId(filename)
 
-    @security.private
+    @security.protected(View)
     def download(self, instance, REQUEST=None, RESPONSE=None):
         """ download the file (use default index_html) """
         return self.index_html(
