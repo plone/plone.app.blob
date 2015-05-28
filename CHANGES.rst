@@ -4,7 +4,8 @@ Changelog
 1.5.15 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- fix permission for download
+  [david-batranu]
 
 
 1.5.14 (2015-05-13)
