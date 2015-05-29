@@ -51,7 +51,7 @@ class BlobLinguaFunctionalTestCase(PloneTestCase):
 def changeAllowedSizes(portal, sizes):
     try:
         iprops = portal.portal_properties.imaging_properties
-        iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
+        iprops.manage_changeProperties(allowed_sizes=sizes)
     except AttributeError:
         # Plone 5, no longer stored here
         registry = queryUtility(IRegistry)
