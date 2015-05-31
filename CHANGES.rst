@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5.15 (unreleased)
+1.5.15 (2015-05-31)
 -------------------
 
 - fix permission for download
