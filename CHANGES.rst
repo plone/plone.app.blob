@@ -4,7 +4,10 @@ Changelog
 1.5.16 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix migrator for AT-based types that got broken in 1.5.8 release and add
+  an option to remove the content of the non-blob field during migration to
+  not end up having stale data in the ZODB
+  [fRiSi]
 
 
 1.5.15 (2015-05-31)
@@ -45,6 +48,7 @@ Changelog
 
 - ported tests to plone.app.testing
   [tomgross]
+
 
 1.5.10 (2014-04-16)
 -------------------
