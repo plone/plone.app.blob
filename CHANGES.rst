@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5.16 (unreleased)
+1.5.16 (2015-07-29)
 -------------------
 
 - Fix migrator for AT-based types that got broken in 1.5.8 release and add
