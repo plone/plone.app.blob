@@ -1,10 +1,11 @@
 Changelog
 =========
 
-1.5.17 (unreleased)
+1.6.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Use configuration registry to set types_use_view_action_in_listings values.
+  [esteele]
 
 
 1.5.16 (2015-07-29)
