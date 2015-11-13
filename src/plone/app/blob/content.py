@@ -20,6 +20,7 @@ from Products.ATContentTypes.content.file import ATFile
 from Products.ATContentTypes.content.schemata import ATContentTypeSchema
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from Products.MimetypesRegistry.common import MimeTypeException
+from Products.GenericSetup.interfaces import IDAVAware
 
 from plone.app.imaging.interfaces import IImageScaleHandler
 from plone.app.blob.interfaces import IATBlob, IATBlobFile, IATBlobImage
@@ -73,7 +74,7 @@ def addATBlobImage(container, id, **kwargs):
 
 class ATBlob(ATCTFileContent, ImageMixin):
     """ a chunk of binary data """
-    implements(IATBlob)
+    implements(IATBlob, IDAVAware)
 
     portal_type = 'Blob'
     _at_rename_after_creation = True
