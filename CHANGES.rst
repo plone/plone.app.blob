@@ -6,11 +6,9 @@ Changelog
 
 New:
 
-- *add item here*
-
-Fixes:
-
-- *add item here*
+- The blob file now gets exported when exporting content via
+  GenericSetup.
+  [do3cc]
 
 
 1.6.0 (2015-09-21)
