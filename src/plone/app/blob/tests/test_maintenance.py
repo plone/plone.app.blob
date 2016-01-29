@@ -4,6 +4,12 @@ from plone.app.blob.tests.base import ReplacementTestCase  # import first!
 from Products.ATContentTypes.interface import file as atfile
 from Products.ATContentTypes.interface import image as atimage
 
+try:
+    from Products.CMFCore.indexing import processQueue
+except ImportError:
+    def processQueue():
+        pass
+
 
 class MaintenanceViewTests(ReplacementTestCase):
 
@@ -38,6 +44,7 @@ class MaintenanceViewTests(ReplacementTestCase):
         info = self.portal.portal_types.getTypeInfo('File')
         info.title = 'Foo'
         foo = self.folder[self.folder.invokeFactory('File', id='foo')]
+        processQueue()
         info.title = 'File'
         # make sure it's actually wrong...
         catalog = self.portal.portal_catalog
