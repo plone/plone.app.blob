@@ -93,7 +93,8 @@ class FileReplacementTests(ReplacementTestCase):
         self.assertEqual(blob.read(), 'plain text')
 
     def testCatalogAfterFileMigration(self):
-        foo = self.folder[self.folder.invokeFactory('ATFile', id='foo',
+        foo = self.folder[self.folder.invokeFactory(
+            'ATFile', id='foo',
             title='a file', file='plain text', subject=('foo', 'bar'),
             contributors=('me'))]
         # fake old content from before applying the replacement profile
@@ -105,7 +106,8 @@ class FileReplacementTests(ReplacementTestCase):
         index_data = catalog.getIndexDataForRID(rid)
         meta_data = catalog.getMetadataForRID(rid)
         # migrate & check migrated content item
-        self.assertEqual(migrateATBlobFiles(self.portal),
+        self.assertEqual(
+            migrateATBlobFiles(self.portal),
             'Migrating /plone/Members/test_user_1_/foo (File -> File)\n')
         foo = self.folder['foo']
         brain = catalog(id='foo')[0]
@@ -113,14 +115,21 @@ class FileReplacementTests(ReplacementTestCase):
         self.assertEqual(foo.getObjSize(), brain.getObjSize)
         self.assertEqual(foo.getPortalTypeName(), brain.Type)
         # compare pre-migration and current catalog data...
-        okay = ('meta_type', 'Type', 'object_provides', 'SearchableText', 'Language')
+        okay = ('meta_type', 'Type', 'object_provides', 'SearchableText',
+                'Language')
         for key, value in catalog.getIndexDataForRID(brain.getRID()).items():
-            if not key in okay:
-                self.assertEqual(index_data[key], value, 'index: %s' % key)
+            if key not in okay:
+                self.assertEqual(
+                    index_data[key], value,
+                    'index {0} had value {1} but now has value {2}'.format(
+                        key, index_data[key], value))
         okay = ('meta_type', )
         for key, value in catalog.getMetadataForRID(brain.getRID()).items():
-            if not key in okay:
-                self.assertEqual(meta_data[key], value, 'meta: %s' % key)
+            if key not in okay:
+                self.assertEqual(
+                    meta_data[key], value,
+                    'meta {0} had value {1} but now has value {2}'.format(
+                        key, meta_data[key], value))
         # also make sure the `Type` index has been updated correctly
         brains = catalog(Type='File')
         self.assertEqual([b.getObject() for b in brains], [foo])
