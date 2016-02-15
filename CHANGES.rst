@@ -4,6 +4,8 @@ Changelog
 1.5.17 (unreleased)
 -------------------
 
+Fixes:
+
 - Made catalog migration test clearer in case of failure.  [maurits]
 
 
