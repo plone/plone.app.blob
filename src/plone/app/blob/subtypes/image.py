@@ -17,7 +17,7 @@ class ExtensionBlobField(ExtensionField, BlobField, ImageFieldMixin):
     """ derivative of blobfield for extending schemas """
     implements(IBlobImageField)
 
-    def set(self, instance, value, refresh_exif=False, **kwargs):
+    def set(self, instance, value, refresh_exif=True, **kwargs):
         super(ExtensionBlobField, self).set(instance, value, **kwargs)
         self.fixAutoId(instance)
         instance.getEXIF(value, refresh=refresh_exif)
