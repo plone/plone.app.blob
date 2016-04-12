@@ -12,6 +12,8 @@ Fixes:
 
 - *add item here*
 
+- Blob images now eset EXIF data on save [martior]
+
 
 1.6.1 (2015-11-26)
 ------------------
