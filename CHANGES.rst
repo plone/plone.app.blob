@@ -12,7 +12,7 @@ Fixes:
 
 - *add item here*
 
-- Blob images now eset EXIF data on save [martior]
+- Blob images now reset EXIF data on save [martior]
 
 
 1.6.1 (2015-11-26)
