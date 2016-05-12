@@ -4,13 +4,7 @@ Changelog
 1.6.2 (unreleased)
 ------------------
 
-New:
-
-- *add item here*
-
-Fixes:
-
-- *add item here*
+Bug fixes:
 
 - Blob images now reset EXIF data on save [martior]
 
