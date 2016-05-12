@@ -54,7 +54,6 @@ setup(
     extras_require={'test': tests_require},
     classifiers=[
         'Environment :: Web Environment',
-        'Framework :: Plone :: 4.3',
         'Framework :: Plone :: 5.0',
         'Framework :: Plone',
         'Intended Audience :: Developers',
