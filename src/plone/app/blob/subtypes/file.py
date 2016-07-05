@@ -1,4 +1,4 @@
-from zope.interface import implements
+from zope.interface import implementer
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Archetypes.atapi import AnnotationStorage
 from Products.Archetypes.atapi import FileWidget
@@ -16,8 +16,8 @@ class ExtensionBlobField(ExtensionField, BlobField):
         self.fixAutoId(instance)
 
 
+@implementer(ISchemaExtender)
 class SchemaExtender(object):
-    implements(ISchemaExtender)
 
     fields = [
         ExtensionBlobField('file',

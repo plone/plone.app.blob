@@ -1,13 +1,13 @@
-from zope.interface import implements
+from zope.interface import implementer
 from zope.component import adapts
 
 from plone.app.blob.interfaces import IBlobbable, IBlobWrapper
 from plone.app.blob.field import ReuseBlob
 
 
+@implementer(IBlobbable)
 class BlobbableBlobWrapper(object):
     """ adapter for BlobWrapper objects to work with blobs """
-    implements(IBlobbable)
     adapts(IBlobWrapper)
 
     def __init__(self, context):

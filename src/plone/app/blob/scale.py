@@ -1,6 +1,6 @@
 from logging import getLogger
 from zope.component import adapts
-from zope.interface import implements
+from zope.interface import implementer
 from Acquisition import aq_base
 from ZODB.blob import Blob
 from plone.app.imaging.traverse import DefaultImageScaleHandler, ImageScale
@@ -17,9 +17,9 @@ except ImportError:
                 "Can't scale images.")
 
 
+@implementer(IImageScaleHandler)
 class BlobImageScaleHandler(DefaultImageScaleHandler):
     """ handler for creating and storing scaled version of images in blobs """
-    implements(IImageScaleHandler)
     adapts(IBlobImageField)
 
     def retrieveScale(self, instance, scale):
@@ -60,9 +60,9 @@ class BlobImageScaleHandler(DefaultImageScaleHandler):
         setattr(instance, blobScalesAttr, fields)
 
 
+@implementer(IImageScaleFactory)
 class BlobImageScaleFactory(object):
     """ adapter for image fields that allows generating scaled images """
-    implements(IImageScaleFactory)
     adapts(IBlobImageField)
 
     def __init__(self, field):

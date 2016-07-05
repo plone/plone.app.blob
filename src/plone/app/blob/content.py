@@ -1,5 +1,5 @@
 from logging import getLogger
-from zope.interface import implements
+from zope.interface import implementer
 from zope.lifecycleevent import ObjectCreatedEvent, ObjectModifiedEvent
 from zope.event import notify
 
@@ -72,9 +72,9 @@ def addATBlobImage(container, id, **kwargs):
     return addATBlob(container, id, subtype='Image', **kwargs)
 
 
+@implementer(IATBlob, IDAVAware)
 class ATBlob(ATCTFileContent, ImageMixin):
     """ a chunk of binary data """
-    implements(IATBlob, IDAVAware)
 
     portal_type = 'Blob'
     _at_rename_after_creation = True

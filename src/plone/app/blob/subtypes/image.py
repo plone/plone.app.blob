@@ -1,4 +1,4 @@
-from zope.interface import implements
+from zope.interface import implementer
 from Acquisition import aq_base
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Archetypes.atapi import AnnotationStorage
@@ -13,9 +13,9 @@ from plone.app.blob.field import BlobField
 from plone.app.blob.mixins import ImageFieldMixin
 
 
+@implementer(IBlobImageField)
 class ExtensionBlobField(ExtensionField, BlobField, ImageFieldMixin):
     """ derivative of blobfield for extending schemas """
-    implements(IBlobImageField)
 
     def set(self, instance, value, refresh_exif=True, **kwargs):
         super(ExtensionBlobField, self).set(instance, value, **kwargs)
@@ -25,8 +25,8 @@ class ExtensionBlobField(ExtensionField, BlobField, ImageFieldMixin):
             delattr(aq_base(instance), blobScalesAttr)
 
 
+@implementer(ISchemaExtender)
 class SchemaExtender(object):
-    implements(ISchemaExtender)
 
     fields = [
         ExtensionBlobField('image',

@@ -1,4 +1,4 @@
-from zope.interface import implements
+from zope.interface import implementer
 from zope.component import adapts
 
 from OFS.Image import Pdata
@@ -8,9 +8,9 @@ from plone.app.blob.interfaces import IBlobbable
 from plone.app.blob.utils import guessMimetype
 
 
+@implementer(IBlobbable)
 class BlobbablePdata(object):
     """ adapter for Python file objects to work with blobs """
-    implements(IBlobbable)
     adapts(Pdata)
 
     def __init__(self, context):
