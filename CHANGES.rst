@@ -16,6 +16,7 @@ Bug fixes:
 
 - Add a note to monkey.py for when it is possible to remove it.
   [gforcada]
+
 - Use zope.interface decorator.
   [gforcada]
 
