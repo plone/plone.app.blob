@@ -1,3 +1,8 @@
+# XXX @gforcada: This got merged into Zope, will be available on 
+# Zope 4.0a2+.
+# Merged by Hanno:
+# https://github.com/zopefoundation/Zope/commit/4d5910f3130dbddd4
+#
 # ZPublisher gets monkey-patched to use an extended version of the
 # cgi module's FieldStorage class, so that temporary files used during
 # file uploads are not anonymous, but instead provide a file name that
