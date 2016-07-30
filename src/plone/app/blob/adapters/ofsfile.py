@@ -1,12 +1,12 @@
-from zope.interface import implements
+from zope.interface import implementer
 from zope.component import adapts
 
 from plone.app.blob.interfaces import IBlobbable, IOFSFile
 
 
+@implementer(IBlobbable)
 class BlobbableOFSFile(object):
     """ adapter for OFS.File objects to work with blobs """
-    implements(IBlobbable)
     adapts(IOFSFile)
 
     def __init__(self, context):

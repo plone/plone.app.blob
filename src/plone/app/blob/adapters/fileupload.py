@@ -2,7 +2,7 @@ from os.path import isfile
 from shutil import copyfileobj
 from os import name as os_name
 
-from zope.interface import implements
+from zope.interface import implementer
 from zope.component import adapts
 from ZODB.blob import Blob
 
@@ -12,9 +12,9 @@ from plone.app.blob.utils import guessMimetype
 from plone.app.blob.field import ReuseBlob
 
 
+@implementer(IBlobbable)
 class BlobbableFileUpload(object):
     """ adapter for FileUpload objects to work with blobs """
-    implements(IBlobbable)
     adapts(IFileUpload)
 
     def __init__(self, context):
