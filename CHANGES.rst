@@ -4,17 +4,10 @@ Changelog
 1.6.4 (unreleased)
 ------------------
 
-Breaking changes:
+Fixes:
 
-- *add item here*
-
-New features:
-
-- *add item here*
-
-Bug fixes:
-
-- *add item here*
+- Use zope.interface decorator.
+  [gforcada]
 
 
 1.6.3 (2016-07-29)
@@ -23,9 +16,6 @@ Bug fixes:
 Bug fixes:
 
 - Add a note to monkey.py for when it is possible to remove it.
-  [gforcada]
-
-- Use zope.interface decorator.
   [gforcada]
 
 
