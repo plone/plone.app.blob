@@ -55,6 +55,7 @@ setup(
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Plone :: 5.0',
+        'Framework :: Plone :: 5.1',
         'Framework :: Plone',
         'Intended Audience :: Developers',
         'Intended Audience :: Other Audience',
