@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # convenience helpers to apply needed marker interfaces to blob-based content
 # TODO: this could use named utilities to make it more pluggable
 

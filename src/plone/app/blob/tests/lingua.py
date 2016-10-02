@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.app.blob.config import packageName
 from plone.app.blob.field import BlobField
 

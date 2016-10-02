@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zope.interface.interfaces import IInterface
 from ZPublisher.Iterators import IStreamIterator
 

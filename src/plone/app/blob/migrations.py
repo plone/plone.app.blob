@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 try:
     from Products.contentmigration.archetypes import InplaceATItemMigrator
     from Products.contentmigration.migrator import BaseInlineMigrator

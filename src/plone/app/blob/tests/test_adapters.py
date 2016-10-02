@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 from ZODB.blob import Blob
 from OFS.Image import File, Image

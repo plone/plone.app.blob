@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.app.blob.tests.base import ReplacementTestCase
 from plone.app.blob.tests.utils import getImage
 from plone.app.blob.interfaces import IATBlobImage

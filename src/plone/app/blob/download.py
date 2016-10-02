@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from DateTime.DateTime import DateTime
 from ZPublisher.HTTPRangeSupport import parseRange, expandRanges
 

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from logging import getLogger
 from zope.component import adapts
 from zope.interface import implementer
