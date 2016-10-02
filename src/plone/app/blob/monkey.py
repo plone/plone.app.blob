@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # XXX @gforcada: This got merged into Zope, will be available on 
 # Zope 4.0a2+.
 # Merged by Hanno:

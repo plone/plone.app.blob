@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.app.blob.tests.base import ReplacementTestCase
 
 from Products.Archetypes.public import BaseSchema, Schema, BaseContent

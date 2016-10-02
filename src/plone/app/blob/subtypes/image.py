@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zope.interface import implementer
 from Acquisition import aq_base
 from Products.CMFPlone import PloneMessageFactory as _

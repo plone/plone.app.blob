@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from ZPublisher.HTTPRequest import HTTPRequest
 from StringIO import StringIO
 from base64 import decodestring

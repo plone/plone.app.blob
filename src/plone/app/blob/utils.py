@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zope.component import queryUtility
 from zope.contenttype import guess_content_type
 

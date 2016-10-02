@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zope.component import adapts
 
 from Products.ATContentTypes.interface import IATImage

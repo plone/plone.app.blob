@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # helper module to ease setting up backward-compatibility tests for
 # ATContentTypes and CMFPlone
 

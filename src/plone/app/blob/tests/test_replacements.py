@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.app.blob.tests.base import ReplacementTestCase   # import first!
 
 from unittest import defaultTestLoader

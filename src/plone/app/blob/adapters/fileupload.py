@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from os.path import isfile
 from shutil import copyfileobj
 from os import name as os_name

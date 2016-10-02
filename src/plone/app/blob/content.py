@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from logging import getLogger
 from zope.interface import implementer
 from zope.lifecycleevent import ObjectCreatedEvent, ObjectModifiedEvent

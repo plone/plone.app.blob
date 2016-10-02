@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from unittest import TestSuite, defaultTestLoader
 from plone.app.blob.tests.base import BlobLinguaTestCase
 

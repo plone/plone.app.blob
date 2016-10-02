@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
 from Products.CMFCore.permissions import View, ModifyPortalContent
