@@ -153,11 +153,11 @@ class IntegrationTests(BlobTestCase):
     def testIcon(self):
         blob = self.folder.blob
         blob.update(file=getImage())
-        self.assertEqual(blob.getIcon(), 'plone/image.png')
+        self.assertTrue(blob.getIcon().endswith('image.png'))
         blob.update(file=pdf_data)
-        self.assertEqual(blob.getIcon(), 'plone/pdf.png')
+        self.assertTrue(blob.getIcon().endswith('pdf.png'))
         blob.update(file='some text...')
-        self.assertEqual(blob.getIcon(), 'plone/txt.png')
+        self.assertTrue(blob.getIcon().endswith('txt.png'))
 
     def testIconLookupForUnknownMimeType(self):
         """ test for http://plone.org/products/plone.app.blob/issues/1 """
