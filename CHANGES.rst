@@ -17,6 +17,10 @@ Bug fixes:
 - Add coding headers on python files.
   [gforcada]
 
+- More flexible test of getIcon.
+  [jensens]
+
+
 1.6.4 (2016-08-12)
 ------------------
 
