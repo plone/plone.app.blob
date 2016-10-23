@@ -20,6 +20,8 @@ Bug fixes:
 - More flexible test of getIcon.
   [jensens]
 
+- Update code to follow Plone styleguide.
+  [gforcada]
 
 1.6.4 (2016-08-12)
 ------------------

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_inner
-from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
+from Products.Five import BrowserView
 
 
 def bytesize(size):

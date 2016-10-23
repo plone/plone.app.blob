@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-from StringIO import StringIO
-from Products.CMFCore.utils import getToolByName
+from plone.app import testing
+from plone.app.blob.tests.utils import getData
 from plone.app.testing.bbb import PloneTestCaseFixture
 from plone.app.testing.bbb import PTC_FIXTURE
 from plone.testing import z2
-from plone.app import testing
-from plone.app.blob.tests.utils import getData
+from Products.CMFCore.utils import getToolByName
+from StringIO import StringIO
 
 
 class BlobFixture(PloneTestCaseFixture):
@@ -15,7 +15,7 @@ class BlobFixture(PloneTestCaseFixture):
 
     def setUpZope(self, app, configurationContext):
         from plone.app.blob import tests
-        self.loadZCML(package=tests, name="testing.zcml")
+        self.loadZCML(package=tests, name='testing.zcml')
         z2.installProduct(app, 'plone.app.blob')
 
     def setUpPloneSite(self, portal):
@@ -28,7 +28,10 @@ class BlobFixture(PloneTestCaseFixture):
         z2.uninstallProduct(app, 'plone.app.blob')
 
 BLOB_FIXTURE = BlobFixture()
-BlobLayer = testing.FunctionalTesting(bases=(BLOB_FIXTURE, ), name="Blob:Functional")
+BlobLayer = testing.FunctionalTesting(
+    bases=(BLOB_FIXTURE, ),
+    name='Blob:Functional',
+)
 
 
 class BlobReplacementFixture(PloneTestCaseFixture):
@@ -43,7 +46,10 @@ class BlobReplacementFixture(PloneTestCaseFixture):
 
     def setUpPloneSite(self, portal):
         for name in ['file', 'image']:
-            self.applyProfile(portal, 'plone.app.blob:%s-replacement' % name)
+            self.applyProfile(
+                portal,
+                'plone.app.blob:{0}-replacement'.format(name)
+            )
         # allow creating the replaced types
         types = getToolByName(portal, 'portal_types')
         assert types.getTypeInfo('Blob').product == 'plone.app.blob'
@@ -55,7 +61,8 @@ class BlobReplacementFixture(PloneTestCaseFixture):
 
         image = StringIO(getData('image.gif'))
         image.filename = 'original.gif'
-        folder.invokeFactory('Image', id='foo-image', title='an image', image=image)
+        folder.invokeFactory('Image', id='foo-image',
+                             title='an image', image=image)
 
     def tearDownPloneSite(self, portal):
         folder = portal.portal_membership.getHomeFolder(testing.TEST_USER_ID)
@@ -66,7 +73,9 @@ class BlobReplacementFixture(PloneTestCaseFixture):
 
 BLOB_REPLACEMENT_FIXTURE = BlobReplacementFixture()
 BlobReplacementLayer = testing.FunctionalTesting(
-    bases=(BLOB_REPLACEMENT_FIXTURE, ), name="Blob Replacement:Functional")
+    bases=(BLOB_REPLACEMENT_FIXTURE, ),
+    name='Blob Replacement:Functional',
+)
 
 # BBB
 BlobFileReplacementLayer = BlobReplacementLayer
@@ -99,4 +108,6 @@ class BlobLinguaFixture(PloneTestCaseFixture):
 
 BLOB_LINGUA_FIXTURE = BlobLinguaFixture()
 BlobLinguaLayer = testing.FunctionalTesting(
-    bases=(BLOB_LINGUA_FIXTURE, ), name="Blob Lingua:Functional")
+    bases=(BLOB_LINGUA_FIXTURE, ),
+    name='Blob Lingua:Functional',
+)

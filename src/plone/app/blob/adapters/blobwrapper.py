@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from zope.interface import implementer
-from zope.component import adapts
-
-from plone.app.blob.interfaces import IBlobbable, IBlobWrapper
 from plone.app.blob.field import ReuseBlob
+from plone.app.blob.interfaces import IBlobbable
+from plone.app.blob.interfaces import IBlobWrapper
+from zope.component import adapts
+from zope.interface import implementer
 
 
 @implementer(IBlobbable)

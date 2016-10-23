@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from zope.interface import implementer
+from plone.app.blob.interfaces import IBlobbable
+from plone.app.blob.interfaces import IOFSFile
 from zope.component import adapts
-
-from plone.app.blob.interfaces import IBlobbable, IOFSFile
+from zope.interface import implementer
 
 
 @implementer(IBlobbable)

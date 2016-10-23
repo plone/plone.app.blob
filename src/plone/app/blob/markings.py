@@ -2,14 +2,16 @@
 # convenience helpers to apply needed marker interfaces to blob-based content
 # TODO: this could use named utilities to make it more pluggable
 
-from zope.interface import alsoProvides, noLongerProvides
+from plone.app.blob.interfaces import IATBlobBlob
+from plone.app.blob.interfaces import IATBlobFile
+from plone.app.blob.interfaces import IATBlobImage
 from Products.ATContentTypes.interface import file as atfile
 from Products.ATContentTypes.interface import image as atimage
-from plone.app.blob.interfaces import IATBlobBlob, IATBlobFile, IATBlobImage
-
-# support for zope2-interfaces
 from Products.ATContentTypes.interfaces import IATFile as Z2IATFile
 from Products.ATContentTypes.interfaces import IATImage as Z2IATImage
+from zope.interface import alsoProvides
+from zope.interface import noLongerProvides
+
 
 interfaces = {
     'Blob': [IATBlobBlob, atfile.IATFile, atfile.IFileContent],

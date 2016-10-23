@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-from logging import getLogger
-from time import time, strftime
-from transaction import commit
 from Acquisition import aq_inner
-from Products.Five.browser import BrowserView
-from Products.CMFCore.utils import getToolByName
-
+from logging import getLogger
 from plone.app.blob.interfaces import IATBlob
 from plone.app.blob.markings import markAs
+from Products.CMFCore.utils import getToolByName
+from Products.Five.browser import BrowserView
+from time import strftime
+from time import time
+from transaction import commit
 
 
 def timer(func=time):
@@ -17,7 +17,7 @@ def timer(func=time):
         while True:
             elapsed = func() - last
             last = func()
-            yield '%.3fs' % elapsed
+            yield '{0:.4}s'.format(elapsed)
     return gen()
 
 
@@ -53,8 +53,8 @@ class MaintenanceView(BrowserView):
         processed = 0
 
         def checkPoint():
-            log('intermediate commit (%d items processed, '
-                'last batch in %s)...\n' % (processed, lap.next()))
+            log('intermediate commit ({0} items processed, '
+                'last batch in {1})...\n'.format(processed, lap.next()))
             commit()
         cpi = checkpointIterator(checkPoint, batch)
         context = aq_inner(self.context)
@@ -64,11 +64,11 @@ class MaintenanceView(BrowserView):
             subtype = brain.portal_type
             markAs(obj, subtype)
             obj.reindexObject(idxs=['object_provides'])
-            log('set blob sub-type for %r to "%s"\n' % (obj, subtype))
+            log('set blob sub-type for {0} to "{1}"\n'.format(obj, subtype))
             processed += 1
             cpi.next()
         commit()
-        msg = 'processed %d items in %s.' % (processed, real.next())
+        msg = 'processed {0} items in {1}.'.format(processed, real.next())
         log(msg)
         getLogger('plone.app.blob.maintenance').info(msg)
 
@@ -81,8 +81,8 @@ class MaintenanceView(BrowserView):
         processed = 0
 
         def checkPoint():
-            log('intermediate commit (%d items processed, '
-                'last batch in %s)...\n' % (processed, lap.next()))
+            log('intermediate commit ({0} items processed, '
+                'last batch in {1})...\n'.format(processed, lap.next()))
             commit()
         cpi = checkpointIterator(checkPoint, batch)
         context = aq_inner(self.context)
@@ -90,10 +90,10 @@ class MaintenanceView(BrowserView):
         for brain in catalog(object_provides=IATBlob.__identifier__):
             obj = brain.getObject()
             obj.reindexObject(idxs=['Type'])
-            log('updated %r\n' % obj)
+            log('updated {0}\n'.format(obj))
             processed += 1
             cpi.next()
         commit()
-        msg = 'processed %d items in %s.' % (processed, real.next())
+        msg = 'processed {0} items in {1}.'.format(processed, real.next())
         log(msg)
         getLogger('plone.app.blob.maintenance').info(msg)

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
+from os import fstat
+from plone.app.blob.utils import openBlob
 from zope.interface import implements
 from zope.interface.interfaces import IInterface
 from ZPublisher.Iterators import IStreamIterator
-from plone.app.blob.utils import openBlob
-from os import fstat
 
 
 class BlobStreamIterator(object):

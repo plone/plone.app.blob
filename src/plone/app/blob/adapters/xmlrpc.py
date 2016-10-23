@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
-from zope.interface import implementer
-from zope.component import adapts
-
-from xmlrpclib import Binary
-
 from plone.app.blob.interfaces import IBlobbable
 from plone.app.blob.utils import guessMimetype
+from xmlrpclib import Binary
+from zope.component import adapts
+from zope.interface import implementer
 
 
 @implementer(IBlobbable)

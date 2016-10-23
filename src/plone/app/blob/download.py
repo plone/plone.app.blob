@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from DateTime.DateTime import DateTime
-from ZPublisher.HTTPRangeSupport import parseRange, expandRanges
+from ZPublisher.HTTPRangeSupport import expandRanges
+from ZPublisher.HTTPRangeSupport import parseRange
 
 
 def handleIfModifiedSince(instance, REQUEST, RESPONSE):
@@ -19,7 +20,7 @@ def handleIfModifiedSince(instance, REQUEST, RESPONSE):
         # invalid date.
         try:
             mod_since = long(DateTime(header).timeTime())
-        except:
+        except Exception:
             mod_since = None
         if mod_since is not None:
             if instance._p_mtime:
@@ -58,7 +59,7 @@ def handleRequestRange(instance, length, REQUEST, RESPONSE):
                 date = if_range.split(';')[0]
                 try:
                     mod_since = long(DateTime(date).timeTime())
-                except:
+                except Exception:
                     mod_since = None
                 if mod_since is not None:
                     if instance._p_mtime:
@@ -77,7 +78,7 @@ def handleRequestRange(instance, length, REQUEST, RESPONSE):
             RESPONSE.setHeader('Content-Length', size)
             RESPONSE.setHeader(
                 'Content-Range',
-                'bytes %d-%d/%d' % (start, end - 1, length))
+                'bytes {0}-{1}/{2}'.format(start, end - 1, length))
             RESPONSE.setStatus(206)  # Partial content
             return dict(start=start, end=end)
     return {}

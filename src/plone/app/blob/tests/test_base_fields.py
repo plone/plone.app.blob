@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
-from plone.app.blob.tests.base import ReplacementTestCase
-
-from Products.Archetypes.public import BaseSchema, Schema, BaseContent
-from Products.Archetypes.public import FileWidget, ImageWidget
-from Products.Archetypes.public import registerType
-from plone.app.blob.config import packageName, permissions
-from plone.app.blob.field import FileField, ImageField
-from plone.app.blob.tests.utils import getFile
+from plone.app.blob.config import packageName
+from plone.app.blob.config import permissions
+from plone.app.blob.field import FileField
+from plone.app.blob.field import ImageField
 from plone.app.blob.tests.base import changeAllowedSizes
+from plone.app.blob.tests.base import ReplacementTestCase
+from plone.app.blob.tests.utils import getFile
+from Products.Archetypes.public import BaseContent
+from Products.Archetypes.public import BaseSchema
+from Products.Archetypes.public import FileWidget
+from Products.Archetypes.public import ImageWidget
+from Products.Archetypes.public import registerType
+from Products.Archetypes.public import Schema
 
 
 SampleSchema = BaseSchema.copy() + Schema((
@@ -95,4 +99,4 @@ class BaseFieldTests(ReplacementTestCase):
         self.assertEqual(
             'application/vnd.ms-excel',
             item.getFoo().getContentType()
-            )
+        )

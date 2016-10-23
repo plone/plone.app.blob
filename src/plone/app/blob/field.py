@@ -1,27 +1,18 @@
 # -*- coding: utf-8 -*-
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
-from Acquisition import Implicit
 from Acquisition import aq_base
+from Acquisition import Implicit
 from ComputedAttribute import ComputedAttribute
-from Products.Archetypes.Registry import registerField
-from Products.Archetypes.atapi import FileWidget
-from Products.Archetypes.atapi import ImageWidget
-from Products.Archetypes.atapi import ObjectField
-from Products.Archetypes.atapi import PrimaryFieldMarshaller
-from Products.Archetypes.utils import contentDispositionHeader
-from Products.CMFCore.permissions import View
-from StringIO import StringIO
-from ZODB.blob import Blob
 from os import fstat
 from persistent import Persistent
 from plone.app.blob.config import blobScalesAttr
 from plone.app.blob.download import handleIfModifiedSince
 from plone.app.blob.download import handleRequestRange
+from plone.app.blob.interfaces import IBlobbable
 from plone.app.blob.interfaces import IBlobField
 from plone.app.blob.interfaces import IBlobImageField
 from plone.app.blob.interfaces import IBlobWrapper
-from plone.app.blob.interfaces import IBlobbable
 from plone.app.blob.interfaces import IWebDavUpload
 from plone.app.blob.iterators import BlobStreamIterator
 from plone.app.blob.mixins import ImageFieldMixin
@@ -29,8 +20,17 @@ from plone.app.blob.utils import getImageSize
 from plone.app.blob.utils import getPILResizeAlgo
 from plone.app.blob.utils import openBlob
 from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
+from Products.Archetypes.atapi import FileWidget
+from Products.Archetypes.atapi import ImageWidget
+from Products.Archetypes.atapi import ObjectField
+from Products.Archetypes.atapi import PrimaryFieldMarshaller
+from Products.Archetypes.Registry import registerField
+from Products.Archetypes.utils import contentDispositionHeader
+from Products.CMFCore.permissions import View
+from StringIO import StringIO
 from transaction import savepoint
 from webdav.common import rfc1123_date
+from ZODB.blob import Blob
 from zope.interface import implementer
 
 
@@ -92,7 +92,7 @@ class BlobWrapper(Implicit, Persistent):
         filename = self.getFilename()
         if filename is not None:
             if not isinstance(filename, unicode):
-                filename = unicode(filename, charset, errors="ignore")
+                filename = unicode(filename, charset, errors='ignore')
             filename = IUserPreferredFileNameNormalizer(
                 REQUEST
             ).normalize(
@@ -103,7 +103,7 @@ class BlobWrapper(Implicit, Persistent):
                 filename=filename,
             )
             # Add original filename in utf-8, ref to rfc2231
-            RESPONSE.setHeader("Content-disposition", header_value)
+            RESPONSE.setHeader('Content-disposition', header_value)
 
         request_range = handleRequestRange(self, length, REQUEST, RESPONSE)
         return self.getIterator(**request_range)
@@ -311,7 +311,7 @@ class BlobField(ObjectField):
         return blob.index_html(
             REQUEST=REQUEST, RESPONSE=RESPONSE,
             charset=charset, **kwargs
-            )
+        )
 
     @security.public
     def get_size(self, instance):
@@ -347,6 +347,7 @@ registerField(
 )
 
 # convenience base classes for blob-aware file & image fields
+
 
 class FileField(BlobField):
     """ base class for a blob-based file field """

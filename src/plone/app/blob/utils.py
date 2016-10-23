@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
+from OFS.Image import getImageInfo
+from Products.MimetypesRegistry.interfaces import IMimetypesRegistryTool
 from zope.component import queryUtility
 from zope.contenttype import guess_content_type
 
-from OFS.Image import getImageInfo
-from Products.MimetypesRegistry.interfaces import IMimetypesRegistryTool
 
 try:
     from PIL.Image import open as iopen
@@ -19,9 +19,11 @@ def guessMimetype(data, filename=None):
     pos = data.tell()
     mtr = queryUtility(IMimetypesRegistryTool)
     if mtr is not None:
-        d, f, mimetype = mtr(data.read(1 << 14), mimetype=None, filename=filename)
+        d, f, mimetype = mtr(data.read(1 << 14),
+                             mimetype=None, filename=filename)
     else:
-        mimetype, enc = guess_content_type(filename or '', data.read(), default=None)
+        mimetype, enc = guess_content_type(
+            filename or '', data.read(), default=None)
     data.seek(pos)
     return str(mimetype)
 
