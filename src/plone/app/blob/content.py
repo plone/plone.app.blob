@@ -1,34 +1,39 @@
 # -*- coding: utf-8 -*-
-from logging import getLogger
-from zope.interface import implementer
-from zope.lifecycleevent import ObjectCreatedEvent, ObjectModifiedEvent
-from zope.event import notify
-
 from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
-from ZODB.POSException import ConflictError
+from logging import getLogger
+from plone.app.blob.config import packageName
+from plone.app.blob.field import BlobMarshaller
+from plone.app.blob.interfaces import IATBlob
+from plone.app.blob.interfaces import IATBlobFile
+from plone.app.blob.interfaces import IATBlobImage
+from plone.app.blob.markings import markAs
+from plone.app.blob.mixins import ImageMixin
+from plone.app.imaging.interfaces import IImageScaleHandler
 from Products.Archetypes.atapi import AnnotationStorage
 from Products.Archetypes.atapi import ATFieldProperty
+from Products.ATContentTypes.content.base import ATCTFileContent
+from Products.ATContentTypes.content.file import ATFile
+from Products.ATContentTypes.content.schemata import ATContentTypeSchema
+from Products.ATContentTypes.content.schemata import finalizeATCTSchema
+from Products.CMFCore.permissions import ModifyPortalContent
+from Products.CMFCore.permissions import View
+from Products.CMFCore.utils import getToolByName
+from Products.GenericSetup.interfaces import IDAVAware
+from Products.MimetypesRegistry.common import MimeTypeException
+from ZODB.POSException import ConflictError
+from zope.event import notify
+from zope.interface import implementer
+from zope.lifecycleevent import ObjectCreatedEvent
+from zope.lifecycleevent import ObjectModifiedEvent
+
+
 try:
     from Products.LinguaPlone.public import registerType
     registerType        # make pyflakes happy...
 except ImportError:
     from Products.Archetypes.atapi import registerType
-from Products.CMFCore.permissions import View, ModifyPortalContent
-from Products.CMFCore.utils import getToolByName
-from Products.ATContentTypes.content.base import ATCTFileContent
-from Products.ATContentTypes.content.file import ATFile
-from Products.ATContentTypes.content.schemata import ATContentTypeSchema
-from Products.ATContentTypes.content.schemata import finalizeATCTSchema
-from Products.MimetypesRegistry.common import MimeTypeException
-from Products.GenericSetup.interfaces import IDAVAware
 
-from plone.app.imaging.interfaces import IImageScaleHandler
-from plone.app.blob.interfaces import IATBlob, IATBlobFile, IATBlobImage
-from plone.app.blob.config import packageName
-from plone.app.blob.field import BlobMarshaller
-from plone.app.blob.mixins import ImageMixin
-from plone.app.blob.markings import markAs
 
 ATBlobSchema = ATContentTypeSchema.copy()
 ATBlobSchema['title'].storage = AnnotationStorage()
@@ -87,8 +92,7 @@ class ATBlob(ATCTFileContent, ImageMixin):
     security = ClassSecurityInfo()
     cmf_edit_kws = ('file', )
 
-    security.declareProtected(View, 'index_html')
-
+    @security.protected(View)
     def index_html(self, REQUEST, RESPONSE):
         """ download the file inline or as an attachment """
         field = self.getPrimaryField()
@@ -100,22 +104,19 @@ class ATBlob(ATCTFileContent, ImageMixin):
             return field.download(self, REQUEST, RESPONSE)
     # helper & explicit accessor and mutator methods
 
-    security.declarePrivate('getBlobWrapper')
-
+    @security.private
     def getBlobWrapper(self):
         """ return wrapper class containing the actual blob """
         accessor = self.getPrimaryField().getAccessor(self)
         return accessor()
 
-    security.declareProtected(View, 'getFile')
-
+    @security.protected(View)
     def getFile(self, **kwargs):
         """ archetypes.schemaextender (wisely) doesn't mess with classes,
             so we have to provide our own accessor """
         return self.getBlobWrapper()
 
-    security.declareProtected(ModifyPortalContent, 'setFile')
-
+    @security.protected(ModifyPortalContent)
     def setFile(self, value, **kwargs):
         """ set the file contents and possibly also the id """
         mutator = self.getField('file').getMutator(self)
@@ -128,8 +129,7 @@ class ATBlob(ATCTFileContent, ImageMixin):
         return filename == title or not title
     # index accessor using portal transforms to provide index data
 
-    security.declarePrivate('getIndexValue')
-
+    @security.private
     def getIndexValue(self, mimetype='text/plain'):
         """ an accessor method used for indexing the field's value
             XXX: the implementation is mostly based on archetype's
@@ -144,17 +144,25 @@ class ATBlob(ATCTFileContent, ImageMixin):
         value = str(field.get(self))
         filename = field.getFilename(self)
         try:
-            return str(transforms.convertTo(mimetype, value,
-                mimetype=source, filename=filename))
+            return str(
+                transforms.convertTo(
+                    mimetype,
+                    value,
+                    mimetype=source,
+                    filename=filename,
+                )
+            )
         except (ConflictError, KeyboardInterrupt):
             raise
-        except:
-            getLogger(__name__).exception('exception while trying to convert '
-               'blob contents to "text/plain" for %r', self)
+        except Exception:
+            msg = (
+                'exception while trying to convert '
+                'blob contents to "text/plain" for %r'
+            )
+            getLogger(__name__).exception(msg, self)
     # compatibility methods when used as ATFile replacement
 
-    security.declareProtected(View, 'get_data')
-
+    @security.protected(View)
     def get_data(self):
         """ return data as a string;  this is highly inefficient as it
             loads the complete blob content into memory, but the method
@@ -182,20 +190,17 @@ class ATBlob(ATCTFileContent, ImageMixin):
             res = res.replace(ATBlob.__name__, 'ATImage', 1)
         return res
 
-    security.declareProtected(ModifyPortalContent, 'setFilename')
-
+    @security.protected(ModifyPortalContent)
     def setFilename(self, value, key=None):
         """ convenience method to set the file name on the field """
         self.getBlobWrapper().setFilename(value)
 
-    security.declareProtected(ModifyPortalContent, 'setFormat')
-
+    @security.protected(ModifyPortalContent)
     def setFormat(self, value):
         """ convenience method to set the mime-type """
         self.getBlobWrapper().setContentType(value)
 
-    security.declarePublic('getIcon')
-
+    @security.public
     def getIcon(self, relative_to_portal=False):
         """ calculate an icon based on mime-type """
         contenttype = self.getBlobWrapper().getContentType()
@@ -214,8 +219,7 @@ class ATBlob(ATCTFileContent, ImageMixin):
                 icon = icon[1:]
         return icon
 
-    security.declarePrivate('cmf_edit')
-
+    @security.private
     def cmf_edit(self, precondition='', file=None, title=None, **kwargs):
         # implement cmf_edit for image and file distinctly
         primary_field_name = self.getPrimaryField().getName()

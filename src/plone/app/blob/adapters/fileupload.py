@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
-from os.path import isfile
-from shutil import copyfileobj
 from os import name as os_name
-
-from zope.interface import implementer
-from zope.component import adapts
-from ZODB.blob import Blob
-
+from os.path import isfile
+from plone.app.blob.field import ReuseBlob
 from plone.app.blob.interfaces import IBlobbable
 from plone.app.blob.interfaces import IFileUpload
 from plone.app.blob.utils import guessMimetype
-from plone.app.blob.field import ReuseBlob
+from shutil import copyfileobj
+from ZODB.blob import Blob
+from zope.component import adapts
+from zope.interface import implementer
 
 
 @implementer(IBlobbable)
@@ -36,7 +34,7 @@ class BlobbableFileUpload(object):
             copyfileobj(self.context, blobfile)
             blobfile.close()
         elif filename is not None:
-            assert isfile(filename), 'invalid file for blob: %s' % filename
+            assert isfile(filename), 'invalid file for blob: {0}'.format(filename)  # noqa
             blob.consumeFile(filename)
         else:   # the cgi module only creates a tempfile for 1000+ bytes
             self.context.seek(0)    # just to be sure we copy everything...

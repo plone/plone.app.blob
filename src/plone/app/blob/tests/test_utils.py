@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-from unittest import TestCase
-
+from plone.app.blob import utils
 from plone.app.blob.tests.utils import getFile
 from plone.app.blob.utils import getImageSize
-from plone.app.blob import utils
+from unittest import TestCase
 
 
 class UtilityTests(TestCase):

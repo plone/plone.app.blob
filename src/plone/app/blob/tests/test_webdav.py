@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
+from plone.app.blob.interfaces import IATBlobImage
 from plone.app.blob.tests.base import ReplacementTestCase
 from plone.app.blob.tests.utils import getImage
-from plone.app.blob.interfaces import IATBlobImage
 from StringIO import StringIO
 
 
@@ -12,8 +12,8 @@ class WebDavTests(ReplacementTestCase):
         image.filename = 'original.gif'
         base = '/'.join(self.folder.getPhysicalPath())
         response = self.publish(base + '/image', request_method='PUT',
-            stdin=image, basic=self.getCredentials(),
-            env={'CONTENT_TYPE': 'image/gif'})
+                                stdin=image, basic=self.getCredentials(),
+                                env={'CONTENT_TYPE': 'image/gif'})
         self.assertEqual(response.getStatus(), 201)
         self.assertTrue('image' in self.folder.objectIds())
         obj = self.folder.image
@@ -29,8 +29,8 @@ class WebDavTests(ReplacementTestCase):
         image.filename = 'original.gif'
         base = '/'.join(self.folder.getPhysicalPath())
         response = self.publish(base + '/foo-image', request_method='PUT',
-            stdin=image, basic=self.getCredentials(),
-            env={'CONTENT_TYPE': 'image/gif'})
+                                stdin=image, basic=self.getCredentials(),
+                                env={'CONTENT_TYPE': 'image/gif'})
         self.assertEqual(response.getStatus(), 204)
         self.assertTrue('foo-image' in self.folder.objectIds())
         fooimage = self.folder['foo-image']

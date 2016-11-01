@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-from plone.app.blob.tests.base import ReplacementTestCase
+from PIL.Image import open
+from plone.app.blob.config import blobScalesAttr
+from plone.app.blob.scale import BlobImageScaleHandler
+from plone.app.blob.tests.base import changeAllowedSizes
 from plone.app.blob.tests.base import ReplacementFunctionalTestCase
+from plone.app.blob.tests.base import ReplacementTestCase
 from plone.app.blob.tests.utils import getData
 from plone.app.imaging.traverse import ImageTraverser
-from plone.app.blob.scale import BlobImageScaleHandler
-from plone.app.blob.config import blobScalesAttr
-from ZODB.blob import Blob
 from StringIO import StringIO
-from PIL.Image import open
-from plone.app.blob.tests.base import changeAllowedSizes
+from ZODB.blob import Blob
 
 
 class TraverseCounterMixin:
@@ -44,8 +44,8 @@ class BlobImageTraverseTests(TraverseCounterMixin, ReplacementTestCase):
         self.assertEqual(thumb.height, height)
         # also check the generated tag
         url = image.absolute_url() + '/image_thumb'
-        tag = '<img src="%s" alt="an image" title="an image" height="%d" width="%d" />'
-        self.assertEqual(thumb.tag(), tag % (url, height, width))
+        tag = '<img src="{0}" alt="an image" title="an image" height="{1}" width="{2}" />'  # noqa
+        self.assertEqual(thumb.tag(), tag.format(url, height, width))
         # calling str(...) on the scale should return the tag
         self.assertEqual(str(thumb), thumb.tag())
         # make sure the traversal adapter was call in fact
@@ -64,8 +64,8 @@ class BlobImageTraverseTests(TraverseCounterMixin, ReplacementTestCase):
         self.assertEqual(foo.height, 23)
         # also check the generated tag
         url = image.absolute_url() + '/image_foo'
-        tag = '<img src="%s" alt="an image" title="an image" height="23" width="23" />'
-        self.assertEqual(foo.tag(), tag % url)
+        tag = '<img src="{0}" alt="an image" title="an image" height="23" width="23" />'  # noqa
+        self.assertEqual(foo.tag(), tag.format(url))
         # and the other specified size
         bar = traverse(image, 'image_bar')
         self.assertEqual(bar.getContentType(), 'image/gif')
@@ -137,7 +137,10 @@ class BlobImageScaleTests(ReplacementTestCase):
         self.assertEqual(foo.height, 42)
 
 
-class BlobImagePublisherTests(TraverseCounterMixin, ReplacementFunctionalTestCase):
+class BlobImagePublisherTests(
+    TraverseCounterMixin,
+    ReplacementFunctionalTestCase,
+):
 
     def testPublishThumb(self):
         data = getData('image.gif')
@@ -155,7 +158,8 @@ class BlobImagePublisherTests(TraverseCounterMixin, ReplacementFunctionalTestCas
         self.assertEqual(response.getBody(), data)
         self.assertEqual(response.getHeader('Content-Type'), 'image/gif')
         # and last a scaled version
-        response = self.publish(base + '/foo-image/image_thumb', basic=credentials)
+        response = self.publish(
+            base + '/foo-image/image_thumb', basic=credentials)
         self.assertEqual(response.getStatus(), 200)
         self.assertEqual(response.getBody()[:6], 'GIF87a')
         self.assertEqual(response.getHeader('Content-Type'), 'image/gif')
@@ -168,7 +172,8 @@ class BlobImagePublisherTests(TraverseCounterMixin, ReplacementFunctionalTestCas
         # make sure traversing works as expected
         base = '/'.join(self.folder.getPhysicalPath())
         credentials = self.getCredentials()
-        response = self.publish(base + '/foo-image/image_foo', basic=credentials)
+        response = self.publish(
+            base + '/foo-image/image_foo', basic=credentials)
         self.assertEqual(response.getStatus(), 200)
         foo = open(StringIO(response.getBody()))
         self.assertEqual(foo.format, 'GIF')

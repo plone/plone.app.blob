@@ -12,10 +12,10 @@ except ImportError:
     haveContentMigrations = False
 
 from Acquisition import aq_base
-from Products.Archetypes.interfaces import ISchema
-from Products.CMFCore.utils import getToolByName
 from plone.app.blob.field import BlobWrapper
 from plone.app.blob.interfaces import IBlobField
+from Products.Archetypes.interfaces import ISchema
+from Products.CMFCore.utils import getToolByName
 from transaction import savepoint
 
 
@@ -52,7 +52,7 @@ def makeMigrator(context, portal_type, meta_type=None, remove_old_value=False):
 
         see `plone3 to 4 migration guide`__
 
-        .. __: https://plone.org/documentation/manual/upgrade-guide/version/upgrading-plone-3-x-to-4.0/updating-add-on-products-for-plone-4.0/use-plone.app.blob-based-blob-storage
+        .. __: http://docs.plone.org/4/en/manage/upgrading/version_specific_migration/p3x_to_p40_upgrade/index.html
         """
 
         src_portal_type = portal_type

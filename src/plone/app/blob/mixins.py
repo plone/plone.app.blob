@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
-from Products.CMFCore.permissions import View, ModifyPortalContent
+from plone.app.blob.utils import openBlob
+from plone.app.imaging.interfaces import IImageScaleHandler
 from Products.Archetypes.Field import ImageField
 from Products.ATContentTypes.lib.imagetransform import ATCTImageTransform
-
-from plone.app.imaging.interfaces import IImageScaleHandler
-from plone.app.blob.utils import openBlob
+from Products.CMFCore.permissions import ModifyPortalContent
+from Products.CMFCore.permissions import View
 
 
 class ImageFieldMixin(ImageField):
@@ -14,8 +14,7 @@ class ImageFieldMixin(ImageField):
 
     security = ClassSecurityInfo()
 
-    security.declareProtected(View, 'getSize')
-
+    @security.protected(View)
     def getSize(self, instance, scale=None):
         """ get size of scale or original """
         if scale is None:
@@ -27,8 +26,7 @@ class ImageFieldMixin(ImageField):
                 return image.width, image.height
         return 0, 0
 
-    security.declareProtected(View, 'getScale')
-
+    @security.protected(View)
     def getScale(self, instance, scale=None, **kwargs):
         """ get scale by name or original """
         if scale is None:
@@ -38,8 +36,7 @@ class ImageFieldMixin(ImageField):
             return handler.getScale(instance, scale)
         return None
 
-    security.declareProtected(ModifyPortalContent, 'createScales')
-
+    @security.protected(ModifyPortalContent)
     def createScales(self, instance, value=None):
         """ creates scales and stores them; largely based on the version from
             `Archetypes.Field.ImageField` """
@@ -47,7 +44,8 @@ class ImageFieldMixin(ImageField):
         handler = IImageScaleHandler(self)
         for name, size in sizes.items():
             width, height = size
-            data = handler.createScale(instance, name, width, height, data=value)
+            data = handler.createScale(
+                instance, name, width, height, data=value)
             if data is not None:
                 handler.storeScale(instance, name, **data)
 
@@ -59,45 +57,39 @@ class ImageMixin(ATCTImageTransform):
     security = ClassSecurityInfo()
     # accessor and mutator methods
 
-    security.declareProtected(View, 'getImage')
-
+    @security.protected(View)
     def getImage(self, **kwargs):
         """ archetypes.schemaextender (wisely) doesn't mess with classes,
             so we have to provide our own accessor """
         return self.getBlobWrapper()
 
-    security.declareProtected(ModifyPortalContent, 'setImage')
-
+    @security.protected(ModifyPortalContent)
     def setImage(self, value, **kwargs):
         """ set image contents and possibly also the id """
         mutator = self.getField('image').getMutator(self)
         mutator(value, **kwargs)
     # methods from ATImage
 
-    security.declareProtected(View, 'tag')
-
+    @security.protected(View)
     def tag(self, **kwargs):
         """ generate image tag using the api of the ImageField """
         field = self.getField('image')
         if field is not None:
             return field.tag(self, **kwargs)
 
-    security.declareProtected(View, 'getSize')
-
+    @security.protected(View)
     def getSize(self, scale=None):
         field = self.getField('image')
         if field is not None:
             return field.getSize(self, scale=scale)
 
-    security.declareProtected(View, 'getWidth')
-
+    @security.protected(View)
     def getWidth(self, scale=None):
         size = self.getSize(scale)
         if size:
             return size[0]
 
-    security.declareProtected(View, 'getHeight')
-
+    @security.protected(View)
     def getHeight(self, scale=None):
         size = self.getSize(scale)
         if size:
@@ -107,8 +99,7 @@ class ImageMixin(ATCTImageTransform):
     height = ComputedAttribute(getHeight, 1)
     # methods from ATCTImageTransform
 
-    security.declarePrivate('getImageAsFile')
-
+    @security.private
     def getImageAsFile(self, img=None, scale=None):
         """ get the img as file like object """
         if img is None:

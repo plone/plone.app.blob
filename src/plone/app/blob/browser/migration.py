@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_inner
+from plone.app.blob.migrations import getATBlobFilesMigrationWalker
+from plone.app.blob.migrations import getATBlobImagesMigrationWalker
+from plone.app.blob.migrations import getATFilesMigrationWalker
+from plone.app.blob.migrations import haveContentMigrations
+from plone.app.blob.migrations import migrateATBlobFiles
+from plone.app.blob.migrations import migrateATBlobImages
+from plone.app.blob.migrations import migrateATFiles
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
-
-from plone.app.blob.migrations import haveContentMigrations
-from plone.app.blob.migrations import migrateATFiles
-from plone.app.blob.migrations import getATFilesMigrationWalker
-from plone.app.blob.migrations import migrateATBlobFiles
-from plone.app.blob.migrations import getATBlobFilesMigrationWalker
-from plone.app.blob.migrations import migrateATBlobImages
-from plone.app.blob.migrations import getATBlobImagesMigrationWalker
 
 
 class BlobMigrationView(BrowserView):
@@ -29,13 +28,19 @@ class BlobMigrationView(BrowserView):
         ttool = getToolByName(context, 'portal_types')
         fti = ttool.get(walker.dst_portal_type)
         if fti and fti.product != 'plone.app.blob':
-            url = '%s/prefs_install_products_form' % portal_url
-            msg = _(u'Please install `plone.app.blob` to be able to migrate to blobs.')
+            url = '{0}/prefs_install_products_form'.format(portal_url)
+            msg = _(
+                u'Please install `plone.app.blob` to be able to migrate to '
+                u'blobs.'
+            )
             IStatusMessage(request).addStatusMessage(msg, type='warning')
             options['notinstalled'] = 42
             options['installer'] = url
         elif not haveContentMigrations:
-            msg = _(u'Please install contentmigrations to be able to migrate to blobs.')
+            msg = _(
+                u'Please install contentmigrations to be able to migrate to '
+                u'blobs.'
+            )
             IStatusMessage(request).addStatusMessage(msg, type='warning')
             options['nomigrations'] = 42
         elif clicked('migrate'):
@@ -44,8 +49,8 @@ class BlobMigrationView(BrowserView):
             lines = output.split('\n')
             count = len([l for l in lines if l.startswith('Migrating')])
             msg = _(u'blob_migration_info',
-                default=u'Blob migration performed for ${count} item(s).',
-                mapping={'count': count})
+                    default=u'Blob migration performed for ${count} item(s).',
+                    mapping={'count': count})
             IStatusMessage(request).addStatusMessage(msg, type='info')
             options['count'] = count
             options['output'] = output

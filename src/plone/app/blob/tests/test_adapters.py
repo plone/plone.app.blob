@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
-import os
-from ZODB.blob import Blob
-from OFS.Image import File, Image
-from Products.ATContentTypes.content.image import ATImage
-from Products.ATContentTypes.content.file import ATFile
+from OFS.Image import File
+from OFS.Image import Image
 from plone.app.blob.interfaces import IBlobbable
 from plone.app.blob.tests.base import BlobTestCase
-from plone.app.blob.tests.utils import getFile, getImage
+from plone.app.blob.tests.utils import getFile
+from plone.app.blob.tests.utils import getImage
+from Products.ATContentTypes.content.file import ATFile
+from Products.ATContentTypes.content.image import ATImage
 from StringIO import StringIO
 from xmlrpclib import Binary
+from ZODB.blob import Blob
+
+import os
 
 
 class AdapterTests(BlobTestCase):
@@ -20,7 +23,7 @@ class AdapterTests(BlobTestCase):
         target = Blob()
         blobbable.feed(target)
         self.assertEqual(target.open('r').read(),
-            getFile('plone.pdf').read())
+                         getFile('plone.pdf').read())
         self.assertEqual(blobbable.filename(), 'foo.pdf')
         self.assertEqual(blobbable.mimetype(), 'application/pdf')
 
@@ -30,7 +33,7 @@ class AdapterTests(BlobTestCase):
         target = Blob()
         blobbable.feed(target)
         self.assertEqual(target.open('r').read(),
-            getFile('plone.pdf').read())
+                         getFile('plone.pdf').read())
         self.assertEqual(blobbable.filename(), '')
         self.assertEqual(blobbable.mimetype(), 'application/pdf')
 
@@ -67,5 +70,5 @@ class AdapterTests(BlobTestCase):
             blobbable.feed(target)
             self.assertEqual(target.open('r').read(),
                              getFile('image.gif').read())
-            self.assertEquals(blobbable.filename(), 'image.gif')
-            self.assertEquals(blobbable.mimetype(), 'image/gif')
+            self.assertEqual(blobbable.filename(), 'image.gif')
+            self.assertEqual(blobbable.mimetype(), 'image/gif')

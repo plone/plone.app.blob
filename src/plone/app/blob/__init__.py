@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from plone.app.blob.config import packageName, permissions
+from plone.app.blob.config import packageName
+from plone.app.blob.config import permissions
 
 
 def initialize(context):
@@ -20,19 +21,21 @@ def initialize(context):
     content_types, constructors, ftis = atapi.process_types(
         atapi.listTypes(packageName), packageName)
     for atype, constructor in zip(content_types, constructors):
-        utils.ContentInit("%s: %s" % (packageName, atype.portal_type),
+        utils.ContentInit(
+            '{0}: {1}'.format(packageName, atype.portal_type),
             content_types=(atype, ),
             permission=permissions[atype.portal_type],
             extra_constructors=(constructor, ),
-            ).initialize(context)
+        ).initialize(context)
 
     replacement_types = (
         ('File', content.addATBlobFile),
         ('Image', content.addATBlobImage),
     )
     for name, constructor in replacement_types:
-        utils.ContentInit("%s: %s" % (packageName, name),
+        utils.ContentInit(
+            '{0}: {1}'.format(packageName, name),
             content_types=(content.ATBlob, ),
             permission=atct.permissions.get(name),
             extra_constructors=(constructor, ),
-            ).initialize(context)
+        ).initialize(context)

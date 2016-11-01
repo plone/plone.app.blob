@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-from plone.app.blob.tests.base import BlobTestCase, BlobFunctionalTestCase
-
-from plone.app.blob.utils import guessMimetype
-from plone.app.blob.tests.utils import makeFileUpload, getImage, getData
-from StringIO import StringIO
 from os.path import isfile
+from plone.app.blob.tests.base import BlobFunctionalTestCase
+from plone.app.blob.tests.base import BlobTestCase
+from plone.app.blob.tests.utils import getData
+from plone.app.blob.tests.utils import getImage
+from plone.app.blob.tests.utils import makeFileUpload
+from plone.app.blob.utils import guessMimetype
+from StringIO import StringIO
+
 
 largefile_data = ('test' * 2048)
 pdf_data = '%PDF-1.4 fake pdf...'
@@ -21,7 +24,7 @@ class IntegrationTests(BlobTestCase):
     def testFileName(self):
         """ checks fileupload object supports the filename """
         f = makeFileUpload(largefile_data, 'test.txt')
-        self.assert_(isfile(f.name))
+        self.assertTrue(isfile(f.name))
 
     def testMimetypeGuessing(self):
         gif = StringIO(getImage())
@@ -199,13 +202,15 @@ class IntegrationTests(BlobTestCase):
 class FunctionalIntegrationTests(BlobFunctionalTestCase):
 
     def testDefaultView(self):
-        self.folder.invokeFactory('Blob', 'blob', title='Foo Bar', file=pdf_data)
+        self.folder.invokeFactory(
+            'Blob', 'blob', title='Foo Bar', file=pdf_data)
         base = '/'.join(self.folder.blob.getPhysicalPath())
         credentials = self.getCredentials()
         output = str(self.publish(base + '/view', basic=credentials))
         self.assertTrue('Foo Bar' in output, '404?')
         self.assertTrue('PDF document' in output, '404?')
-        self.assertFalse("We're sorry, but that page doesn't exist" in output, '404!')
+        self.assertFalse(
+            "We're sorry, but that page doesn't exist" in output, '404!')
 
     def testInlineMimetypes(self):
         obj = self.folder[self.folder.invokeFactory('Blob', 'blob')]
@@ -213,18 +218,20 @@ class FunctionalIntegrationTests(BlobFunctionalTestCase):
         def disposition(mimetype, filename):
             obj.setFormat(mimetype)
             obj.setFilename(filename)
-            response = self.publish('/%s' % obj.absolute_url(relative=True),
-                basic=self.getCredentials())
+            response = self.publish(
+                '/{0}'.format(obj.absolute_url(relative=True)),
+                basic=self.getCredentials()
+            )
             self.assertEqual(response.getStatus(), 200)
             return response.getHeader('Content-Disposition')
         # only PDFs and Office files are shown inline
         self.assertEqual(disposition('application/pdf', 'foo.pdf'),
-            'inline; filename="foo.pdf"')
+                         'inline; filename="foo.pdf"')
         self.assertEqual(disposition('application/msword', 'foo.doc'),
-            'inline; filename="foo.doc"')
+                         'inline; filename="foo.doc"')
         self.assertEqual(disposition('application/x-msexcel', 'foo.xls'),
-            'inline; filename="foo.xls"')
+                         'inline; filename="foo.xls"')
         self.assertEqual(disposition('text/plain', 'foo.txt'),
-            'attachment; filename="foo.txt"')
+                         'attachment; filename="foo.txt"')
         self.assertEqual(disposition('application/octet-stream', 'foo.exe'),
-            'attachment; filename="foo.exe"')
+                         'attachment; filename="foo.exe"')

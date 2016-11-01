@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-from unittest import TestSuite, defaultTestLoader
-from plone.app.blob.tests.base import BlobLinguaTestCase
-
 from DateTime import DateTime
-from Products.CMFCore.utils import getToolByName
-from plone.app.blob.tests.utils import getData, hasLinguaPlone
+from plone.app.blob.tests.base import BlobLinguaTestCase
+from plone.app.blob.tests.utils import getData
+from plone.app.blob.tests.utils import hasLinguaPlone
 from plone.app.blob.tests.utils import makeFileUpload
+from Products.CMFCore.utils import getToolByName
+from unittest import defaultTestLoader
+from unittest import TestSuite
 
 
 class LinguaTests(BlobLinguaTestCase):
@@ -14,7 +15,7 @@ class LinguaTests(BlobLinguaTestCase):
         self.setRoles(('Manager', ))
         ltool = getToolByName(self.portal, 'portal_languages')
         ltool.manage_setLanguageSettings(defaultLanguage='en',
-            supportedLanguages=('en', 'de'))
+                                         supportedLanguages=('en', 'de'))
 
     def testCreateBlobelFish(self):
         guide = getData('plone.pdf')

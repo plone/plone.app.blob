@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-from plone.app.testing.bbb import PloneTestCase
-from plone.app.blob.tests.layer import BlobLayer, BlobReplacementLayer
+from plone.app.blob.tests.layer import BlobLayer
 from plone.app.blob.tests.layer import BlobLinguaLayer
+from plone.app.blob.tests.layer import BlobReplacementLayer
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
-from zope.component import queryUtility
+from plone.app.testing.bbb import PloneTestCase
 from plone.registry.interfaces import IRegistry
-
 from plone.testing.z2 import Browser
+from zope.component import queryUtility
 
 
 class BlobTestCase(PloneTestCase):
@@ -16,13 +16,13 @@ class BlobTestCase(PloneTestCase):
     layer = BlobLayer
 
     def getCredentials(self):
-        return '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD)
+        return '{0}:{1}'.format(TEST_USER_NAME, TEST_USER_PASSWORD)
 
     def getBrowser(self, loggedIn=True):
         """ instantiate and return a testbrowser for convenience """
         browser = Browser(self.layer['app'])
         if loggedIn:
-            auth = 'Basic %s' % self.getCredentials()
+            auth = 'Basic {0}'.format(self.getCredentials())
             browser.addHeader('Authorization', auth)
         return browser
 
@@ -57,5 +57,6 @@ def changeAllowedSizes(portal, sizes):
         # Plone 5, no longer stored here
         registry = queryUtility(IRegistry)
         from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
-        settings = registry.forInterface(IImagingSchema, prefix="plone", check=False)
+        settings = registry.forInterface(
+            IImagingSchema, prefix='plone', check=False)
         settings.allowed_sizes = sizes

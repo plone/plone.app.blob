@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# XXX @gforcada: This got merged into Zope, will be available on 
+# XXX @gforcada: This got merged into Zope, will be available on
 # Zope 4.0a2+.
 # Merged by Hanno:
 # https://github.com/zopefoundation/Zope/commit/4d5910f3130dbddd4
@@ -9,11 +9,13 @@
 # file uploads are not anonymous, but instead provide a file name that
 # can later be used with the blob class' `consumeFile` method...
 
-from ZPublisher import HTTPRequest
-from tempfile import mkstemp, _TemporaryFileWrapper as TFW
 from cgi import FieldStorage
+from os import fdopen
+from os import unlink
 from os.path import isfile
-from os import unlink, fdopen
+from tempfile import _TemporaryFileWrapper as TFW
+from tempfile import mkstemp
+from ZPublisher import HTTPRequest
 
 
 class TemporaryFileWrapper(TFW):
@@ -47,9 +49,9 @@ original_init = HTTPRequest.FileUpload.__init__
 
 def initFileUpload(self, aFieldStorage):
     original_init(self, aFieldStorage)
-    file = aFieldStorage.file
-    if not hasattr(file, '__methods__') and hasattr(file, 'name'):
-        self.__dict__['name'] = file.name
+    afile = aFieldStorage.file
+    if not hasattr(afile, '__methods__') and hasattr(afile, 'name'):
+        self.__dict__['name'] = afile.name
 
 HTTPRequest.FieldStorage = NamedFieldStorage
 HTTPRequest.ZopeFieldStorage = NamedFieldStorage

@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-from ZPublisher.HTTPRequest import HTTPRequest
-from StringIO import StringIO
 from base64 import decodestring
-from os.path import dirname, join
+from os.path import dirname
+from os.path import join
 from plone.app.blob import tests
+from StringIO import StringIO
+from ZPublisher.HTTPRequest import HTTPRequest
+
 
 test_environment = {
     'CONTENT_TYPE': 'multipart/form-data; boundary=12345',
@@ -12,19 +14,19 @@ test_environment = {
     'SERVER_PORT': '80',
 }
 
-upload_request = '''
+upload_request = """
 --12345
-Content-Disposition: form-data; name="file"; filename="%s"
+Content-Disposition: form-data; name="file"; filename="{0}"
 Content-Type: application/octet-stream
-Content-Length: %d
+Content-Length: {1}
 
-%s
+{2}
 
-'''
+"""
 
 
 def makeFileUpload(data, filename):
-    request_data = upload_request % (filename, len(data), data)
+    request_data = upload_request.format(filename, len(data), data)
     req = HTTPRequest(StringIO(request_data), test_environment.copy(), None)
     req.processInputs()
     return req.form.get('file')
