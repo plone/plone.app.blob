@@ -4,14 +4,6 @@ Changelog
 1.6.5 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Add coding headers on python files.
