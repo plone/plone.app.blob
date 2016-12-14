@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from plone.app.blob.adapters.atfile import BlobbableATFile
-from Products.ATContentTypes.interface import IATImage
+from Products.ATContentTypes.interfaces import IATImage
 from zope.component import adapts
 
 

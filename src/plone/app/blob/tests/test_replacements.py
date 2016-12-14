@@ -15,15 +15,14 @@ from Products.Archetypes.atapi import ImageField
 from Products.Archetypes.Field import Image
 from Products.ATContentTypes.content.file import ATFile
 from Products.ATContentTypes.content.image import ATImage
-from Products.ATContentTypes.interface import file as atfile
-from Products.ATContentTypes.interface import image as atimage
-from Products.ATContentTypes.interfaces import IATFile as Z2IATFile
-from Products.ATContentTypes.interfaces import IATImage as Z2IATImage
+from Products.ATContentTypes.interfaces import IATFile
+from Products.ATContentTypes.interfaces import IFileContent
+from Products.ATContentTypes.interfaces import IATImage
+from Products.ATContentTypes.interfaces import IImageContent
 from Products.GenericSetup.interfaces import IFilesystemExporter
 from Products.GenericSetup.interfaces import IFilesystemImporter
 from ZODB.blob import SAVEPOINT_SUFFIX
 from zope.annotation import IAnnotations
-from zope.interface.interfaces import IInterface
 
 
 def permissionsFor(name, product):
@@ -65,21 +64,12 @@ class FileReplacementTests(ReplacementTestCase):
 
     def testFileBlobInterfaces(self):
         foo = self.folder[self.folder.invokeFactory('File', 'foo')]
-        self.assertTrue(atfile.IATFile.providedBy(foo), 'no IATFile?')
+        self.assertTrue(IATFile.providedBy(foo), 'no IATFile?')
         self.assertTrue(
-            atfile.IFileContent.providedBy(foo),
+            IFileContent.providedBy(foo),
             'no IFileContent?'
         )
         self.assertTrue(IATBlobFile.providedBy(foo), 'no IATBlobFile?')
-        if not IInterface.providedBy(Z2IATFile):    # this is zope < 2.12
-            self.assertTrue(
-                Z2IATFile.isImplementedBy(foo),
-                'no zope2 IATFile?'
-            )
-            self.assertFalse(
-                Z2IATImage.isImplementedBy(foo),
-                'zope2 IATImage?'
-            )
 
     def testFileMigration(self):
         foo = self.folder[
@@ -268,14 +258,9 @@ class ImageReplacementTests(ReplacementTestCase):
 
     def testImageBlobInterfaces(self):
         foo = self.folder[self.folder.invokeFactory('Image', 'foo')]
-        self.assertTrue(atimage.IATImage.providedBy(foo), 'no IATImage?')
-        self.assertTrue(atimage.IImageContent.providedBy(foo),
-                        'no IImageContent?')
+        self.assertTrue(IATImage.providedBy(foo), 'no IATImage?')
+        self.assertTrue(IImageContent.providedBy(foo), 'no IImageContent?')
         self.assertTrue(IATBlobImage.providedBy(foo), 'no IATBlobImage?')
-        if not IInterface.providedBy(Z2IATFile):    # this is zope < 2.12
-            self.assertTrue(Z2IATImage.isImplementedBy(foo),
-                            'no zope2 IATImage?')
-            self.assertFalse(Z2IATFile.isImplementedBy(foo), 'zope2 IATFile?')
 
     def testImageMigration(self):
         gif = getImage()

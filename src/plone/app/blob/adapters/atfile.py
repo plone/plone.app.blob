@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone.app.blob.adapters.ofsfile import BlobbableOFSFile
 from plone.app.blob.interfaces import IBlobbable
-from Products.ATContentTypes.interface import IATFile
+from Products.ATContentTypes.interfaces import IATFile
 from zope.component import adapts
 from zope.interface import implementer
 

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from plone.app.blob.markings import unmarkAs
 from plone.app.blob.tests.base import ReplacementTestCase  # import first!
-from Products.ATContentTypes.interface import file as atfile
-from Products.ATContentTypes.interface import image as atimage
+from Products.ATContentTypes.interfaces import file as atfile
+from Products.ATContentTypes.interfaces import image as atimage
 
 
 class MaintenanceViewTests(ReplacementTestCase):

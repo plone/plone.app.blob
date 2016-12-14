@@ -14,7 +14,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Do not mark File/Image blob objects with ATContentTypes Z2 interfaces.
+  Upgrade step still needed!
+  [thet]
 
 
 1.6.5 (2016-11-09)
