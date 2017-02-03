@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Make doctests work with new zope.testbrowser based on Webtest.
+  [pbauer]
 
 
 1.6.5 (2016-11-09)
