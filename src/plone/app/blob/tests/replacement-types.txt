@@ -26,8 +26,8 @@ Let's start with creating a "File" content item:
   'http://nohost/plone/.../portal_factory/File/file.../edit...'
   >>> browser.getControl(name='title').value = 'Foo'
   >>> control = browser.getControl(name='file_file')
-  >>> control.filename = 'foo.pdf'
-  >>> control.value = StringIO('%PDF-1.4 fake pdf...' + 'foo' * 1000)
+  >>> testfile = StringIO('%PDF-1.4 fake pdf...' + 'foo' * 1000)
+  >>> control.add_file(testfile, None, 'foo.pdf')
   >>> browser.getControl('Save').click()
 
   >>> browser.url
@@ -42,8 +42,8 @@ Now let's make sure we can also edit it:
   >>> browser.getControl(name='title').value = 'Foobar'
   >>> browser.getControl('Replace with new file').selected = True
   >>> control = browser.getControl(name='file_file')
-  >>> control.filename = 'foobar.pdf'
-  >>> control.value = StringIO('%PDF-1.4 fake pdf...' + 'foobar' * 1000)
+  >>> testfile = StringIO('%PDF-1.4 fake pdf...' + 'foo' * 1000)
+  >>> control.add_file(testfile, None, 'foobar.pdf')
   >>> browser.getControl('Save').click()
 
   >>> browser.url
@@ -84,8 +84,7 @@ Next a similar test is conducted for an "Image" content item:
   'http://nohost/plone/.../portal_factory/Image/image.../edit...'
   >>> browser.getControl(name='title').value = 'Bar'
   >>> control = browser.getControl(name='image_file')
-  >>> control.filename = 'bar.gif'
-  >>> control.value = getFile('image.png')
+  >>> control.add_file(getFile('image.png'), None, 'bar.gif')
   >>> browser.getControl('Save').click()
 
   >>> browser.url
@@ -107,8 +106,7 @@ however, so we can check it was actually updated:
   >>> browser.getControl(name='title').value = 'Foobar'
   >>> browser.getControl('Replace with new image').selected = True
   >>> control = browser.getControl(name='image_file')
-  >>> control.filename = 'foobar.gif'
-  >>> control.value = getFile('image.gif')
+  >>> control.add_file(getFile('image.gif'), None, 'foobar.gif')
   >>> browser.getControl('Save').click()
 
   >>> browser.url

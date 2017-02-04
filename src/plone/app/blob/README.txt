@@ -163,8 +163,8 @@ using a testbrowser:
   'http://nohost/plone/.../portal_factory/Blob/blob.../edit...'
   >>> browser.getControl(name='title').value = 'Foo bar'
   >>> control = browser.getControl(name='file_file')
-  >>> control.filename = 'foo.pdf'
-  >>> control.value = StringIO('%PDF-1.4 fake pdf...' + 'foo' * 1000)
+  >>> testfile = StringIO('%PDF-1.4 fake pdf...' + 'foo' * 1000)
+  >>> control.add_file(testfile, None, 'foo.pdf')
   >>> browser.getControl('Save').click()
   >>> browser.url
   'http://nohost/plone/.../foo-bar/view'
