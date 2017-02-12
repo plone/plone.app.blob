@@ -4,14 +4,6 @@ Changelog
 1.6.6 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Make doctests work with new zope.testbrowser based on Webtest.
