@@ -2,6 +2,9 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="plone.app.blob">
 
+  <!-- Make sure core permissions are defined.-->
+  <include package="Products.CMFCore" />
+
   <browser:page
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       name="blob-migration"
