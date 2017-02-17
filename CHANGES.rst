@@ -14,7 +14,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Make sure core permissions are defined.
+  This fixes `issue #30 <https://github.com/plone/plone.app.blob/issues/30>`_.
+  [maurits]
 
 
 1.6.6 (2017-02-12)
