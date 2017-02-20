@@ -4,14 +4,6 @@ Changelog
 1.6.7 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Make sure core permissions are defined.
