@@ -4,19 +4,11 @@ Changelog
 1.7 (unreleased)
 ----------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Adapt tests to the new indexing operations queueing.
   Part of PLIP 1343: https://github.com/plone/Products.CMFPlone/issues/1343
   [gforcada]
-
-Bug fixes:
-
-- *add item here*
 
 
 1.6.7 (2017-02-20)
