@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Do not use imports from ``Products.ATContentTypes.interface`` deprecated since 2009.
+  [jensens]
 
 
 1.7 (2017-04-01)

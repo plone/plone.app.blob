@@ -5,8 +5,8 @@
 from plone.app.blob.interfaces import IATBlobBlob
 from plone.app.blob.interfaces import IATBlobFile
 from plone.app.blob.interfaces import IATBlobImage
-from Products.ATContentTypes.interface import file as atfile
-from Products.ATContentTypes.interface import image as atimage
+from Products.ATContentTypes.interfaces import file as atfile
+from Products.ATContentTypes.interfaces import image as atimage
 from Products.ATContentTypes.interfaces import IATFile as Z2IATFile
 from Products.ATContentTypes.interfaces import IATImage as Z2IATImage
 from zope.interface import alsoProvides
