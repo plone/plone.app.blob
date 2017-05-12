@@ -15,8 +15,8 @@ from Products.Archetypes.atapi import ImageField
 from Products.Archetypes.Field import Image
 from Products.ATContentTypes.content.file import ATFile
 from Products.ATContentTypes.content.image import ATImage
-from Products.ATContentTypes.interface import file as atfile
-from Products.ATContentTypes.interface import image as atimage
+from Products.ATContentTypes.interfaces import file as atfile
+from Products.ATContentTypes.interfaces import image as atimage
 from Products.ATContentTypes.interfaces import IATFile as Z2IATFile
 from Products.ATContentTypes.interfaces import IATImage as Z2IATImage
 from Products.GenericSetup.interfaces import IFilesystemExporter
