@@ -4,14 +4,6 @@ Changelog
 1.7.1 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Do not use imports from ``Products.ATContentTypes.interface`` deprecated since 2009.
