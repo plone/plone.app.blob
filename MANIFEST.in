@@ -1,7 +1,7 @@
-include *
+include *.rst
 
-recursive-include docs *
-recursive-include src *
-recursive-include test-patches *
+graft docs
+graft src
+graft test-patches
 
-global-exclude *pyc
+global-exclude *.py[co]
