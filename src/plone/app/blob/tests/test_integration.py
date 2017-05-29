@@ -153,6 +153,21 @@ class IntegrationTests(BlobTestCase):
         iterator = blob.download(request)
         self.assertEqual(data[-20:], ''.join(iterator))
 
+    def testOutsideRange(self):
+        # ranges outside the file size also have to work
+        blob = self.folder['blob']
+        blob.setTitle('foo')
+        blob.setFile(getData('plone.pdf'))
+        data = blob.getFile().getBlob().open('r').read()
+        l = len(data)
+        request = self.folder.REQUEST
+        request.environ['HTTP_RANGE'] = 'bytes={}-{}'.format(l * 2, l * 3)
+        iterator = blob.download(request)
+        self.assertEqual(data, ''.join(iterator))
+        request.environ['HTTP_RANGE'] = 'bytes={}-'.format(l * 2)
+        iterator = blob.download(request)
+        self.assertEqual(data, ''.join(iterator))
+
     def testIcon(self):
         blob = self.folder.blob
         blob.update(file=getImage())

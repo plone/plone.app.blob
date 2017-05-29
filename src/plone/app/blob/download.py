@@ -73,12 +73,15 @@ def handleRequestRange(instance, length, REQUEST, RESPONSE):
                         ranges = None
             RESPONSE.setHeader('Accept-Ranges', 'bytes')
         if ranges and len(ranges) == 1:
-            [(start, end)] = expandRanges(ranges, length)
-            size = end - start
-            RESPONSE.setHeader('Content-Length', size)
-            RESPONSE.setHeader(
-                'Content-Range',
-                'bytes {0}-{1}/{2}'.format(start, end - 1, length))
-            RESPONSE.setStatus(206)  # Partial content
-            return dict(start=start, end=end)
+            try:
+                [(start, end)] = expandRanges(ranges, length)
+                size = end - start
+                RESPONSE.setHeader('Content-Length', size)
+                RESPONSE.setHeader(
+                    'Content-Range',
+                    'bytes {0}-{1}/{2}'.format(start, end - 1, length))
+                RESPONSE.setStatus(206)  # Partial content
+                return dict(start=start, end=end)
+            except ValueError:
+                return {}
     return {}
