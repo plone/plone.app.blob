@@ -4,14 +4,6 @@ Changelog
 1.7.2 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Handle ``ValueError`` exceptions when doing a range request.
