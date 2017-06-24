@@ -37,6 +37,7 @@ class SampleType(BaseContent):
     portal_type = 'SampleType'
     schema = SampleSchema
 
+
 permissions['SampleType'] = packageName + ': SampleType'
 registerType(SampleType, packageName)
 
@@ -63,7 +64,7 @@ class BaseFieldTests(ReplacementTestCase):
         image = self.create()
         sizes = image.getField('bar').getAvailableSizes(image)
         self.assertTrue('mini' in sizes)
-        self.assertEqual(sizes['mini'], (200, 200))
+        self.assertEqual(sizes['mini'], (400, 400))
 
     def testImageGlobalSizes(self):
         image = self.create()

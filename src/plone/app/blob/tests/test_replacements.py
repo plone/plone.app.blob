@@ -423,7 +423,7 @@ class ImageReplacementTests(ReplacementTestCase):
         image = self.folder[self.folder.invokeFactory('Image', 'foo')]
         sizes = image.getField('image').getAvailableSizes(image)
         self.assertTrue('mini' in sizes)
-        self.assertEqual(sizes['mini'], (200, 200))
+        self.assertEqual(sizes['mini'], (400, 400))
 
     def testImageGlobalSizes(self):
         image = self.folder[self.folder.invokeFactory('Image', 'foo')]

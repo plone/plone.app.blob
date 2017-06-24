@@ -20,7 +20,7 @@ the dimensions of the image itself and one of the scales:
   >>> traverse = portal.REQUEST.traverseName
   >>> scale = traverse(image, 'image_mini')
   >>> scale.width, scale.height
-  (200, 80)
+  (400, 160)
 
 Let's also check a custom scale size:
 
