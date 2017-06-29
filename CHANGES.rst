@@ -10,7 +10,9 @@ New:
 
 Fixes:
 
-- *add item here*
+- Handle ``ValueError`` exceptions when doing a range request.
+  This fixes `issue #39 <https://github.com/plone/plone.app.blob/issues/39>`_.
+  [batlock666]
 
 
 1.5.17 (2016-02-15)
