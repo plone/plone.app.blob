@@ -1,12 +1,8 @@
 Changelog
 =========
 
-1.5.18 (unreleased)
+1.5.18 (2017-06-29)
 -------------------
-
-New:
-
-- *add item here*
 
 Fixes:
 
