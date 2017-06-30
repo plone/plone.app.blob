@@ -157,10 +157,10 @@ class IntegrationTests(BlobTestCase):
         data = blob.getFile().getBlob().open('r').read()
         l = len(data)
         request = self.folder.REQUEST
-        request.environ['HTTP_RANGE'] = 'bytes={}-{}'.format(l * 2, l * 3)
+        request.environ['HTTP_RANGE'] = 'bytes={0}-{1}'.format(l * 2, l * 3)
         iterator = blob.download(request)
         self.assertEqual(data, ''.join(iterator))
-        request.environ['HTTP_RANGE'] = 'bytes={}-'.format(l * 2)
+        request.environ['HTTP_RANGE'] = 'bytes={0}-'.format(l * 2)
         iterator = blob.download(request)
         self.assertEqual(data, ''.join(iterator))
 
