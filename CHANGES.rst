@@ -4,7 +4,9 @@ Changelog
 1.5.19 (unreleased)
 -------------------
 
-- Nothing changed yet.
+Bug fixes:
+
+- Fixed syntax error in tests with Python 2.6.  [maurits]
 
 
 1.5.18 (2017-06-29)
