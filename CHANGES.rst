@@ -14,7 +14,7 @@ New features:
 
 Bug fixes:
 
-- Fix some Python 2 / 3 comptible imports and string types with six.
+- Fix some Python 2 / 3 compatible imports and string types with six.
   [rudaporto]
 
 
