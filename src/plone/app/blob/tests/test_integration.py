@@ -6,7 +6,7 @@ from plone.app.blob.tests.utils import getData
 from plone.app.blob.tests.utils import getImage
 from plone.app.blob.tests.utils import makeFileUpload
 from plone.app.blob.utils import guessMimetype
-from StringIO import StringIO
+from six import StringIO
 
 
 largefile_data = ('test' * 2048)

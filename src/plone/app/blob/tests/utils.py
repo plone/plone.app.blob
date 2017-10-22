@@ -3,7 +3,7 @@ from base64 import decodestring
 from os.path import dirname
 from os.path import join
 from plone.app.blob import tests
-from StringIO import StringIO
+from six import StringIO
 from ZPublisher.HTTPRequest import HTTPRequest
 
 

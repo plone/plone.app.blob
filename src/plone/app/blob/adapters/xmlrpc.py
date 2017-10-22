@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone.app.blob.interfaces import IBlobbable
 from plone.app.blob.utils import guessMimetype
-from xmlrpclib import Binary
+from six.moves.xmlrpc_client import Binary
 from zope.component import adapts
 from zope.interface import implementer
 

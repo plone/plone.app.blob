@@ -27,11 +27,13 @@ from Products.Archetypes.atapi import PrimaryFieldMarshaller
 from Products.Archetypes.Registry import registerField
 from Products.Archetypes.utils import contentDispositionHeader
 from Products.CMFCore.permissions import View
-from StringIO import StringIO
+from six import StringIO
 from transaction import savepoint
 from webdav.common import rfc1123_date
 from ZODB.blob import Blob
 from zope.interface import implementer
+
+import six
 
 
 @implementer(IWebDavUpload)
@@ -91,8 +93,8 @@ class BlobWrapper(Implicit, Persistent):
 
         filename = self.getFilename()
         if filename is not None:
-            if not isinstance(filename, unicode):
-                filename = unicode(filename, charset, errors='ignore')
+            if not isinstance(filename, six.text_type):
+                filename = six.text_type(filename, charset, errors='ignore')
             filename = IUserPreferredFileNameNormalizer(
                 REQUEST
             ).normalize(
@@ -282,8 +284,8 @@ class BlobField(ObjectField):
                     request.form.get('title')
                 ):
                     return  # don't rename now if AT should do it from title
-            if not isinstance(filename, unicode):
-                filename = unicode(filename, instance.getCharset())
+            if not isinstance(filename, six.text_type):
+                filename = six.text_type(filename, instance.getCharset())
             filename = IUserPreferredFileNameNormalizer(
                 request
             ).normalize(

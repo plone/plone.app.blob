@@ -7,7 +7,7 @@ from plone.app.blob.tests.base import ReplacementFunctionalTestCase
 from plone.app.blob.tests.base import ReplacementTestCase
 from plone.app.blob.tests.utils import getData
 from plone.app.imaging.traverse import ImageTraverser
-from StringIO import StringIO
+from six import StringIO
 from ZODB.blob import Blob
 
 
