@@ -13,6 +13,7 @@ Let's start with creating a "File" content item:
   >>> from StringIO import StringIO
   >>> from plone.testing.z2 import Browser
   >>> browser = Browser(layer['app'])
+  >>> browser.handleErrors = False
   >>> from plone.app.testing import TEST_USER_NAME, TEST_USER_PASSWORD
   >>> browser.addHeader('Authorization',
   ...                   'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD))
