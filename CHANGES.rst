@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Adapt test to changes in ZPublisher.HTTPResponse.setHeader
+  [pbauer]
 
 
 1.7.2 (2017-06-03)
