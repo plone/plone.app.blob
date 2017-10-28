@@ -57,11 +57,12 @@ class FileReplacementTests(ReplacementTestCase):
         self.assertEqual(foo.get_size(), 10)
         request = foo.REQUEST
         response = request.RESPONSE
-        self.assertEqual(foo.index_html(
-            request, response).next(), 'plain text')
+        index = foo.index_html(request, response)
+        self.assertEqual(index.next(), 'plain text')
         self.assertEqual(response.getStatus(), 200)
         self.assertEqual(response.headers['content-length'], '10')
-        self.assertEqual(response.headers['content-type'], 'text/plain')
+        self.assertTrue(
+            response.headers['content-type'].startswith('text/plain'))
 
     def testFileBlobInterfaces(self):
         foo = self.folder[self.folder.invokeFactory('File', 'foo')]
