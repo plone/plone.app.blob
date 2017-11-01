@@ -43,4 +43,9 @@
   <adapter
     factory=".scale.BlobImageScaleFactory" />
 
+  <utility
+    name="plone.app.blob.monkey.TemporaryFileWrapper"
+    provides="plone.namedfile.interfaces.IStorage"
+    factory="plone.app.blob.storage.TemporaryFileWrapperStorage" />
+
 </configure>

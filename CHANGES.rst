@@ -10,7 +10,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Add plone.namedfile storage utility for TemporaryFileWrapper
+  [enfold-josh]
 
 Bug fixes:
 
