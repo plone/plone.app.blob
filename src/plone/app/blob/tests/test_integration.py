@@ -180,7 +180,7 @@ class IntegrationTests(BlobTestCase):
     def testIconLookupForUnknownMimeType(self):
         """ test for http://plone.org/products/plone.app.blob/issues/1 """
         self.folder.blob.getFile().setContentType('application/foo')
-        self.assertTrue(self.folder.blob.getIcon().endswith('file_icon.gif'))
+        self.assertFalse(self.folder.blob.getIcon())
 
     def testVersioning(self):
         blob = self.folder.blob

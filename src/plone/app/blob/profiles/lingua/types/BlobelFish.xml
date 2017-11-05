@@ -3,7 +3,7 @@
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
  <property name="title">Blobel Fish</property>
  <property name="description">A multilingual fish</property>
- <property name="content_icon">file_icon.gif</property>
+ <property name="icon_expr"></property>
  <property name="content_meta_type">BlobelFish</property>
  <property name="product">plone.app.blob</property>
  <property name="factory">addBlobelFish</property>

@@ -17,6 +17,9 @@ Bug fixes:
 - Adapt test to changes in ZPublisher.HTTPResponse.setHeader
   [pbauer]
 
+- Remove no longer existing icons from type definitions.
+  [davisagli]
+
 
 1.7.2 (2017-06-03)
 ------------------

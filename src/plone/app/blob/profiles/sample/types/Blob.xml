@@ -5,7 +5,7 @@
  <property name="title" i18n:translate="">Blob</property>
  <property name="description"
       i18n:translate="">An binary blob of data, much like a file.</property>
- <property name="content_icon">file_icon.gif</property>
+ <property name="icon_expr"></property>
  <property name="content_meta_type">ATBlob</property>
  <property name="product">plone.app.blob</property>
  <property name="factory">addATBlob</property>

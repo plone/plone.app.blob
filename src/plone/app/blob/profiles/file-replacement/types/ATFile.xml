@@ -5,7 +5,7 @@
  <property name="title" i18n:translate="">File (w/o blobs)</property>
  <property name="description"
       i18n:translate="">An old-style file not based on ZODB blobs.</property>
- <property name="content_icon">file_icon.gif</property>
+ <property name="icon_expr"></property>
  <property name="content_meta_type">ATFile</property>
  <property name="product">ATContentTypes</property>
  <property name="factory">addATFile</property>
