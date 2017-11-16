@@ -20,6 +20,11 @@ Bug fixes:
 - Remove no longer existing icons from type definitions.
   [davisagli]
 
+- Fix bug where Image blob fields couldn't be used with
+  archetypes.schemaextender unless the parent class subclasses
+  ATCTImageTransform
+  [MatthewWilkes]
+
 
 1.7.2 (2017-06-03)
 ------------------

@@ -2,6 +2,7 @@
 from plone.app.blob.tests.layer import BlobLayer
 from plone.app.blob.tests.layer import BlobLinguaLayer
 from plone.app.blob.tests.layer import BlobReplacementLayer
+from plone.app.blob.tests.layer import BlobSchemaExtenderLayer
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.testing.bbb import PloneTestCase
@@ -35,6 +36,12 @@ class ReplacementTestCase(BlobTestCase):
     layer = BlobReplacementLayer
 
 ReplacementFunctionalTestCase = ReplacementTestCase
+
+
+class BlobSchemaExtenderTestCase(PloneTestCase):
+    """ base class for schemaextender tests """
+
+    layer = BlobSchemaExtenderLayer
 
 
 class BlobLinguaTestCase(PloneTestCase):

@@ -21,7 +21,11 @@ class ExtensionBlobField(ExtensionField, BlobField, ImageFieldMixin):
     def set(self, instance, value, refresh_exif=True, **kwargs):
         super(ExtensionBlobField, self).set(instance, value, **kwargs)
         self.fixAutoId(instance)
-        instance.getEXIF(value, refresh=refresh_exif)
+        if hasattr(instance, 'getEXIF'):
+            # If the instance subclasses ATCTImageTransform we process the
+            # metadata.
+            # TODO: The EXIF functionality should not be dependent on ATCT
+            instance.getEXIF(value, refresh=refresh_exif)
         if hasattr(aq_base(instance), blobScalesAttr):
             delattr(aq_base(instance), blobScalesAttr)
 
