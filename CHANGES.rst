@@ -4,14 +4,6 @@ Changelog
 1.7.3 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Adapt test to changes in ZPublisher.HTTPResponse.setHeader
