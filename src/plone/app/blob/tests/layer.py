@@ -81,6 +81,32 @@ BlobReplacementLayer = testing.FunctionalTesting(
 BlobFileReplacementLayer = BlobReplacementLayer
 
 
+class BlobSchemaExtenderFixture(PloneTestCaseFixture):
+    """ layer for integration tests with SchemaExtender """
+
+    defaultBases = (PTC_FIXTURE, )
+
+    def setUpZope(self, app, configurationContext):
+        import archetypes.schemaextender
+        self.loadZCML(package=archetypes.schemaextender)
+        import plone.app.blob
+        self.loadZCML(package=plone.app.blob)
+        self.loadZCML(name='extender.zcml', package=plone.app.blob.tests)
+        z2.installProduct(app, 'plone.app.blob')
+        z2.installProduct(app, 'archetypes.schemaextender')
+
+    def tearDownZope(self, app):
+        z2.uninstallProduct(app, 'plone.app.blob')
+        z2.uninstallProduct(app, 'archetypes.schemaextender')
+
+
+BLOB_SCHEMA_EXTENDER_FIXTURE = BlobSchemaExtenderFixture()
+BlobSchemaExtenderLayer = testing.FunctionalTesting(
+    bases=(BLOB_SCHEMA_EXTENDER_FIXTURE, ),
+    name='Blob SchemaExtender:Functional',
+)
+
+
 class BlobLinguaFixture(PloneTestCaseFixture):
     """ layer for integration tests with LinguaPlone """
 

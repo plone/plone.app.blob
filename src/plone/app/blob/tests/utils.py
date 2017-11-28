@@ -60,3 +60,17 @@ def hasLinguaPlone():
         print msg
         print '*' * len(msg)
         return False
+
+
+def hasSchemaExtender():
+    """ test if SchemaExtender is available """
+    try:
+        import archetypes.schemaextender
+        archetypes.schemaextender     # make pyflakes happy...
+        return True
+    except ImportError:
+        msg = 'WARNING: archetypes.schemaextender not found. Skipping tests.'
+        print '*' * len(msg)
+        print msg
+        print '*' * len(msg)
+        return False

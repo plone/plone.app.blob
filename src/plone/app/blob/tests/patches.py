@@ -14,5 +14,6 @@ def setBody(self, body, *args, **kw):
 
 
 def applyPatch(scope, original, replacement):
-    setattr(scope, '_original_' + original, getattr(scope, original))
+    if not hasattr(scope, '_original_'+original):
+        setattr(scope, '_original_' + original, getattr(scope, original))
     setattr(scope, original, replacement)
