@@ -23,7 +23,6 @@ class BlobMigrationView(BrowserView):
         request = aq_inner(self.request)
         walker = self.walker()
         options = dict(target_type=walker.src_portal_type)
-        clicked = request.form.has_key
         portal_url = getToolByName(context, 'portal_url')()
         ttool = getToolByName(context, 'portal_types')
         fti = ttool.get(walker.dst_portal_type)
@@ -43,7 +42,7 @@ class BlobMigrationView(BrowserView):
             )
             IStatusMessage(request).addStatusMessage(msg, type='warning')
             options['nomigrations'] = 42
-        elif clicked('migrate'):
+        elif 'migrate' in request.form:
             output = self.migration()
             # Only count actual migration lines
             lines = output.split('\n')
@@ -54,7 +53,7 @@ class BlobMigrationView(BrowserView):
             IStatusMessage(request).addStatusMessage(msg, type='info')
             options['count'] = count
             options['output'] = output
-        elif clicked('cancel'):
+        elif 'cancel' in request.form:
             msg = _(u'Blob migration cancelled.')
             IStatusMessage(request).addStatusMessage(msg, type='info')
             request.RESPONSE.redirect(portal_url)

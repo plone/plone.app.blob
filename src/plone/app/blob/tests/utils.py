@@ -56,9 +56,9 @@ def hasLinguaPlone():
         return True
     except ImportError:
         msg = 'WARNING: LinguaPlone not found. Skipping tests.'
-        print '*' * len(msg)
-        print msg
-        print '*' * len(msg)
+        print('*' * len(msg))
+        print(msg)
+        print('*' * len(msg))
         return False
 
 

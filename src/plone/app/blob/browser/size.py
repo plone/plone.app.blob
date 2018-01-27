@@ -38,7 +38,7 @@ class FileContentSizeView(BrowserView):
         for idx, brain in enumerate(brains):
             pt = brain.portal_type
             counts[pt] = counts.setdefault(pt, 0) + 1
-            sizes[pt] = sizes.setdefault(pt, 0L) + bytesize(brain.getObjSize)
+            sizes[pt] = sizes.setdefault(pt, 0) + bytesize(brain.getObjSize)
             if idx % 1000 == 0:
                 log('%d/%d...', idx, len(brains))
         log('')

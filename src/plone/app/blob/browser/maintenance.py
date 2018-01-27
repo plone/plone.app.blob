@@ -54,7 +54,7 @@ class MaintenanceView(BrowserView):
 
         def checkPoint():
             log('intermediate commit ({0} items processed, '
-                'last batch in {1})...\n'.format(processed, lap.next()))
+                'last batch in {1})...\n'.format(processed, next(lap)))
             commit()
         cpi = checkpointIterator(checkPoint, batch)
         context = aq_inner(self.context)
@@ -66,9 +66,9 @@ class MaintenanceView(BrowserView):
             obj.reindexObject(idxs=['object_provides'])
             log('set blob sub-type for {0} to "{1}"\n'.format(obj, subtype))
             processed += 1
-            cpi.next()
+            next(cpi)
         commit()
-        msg = 'processed {0} items in {1}.'.format(processed, real.next())
+        msg = 'processed {0} items in {1}.'.format(processed, next(real))
         log(msg)
         getLogger('plone.app.blob.maintenance').info(msg)
 
@@ -82,7 +82,7 @@ class MaintenanceView(BrowserView):
 
         def checkPoint():
             log('intermediate commit ({0} items processed, '
-                'last batch in {1})...\n'.format(processed, lap.next()))
+                'last batch in {1})...\n'.format(processed, next(lap)))
             commit()
         cpi = checkpointIterator(checkPoint, batch)
         context = aq_inner(self.context)
@@ -92,8 +92,8 @@ class MaintenanceView(BrowserView):
             obj.reindexObject(idxs=['Type'])
             log('updated {0}\n'.format(obj))
             processed += 1
-            cpi.next()
+            next(cpi)
         commit()
-        msg = 'processed {0} items in {1}.'.format(processed, real.next())
+        msg = 'processed {0} items in {1}.'.format(processed, next(real))
         log(msg)
         getLogger('plone.app.blob.maintenance').info(msg)

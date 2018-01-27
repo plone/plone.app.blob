@@ -177,7 +177,7 @@ class BlobWrapper(Implicit, Persistent):
     @security.private
     def setFilename(self, value):
         """ set filename for this blob """
-        if isinstance(value, basestring):
+        if isinstance(value, six.string_types):
             value = value[max(value.rfind('/'),
                               value.rfind('\\'),
                               value.rfind(':')) + 1:]
@@ -242,14 +242,14 @@ class BlobField(ObjectField):
         # create a new blob instead of modifying the old one to
         # achieve copy-on-write semantics
         blob = BlobWrapper(self.default_content_type)
-        if isinstance(value, basestring):
+        if isinstance(value, six.string_types):
             value = StringIO(value)     # simple strings cannot be adapted...
             setattr(value, 'filename', kwargs.get('filename', None))
         if value is not None:
             blobbable = IBlobbable(value)
             try:
                 blobbable.feed(blob.getBlob())
-            except ReuseBlob, exception:
+            except ReuseBlob as exception:
                 blob.setBlob(exception.args[0])     # reuse the given blob
             mimetype = kwargs.get('mimetype', None)
             if not mimetype:
