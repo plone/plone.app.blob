@@ -7,8 +7,8 @@ from plone.app.blob.tests.utils import getFile
 from plone.app.blob.tests.utils import getImage
 from Products.ATContentTypes.content.file import ATFile
 from Products.ATContentTypes.content.image import ATImage
-from StringIO import StringIO
-from xmlrpclib import Binary
+from six import StringIO
+from six.moves.xmlrpc_client import Binary
 from ZODB.blob import Blob
 
 import os

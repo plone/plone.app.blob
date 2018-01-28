@@ -2,7 +2,7 @@
 from OFS.Image import Pdata
 from plone.app.blob.interfaces import IBlobbable
 from plone.app.blob.utils import guessMimetype
-from StringIO import StringIO
+from six import StringIO
 from zope.component import adapts
 from zope.interface import implementer
 

@@ -50,6 +50,7 @@ setup(
         'plone.app.imaging >1.0b9',
         'plone.scale',
         'setuptools',
+        'six',
         'zope.proxy >=3.4',
     ],
     tests_require=tests_require,

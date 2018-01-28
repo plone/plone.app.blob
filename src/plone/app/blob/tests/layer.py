@@ -5,7 +5,7 @@ from plone.app.testing.bbb import PloneTestCaseFixture
 from plone.app.testing.bbb import PTC_FIXTURE
 from plone.testing import z2
 from Products.CMFCore.utils import getToolByName
-from StringIO import StringIO
+from six import StringIO
 
 
 class BlobFixture(PloneTestCaseFixture):

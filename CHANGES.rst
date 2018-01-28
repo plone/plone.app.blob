@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fix some Python 2 / 3 compatible imports and string types with six.
+  [rudaporto]
 
 
 1.7.3 (2017-11-24)

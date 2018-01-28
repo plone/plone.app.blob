@@ -3,7 +3,7 @@ from base64 import decodestring
 from os.path import dirname
 from os.path import join
 from plone.app.blob import tests
-from StringIO import StringIO
+from six import StringIO
 from ZPublisher.HTTPRequest import HTTPRequest
 
 
@@ -56,9 +56,9 @@ def hasLinguaPlone():
         return True
     except ImportError:
         msg = 'WARNING: LinguaPlone not found. Skipping tests.'
-        print '*' * len(msg)
-        print msg
-        print '*' * len(msg)
+        print('*' * len(msg))
+        print(msg)
+        print('*' * len(msg))
         return False
 
 

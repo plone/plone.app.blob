@@ -26,7 +26,7 @@ def handleIfModifiedSince(instance, REQUEST, RESPONSE):
             if instance._p_mtime:
                 last_mod = long(instance._p_mtime)
             else:
-                last_mod = long(0)
+                last_mod = 0
             if last_mod > 0 and last_mod <= mod_since:
                 RESPONSE.setStatus(304)
                 return True
@@ -65,7 +65,7 @@ def handleRequestRange(instance, length, REQUEST, RESPONSE):
                     if instance._p_mtime:
                         last_mod = long(instance._p_mtime)
                     else:
-                        last_mod = long(0)
+                        last_mod = 0
                     if last_mod > mod_since:
                         # Modified, so send a normal response. We delete
                         # the ranges, which causes us to skip to the 200

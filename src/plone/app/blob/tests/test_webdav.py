@@ -2,7 +2,7 @@
 from plone.app.blob.interfaces import IATBlobImage
 from plone.app.blob.tests.base import ReplacementTestCase
 from plone.app.blob.tests.utils import getImage
-from StringIO import StringIO
+from six import StringIO
 
 
 class WebDavTests(ReplacementTestCase):
