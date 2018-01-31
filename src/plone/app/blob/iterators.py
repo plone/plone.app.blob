@@ -1,18 +1,15 @@
 # -*- coding: utf-8 -*-
 from os import fstat
 from plone.app.blob.utils import openBlob
-from zope.interface import implements
+from zope.interface import implementer
 from zope.interface.interfaces import IInterface
 from ZPublisher.Iterators import IStreamIterator
 
 
+@implementer(IStreamIterator)
 class BlobStreamIterator(object):
     """ a streamiterator for blobs enabling to directly serve them
         in an extra ZServer thread """
-    if IInterface.providedBy(IStreamIterator):  # is this zope 2.12?
-        implements(IStreamIterator)
-    else:
-        __implements__ = (IStreamIterator, )
 
     def __init__(self, blob, mode='r', streamsize=1 << 16, start=0, end=None):
         self.blob = openBlob(blob, mode)

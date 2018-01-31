@@ -2,14 +2,14 @@
 from plone.app.blob.interfaces import IBlobbable
 from plone.app.blob.utils import guessMimetype
 from six.moves.xmlrpc_client import Binary
-from zope.component import adapts
+from zope.component import adapter
 from zope.interface import implementer
 
 
+@adapter(Binary)
 @implementer(IBlobbable)
 class BlobbableBinary(object):
     """ adapter for xmlrpclib Binary instance to work with blobs """
-    adapts(Binary)
 
     def __init__(self, context):
         self.context = context

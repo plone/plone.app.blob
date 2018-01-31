@@ -7,14 +7,14 @@ from plone.app.blob.interfaces import IFileUpload
 from plone.app.blob.utils import guessMimetype
 from shutil import copyfileobj
 from ZODB.blob import Blob
-from zope.component import adapts
+from zope.component import adapter
 from zope.interface import implementer
 
 
+@adapter(IFileUpload)
 @implementer(IBlobbable)
 class BlobbableFileUpload(object):
     """ adapter for FileUpload objects to work with blobs """
-    adapts(IFileUpload)
 
     def __init__(self, context):
         self.context = context
@@ -30,17 +30,15 @@ class BlobbableFileUpload(object):
         filename = getattr(self.context, 'name', None)
         if os_name == 'nt' and filename is not None:
             # for now a copy is needed on windows...
-            blobfile = blob.open('w')
-            copyfileobj(self.context, blobfile)
-            blobfile.close()
+            with blob.open('w') as blobfile:
+                copyfileobj(self.context, blobfile)
         elif filename is not None:
             assert isfile(filename), 'invalid file for blob: {0}'.format(filename)  # noqa
             blob.consumeFile(filename)
-        else:   # the cgi module only creates a tempfile for 1000+ bytes
-            self.context.seek(0)    # just to be sure we copy everything...
-            blobfile = blob.open('w')
-            blobfile.write(self.context.read())
-            blobfile.close()
+        else:  # the cgi module only creates a tempfile for 1000+ bytes
+            self.context.seek(0)  # just to be sure we copy everything...
+            with blob.open('w') as blobfile:
+                blobfile.write(self.context.read())
 
     def filename(self):
         """ see interface ... """
