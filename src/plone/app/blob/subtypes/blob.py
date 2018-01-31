@@ -30,13 +30,13 @@ class SchemaExtender(object):
             default_content_type='application/octet-stream',
             validators=(
                 ('isNonEmptyFile', V_REQUIRED),
-                ('checkFileMaxSize', V_REQUIRED)
+                ('checkFileMaxSize', V_REQUIRED),
             ),
             widget=FileWidget(
                 label=_(u'label_file', default=u'File'),
                 description=_(u''),
                 show_content_type=False,
-            )
+            ),
         ),
     ]
 

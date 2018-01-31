@@ -235,7 +235,7 @@ class FunctionalIntegrationTests(BlobFunctionalTestCase):
             obj.setFilename(filename)
             response = self.publish(
                 '/{0}'.format(obj.absolute_url(relative=True)),
-                basic=self.getCredentials()
+                basic=self.getCredentials(),
             )
             self.assertEqual(response.getStatus(), 200)
             return response.getHeader('Content-Disposition')

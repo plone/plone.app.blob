@@ -12,7 +12,7 @@ class IATBlob(Interface):
     blob = schema.Field(
         title=_(u'Blob'),
         description=_(u'Binary data, similar to a file in the filesystem'),
-        required=True
+        required=True,
     )
 
 

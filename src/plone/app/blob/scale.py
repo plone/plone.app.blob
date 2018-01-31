@@ -12,6 +12,7 @@ from ZODB.blob import Blob
 from zope.component import adapter
 from zope.interface import implementer
 
+
 try:
     from plone.scale.scale import scaleImage
 except ImportError:
@@ -47,7 +48,7 @@ class BlobImageScaleHandler(DefaultImageScaleHandler):
                 data['id'],
                 data=blob.read(),
                 content_type=data['content_type'],
-                filename=data['filename']
+                filename=data['filename'],
             )
             blob.close()
             return image.__of__(instance)

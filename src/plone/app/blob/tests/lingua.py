@@ -32,4 +32,5 @@ class BlobelFish(BaseContent):
     schema = BlobelFishSchema
     _at_rename_after_creation = True
 
+
 registerType(BlobelFish, packageName)

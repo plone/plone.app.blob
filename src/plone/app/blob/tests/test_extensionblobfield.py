@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-from unittest import defaultTestLoader
-from unittest import TestSuite
-
 from plone.app.blob.tests.base import BlobSchemaExtenderTestCase
 from plone.app.blob.tests.utils import hasSchemaExtender
+from unittest import defaultTestLoader
+from unittest import TestSuite
 
 
 class ExtenderTests(BlobSchemaExtenderTestCase):

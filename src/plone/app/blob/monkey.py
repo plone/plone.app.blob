@@ -44,6 +44,7 @@ class NamedFieldStorage(FieldStorage):
         handle, name = mkstemp()
         return TemporaryFileWrapper(fdopen(handle, 'w+b'), name)
 
+
 original_init = HTTPRequest.FileUpload.__init__
 
 
@@ -52,6 +53,7 @@ def initFileUpload(self, aFieldStorage):
     afile = aFieldStorage.file
     if not hasattr(afile, '__methods__') and hasattr(afile, 'name'):
         self.__dict__['name'] = afile.name
+
 
 HTTPRequest.FieldStorage = NamedFieldStorage
 HTTPRequest.ZopeFieldStorage = NamedFieldStorage

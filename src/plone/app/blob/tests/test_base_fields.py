@@ -37,6 +37,7 @@ class SampleType(BaseContent):
     portal_type = 'SampleType'
     schema = SampleSchema
 
+
 permissions['SampleType'] = packageName + ': SampleType'
 registerType(SampleType, packageName)
 
@@ -98,5 +99,5 @@ class BaseFieldTests(ReplacementTestCase):
         item.setFoo(file_.read(), filename='file.xls', mimetype=None)
         self.assertEqual(
             'application/vnd.ms-excel',
-            item.getFoo().getContentType()
+            item.getFoo().getContentType(),
         )

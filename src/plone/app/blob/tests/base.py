@@ -27,6 +27,7 @@ class BlobTestCase(PloneTestCase):
             browser.addHeader('Authorization', auth)
         return browser
 
+
 BlobFunctionalTestCase = BlobTestCase
 
 
@@ -34,6 +35,7 @@ class ReplacementTestCase(BlobTestCase):
     """ base class for integration tests using replacement types """
 
     layer = BlobReplacementLayer
+
 
 ReplacementFunctionalTestCase = ReplacementTestCase
 

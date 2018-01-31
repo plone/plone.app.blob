@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 from base64 import decodestring
 from os.path import dirname
 from os.path import join
@@ -52,7 +53,7 @@ def hasLinguaPlone():
     """ test if LinguaPlone is available """
     try:
         from Products import LinguaPlone
-        LinguaPlone     # make pyflakes happy...
+        LinguaPlone  # make pyflakes happy...
         return True
     except ImportError:
         msg = 'WARNING: LinguaPlone not found. Skipping tests.'
@@ -66,11 +67,11 @@ def hasSchemaExtender():
     """ test if SchemaExtender is available """
     try:
         import archetypes.schemaextender
-        archetypes.schemaextender     # make pyflakes happy...
+        archetypes.schemaextender  # make pyflakes happy...
         return True
     except ImportError:
         msg = 'WARNING: archetypes.schemaextender not found. Skipping tests.'
-        print '*' * len(msg)
+        print('*' * len(msg))
         print(msg)
-        print '*' * len(msg)
+        print('*' * len(msg))
         return False

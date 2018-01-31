@@ -2,7 +2,6 @@
 from os import fstat
 from plone.app.blob.utils import openBlob
 from zope.interface import implementer
-from zope.interface.interfaces import IInterface
 from ZPublisher.Iterators import IStreamIterator
 
 
