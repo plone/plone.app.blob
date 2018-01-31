@@ -138,13 +138,13 @@ class IntegrationTests(BlobTestCase):
         request = self.folder.REQUEST
         request.environ['HTTP_RANGE'] = 'bytes=2-10'
         iterator = blob.download(request)
-        self.assertEqual(data[2:10 + 1], iterator.next())
+        self.assertEqual(data[2:10 + 1], next(iterator))
         # ranges should also work with multiple chunks read from the blob
         request.environ['HTTP_RANGE'] = 'bytes=2-10'
         iterator = blob.download(request)
         iterator.streamsize = 5
-        self.assertEqual(data[2:2 + 5], iterator.next())
-        self.assertEqual(data[2 + 5:10 + 1], iterator.next())
+        self.assertEqual(data[2:2 + 5], next(iterator))
+        self.assertEqual(data[2 + 5:10 + 1], next(iterator))
         # open and suffix ranges also have to work
         request.environ['HTTP_RANGE'] = 'bytes=2-'
         iterator = blob.download(request)

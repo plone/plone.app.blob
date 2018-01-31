@@ -21,7 +21,8 @@ class BlobStreamIterator(object):
         self.end = end
         self.seek(start, 0)
 
-    def next(self):
+    def __next__(self):
+        # Python 3
         """ return next chunk of data from the blob, taking the optionally
             given range into consideration """
         if self.end is None:
@@ -32,6 +33,8 @@ class BlobStreamIterator(object):
         if not data:
             raise StopIteration
         return data
+
+    next = __next__  # Python 2
 
     def __len__(self):
         return fstat(self.blob.fileno()).st_size

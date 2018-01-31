@@ -58,7 +58,7 @@ class FileReplacementTests(ReplacementTestCase):
         request = foo.REQUEST
         response = request.RESPONSE
         index = foo.index_html(request, response)
-        self.assertEqual(index.next(), 'plain text')
+        self.assertEqual(next(index), 'plain text')
         self.assertEqual(response.getStatus(), 200)
         self.assertEqual(response.headers['content-length'], '10')
         self.assertTrue(
@@ -262,7 +262,7 @@ class ImageReplacementTests(ReplacementTestCase):
         # `index_html` should return a stream-iterator
         request = foo.REQUEST
         response = request.RESPONSE
-        self.assertEqual(foo.index_html(request, response).next(), gif)
+        self.assertEqual(next(foo.index_html(request, response)), gif)
         self.assertEqual(response.getStatus(), 200)
         self.assertEqual(response.headers['content-length'], '43')
         self.assertEqual(response.headers['content-type'], 'image/gif')

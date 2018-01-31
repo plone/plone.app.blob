@@ -71,6 +71,6 @@ def hasSchemaExtender():
     except ImportError:
         msg = 'WARNING: archetypes.schemaextender not found. Skipping tests.'
         print '*' * len(msg)
-        print msg
+        print(msg)
         print '*' * len(msg)
         return False

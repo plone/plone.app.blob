@@ -10,12 +10,12 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Prepare for Python 2 / 3 compatibility
+  [davilima6, rudaporto]
 
 Bug fixes:
 
-- Fix some Python 2 / 3 compatible imports and string types with six.
-  [rudaporto]
+- *add item here*
 
 
 1.7.3 (2017-11-24)
@@ -96,6 +96,7 @@ Bug fixes:
 
 - Update code to follow Plone styleguide.
   [gforcada]
+
 
 1.6.4 (2016-08-12)
 ------------------
