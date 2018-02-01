@@ -16,9 +16,9 @@ from Products.Archetypes.Field import Image
 from Products.ATContentTypes.content.file import ATFile
 from Products.ATContentTypes.content.image import ATImage
 from Products.ATContentTypes.interfaces import file as atfile
-from Products.ATContentTypes.interfaces import image as atimage
 from Products.ATContentTypes.interfaces import IATFile as Z2IATFile
 from Products.ATContentTypes.interfaces import IATImage as Z2IATImage
+from Products.ATContentTypes.interfaces import image as atimage
 from Products.GenericSetup.interfaces import IFilesystemExporter
 from Products.GenericSetup.interfaces import IFilesystemImporter
 from ZODB.blob import SAVEPOINT_SUFFIX
@@ -58,7 +58,7 @@ class FileReplacementTests(ReplacementTestCase):
         request = foo.REQUEST
         response = request.RESPONSE
         index = foo.index_html(request, response)
-        self.assertEqual(index.next(), 'plain text')
+        self.assertEqual(next(index), 'plain text')
         self.assertEqual(response.getStatus(), 200)
         self.assertEqual(response.headers['content-length'], '10')
         self.assertTrue(
@@ -69,17 +69,17 @@ class FileReplacementTests(ReplacementTestCase):
         self.assertTrue(atfile.IATFile.providedBy(foo), 'no IATFile?')
         self.assertTrue(
             atfile.IFileContent.providedBy(foo),
-            'no IFileContent?'
+            'no IFileContent?',
         )
         self.assertTrue(IATBlobFile.providedBy(foo), 'no IATBlobFile?')
         if not IInterface.providedBy(Z2IATFile):    # this is zope < 2.12
             self.assertTrue(
                 Z2IATFile.isImplementedBy(foo),
-                'no zope2 IATFile?'
+                'no zope2 IATFile?',
             )
             self.assertFalse(
                 Z2IATImage.isImplementedBy(foo),
-                'zope2 IATImage?'
+                'zope2 IATImage?',
             )
 
     def testFileMigration(self):
@@ -90,7 +90,7 @@ class FileReplacementTests(ReplacementTestCase):
                 title='a file',
                 file='plain text',
                 subject=('foo', 'bar'),
-                contributors=('me', )
+                contributors=('me', ),
             )
         ]
         # fake old content from before applying the replacement profile
@@ -106,7 +106,7 @@ class FileReplacementTests(ReplacementTestCase):
         # migrate & check migrated content item
         self.assertEqual(
             migrateATBlobFiles(self.portal),
-            'Migrating /plone/Members/test_user_1_/foo (File -> File)\n'
+            'Migrating /plone/Members/test_user_1_/foo (File -> File)\n',
         )
         foo = self.folder['foo']
         self.assertTrue(isinstance(foo, ATBlob), 'not a blob?')
@@ -128,7 +128,7 @@ class FileReplacementTests(ReplacementTestCase):
                 title='a file',
                 file='plain text',
                 subject=('foo', 'bar'),
-                contributors=('me', )
+                contributors=('me', ),
             )
         ]
         # fake old content from before applying the replacement profile
@@ -142,7 +142,7 @@ class FileReplacementTests(ReplacementTestCase):
         # migrate & check migrated content item
         self.assertEqual(
             migrateATBlobFiles(self.portal),
-            'Migrating /plone/Members/test_user_1_/foo (File -> File)\n'
+            'Migrating /plone/Members/test_user_1_/foo (File -> File)\n',
         )
         foo = self.folder['foo']
         brain = catalog(id='foo')[0]
@@ -157,7 +157,7 @@ class FileReplacementTests(ReplacementTestCase):
                 self.assertEqual(
                     index_data[key],
                     value,
-                    'index: {0}'.format(key)
+                    'index: {0}'.format(key),
                 )
         okay = ('meta_type', )
         for key, value in catalog.getMetadataForRID(brain.getRID()).items():
@@ -165,7 +165,7 @@ class FileReplacementTests(ReplacementTestCase):
                 self.assertEqual(
                     meta_data[key],
                     value,
-                    'meta: {0}'.format(key)
+                    'meta: {0}'.format(key),
                 )
         # also make sure the `Type` index has been updated correctly
         brains = catalog(Type='File')
@@ -177,7 +177,7 @@ class FileReplacementTests(ReplacementTestCase):
                 'File',
                 'foo',
                 title='foo',
-                file=getData('plone.pdf')
+                file=getData('plone.pdf'),
             )
         ]
         field = foo.getField('file')
@@ -193,7 +193,7 @@ class FileReplacementTests(ReplacementTestCase):
                 'File',
                 'foo',
                 title='foo',
-                file=getData('plone.pdf')
+                file=getData('plone.pdf'),
             )
         ]
         data = foo.SearchableText()
@@ -207,7 +207,7 @@ class FileReplacementTests(ReplacementTestCase):
                 'File',
                 'foo',
                 title='foo',
-                file=getData('plone.pdf')
+                file=getData('plone.pdf'),
             )
         ]
         field = foo.getField('file')
@@ -222,7 +222,7 @@ class FileReplacementTests(ReplacementTestCase):
                 'File',
                 'foo',
                 title='foo',
-                file=getData('plone.pdf')
+                file=getData('plone.pdf'),
             )
         ]
         self.assertTrue(IFilesystemExporter(foo))
@@ -262,7 +262,7 @@ class ImageReplacementTests(ReplacementTestCase):
         # `index_html` should return a stream-iterator
         request = foo.REQUEST
         response = request.RESPONSE
-        self.assertEqual(foo.index_html(request, response).next(), gif)
+        self.assertEqual(next(foo.index_html(request, response)), gif)
         self.assertEqual(response.getStatus(), 200)
         self.assertEqual(response.headers['content-length'], '43')
         self.assertEqual(response.headers['content-type'], 'image/gif')
@@ -287,7 +287,7 @@ class ImageReplacementTests(ReplacementTestCase):
                 title='an image',
                 image=gif,
                 subject=('foo', 'bar'),
-                contributors=('me', )
+                contributors=('me', ),
             )
         ]
         # fake old content from before applying the replacement profile
@@ -370,7 +370,7 @@ class ImageReplacementTests(ReplacementTestCase):
                         key,
                         index_data[key],
                         value,
-                    )
+                    ),
                 )
         okay = ('meta_type', 'getIcon')
         for key, value in catalog.getMetadataForRID(brain.getRID()).items():
@@ -378,7 +378,7 @@ class ImageReplacementTests(ReplacementTestCase):
                 self.assertEqual(
                     meta_data[key],
                     value,
-                    'meta: {0}'.format(key)
+                    'meta: {0}'.format(key),
                 )
         # also make sure the `Type` index has been updated correctly
         brains = catalog(Type='Image')

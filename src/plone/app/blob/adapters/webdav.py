@@ -2,14 +2,14 @@
 from plone.app.blob.interfaces import IBlobbable
 from plone.app.blob.interfaces import IWebDavUpload
 from plone.app.blob.utils import guessMimetype
-from zope.component import adapts
+from zope.component import adapter
 from zope.interface import implementer
 
 
+@adapter(IWebDavUpload)
 @implementer(IBlobbable)
 class BlobbableWebDavUpload(object):
     """ adapter for WebDavUpload objects to work with blobs """
-    adapts(IWebDavUpload)
 
     def __init__(self, context):
         self.context = context

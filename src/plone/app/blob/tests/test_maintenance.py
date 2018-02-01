@@ -4,6 +4,7 @@ from plone.app.blob.tests.base import ReplacementTestCase  # import first!
 from Products.ATContentTypes.interfaces import file as atfile
 from Products.ATContentTypes.interfaces import image as atimage
 
+
 try:
     from Products.CMFCore.indexing import processQueue
 except ImportError:

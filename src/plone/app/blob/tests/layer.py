@@ -27,6 +27,7 @@ class BlobFixture(PloneTestCaseFixture):
     def tearDownZope(self, app):
         z2.uninstallProduct(app, 'plone.app.blob')
 
+
 BLOB_FIXTURE = BlobFixture()
 BlobLayer = testing.FunctionalTesting(
     bases=(BLOB_FIXTURE, ),
@@ -48,7 +49,7 @@ class BlobReplacementFixture(PloneTestCaseFixture):
         for name in ['file', 'image']:
             self.applyProfile(
                 portal,
-                'plone.app.blob:{0}-replacement'.format(name)
+                'plone.app.blob:{0}-replacement'.format(name),
             )
         # allow creating the replaced types
         types = getToolByName(portal, 'portal_types')
@@ -70,6 +71,7 @@ class BlobReplacementFixture(PloneTestCaseFixture):
 
     def tearDownZope(self, app):
         z2.uninstallProduct(app, 'plone.app.imaging')
+
 
 BLOB_REPLACEMENT_FIXTURE = BlobReplacementFixture()
 BlobReplacementLayer = testing.FunctionalTesting(
@@ -131,6 +133,7 @@ class BlobLinguaFixture(PloneTestCaseFixture):
     def tearDownZope(self, app):
         z2.uninstallProduct(app, 'plone.app.blob')
         z2.uninstallProduct(app, 'Products.LinguaPlone')
+
 
 BLOB_LINGUA_FIXTURE = BlobLinguaFixture()
 BlobLinguaLayer = testing.FunctionalTesting(

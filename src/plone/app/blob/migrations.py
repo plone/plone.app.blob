@@ -30,7 +30,7 @@ def migrate(context, portal_type=None, meta_type=None, walker=None,
     """ migrate instances using the given walker """
     if walker is None:
         migrator = makeMigrator(context, portal_type, meta_type,
-                                remove_old_value)
+                                remove_old_value,)
         walker = CustomQueryWalker(context, migrator, full_transaction=True)
     else:
         walker = walker(context)
@@ -52,7 +52,7 @@ def makeMigrator(context, portal_type, meta_type=None, remove_old_value=False):
 
         see `plone3 to 4 migration guide`__
 
-        .. __: http://docs.plone.org/4/en/manage/upgrading/version_specific_migration/p3x_to_p40_upgrade/index.html
+        .. __: http://docs.plone.org/4/en/manage/upgrading/version_specific_migration/p3x_to_p40_upgrade/index.html  #noqa
         """
 
         src_portal_type = portal_type

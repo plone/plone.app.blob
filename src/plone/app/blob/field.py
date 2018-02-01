@@ -96,9 +96,9 @@ class BlobWrapper(Implicit, Persistent):
             if not isinstance(filename, six.text_type):
                 filename = six.text_type(filename, charset, errors='ignore')
             filename = IUserPreferredFileNameNormalizer(
-                REQUEST
+                REQUEST,
             ).normalize(
-                filename
+                filename,
             )
             header_value = contentDispositionHeader(
                 disposition=disposition,
@@ -197,6 +197,7 @@ class BlobWrapper(Implicit, Persistent):
 
     data = ComputedAttribute(__str__, 0)
 
+
 InitializeClass(BlobWrapper)
 
 
@@ -281,15 +282,15 @@ class BlobField(ObjectField):
                 # ^^ BBB for ATContentTypes <2.0
                 if not instance._should_set_id_to_filename(
                     filename,
-                    request.form.get('title')
+                    request.form.get('title'),
                 ):
                     return  # don't rename now if AT should do it from title
             if not isinstance(filename, six.text_type):
                 filename = six.text_type(filename, instance.getCharset())
             filename = IUserPreferredFileNameNormalizer(
-                request
+                request,
             ).normalize(
-                filename
+                filename,
             )
             if filename and not filename == instance.getId():
                 # a file name was given, so the instance needs to be renamed...
@@ -302,13 +303,13 @@ class BlobField(ObjectField):
             instance,
             REQUEST,
             RESPONSE,
-            disposition='attachment'
+            disposition='attachment',
         )
 
     @security.protected(View)
     def index_html(self, instance, REQUEST=None, RESPONSE=None, **kwargs):
         """ make it directly viewable when entering the objects URL """
-        blob = self.get(instance, raw=True)    # TODO: why 'raw'?
+        blob = self.get(instance, raw=True)  # TODO: why 'raw'?
         charset = instance.getCharset()
         return blob.index_html(
             REQUEST=REQUEST, RESPONSE=RESPONSE,
@@ -342,10 +343,11 @@ class BlobField(ObjectField):
         else:
             return None
 
+
 registerField(
     BlobField,
     title='Blob',
-    description='Used for storing files in blobs'
+    description='Used for storing files in blobs',
 )
 
 # convenience base classes for blob-aware file & image fields
@@ -359,10 +361,11 @@ class FileField(BlobField):
         'type': 'file',
     })
 
+
 registerField(
     FileField,
     title='Blob-aware FileField',
-    description='Used for storing files in blobs'
+    description='Used for storing files in blobs',
 )
 
 
@@ -389,8 +392,9 @@ class ImageField(BlobField, ImageFieldMixin):
         if hasattr(aq_base(instance), blobScalesAttr):
             delattr(aq_base(instance), blobScalesAttr)
 
+
 registerField(
     ImageField,
     title='Blob-aware ImageField',
-    description='Used for storing image in blobs'
+    description='Used for storing image in blobs',
 )

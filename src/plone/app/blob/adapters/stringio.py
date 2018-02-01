@@ -2,14 +2,14 @@
 from plone.app.blob.interfaces import IBlobbable
 from plone.app.blob.utils import guessMimetype
 from six import StringIO
-from zope.component import adapts
+from zope.component import adapter
 from zope.interface import implementer
 
 
+@adapter(StringIO)
 @implementer(IBlobbable)
 class BlobbableStringIO(object):
     """ adapter for StringIO instance to work with blobs """
-    adapts(StringIO)
 
     def __init__(self, context):
         self.context = context

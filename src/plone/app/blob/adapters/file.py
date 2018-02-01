@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 from plone.app.blob.interfaces import IBlobbable
 from plone.app.blob.utils import guessMimetype
-from zope.component import adapts
+from zope.component import adapter
 from zope.interface import implementer
 
 
+@adapter(file)
 @implementer(IBlobbable)
 class BlobbableFile(object):
     """ adapter for Python file objects to work with blobs """
-    adapts(file)
 
     def __init__(self, context):
         self.context = context
@@ -17,9 +17,8 @@ class BlobbableFile(object):
         """ see interface ... """
         pos = self.context.tell()
         self.context.seek(0)
-        blobfile = blob.open('w')
-        blobfile.writelines(self.context)
-        blobfile.close()
+        with blob.open('w') as blobfile:
+            blobfile.writelines(self.context)
         self.context.seek(pos)
 
     def filename(self):

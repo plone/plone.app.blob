@@ -30,7 +30,7 @@ from zope.lifecycleevent import ObjectModifiedEvent
 
 try:
     from Products.LinguaPlone.public import registerType
-    registerType        # make pyflakes happy...
+    registerType  # make pyflakes happy...
 except ImportError:
     from Products.Archetypes.atapi import registerType
 
@@ -46,7 +46,7 @@ ATBlobSchema.registerLayer('marshall', BlobMarshaller())
 
 try:
     from Products.CMFCore.CMFCatalogAware import WorkflowAware
-    WorkflowAware       # make pyflakes happy...
+    WorkflowAware  # make pyflakes happy...
     # CMF 2.2 takes care of raising object events for old-style factories
     hasCMF22 = True
 except ImportError:
@@ -57,7 +57,7 @@ def addATBlob(container, id, subtype='Blob', **kwargs):
     """ extended at-constructor copied from ClassGen.py """
     obj = ATBlob(id)
     if subtype is not None:
-        markAs(obj, subtype)    # mark with interfaces needed for subtype
+        markAs(obj, subtype)  # mark with interfaces needed for subtype
     if not hasCMF22:
         notify(ObjectCreatedEvent(obj))
     container._setObject(id, obj, suppress_events=hasCMF22)
@@ -150,7 +150,7 @@ class ATBlob(ATCTFileContent, ImageMixin):
                     value,
                     mimetype=source,
                     filename=filename,
-                )
+                ),
             )
         except (ConflictError, KeyboardInterrupt):
             raise
@@ -250,5 +250,6 @@ class ATBlob(ATCTFileContent, ImageMixin):
                 if image is not None:
                     return image
         return super(ATBlob, self).__bobo_traverse__(REQUEST, name)
+
 
 registerType(ATBlob, packageName)

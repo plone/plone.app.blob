@@ -1,18 +1,14 @@
 # -*- coding: utf-8 -*-
 from os import fstat
 from plone.app.blob.utils import openBlob
-from zope.interface import implements
-from zope.interface.interfaces import IInterface
+from zope.interface import implementer
 from ZPublisher.Iterators import IStreamIterator
 
 
+@implementer(IStreamIterator)
 class BlobStreamIterator(object):
     """ a streamiterator for blobs enabling to directly serve them
         in an extra ZServer thread """
-    if IInterface.providedBy(IStreamIterator):  # is this zope 2.12?
-        implements(IStreamIterator)
-    else:
-        __implements__ = (IStreamIterator, )
 
     def __init__(self, blob, mode='r', streamsize=1 << 16, start=0, end=None):
         self.blob = openBlob(blob, mode)
@@ -21,7 +17,8 @@ class BlobStreamIterator(object):
         self.end = end
         self.seek(start, 0)
 
-    def next(self):
+    def __next__(self):
+        # Python 3
         """ return next chunk of data from the blob, taking the optionally
             given range into consideration """
         if self.end is None:
@@ -32,6 +29,8 @@ class BlobStreamIterator(object):
         if not data:
             raise StopIteration
         return data
+
+    next = __next__  # Python 2
 
     def __len__(self):
         return fstat(self.blob.fileno()).st_size

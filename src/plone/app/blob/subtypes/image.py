@@ -52,13 +52,13 @@ class SchemaExtender(object):
             allowable_content_types=('image/gif', 'image/jpeg', 'image/png'),
             validators=(
                 ('isNonEmptyFile', V_REQUIRED),
-                ('checkImageMaxSize', V_REQUIRED)
+                ('checkImageMaxSize', V_REQUIRED),
             ),
             widget=ImageWidget(
                 label=_(u'label_image', default=u'Image'),
                 description=_(u''),
                 show_content_type=False,
-            )
+            ),
         ),
     ]
 

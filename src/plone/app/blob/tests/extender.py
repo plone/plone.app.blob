@@ -1,17 +1,18 @@
-from zope.component import adapts
-from zope.interface import implements
+# -*- coding: utf-8 -*-
 from archetypes.schemaextender.interfaces import ISchemaExtender
-from Products.ATContentTypes.interfaces import IATDocument, IATImage
-
 from plone.app.blob.subtypes.image import ExtensionBlobField
+from Products.ATContentTypes.interfaces import IATDocument
+from Products.ATContentTypes.interfaces import IATImage
+from zope.component import adapter
+from zope.interface import implementer
 
 
+@adapter(IATDocument)
+@implementer(ISchemaExtender)
 class PageImageAdder(object):
-    adapts(IATDocument)
-    implements(ISchemaExtender)
 
     fields = [
-        ExtensionBlobField("image"),
+        ExtensionBlobField('image'),
     ]
 
     def __init__(self, context):
@@ -21,12 +22,12 @@ class PageImageAdder(object):
         return self.fields
 
 
+@adapter(IATImage)
+@implementer(ISchemaExtender)
 class ImageImageAdder(object):
-    adapts(IATImage)
-    implements(ISchemaExtender)
 
     fields = [
-        ExtensionBlobField("new_image"),
+        ExtensionBlobField('new_image'),
     ]
 
     def __init__(self, context):
