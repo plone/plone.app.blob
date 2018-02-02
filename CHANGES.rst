@@ -4,10 +4,6 @@ Changelog
 1.7.4 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Prepare for Python 2 / 3 compatibility
