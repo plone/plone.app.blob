@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from plone.app import testing
 from plone.app.blob.tests.utils import getData
-from plone.app.testing.bbb import PloneTestCaseFixture
-from plone.app.testing.bbb import PTC_FIXTURE
+from plone.app.testing.bbb_at import PloneTestCaseFixture
+from plone.app.testing.bbb_at import PTC_FIXTURE
 from plone.testing import z2
 from Products.CMFCore.utils import getToolByName
 from six import StringIO

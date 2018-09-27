@@ -8,7 +8,7 @@ import os
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
-version = '1.7.5.dev0'
+version = '1.8.0.dev0'
 
 long_description = (
     read('README.rst')
@@ -57,8 +57,7 @@ setup(
     extras_require={'test': tests_require},
     classifiers=[
         'Environment :: Web Environment',
-        'Framework :: Plone :: 5.0',
-        'Framework :: Plone :: 5.1',
+        'Framework :: Plone :: 5.2',
         'Framework :: Plone',
         'Intended Audience :: Developers',
         'Intended Audience :: Other Audience',

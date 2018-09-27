@@ -5,7 +5,7 @@ from plone.app.blob.tests.layer import BlobReplacementLayer
 from plone.app.blob.tests.layer import BlobSchemaExtenderLayer
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
-from plone.app.testing.bbb import PloneTestCase
+from plone.app.testing.bbb_at import PloneTestCase
 from plone.registry.interfaces import IRegistry
 from plone.testing.z2 import Browser
 from zope.component import queryUtility
