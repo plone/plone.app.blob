@@ -19,6 +19,7 @@ from Products.ATContentTypes.interfaces import file as atfile
 from Products.ATContentTypes.interfaces import IATFile as Z2IATFile
 from Products.ATContentTypes.interfaces import IATImage as Z2IATImage
 from Products.ATContentTypes.interfaces import image as atimage
+from Products.CMFPlone.utils import human_readable_size
 from Products.GenericSetup.interfaces import IFilesystemExporter
 from Products.GenericSetup.interfaces import IFilesystemImporter
 from ZODB.blob import SAVEPOINT_SUFFIX
@@ -147,7 +148,7 @@ class FileReplacementTests(ReplacementTestCase):
         foo = self.folder['foo']
         brain = catalog(id='foo')[0]
         self.assertEqual(foo.UID(), brain.UID)
-        self.assertEqual(foo.getObjSize(), brain.getObjSize)
+        self.assertEqual(human_readable_size(foo.get_size()), brain.getObjSize)
         self.assertEqual(foo.getPortalTypeName(), brain.Type)
         # compare pre-migration and current catalog data...
         okay = ('meta_type', 'Type', 'object_provides',
@@ -356,7 +357,7 @@ class ImageReplacementTests(ReplacementTestCase):
         # check migrated content item
         brain = catalog(id='foo')[0]
         self.assertEqual(foo.UID(), brain.UID)
-        self.assertEqual(foo.getObjSize(), brain.getObjSize)
+        self.assertEqual(human_readable_size(foo.get_size()), brain.getObjSize)
         self.assertEqual(foo.getPortalTypeName(), brain.Type)
 
         # compare pre-migration and current catalog data...
