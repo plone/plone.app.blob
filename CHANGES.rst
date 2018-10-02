@@ -10,7 +10,10 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Removed usage of getObjSize script from tests.
+  Also declared dependency on Products.CMFPlone.
+  https://github.com/plone/Products.CMFPlone/issues/1801
+  [reinhardt]
 
 Bug fixes:
 
