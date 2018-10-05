@@ -44,6 +44,7 @@ setup(
     platforms='Any',
     zip_safe=False,
     install_requires=[
+        'Products.CMFPlone',
         'Products.MimetypesRegistry',
         'ZODB3 >=3.8.1',
         'archetypes.schemaextender >=1.6',
