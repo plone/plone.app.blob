@@ -4,10 +4,6 @@ Changelog
 1.8.0 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Removed usage of getObjSize script from tests.
