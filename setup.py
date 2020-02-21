@@ -61,6 +61,8 @@ setup(
         'Environment :: Web Environment',
         'Framework :: Plone :: 5.2',
         'Framework :: Plone',
+        'Framework :: Zope',
+        'Framework :: Zope :: 4',
         'Intended Audience :: Developers',
         'Intended Audience :: Other Audience',
         'Intended Audience :: System Administrators',

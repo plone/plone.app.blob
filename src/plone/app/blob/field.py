@@ -1,18 +1,27 @@
 # -*- coding: utf-8 -*-
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
-from Acquisition import aq_base
 from Acquisition import Implicit
+from Acquisition import aq_base
+from App.Common import rfc1123_date
 from ComputedAttribute import ComputedAttribute
+from Products.Archetypes.Registry import registerField
+from Products.Archetypes.atapi import FileWidget
+from Products.Archetypes.atapi import ImageWidget
+from Products.Archetypes.atapi import ObjectField
+from Products.Archetypes.atapi import PrimaryFieldMarshaller
+from Products.Archetypes.utils import contentDispositionHeader
+from Products.CMFCore.permissions import View
+from ZODB.blob import Blob
 from os import fstat
 from persistent import Persistent
 from plone.app.blob.config import blobScalesAttr
 from plone.app.blob.download import handleIfModifiedSince
 from plone.app.blob.download import handleRequestRange
-from plone.app.blob.interfaces import IBlobbable
 from plone.app.blob.interfaces import IBlobField
 from plone.app.blob.interfaces import IBlobImageField
 from plone.app.blob.interfaces import IBlobWrapper
+from plone.app.blob.interfaces import IBlobbable
 from plone.app.blob.interfaces import IWebDavUpload
 from plone.app.blob.iterators import BlobStreamIterator
 from plone.app.blob.mixins import ImageFieldMixin
@@ -20,17 +29,8 @@ from plone.app.blob.utils import getImageSize
 from plone.app.blob.utils import getPILResizeAlgo
 from plone.app.blob.utils import openBlob
 from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
-from Products.Archetypes.atapi import FileWidget
-from Products.Archetypes.atapi import ImageWidget
-from Products.Archetypes.atapi import ObjectField
-from Products.Archetypes.atapi import PrimaryFieldMarshaller
-from Products.Archetypes.Registry import registerField
-from Products.Archetypes.utils import contentDispositionHeader
-from Products.CMFCore.permissions import View
 from six import StringIO
 from transaction import savepoint
-from webdav.common import rfc1123_date
-from ZODB.blob import Blob
 from zope.interface import implementer
 
 import six
