@@ -29,7 +29,7 @@ from Products.Archetypes.utils import contentDispositionHeader
 from Products.CMFCore.permissions import View
 from six import StringIO
 from transaction import savepoint
-from webdav.common import rfc1123_date
+from App.Common import rfc1123_date
 from ZODB.blob import Blob
 from zope.interface import implementer
 
