@@ -8,6 +8,14 @@ Changelog
 
 .. towncrier release notes start
 
+1.8.1 (2020-03-13)
+------------------
+
+Bug fixes:
+
+
+- Support Zope 4.2.1 [jensens] (#53)
+
 
 1.8.0 (2018-10-30)
 ------------------
