@@ -20,7 +20,7 @@ from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.permissions import View
 from Products.CMFCore.utils import getToolByName
 from Products.GenericSetup.interfaces import IDAVAware
-from Products.MimetypesRegistry.common import MimeTypeException
+from Products.MimetypesRegistry.interfaces import MimeTypeException
 from ZODB.POSException import ConflictError
 from zope.event import notify
 from zope.interface import implementer
