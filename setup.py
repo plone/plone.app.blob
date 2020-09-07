@@ -56,6 +56,7 @@ setup(
     tests_require=tests_require,
     extras_require={'test': tests_require},
     classifiers=[
+        'Development Status :: 6 - Mature',
         'Environment :: Web Environment',
         'Framework :: Plone :: 5.0',
         'Framework :: Plone :: 5.1',
