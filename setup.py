@@ -34,7 +34,7 @@ setup(
     keywords='zodb blob support plone integration',
     author='Plone Foundation',
     author_email='plone-developers@lists.sourceforge.net',
-    url='http://plone.org/products/plone.app.blob',
+    url='https://github.com/plone/plone.app.blob',
     download_url='https://pypi.org/project/plone.app.blob/',
     license='GPL version 2',
     packages=find_packages('src'),
