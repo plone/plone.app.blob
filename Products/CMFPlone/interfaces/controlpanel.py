@@ -12,6 +12,7 @@ from zope.interface import Invalid
 from zope.interface import invariant
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
+from plone.autoform import directives
 
 import json
 
@@ -991,6 +992,7 @@ class ISecuritySchema(Interface):
 
 
 class ISiteSchema(Interface):
+    directives.omitted('site_favicon_mimetype')
 
     site_title = schema.TextLine(
         title=_('Site title'),
@@ -1007,14 +1009,14 @@ class ISiteSchema(Interface):
 
     site_favicon_mimetype = schema.TextLine(
         title=_('Site Favicon-mimetype'),
-        description=_('This shows a custom favicon on your site.'),
+        description=_('Set the mimetype of the favicon. (Adjusts itself automatically)'),
         required=False,
         default='image/x-icon'
     )
 
     site_favicon = schema.Bytes(
         title=_('Site Favicon'),
-        description=_('This shows a custom favicon on your site.'),
+        description=_('This shows a custom favicon on your site. (Adjusts mimetype automatically)'),
         required=False,
     )
 
