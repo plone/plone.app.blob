@@ -1,7 +1,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-version = '6.0.0a2.dev0'
+version = '6.0.0a3.dev0'
 
 
 setup(
@@ -42,6 +42,7 @@ setup(
         'ExtensionClass',
         'five.customerize',
         'five.localsitemanager',
+        'lxml',
         'mockup',
         'Pillow',
         'plone.api >= 1.4.4',
@@ -107,7 +108,7 @@ setup(
         'pyScss',
         'setuptools>=36.2',
         'transaction',
-        'z3c.autoinclude',
+        'plone.autoinclude',
         'ZODB3',
         'Zope[wsgi] >= 4.0',
         'zope.app.locales >= 3.6.0',
