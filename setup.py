@@ -8,6 +8,7 @@ import os
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
+
 version = '1.8.2.dev0'
 
 long_description = (
@@ -61,13 +62,14 @@ setup(
         'Environment :: Web Environment',
         'Framework :: Plone :: 5.2',
         'Framework :: Plone',
-        'Framework :: Zope',
         'Framework :: Zope :: 4',
+        'Framework :: Zope',
         'Intended Audience :: Developers',
         'Intended Audience :: Other Audience',
         'Intended Audience :: System Administrators',
         'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
         'Operating System :: OS Independent',
+        'Programming Language :: Python :: 2 :: Only',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python',
     ],
